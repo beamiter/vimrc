@@ -51,13 +51,6 @@ function BracketsEnter(char)
     endif
 endf
 
-
-imap { {}<ESC>i<CR><ESC>V<O>>>>}}
-inoremap ( )(<ESC>i
-inoremap [ []<ESC>i
-" inoremap { {}<ESC>i
-inoremap < <><ESC>i>>>>]]>))
-
 " TextEdit might fail if hidden is not set.
 set hidden
 
