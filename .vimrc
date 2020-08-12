@@ -18,6 +18,10 @@ Plug 'tomasr/molokai'
 let g:molokai_original = 1
 let g:rehash256 = 1
 
+Plug 'altercation/vim-colors-solarized'
+syntax enable
+set background=dark
+
 Plug 'cjuniet/clang-format.vim'
 let g:clang_format#auto_format = 1
 let g:clang_format#auto_format_on_insert_leave = 1
@@ -26,7 +30,26 @@ let g:clang_format#detect_style_file = 1
 " Initialize plugin system
 call plug#end()
 
-colorscheme molokai     "设置主题为molokai"
+" colorscheme molokai     "设置主题为molokai"
+"colorscheme solarized
+
+"colorscheme blue
+"colorscheme desert 
+"colorscheme koehler
+"colorscheme peachpuff
+"colorscheme slate
+"colorscheme darkblue
+"colorscheme elflord
+"colorscheme morning
+"colorscheme evening
+"colorscheme murphy
+"colorscheme ron
+"colorscheme torte
+"colorscheme delek
+"colorscheme industry
+"colorscheme pablo
+"colorscheme shine
+"colorscheme zellner
 
 set backspace=2
 set number
