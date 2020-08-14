@@ -22,19 +22,34 @@ Plug 'altercation/vim-colors-solarized'
 syntax enable
 set background=dark
 
-Plug 'cjuniet/clang-format.vim'
-let g:clang_format#auto_format = 1
-let g:clang_format#auto_format_on_insert_leave = 1
-let g:clang_format#detect_style_file = 1
+Plug 'rhysd/vim-color-spring-night' 
+
+Plug 'kana/vim-operator-user'
+
+Plug 'rhysd/vim-clang-format'
+let g:clang_format#style_options = {
+            \ "AccessModifierOffset" : -4,
+            \ "AllowShortIfStatementsOnASingleLine" : "true",
+            \ "AlwaysBreakTemplateDeclarations" : "true",
+            \ "Standard" : "C++11"}
+
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+" if you install vim-operator-user
+autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+" Toggle auto formatting:
+nmap <Leader>C :ClangFormatAutoToggle<CR>
 
 " Initialize plugin system
 call plug#end()
 
 " colorscheme molokai     "设置主题为molokai"
 "colorscheme solarized
+"colorscheme spring-night
 
 "colorscheme blue
-"colorscheme desert 
+"colorscheme desert
 "colorscheme koehler
 "colorscheme peachpuff
 "colorscheme slate
@@ -68,7 +83,7 @@ autocmd BufWritePre,BufRead *.cpp :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
 
 function BracketsEnter(char)
     if getline('.')[col('.')-1] == a:char
-        return "\<Enter>\<Tab>\<Esc>mpa\<Enter>\<Esc>`pa" 
+        return "\<Enter>\<Tab>\<Esc>mpa\<Enter>\<Esc>`pa"
     else
         return "\<Enter>"
     endif
