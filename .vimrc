@@ -23,11 +23,15 @@ let g:clang_format#auto_format = 1
 let g:clang_format#auto_format_on_insert_leave = 1
 let g:clang_format#detect_style_file = 1
 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
 " Initialize plugin system
 call plug#end()
 
 colorscheme molokai     "设置主题为molokai"
 
+" let g:clang_library_path=""
 set backspace=2
 set number
 set tabstop=2
