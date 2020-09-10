@@ -83,6 +83,7 @@ set smartindent
 set expandtab
 syntax on
 syntax enable
+set pastetoggle=<F9>
 
 " 大括号自动分行, C/C++下的自动命令, 添加到 .vimrc
 autocmd BufWritePre,BufRead *.c :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
