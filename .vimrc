@@ -74,7 +74,7 @@ call plug#end()
 
 " let g:clang_library_path=""
 set backspace=2
-set number
+"set number
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
