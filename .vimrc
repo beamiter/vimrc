@@ -18,6 +18,8 @@ Plug 'tomasr/molokai'
 let g:molokai_original = 1
 let g:rehash256 = 1
 
+Plug 'morhetz/gruvbox'
+
 Plug 'altercation/vim-colors-solarized'
 syntax enable
 set background=dark
@@ -50,7 +52,8 @@ Plug 'junegunn/fzf.vim'
 " Initialize plugin system
 call plug#end()
 
-" colorscheme molokai     "设置主题为molokai"
+"colorscheme molokai     "设置主题为molokai"
+"colorscheme gruvbox
 "colorscheme solarized
 "colorscheme spring-night
 
