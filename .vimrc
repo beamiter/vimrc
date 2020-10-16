@@ -6,12 +6,17 @@ call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 
 " On-demand loading
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'preservim/nerdtree'
 
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'scrooloose/nerdcommenter'
+
+Plug 'vim-airline/vim-airline'
+let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
 
 " molokai主题插件
 Plug 'tomasr/molokai'
@@ -48,6 +53,8 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+Plug 'ryanoasis/vim-devicons'
 
 " Initialize plugin system
 call plug#end()
@@ -99,6 +106,50 @@ function BracketsEnter(char)
         return "\<Enter>"
     endif
 endf
+
+
+" Vim 在与屏幕/键盘交互时使用的编码(取决于实际的终端的设定)
+set encoding=utf-8
+set langmenu=zh_CN.UTF-8
+" 设置打开文件的编码格式 
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1 
+set fileencoding=utf-8
+" 解决菜单乱码
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+" 解决consle输出乱码
+"set termencoding = cp936 
+" 设置中文提示
+language messages zh_CN.utf-8 
+" 设置中文帮助
+set helplang=cn
+" 设置为双字宽显示，否则无法完整显示如:☆
+set ambiwidth=double
+" 总是显示状态栏 
+let laststatus = 2
+let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
+let g:airline_theme="dark"      " 设置主题
+" 开启tabline
+let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
+let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两端的分隔字符
+let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
+let g:airline#extensions#tabline#buffer_nr_show = 1 
+" 设置字体 
+set guifont=DroidSansMono\ Nerd\ Font\ 11
+
+" NERDTree settings
+" open a NERDTree automatically when vim starts up if no files were specified    
+autocmd StdinReadPre * let s:std_in=1    
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif    
+" open NERDTree automatically when vim starts up on opening a directory    
+autocmd StdinReadPre * let s:std_in=1    
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" map a specific key or shortcut to open NERDTree
+map <C-n> :NERDTreeToggle<CR>
+" close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Let NERDTree igonre files
+let NERDTreeIgnore = ['\.pyc$', '\.swp$']
 
 " TextEdit might fail if hidden is not set.
 set hidden
