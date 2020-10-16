@@ -107,6 +107,12 @@ function BracketsEnter(char)
     endif
 endf
 
+" this if for the powerline in terminal
+"POWERLINE_SCRIPT=/usr/share/powerline/bindings/bash/powerline.sh
+"if [ -f $POWERLINE_SCRIPT ]; then
+   "source $POWERLINE_SCRIPT
+"fi
+
 
 " Vim 在与屏幕/键盘交互时使用的编码(取决于实际的终端的设定)
 set encoding=utf-8
