@@ -15,8 +15,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'scrooloose/nerdcommenter'
 
-Plug 'vim-airline/vim-airline'
-let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
+"Plug 'vim-airline/vim-airline'
+"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
 
 " molokai主题插件
 Plug 'tomasr/molokai'
@@ -141,7 +141,8 @@ let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两�
 let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
 let g:airline#extensions#tabline#buffer_nr_show = 1 
 " 设置字体 
-set guifont=DroidSansMono\ Nerd\ Font\ 11
+"set guifont=DroidSansMono\ Nerd\ Font\ 11
+set guifont=3270\ Nerd\ Font\ 11
 
 " NERDTree settings
 " open a NERDTree automatically when vim starts up if no files were specified    
