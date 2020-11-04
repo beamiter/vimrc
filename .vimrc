@@ -19,7 +19,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-"Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 
 " 主题插件
 Plug 'tomasr/molokai'
