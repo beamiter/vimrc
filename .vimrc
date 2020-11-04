@@ -6,34 +6,43 @@ call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 
 " On-demand loading
-"Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'preservim/nerdtree'
 
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'scrooloose/nerdcommenter'
-
-"Plug 'vim-airline/vim-airline'
-"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
-
-" molokai主题插件
-Plug 'tomasr/molokai'
-let g:molokai_original = 1
-let g:rehash256 = 1
-
-Plug 'morhetz/gruvbox'
-
-Plug 'altercation/vim-colors-solarized'
-syntax enable
-set background=dark
-
-Plug 'rhysd/vim-color-spring-night' 
-
 Plug 'kana/vim-operator-user'
 
+Plug 'preservim/nerdtree'
+"Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+"Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+"Plug 'vim-airline/vim-airline'
+
+" 主题插件
+Plug 'tomasr/molokai'
+Plug 'morhetz/gruvbox'
+Plug 'altercation/vim-colors-solarized'
+Plug 'rhysd/vim-color-spring-night' 
+
 Plug 'rhysd/vim-clang-format'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
+
+" Initialize plugin system
+call plug#end()
+
+let g:NERDTreeGitStatusUseNerdFonts = 1
+let g:NERDTreeGitStatusShowIgnored = 1
+let g:NERDTreeGitStatusUntrackedFilesMode = 'all'
+let g:NERDTreeGitStatusConcealBrackets = 1
+let g:NERDTreeGitStatusShowClean = 1
+
 let g:clang_format#style_options = {
             \ "AccessModifierOffset" : -4,
             \ "AllowShortIfStatementsOnASingleLine" : "true",
@@ -48,18 +57,25 @@ autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " Toggle auto formatting:
 nmap <Leader>C :ClangFormatAutoToggle<CR>
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-Plug 'ryanoasis/vim-devicons'
-
-" Initialize plugin system
-call plug#end()
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'✹',
+                \ 'Staged'    :'✚',
+                \ 'Untracked' :'✭',
+                \ 'Renamed'   :'➜',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'✖',
+                \ 'Dirty'     :'✗',
+                \ 'Ignored'   :'☒',
+                \ 'Clean'     :'✔︎',
+                \ 'Unknown'   :'?',
+                \ }
 
 "colorscheme molokai     "设置主题为molokai"
+let g:molokai_original = 1
+let g:rehash256 = 1
+set background=dark
 "colorscheme gruvbox
 "colorscheme solarized
 "colorscheme spring-night
@@ -141,8 +157,8 @@ let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两�
 let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
 let g:airline#extensions#tabline#buffer_nr_show = 1 
 " 设置字体 
-"set guifont=DroidSansMono\ Nerd\ Font\ 11
-set guifont=3270\ Nerd\ Font\ 11
+set guifont=DroidSansMono\ Nerd\ Font\ 11   "must set same terminal font with this"
+" set guifont=3270\ Nerd\ Font\ 11
 
 " NERDTree settings
 " open a NERDTree automatically when vim starts up if no files were specified    
