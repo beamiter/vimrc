@@ -16,7 +16,6 @@ Plug 'preservim/nerdtree'
 "Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 "Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
-Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'vim-airline/vim-airline'
