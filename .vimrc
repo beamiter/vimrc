@@ -20,6 +20,7 @@ Plug 'preservim/tagbar'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/goyo.vim'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -105,6 +106,9 @@ set background=dark
 
 " let g:clang_library_path=""
 set backspace=2
+"set scrolloff=999
+nnoremap j jzz
+nnoremap k kzz
 set number
 set relativenumber
 set tabstop=2
