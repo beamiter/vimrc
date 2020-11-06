@@ -13,12 +13,14 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kana/vim-operator-user'
 
 Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
+Plug 'preservim/tagbar'
 "Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
-"Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
+"Plug 'scrooloose/nerdcommenter'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " 主题插件
 Plug 'tomasr/molokai'
@@ -35,6 +37,8 @@ Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 
 " Initialize plugin system
 call plug#end()
+
+nmap <F8> :TagbarToggle<CR>
 
 let g:NERDTreeGitStatusUseNerdFonts = 1
 let g:NERDTreeGitStatusShowIgnored = 1
