@@ -107,8 +107,8 @@ set background=dark
 " let g:clang_library_path=""
 set backspace=2
 "set scrolloff=999
-nnoremap j jzz
-nnoremap k kzz
+"nnoremap j jzz
+"nnoremap k kzz
 set number
 set relativenumber
 set tabstop=2
