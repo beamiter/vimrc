@@ -100,6 +100,7 @@ set background=dark
 " let g:clang_library_path=""
 set backspace=2
 "set number
+set relativenumber
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
