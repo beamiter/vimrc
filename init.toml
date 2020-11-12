@@ -27,6 +27,8 @@
 
     filemanager = "defx"
 
+    disabled_plugins = ["deoplete.nvim"]
+
 # Enable autocomplete layer
 [[layers]]
 name = 'autocomplete'
