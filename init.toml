@@ -25,6 +25,8 @@
     enable_tabline_filetype_icon = true
     enable_statusline_mode = false
 
+    filemanager = "defx"
+
 # Enable autocomplete layer
 [[layers]]
 name = 'autocomplete'
@@ -54,6 +56,11 @@ c = ['clangd']
 name = 'colorscheme'
 
 [[custom_plugins]]
-repo = "mhartington/oceanic-next"
-repo = "rafi/awesome-vim-colorschemes"
+name = "mhartington/oceanic-next"
+merged = false
+[[custom_plugins]]
+name = "rafi/awesome-vim-colorschemes"
+merged = false
+[[custom_plugins]]
+name = "neoclide/coc.nvim"
 merged = false
