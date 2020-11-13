@@ -55,14 +55,34 @@ filetypes = [
 c = ['clangd']
 
 [[layers]]
+name = "lang#rust"
+
+[[layers]]
+name = "lsp"
+filetypes = [
+  "rust"
+]
+[layers.override_cmd]
+rust = ["rls"]
+
+[[layers]]
+name = "format"
+
+[[layers]]
 name = 'colorscheme'
 
 [[custom_plugins]]
 name = "mhartington/oceanic-next"
 merged = false
+
 [[custom_plugins]]
 name = "rafi/awesome-vim-colorschemes"
 merged = false
+
 [[custom_plugins]]
 name = "neoclide/coc.nvim"
+merged = false
+
+[[custom_plugins]]
+name = "jiangmiao/auto-pairs"
 merged = false
