@@ -1,3 +1,5 @@
+let mapleader = "\<space>"
+
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
@@ -17,21 +19,62 @@ Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
 Plug 'preservim/tagbar'
 "Plug 'scrooloose/nerdtree'
 "Plug 'scrooloose/nerdcommenter'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'itchyny/vim-gitbranch'
+
+if has('nvim')
+  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/defx.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/goyo.vim'
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 't9md/vim-choosewin'
+Plug 'junegunn/vim-emoji'
+Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-grepper'
+Plug 'andymass/vim-matchup'
+Plug 'simnalamburt/vim-mundo'
+Plug 'tpope/vim-repeat'
+Plug 'mhinz/vim-startify'
+Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
+Plug 'Yggdroot/indentLine'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'kristijanhusak/defx-icons'
 
 " 主题插件
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'rainglow/vim'
+
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
-Plug 'rhysd/vim-color-spring-night' 
+Plug 'rhysd/vim-color-spring-night'
+Plug 'mhinz/vim-janah'
+Plug 'mhartington/oceanic-next'
+Plug 'hzchirs/vim-material'
+Plug 'joshdick/onedark.vim'
+Plug 'drewtempelmeyer/palenight.vim'
+Plug 'srcery-colors/srcery-vim'
+Plug 'rakr/vim-one'
+Plug 'arcticicestudio/nord-vim'
+Plug 'itchyny/landscape.vim'
+Plug 'phongnh/vim-leaderf-solarized-theme'
+Plug 'connorholyday/vim-snazzy'
+Plug 'nanotech/jellybeans.vim'
 
 Plug 'rhysd/vim-clang-format'
+Plug 'sbdchd/neoformat'
+Plug 'prettier/vim-prettier'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -40,6 +83,164 @@ Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 
 " Initialize plugin system
 call plug#end()
+
+" returns all modified files of the current git repo
+" `2>/dev/null` makes the command fail quietly, so that when we are not
+" in a git repo, the list will be empty
+function! s:gitModified()
+    let files = systemlist('git ls-files -m 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+" same as above, but show untracked files, honouring .gitignore
+function! s:gitUntracked()
+    let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+let g:startify_lists = [
+        \ { 'type': 'files',     'header': ['   MRU']            },
+        \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+        \ { 'type': 'sessions',  'header': ['   Sessions']       },
+        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+        \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
+        \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
+        \ { 'type': 'commands',  'header': ['   Commands']       },
+        \ ]
+
+nmap <silent> <F3> :Defx <cr>
+call defx#custom#option('_', {
+      \ 'winwidth': 30,
+      \ 'split': 'vertical',
+      \ 'direction': 'botright',
+      \ 'show_ignored_files': 0,
+      \ 'buffer_name': '',
+      \ 'toggle': 1,
+      \ 'resume': 1
+      \ })
+autocmd FileType defx call s:defx_my_settings()
+function! s:defx_my_settings() abort
+  " Define mappings
+  nnoremap <silent><buffer><expr> <CR>
+  \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> c
+  \ defx#do_action('copy')
+  nnoremap <silent><buffer><expr> m
+  \ defx#do_action('move')
+  nnoremap <silent><buffer><expr> p
+  \ defx#do_action('paste')
+  nnoremap <silent><buffer><expr> l
+  \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> E
+  \ defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> P
+  \ defx#do_action('preview')
+  nnoremap <silent><buffer><expr> o
+  \ defx#do_action('open_tree', 'toggle')
+  nnoremap <silent><buffer><expr> K
+  \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> N
+  \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> M
+  \ defx#do_action('new_multiple_files')
+  nnoremap <silent><buffer><expr> C
+  \ defx#do_action('toggle_columns',
+  \                'mark:indent:icon:filename:type:size:time')
+  nnoremap <silent><buffer><expr> S
+  \ defx#do_action('toggle_sort', 'time')
+  nnoremap <silent><buffer><expr> d
+  \ defx#do_action('remove')
+  nnoremap <silent><buffer><expr> r
+  \ defx#do_action('rename')
+  nnoremap <silent><buffer><expr> !
+  \ defx#do_action('execute_command')
+  nnoremap <silent><buffer><expr> x
+  \ defx#do_action('execute_system')
+  nnoremap <silent><buffer><expr> yy
+  \ defx#do_action('yank_path')
+  nnoremap <silent><buffer><expr> .
+  \ defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> ;
+  \ defx#do_action('repeat')
+  nnoremap <silent><buffer><expr> h
+  \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> ~
+  \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> q
+  \ defx#do_action('quit')
+  nnoremap <silent><buffer><expr> <Space>
+  \ defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> *
+  \ defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> j
+  \ line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k
+  \ line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> <C-l>
+  \ defx#do_action('redraw')
+  nnoremap <silent><buffer><expr> <C-g>
+  \ defx#do_action('print')
+  nnoremap <silent><buffer><expr> cd
+  \ defx#do_action('change_vim_cwd')
+endfunction
+
+set showtabline=2
+let g:lightline = {
+      \ 'colorscheme': 'one',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'tabline': {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ]
+      \ },
+      \ 'component_expand': {
+      \   'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \   'buffers': 'tabsel'
+      \ }
+      \ }
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+nmap <Leader>c1 <Plug>lightline#bufferline#delete(1)
+nmap <Leader>c2 <Plug>lightline#bufferline#delete(2)
+nmap <Leader>c3 <Plug>lightline#bufferline#delete(3)
+nmap <Leader>c4 <Plug>lightline#bufferline#delete(4)
+nmap <Leader>c5 <Plug>lightline#bufferline#delete(5)
+nmap <Leader>c6 <Plug>lightline#bufferline#delete(6)
+nmap <Leader>c7 <Plug>lightline#bufferline#delete(7)
+nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
+nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
+nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
+
+" Light
+set background=light
+" Palenight
+let g:material_style='palenight'
+" Oceanic
+let g:material_style='oceanic'
+set background=dark
+colorscheme vim-material
+
+set undofile
+set undodir=~/.vim/undo
+
+let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+let g:gitgutter_sign_modified_removed = emoji#for('collision')
+
+" invoke with '-'
+nmap - <Plug>(choosewin)
 
 nmap <F8> :TagbarToggle<CR>
 
@@ -63,8 +264,6 @@ autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " Toggle auto formatting:
 nmap <Leader>C :ClangFormatAutoToggle<CR>
 
-"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
-
 let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Modified'  :'✹',
                 \ 'Staged'    :'✚',
@@ -78,33 +277,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Unknown'   :'?',
                 \ }
 
-"colorscheme molokai     "设置主题为molokai"
-let g:molokai_original = 1
-let g:rehash256 = 1
-set background=dark
-"colorscheme gruvbox
-"colorscheme solarized
-"colorscheme spring-night
-
-"colorscheme blue
-"colorscheme desert
-"colorscheme koehler
-"colorscheme peachpuff
-"colorscheme slate
-"colorscheme darkblue
-"colorscheme elflord
-"colorscheme morning
-"colorscheme evening
-"colorscheme murphy
-"colorscheme ron
-"colorscheme torte
-"colorscheme delek
-"colorscheme industry
-"colorscheme pablo
-"colorscheme shine
-"colorscheme zellner
-
-" let g:clang_library_path=""
 set backspace=2
 "set scrolloff=999
 "nnoremap j jzz
@@ -121,18 +293,6 @@ syntax on
 syntax enable
 set pastetoggle=<F9>
 
-" 大括号自动分行, C/C++下的自动命令, 添加到 .vimrc
-autocmd BufWritePre,BufRead *.c :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
-autocmd BufWritePre,BufRead *.cpp :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
-
-function BracketsEnter(char)
-    if getline('.')[col('.')-1] == a:char
-        return "\<Enter>\<Tab>\<Esc>mpa\<Enter>\<Esc>`pa"
-    else
-        return "\<Enter>"
-    endif
-endf
-
 " this if for the powerline in terminal
 "POWERLINE_SCRIPT=/usr/share/powerline/bindings/bash/powerline.sh
 "if [ -f $POWERLINE_SCRIPT ]; then
@@ -140,43 +300,49 @@ endf
 "fi
 
 
-" Vim 在与屏幕/键盘交互时使用的编码(取决于实际的终端的设定)
-set encoding=utf-8
-set langmenu=zh_CN.UTF-8
-" 设置打开文件的编码格式 
-set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1 
-set fileencoding=utf-8
-" 解决菜单乱码
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
-" 解决consle输出乱码
-"set termencoding = cp936 
-" 设置中文提示
-language messages zh_CN.utf-8 
-" 设置中文帮助
-set helplang=cn
-" 设置为双字宽显示，否则无法完整显示如:☆
-set ambiwidth=double
-" 总是显示状态栏 
-let laststatus = 2
-let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
-let g:airline_theme="dark"      " 设置主题
-" 开启tabline
-let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
-let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两端的分隔字符
-let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
-let g:airline#extensions#tabline#buffer_nr_show = 1 
-" 设置字体 
-set guifont=DroidSansMono\ Nerd\ Font\ 11   "must set same terminal font with this"
-" set guifont=3270\ Nerd\ Font\ 11
+"" Vim 在与屏幕/键盘交互时使用的编码(取决于实际的终端的设定)
+"set encoding=utf-8
+"set langmenu=zh_CN.UTF-8
+"" 设置打开文件的编码格式
+"set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+"set fileencoding=utf-8
+"" 解决菜单乱码
+"source $VIMRUNTIME/delmenu.vim
+"source $VIMRUNTIME/menu.vim
+"" 解决consle输出乱码
+""set termencoding = cp936
+"" 设置中文提示
+"language messages zh_CN.utf-8
+"" 设置中文帮助
+"set helplang=cn
+"" 设置为双字宽显示，否则无法完整显示如:☆
+"set ambiwidth=double
+"" 总是显示状态栏
+"let laststatus = 2
+"let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
+"let g:airline_theme="dark"      " 设置主题
+"" 开启tabline
+"let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
+"let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两端的分隔字符
+"let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
+"let g:airline#extensions#tabline#buffer_nr_show = 1
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
+"let g:airline#extensions#tabline#formatter = 'default'
+"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
+"" jsformatter  unique_tail  unique_tail_improved
+"" 设置字体
+"set guifont=DroidSansMono\ Nerd\ Font\ 11   "must set same terminal font with this"
+"" set guifont=3270\ Nerd\ Font\ 11
 
-" NERDTree settings
-" open a NERDTree automatically when vim starts up if no files were specified    
-autocmd StdinReadPre * let s:std_in=1    
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif    
-" open NERDTree automatically when vim starts up on opening a directory    
-autocmd StdinReadPre * let s:std_in=1    
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+"" NERDTree settings
+"" open a NERDTree automatically when vim starts up if no files were specified
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"" open NERDTree automatically when vim starts up on opening a directory
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " map a specific key or shortcut to open NERDTree
 map <C-n> :NERDTreeToggle<CR>
 " close vim if the only window left open is a NERDTree
