@@ -1,5 +1,3 @@
-let mapleader = "\<space>"
-
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
@@ -24,8 +22,10 @@ Plug 'itchyny/vim-gitbranch'
 
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/defx.nvim'
+  Plug 'Shougo/denite.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
@@ -50,6 +50,9 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'kristijanhusak/defx-icons'
+Plug 'liuchengxu/vim-which-key'
+" On-demand lazy load
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 " 主题插件
 Plug 'rafi/awesome-vim-colorschemes'
@@ -71,6 +74,8 @@ Plug 'itchyny/landscape.vim'
 Plug 'phongnh/vim-leaderf-solarized-theme'
 Plug 'connorholyday/vim-snazzy'
 Plug 'nanotech/jellybeans.vim'
+Plug 'jacoborus/tender.vim'
+Plug 'sjl/badwolf'
 
 Plug 'rhysd/vim-clang-format'
 Plug 'sbdchd/neoformat'
@@ -83,6 +88,50 @@ Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 
 " Initialize plugin system
 call plug#end()
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
+
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_enable_unite = 1
+let g:webdevicons_enable_vimfiler = 1
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
+let g:webdevicons_enable_ctrlp = 1
+let g:webdevicons_enable_startify = 1
+let g:webdevicons_enable_flagship_statusline = 1
+let g:WebDevIconsUnicodeDecorateFileNodes = 1
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:webdevicons_enable_denite = 1
+let g:WebDevIconsTabAirLineAfterGlyphPadding = ' '
+let g:WebDevIconsTabAirLineBeforeGlyphPadding = ' '
+"let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = 'ƛ'
+"let g:WebDevIconsUnicodeByteOrderMarkerDefaultSymbol = ''
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderPatternMatching = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 0
+let WebDevIconsUnicodeDecorateFolderNodesExactMatches = 1
+"let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = 'ƛ'
+"let g:DevIconsDefaultFolderOpenSymbol = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['MyReallyCoolFile.okay'] = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['myext'] = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*jquery.*\.js$'] = 'ƛ'
+let g:WebDevIconsOS = 'Darwin'
+
+
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+" By default timeoutlen is 1000 ms
+"set timeoutlen=500
 
 " returns all modified files of the current git repo
 " `2>/dev/null` makes the command fail quietly, so that when we are not
@@ -108,7 +157,24 @@ let g:startify_lists = [
         \ { 'type': 'commands',  'header': ['   Commands']       },
         \ ]
 
-nmap <silent> <F3> :Defx <cr>
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
+
+nmap <silent> <F3> :Defx -columns=icons:indent:filename:type <cr>
 call defx#custom#option('_', {
       \ 'winwidth': 30,
       \ 'split': 'vertical',
@@ -184,9 +250,23 @@ function! s:defx_my_settings() abort
   \ defx#do_action('change_vim_cwd')
 endfunction
 
+let g:defx_icons_enable_syntax_highlight = 1
+let g:defx_icons_column_length = 1
+let g:defx_icons_directory_icon = ''
+let g:defx_icons_mark_icon = '*'
+let g:defx_icons_copy_icon = ''
+let g:defx_icons_move_icon = ''
+let g:defx_icons_parent_icon = ''
+let g:defx_icons_default_icon = ''
+let g:defx_icons_directory_symlink_icon = ''
+" Options below are applicable only when using "tree" feature
+let g:defx_icons_root_opened_tree_icon = ''
+let g:defx_icons_nested_opened_tree_icon = ''
+let g:defx_icons_nested_closed_tree_icon = ''
+
 set showtabline=2
 let g:lightline = {
-      \ 'colorscheme': 'one',
+      \ 'colorscheme': 'powerline',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
       \ },
@@ -222,14 +302,14 @@ nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
 nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
 nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
 
-" Light
-set background=light
-" Palenight
-let g:material_style='palenight'
-" Oceanic
-let g:material_style='oceanic'
+"" Light
+"set background=light
+"" Palenight
+"let g:material_style='palenight'
+"" Oceanic
+"let g:material_style='oceanic'
 set background=dark
-colorscheme vim-material
+colorscheme space-vim-dark
 
 set undofile
 set undodir=~/.vim/undo
@@ -278,9 +358,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ }
 
 set backspace=2
-"set scrolloff=999
-"nnoremap j jzz
-"nnoremap k kzz
 set number
 set relativenumber
 set tabstop=2
@@ -292,6 +369,11 @@ set expandtab
 syntax on
 syntax enable
 set pastetoggle=<F9>
+" 设置为双字宽显示，否则无法完整显示如:☆
+set ambiwidth=double
+" 总是显示状态栏
+set laststatus=2
+
 
 " this if for the powerline in terminal
 "POWERLINE_SCRIPT=/usr/share/powerline/bindings/bash/powerline.sh
@@ -315,20 +397,16 @@ set pastetoggle=<F9>
 "language messages zh_CN.utf-8
 "" 设置中文帮助
 "set helplang=cn
-"" 设置为双字宽显示，否则无法完整显示如:☆
-"set ambiwidth=double
-"" 总是显示状态栏
-"let laststatus = 2
 "let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
 "let g:airline_theme="dark"      " 设置主题
 "" 开启tabline
-"let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
-"let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两端的分隔字符
-"let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
-"let g:airline#extensions#tabline#buffer_nr_show = 1
 "let g:airline#extensions#tabline#enabled = 1
+""tabline中当前buffer两端的分隔字符
 "let g:airline#extensions#tabline#left_sep = ' '
+""tabline中未激活buffer两端的分隔字符
 "let g:airline#extensions#tabline#left_alt_sep = '|'
+""tabline中buffer显示编号
+"let g:airline#extensions#tabline#buffer_nr_show = 1
 "let g:airline#extensions#tabline#formatter = 'default'
 "let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
 "" jsformatter  unique_tail  unique_tail_improved
