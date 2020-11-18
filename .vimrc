@@ -53,6 +53,7 @@ Plug 'kristijanhusak/defx-icons'
 Plug 'liuchengxu/vim-which-key'
 " On-demand lazy load
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+Plug 'easymotion/vim-easymotion'
 
 " 主题插件
 Plug 'rafi/awesome-vim-colorschemes'
@@ -94,12 +95,32 @@ let g:maplocalleader = ','
 let &t_TI = ""
 let &t_TE = ""
 
-function! GitStatus()
-  let [a,m,r] = GitGutterGetHunkSummary()
-  return printf('+%d ~%d -%d', a, m, r)
-endfunction
-set statusline+=%{GitStatus()}
-set statusline+=%{FugitiveStatusline()}
+autocmd CursorHold * silent call CocActionAsync('highlight')
+set termguicolors
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+nmap s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Turn on case-insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+
+"function! GitStatus()
+  "let [a,m,r] = GitGutterGetHunkSummary()
+  "return printf('+%d ~%d -%d', a, m, r)
+"endfunction
+"set statusline+=%{GitStatus()}
+"set statusline+=%{FugitiveStatusline()}
 
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
