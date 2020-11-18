@@ -91,6 +91,16 @@ call plug#end()
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
 
+let &t_TI = ""
+let &t_TE = ""
+
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=%{GitStatus()}
+set statusline+=%{FugitiveStatusline()}
+
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_enable_unite = 1
@@ -383,7 +393,7 @@ set laststatus=2
 
 
 "" Vim 在与屏幕/键盘交互时使用的编码(取决于实际的终端的设定)
-"set encoding=utf-8
+set encoding=utf-8
 "set langmenu=zh_CN.UTF-8
 "" 设置打开文件的编码格式
 "set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
