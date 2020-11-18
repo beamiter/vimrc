@@ -97,6 +97,37 @@ let &t_TE = ""
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 set termguicolors
+set hlsearch
+set backspace=2
+set number
+set relativenumber
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set autoindent
+set smartindent
+set expandtab
+syntax on
+syntax enable
+set pastetoggle=<F9>
+" 设置为双字宽显示，否则无法完整显示如:☆
+set ambiwidth=double
+" 总是显示状态栏
+set laststatus=2
+set showtabline=2
+" By default timeoutlen is 1000 ms
+"set timeoutlen=500
+"" Light
+"set background=light
+"" Palenight
+"let g:material_style='palenight'
+"" Oceanic
+"let g:material_style='oceanic'
+set background=dark
+colorscheme space-vim-dark
+set undofile
+set undodir=~/.vim/undo
+set encoding=utf-8
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -112,8 +143,8 @@ nmap s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
+map <Leader>ej <Plug>(easymotion-j)
+map <Leader>ek <Plug>(easymotion-k)
 
 "function! GitStatus()
   "let [a,m,r] = GitGutterGetHunkSummary()
@@ -161,8 +192,6 @@ let g:WebDevIconsOS = 'Darwin'
 
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-" By default timeoutlen is 1000 ms
-"set timeoutlen=500
 
 " returns all modified files of the current git repo
 " `2>/dev/null` makes the command fail quietly, so that when we are not
@@ -295,7 +324,6 @@ let g:defx_icons_root_opened_tree_icon = ''
 let g:defx_icons_nested_opened_tree_icon = ''
 let g:defx_icons_nested_closed_tree_icon = ''
 
-set showtabline=2
 let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'active': {
@@ -333,22 +361,11 @@ nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
 nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
 nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
 
-"" Light
-"set background=light
-"" Palenight
-"let g:material_style='palenight'
-"" Oceanic
-"let g:material_style='oceanic'
-set background=dark
-colorscheme space-vim-dark
-
-set undofile
-set undodir=~/.vim/undo
-
-let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
-let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
-let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
-let g:gitgutter_sign_modified_removed = emoji#for('collision')
+"let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+"let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+"let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+"let g:gitgutter_sign_modified_removed = emoji#for('collision')
+set completefunc=emoji#complete
 
 " invoke with '-'
 nmap - <Plug>(choosewin)
@@ -388,22 +405,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Unknown'   :'?',
                 \ }
 
-set backspace=2
-set number
-set relativenumber
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set autoindent
-set smartindent
-set expandtab
-syntax on
-syntax enable
-set pastetoggle=<F9>
-" 设置为双字宽显示，否则无法完整显示如:☆
-set ambiwidth=double
-" 总是显示状态栏
-set laststatus=2
 
 
 " this if for the powerline in terminal
@@ -414,13 +415,10 @@ set laststatus=2
 
 
 "" Vim 在与屏幕/键盘交互时使用的编码(取决于实际的终端的设定)
-set encoding=utf-8
 "set langmenu=zh_CN.UTF-8
 "" 设置打开文件的编码格式
 "set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-"set fileencoding=utf-8
-"" 解决菜单乱码
-"source $VIMRUNTIME/delmenu.vim
+"set fileencoding=utf-8 "" 解决菜单乱码 "source $VIMRUNTIME/delmenu.vim
 "source $VIMRUNTIME/menu.vim
 "" 解决consle输出乱码
 ""set termencoding = cp936
