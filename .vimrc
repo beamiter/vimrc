@@ -67,6 +67,8 @@ Plug 'mhinz/vim-janah'
 Plug 'mhartington/oceanic-next'
 Plug 'hzchirs/vim-material'
 Plug 'joshdick/onedark.vim'
+Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
+Plug 'preservim/tagbar'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'srcery-colors/srcery-vim'
 Plug 'rakr/vim-one'
@@ -107,6 +109,11 @@ set shiftwidth=2
 set autoindent
 set smartindent
 set expandtab
+"let g:material_style='palenight'
+"let g:material_style='oceanic'
+"set background=light
+set background=dark " must put it befor syntax to work
+colorscheme space-vim-dark
 syntax on
 syntax enable
 set pastetoggle=<F9>
@@ -117,17 +124,10 @@ set laststatus=2
 set showtabline=2
 " By default timeoutlen is 1000 ms
 "set timeoutlen=500
-"" Light
-"set background=light
-"" Palenight
-"let g:material_style='palenight'
-"" Oceanic
-"let g:material_style='oceanic'
-set background=dark
-colorscheme space-vim-dark
 set undofile
 set undodir=~/.vim/undo
 set encoding=utf-8
+highlight! link CursorColumn TagbarHighlight
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -143,8 +143,8 @@ nmap s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-map <Leader>ej <Plug>(easymotion-j)
-map <Leader>ek <Plug>(easymotion-k)
+map <localleader>j <Plug>(easymotion-j)
+map <localleader>k <Plug>(easymotion-k)
 
 "function! GitStatus()
   "let [a,m,r] = GitGutterGetHunkSummary()
@@ -330,7 +330,7 @@ let g:lightline = {
       \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'tabline': {
-      \   'left': [ ['buffers'] ],
+      \   'lrft': [ ['buffers'] ],
       \   'right': [ ['close'] ]
       \ },
       \ 'component_expand': {
@@ -555,8 +555,8 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>as  <Plug>(coc-codeaction-selected)
+nmap <leader>as  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
