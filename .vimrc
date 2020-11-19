@@ -330,7 +330,7 @@ let g:lightline = {
       \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'tabline': {
-      \   'lrft': [ ['buffers'] ],
+      \   'left': [ ['buffers'] ],
       \   'right': [ ['close'] ]
       \ },
       \ 'component_expand': {
