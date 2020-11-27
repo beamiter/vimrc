@@ -87,6 +87,7 @@ Plug 'prettier/vim-prettier'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 
 Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 
