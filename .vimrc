@@ -328,19 +328,46 @@ let g:defx_icons_nested_closed_tree_icon = ''
 let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly',
+      \               'absolutepath', 'modified' ] ]
       \ },
       \ 'tabline': {
       \   'left': [ ['buffers'] ],
       \   'right': [ ['close'] ]
       \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead',
+      \   'readonly': 'LightlineReadonly',
+      \   'modified': 'LightlineModified',
+      \   'tabnum': 'lightline#tab#tabnum',
+      \ },
       \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers'
+      \   'buffers': 'lightline#bufferline#buffers',
       \ },
       \ 'component_type': {
       \   'buffers': 'tabsel'
       \ }
       \ }
+
+function! LightlineReadonly()
+	return &readonly ? 'RO' : 'RW'
+endfunction
+function! LightlineModified()
+	return &modifiable && &modified ? '+' : ''
+endfunction
+
+let g:lightline#bufferline#show_number = 3
+let g:lightline#bufferline#composed_number_map = {
+\ 1:  '⑴ ', 2:  '⑵ ', 3:  '⑶ ', 4:  '⑷ ', 5:  '⑸ ',
+\ 6:  '⑹ ', 7:  '⑺ ', 8:  '⑻ ', 9:  '⑼ ', 10: '⑽ ',
+\ 11: '⑾ ', 12: '⑿ ', 13: '⒀ ', 14: '⒁ ', 15: '⒂ ',
+\ 16: '⒃ ', 17: '⒄ ', 18: '⒅ ', 19: '⒆ ', 20: '⒇ '}
+let g:lightline#bufferline#number_map = {
+\ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
+\ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
+let g:lightline#bufferline#enable_devicons = 1
+let g:lightline#bufferline#enable_nerdfont = 1
+
 nmap <Leader>1 <Plug>lightline#bufferline#go(1)
 nmap <Leader>2 <Plug>lightline#bufferline#go(2)
 nmap <Leader>3 <Plug>lightline#bufferline#go(3)
@@ -592,7 +619,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.
