@@ -235,6 +235,7 @@ function! s:denite_my_settings() abort
   \ denite#do_map('toggle_select').'j'
 endfunction
 
+nnoremap <localleader>f :Files
 nmap <silent> <F3> :Defx -columns=icons:indent:filename:type <cr>
 call defx#custom#option('_', {
       \ 'winwidth': 30,
@@ -356,12 +357,17 @@ function! LightlineModified()
 	return &modifiable && &modified ? '+' : ''
 endfunction
 
-let g:lightline#bufferline#show_number = 3
+let g:lightline#bufferline#show_number = 2
+"let g:lightline#bufferline#composed_number_map = {
+"\ 1:  '⑴ ', 2:  '⑵ ', 3:  '⑶ ', 4:  '⑷ ', 5:  '⑸ ',
+"\ 6:  '⑹ ', 7:  '⑺ ', 8:  '⑻ ', 9:  '⑼ ', 10: '⑽ ',
+"\ 11: '⑾ ', 12: '⑿ ', 13: '⒀ ', 14: '⒁ ', 15: '⒂ ',
+"\ 16: '⒃ ', 17: '⒄ ', 18: '⒅ ', 19: '⒆ ', 20: '⒇ '}
 let g:lightline#bufferline#composed_number_map = {
-\ 1:  '⑴ ', 2:  '⑵ ', 3:  '⑶ ', 4:  '⑷ ', 5:  '⑸ ',
-\ 6:  '⑹ ', 7:  '⑺ ', 8:  '⑻ ', 9:  '⑼ ', 10: '⑽ ',
-\ 11: '⑾ ', 12: '⑿ ', 13: '⒀ ', 14: '⒁ ', 15: '⒂ ',
-\ 16: '⒃ ', 17: '⒄ ', 18: '⒅ ', 19: '⒆ ', 20: '⒇ '}
+\ 1:  '1 ', 2:  '2 ', 3:  '3 ', 4:  '4 ', 5:  '5 ',
+\ 6:  '6 ', 7:  '7 ', 8:  '8 ', 9:  '9 ', 10: '10 ',
+\ 11: '11 ', 12: '12 ', 13: '13 ', 14: '14 ', 15: '15 ',
+\ 16: '16 ', 17: '17 ', 18: '18 ', 19: '19 ', 20: '20 '}
 let g:lightline#bufferline#number_map = {
 \ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
 \ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
