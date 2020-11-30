@@ -68,8 +68,6 @@ Plug 'mhinz/vim-janah'
 Plug 'mhartington/oceanic-next'
 Plug 'hzchirs/vim-material'
 Plug 'joshdick/onedark.vim'
-Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
-Plug 'preservim/tagbar'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'srcery-colors/srcery-vim'
 Plug 'rakr/vim-one'
@@ -147,13 +145,6 @@ let g:EasyMotion_smartcase = 1
 " JK motions: Line motions
 map <localleader>j <Plug>(easymotion-j)
 map <localleader>k <Plug>(easymotion-k)
-
-"function! GitStatus()
-  "let [a,m,r] = GitGutterGetHunkSummary()
-  "return printf('+%d ~%d -%d', a, m, r)
-"endfunction
-"set statusline+=%{GitStatus()}
-"set statusline+=%{FugitiveStatusline()}
 
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
@@ -236,7 +227,8 @@ function! s:denite_my_settings() abort
   \ denite#do_map('toggle_select').'j'
 endfunction
 
-nnoremap <localleader>f :Files
+nnoremap <localleader>f :Files <CR>
+nnoremap <localleader>b :Buffers <CR>
 nmap <silent> <F3> :Defx -columns=icons:indent:filename:type <cr>
 call defx#custom#option('_', {
       \ 'winwidth': 30,
@@ -311,6 +303,11 @@ function! s:defx_my_settings() abort
   \ defx#do_action('print')
   nnoremap <silent><buffer><expr> cd
   \ defx#do_action('change_vim_cwd')
+	nnoremap <silent><buffer><expr> > defx#do_action('resize',
+	\ defx#get_context().winwidth + 10)
+	nnoremap <silent><buffer><expr> < defx#do_action('resize',
+	\ defx#get_context().winwidth - 10)
+	autocmd BufWritePost * call defx#redraw()
 endfunction
 
 let g:defx_icons_enable_syntax_highlight = 1
@@ -330,7 +327,7 @@ let g:defx_icons_nested_closed_tree_icon = ''
 let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly',
+      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'gitstatus', 'readonly',
       \               'absolutepath', 'modified' ] ]
       \ },
       \ 'tabline': {
@@ -338,7 +335,8 @@ let g:lightline = {
       \   'right': [ ['close'] ]
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead',
+      \   'gitbranch': 'FugitiveStatusline',
+      \   'gitstatus': 'GitStatus',
       \   'readonly': 'LightlineReadonly',
       \   'modified': 'LightlineModified',
       \   'tabnum': 'lightline#tab#tabnum',
@@ -350,6 +348,11 @@ let g:lightline = {
       \   'buffers': 'tabsel'
       \ }
       \ }
+
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
 
 function! LightlineReadonly()
 	return &readonly ? 'RO' : 'RW'
@@ -372,8 +375,8 @@ let g:lightline#bufferline#composed_number_map = {
 let g:lightline#bufferline#number_map = {
 \ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
 \ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
-let g:lightline#bufferline#enable_devicons = 1
-let g:lightline#bufferline#enable_nerdfont = 1
+"let g:lightline#bufferline#enable_devicons = 1
+"let g:lightline#bufferline#enable_nerdfont = 1
 
 nmap <Leader>1 <Plug>lightline#bufferline#go(1)
 nmap <Leader>2 <Plug>lightline#bufferline#go(2)
@@ -576,9 +579,9 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+"" Formatting selected code.
+"xmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
