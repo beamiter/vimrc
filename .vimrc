@@ -49,7 +49,11 @@ Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
+
 Plug 'mengelbrecht/lightline-bufferline'
+"Plug 'kyazdani42/nvim-web-devicons'
+"Plug 'romgrk/barbar.nvim' " only support neovim0.5
+
 Plug 'kristijanhusak/defx-icons'
 Plug 'liuchengxu/vim-which-key'
 " On-demand lazy load
@@ -78,6 +82,7 @@ Plug 'connorholyday/vim-snazzy'
 Plug 'nanotech/jellybeans.vim'
 Plug 'jacoborus/tender.vim'
 Plug 'sjl/badwolf'
+Plug 'romgrk/doom-one.vim'
 
 Plug 'rhysd/vim-clang-format'
 Plug 'sbdchd/neoformat'
@@ -86,6 +91,7 @@ Plug 'prettier/vim-prettier'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 
@@ -113,7 +119,8 @@ set expandtab
 "let g:material_style='oceanic'
 "set background=light
 set background=dark " must put it befor syntax to work
-colorscheme space-vim-dark
+"colorscheme space-vim-dark
+colorscheme ayu
 syntax on
 syntax enable
 set pastetoggle=<F9>
@@ -251,9 +258,11 @@ function! s:defx_my_settings() abort
   nnoremap <silent><buffer><expr> p
   \ defx#do_action('paste')
   nnoremap <silent><buffer><expr> l
-  \ defx#do_action('open')
-  nnoremap <silent><buffer><expr> E
+  \ defx#do_action('drop')
+  nnoremap <silent><buffer><expr> e
   \ defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> E
+  \ defx#do_action('open', 'split')
   nnoremap <silent><buffer><expr> P
   \ defx#do_action('preview')
   nnoremap <silent><buffer><expr> o
@@ -398,6 +407,39 @@ nmap <Leader>c7 <Plug>lightline#bufferline#delete(7)
 nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
 nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
 nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
+
+"" Magic buffer-picking mode
+"nnoremap <silent> <C-s> :BufferPick<CR>
+"" Sort automatically by...
+"nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
+"nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
+"" Move to previous/next
+"nnoremap <silent>    <A-,> :BufferPrevious<CR>
+"nnoremap <silent>    <A-.> :BufferNext<CR>
+"" Re-order to previous/next
+"nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
+"nnoremap <silent>    <A->> :BufferMoveNext<CR>
+"" Goto buffer in position...
+"nnoremap <silent>    <A-1> :BufferGoto 1<CR>
+"nnoremap <silent>    <A-2> :BufferGoto 2<CR>
+"nnoremap <silent>    <A-3> :BufferGoto 3<CR>
+"nnoremap <silent>    <A-4> :BufferGoto 4<CR>
+"nnoremap <silent>    <A-5> :BufferGoto 5<CR>
+"nnoremap <silent>    <A-6> :BufferGoto 6<CR>
+"nnoremap <silent>    <A-7> :BufferGoto 7<CR>
+"nnoremap <silent>    <A-8> :BufferGoto 8<CR>
+"nnoremap <silent>    <A-9> :BufferLast<CR>
+"" Close buffer
+"nnoremap <silent>    <A-c> :BufferClose<CR>
+"" Wipeout buffer
+""                          :BufferWipeout<CR>
+"" Close commands
+""                          :BufferCloseAllButCurrent<CR>
+""                          :BufferCloseBuffersRight<CR>
+
+"" Other:
+"" :BarbarEnable - enables barbar (enabled by default)
+"" :BarbarDisable - very bad command, should never be used
 
 "let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
 "let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
