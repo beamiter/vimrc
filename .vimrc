@@ -238,7 +238,7 @@ nnoremap <localleader>f :Files <CR>
 nnoremap <localleader>b :Buffers <CR>
 nmap <silent> <F3> :Defx -columns=icons:indent:filename:type <cr>
 call defx#custom#option('_', {
-      \ 'winwidth': 30,
+      \ 'winwidth': 50,
       \ 'split': 'vertical',
       \ 'direction': 'botright',
       \ 'show_ignored_files': 0,
