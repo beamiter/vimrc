@@ -236,7 +236,8 @@ endfunction
 
 nnoremap <localleader>f :Files <CR>
 nnoremap <localleader>b :Buffers <CR>
-nmap <silent> <F3> :Defx -columns=icons:indent:filename:type <cr>
+"nmap <silent> <F3> :Defx -columns=indent:mark:icons:filename:type <CR>
+nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=indent:mark:icons:filename:type <CR>
 call defx#custom#option('_', {
       \ 'winwidth': 50,
       \ 'split': 'vertical',
@@ -316,7 +317,7 @@ function! s:defx_my_settings() abort
 	\ defx#get_context().winwidth + 10)
 	nnoremap <silent><buffer><expr> < defx#do_action('resize',
 	\ defx#get_context().winwidth - 10)
-	autocmd BufWritePost * call defx#redraw()
+  autocmd BufWritePost * call defx#redraw()
 endfunction
 
 let g:defx_icons_enable_syntax_highlight = 1
@@ -407,6 +408,9 @@ nmap <Leader>c7 <Plug>lightline#bufferline#delete(7)
 nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
 nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
 nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
+
+nmap <c-b>n :bnext <cr>
+nmap <c-b>p :bprev <cr>
 
 "" Magic buffer-picking mode
 "nnoremap <silent> <C-s> :BufferPick<CR>
