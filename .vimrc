@@ -49,6 +49,7 @@ Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
+Plug 'pechorin/any-jump.vim'
 
 Plug 'mengelbrecht/lightline-bufferline'
 "Plug 'kyazdani42/nvim-web-devicons'
@@ -104,6 +105,8 @@ let &t_TI = ""
 let &t_TE = ""
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+set foldmethod=manual
 set termguicolors
 set hlsearch
 set backspace=2
@@ -152,6 +155,65 @@ let g:EasyMotion_smartcase = 1
 " JK motions: Line motions
 map <localleader>j <Plug>(easymotion-j)
 map <localleader>k <Plug>(easymotion-k)
+
+" Show line numbers in search rusults
+let g:any_jump_list_numbers = 0
+
+" Auto search references
+let g:any_jump_references_enabled = 1
+
+" Auto group results by filename
+let g:any_jump_grouping_enabled = 0
+
+" Amount of preview lines for each search result
+let g:any_jump_preview_lines_count = 5
+
+" Max search results, other results can be opened via [a]
+let g:any_jump_max_search_results = 7
+
+" Prefered search engine: rg or ag
+let g:any_jump_search_prefered_engine = 'rg'
+
+" Default search results list styles:
+" - 'filename_first'
+" - 'filename_last'
+let g:any_jump_results_ui_style = 'filename_first'
+
+" Any-jump window size & position options
+let g:any_jump_window_width_ratio  = 0.5
+let g:any_jump_window_height_ratio = 0.4
+let g:any_jump_window_top_offset   = 15
+
+" Customize any-jump colors with extending default color scheme:
+let g:any_jump_colors = { "help": "Function" }
+
+" Or override all default colors
+let g:any_jump_colors = {
+      \"plain_text":         "Comment",
+      \"preview":            "Comment",
+      \"preview_keyword":    "Operator",
+      \"heading_text":       "Function",
+      \"heading_keyword":    "Identifier",
+      \"group_text":         "Comment",
+      \"group_name":         "Function",
+      \"more_button":        "Operator",
+      \"more_explain":       "Comment",
+      \"result_line_number": "Comment",
+      \"result_text":        "Statement",
+      \"result_path":        "String",
+      \"help":               "Comment"
+      \}
+
+" Custom ignore files
+" default is: ['*.tmp', '*.temp']
+let g:any_jump_ignored_files = ['*.tmp', '*.temp']
+
+" Search references only for current file type
+" (default: false, so will find keyword in all filetypes)
+let g:any_jump_references_only_for_current_filetype = 0
+
+" Disable search engine ignore vcs untracked files (default: false, search engine will ignore vcs untracked files)
+let g:any_jump_disable_vcs_ignore = 0
 
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
@@ -213,7 +275,7 @@ let g:startify_lists = [
         \ { 'type': 'sessions',  'header': ['   Sessions']       },
         \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
         \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
-        \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
+        "\ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
         \ { 'type': 'commands',  'header': ['   Commands']       },
         \ ]
 
@@ -236,6 +298,10 @@ endfunction
 
 nnoremap <localleader>f :Files <CR>
 nnoremap <localleader>b :Buffers <CR>
+
+nnoremap <leader>mv :mkview <CR>
+nnoremap <leader>lv :loadview <CR>
+
 "nmap <silent> <F3> :Defx -columns=indent:mark:icons:filename:type <CR>
 nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=indent:mark:icons:filename:type <CR>
 call defx#custom#option('_', {
@@ -409,9 +475,6 @@ nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
 nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
 nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
 
-nmap <c-b>n :bnext <cr>
-nmap <c-b>p :bprev <cr>
-
 "" Magic buffer-picking mode
 "nnoremap <silent> <C-s> :BufferPick<CR>
 "" Sort automatically by...
@@ -540,6 +603,7 @@ map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Let NERDTree igonre files
 let NERDTreeIgnore = ['\.pyc$', '\.swp$']
+let NERDTreeWinSize = 45
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -679,7 +743,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Mappings for CoCList
 " Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <space>ad  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands.
@@ -689,8 +753,8 @@ nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent><nowait> <space>n  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent><nowait> <space>p  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent><nowait> <space>rl  :<C-u>CocListResume<CR>
