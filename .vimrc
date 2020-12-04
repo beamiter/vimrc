@@ -10,15 +10,13 @@ call plug#begin('~/.vim/plugged')
 
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 
 Plug 'kana/vim-operator-user'
 
-Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
 Plug 'preservim/tagbar'
-"Plug 'scrooloose/nerdtree'
 "Plug 'scrooloose/nerdcommenter'
-"Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'itchyny/vim-gitbranch'
 
 if has('nvim')
@@ -61,9 +59,15 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'easymotion/vim-easymotion'
 
+Plug 'liuchengxu/vista.vim'
+Plug 'luochen1990/rainbow'
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'dominikduda/vim_current_word'
+
 " 主题插件
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'rainglow/vim'
+Plug 'flazz/vim-colorschemes'
 
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
@@ -78,12 +82,13 @@ Plug 'srcery-colors/srcery-vim'
 Plug 'rakr/vim-one'
 Plug 'arcticicestudio/nord-vim'
 Plug 'itchyny/landscape.vim'
-"Plug 'phongnh/vim-leaderf-solarized-theme'
+Plug 'phongnh/vim-leaderf-solarized-theme'
 Plug 'connorholyday/vim-snazzy'
 Plug 'nanotech/jellybeans.vim'
 Plug 'jacoborus/tender.vim'
 Plug 'sjl/badwolf'
 Plug 'romgrk/doom-one.vim'
+Plug 'ajmwagar/vim-deus'
 
 Plug 'rhysd/vim-clang-format'
 Plug 'sbdchd/neoformat'
@@ -104,6 +109,7 @@ let g:maplocalleader = ','
 let &t_TI = ""
 let &t_TE = ""
 
+" Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 set foldmethod=manual
@@ -118,9 +124,6 @@ set shiftwidth=2
 set autoindent
 set smartindent
 set expandtab
-"let g:material_style='palenight'
-"let g:material_style='oceanic'
-"set background=light
 set background=dark " must put it befor syntax to work
 "colorscheme space-vim-dark
 colorscheme ayu
@@ -137,9 +140,58 @@ set showtabline=2
 set undofile
 set undodir=~/.vim/undo
 set encoding=utf-8
+" TextEdit might fail if hidden is not set.
+set hidden
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+" Give more space for displaying messages.
+set cmdheight=2
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=750
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
 highlight! link CursorColumn TagbarHighlight
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
+let g:vista_default_executive = 'coc'
+let g:vista_sidebar_width = 45
+let g:vista_curser_delay = 100
+let g:vista_echo_cursor_stragegy = 'both'
+let g:vista_finder_alternative_executives = ['ctags', 'vim_lsp', 'nvim_lsp']
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+
+" coc configuration
+let g:coc_global_extensions = [
+            \ 'coc-bookmark',
+            \ 'coc-cmake',
+            \ 'coc-explorer',
+            \ 'coc-git',
+            "\ 'coc-json',
+            \ 'coc-marketplace',
+            \ 'coc-pairs',
+            "\ 'coc-stylelint',
+            \ 'coc-todolist',
+            "\ 'coc-translator',
+            "\ 'coc-tsserver',
+            \ 'coc-vimlsp',
+            "\ 'coc-yaml',
+            \ 'coc-lists',
+            \ 'coc-clangd',
+            \ 'coc-highlight',
+            \ 'coc-yank',
+            \ 'coc-snippets',
+            \  ]
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
@@ -216,9 +268,6 @@ let g:any_jump_references_only_for_current_filetype = 0
 let g:any_jump_disable_vcs_ignore = 0
 
 let g:webdevicons_enable = 1
-let g:webdevicons_enable_nerdtree = 1
-let g:webdevicons_enable_unite = 1
-let g:webdevicons_enable_vimfiler = 1
 let g:webdevicons_enable_airline_tabline = 1
 let g:webdevicons_enable_airline_statusline = 1
 let g:webdevicons_enable_ctrlp = 1
@@ -226,7 +275,6 @@ let g:webdevicons_enable_startify = 1
 let g:webdevicons_enable_flagship_statusline = 1
 let g:WebDevIconsUnicodeDecorateFileNodes = 1
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
-let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 let g:webdevicons_enable_denite = 1
@@ -279,29 +327,13 @@ let g:startify_lists = [
         \ { 'type': 'commands',  'header': ['   Commands']       },
         \ ]
 
-" Define mappings
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-  \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q
-  \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
-endfunction
-
 nnoremap <localleader>f :Files <CR>
 nnoremap <localleader>b :Buffers <CR>
 
 nnoremap <leader>mv :mkview <CR>
 nnoremap <leader>lv :loadview <CR>
 
+nmap <silent> <F2> :CocCommand explorer<CR>
 "nmap <silent> <F3> :Defx -columns=indent:mark:icons:filename:type <CR>
 nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=indent:mark:icons:filename:type <CR>
 call defx#custom#option('_', {
@@ -403,8 +435,8 @@ let g:defx_icons_nested_closed_tree_icon = ''
 let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'gitstatus', 'readonly',
-      \               'absolutepath', 'modified' ] ]
+      \   'left': [ [ 'mode', 'paste', 'scroll' ], [ 'gitbranch', 'gitstatus', 'readonly',
+      \               'filename', 'modified' ] ],
       \ },
       \ 'tabline': {
       \   'left': [ ['buffers'] ],
@@ -416,6 +448,8 @@ let g:lightline = {
       \   'readonly': 'LightlineReadonly',
       \   'modified': 'LightlineModified',
       \   'tabnum': 'lightline#tab#tabnum',
+      "\   'scroll': 'ScrollStatus',
+	    \   'cocstatus': 'coc#status',
       \ },
       \ 'component_expand': {
       \   'buffers': 'lightline#bufferline#buffers',
@@ -424,12 +458,16 @@ let g:lightline = {
       \   'buffers': 'tabsel'
       \ }
       \ }
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+
+let g:scrollstatus_size = 10
+let g:scrollstatus_symbol_track = '-'
+let g:scrollstatus_symbol_bar = '|'
 
 function! GitStatus()
   let [a,m,r] = GitGutterGetHunkSummary()
   return printf('+%d ~%d -%d', a, m, r)
 endfunction
-
 function! LightlineReadonly()
 	return &readonly ? 'RO' : 'RW'
 endfunction
@@ -508,22 +546,13 @@ nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
 "" :BarbarEnable - enables barbar (enabled by default)
 "" :BarbarDisable - very bad command, should never be used
 
-"let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
-"let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
-"let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
-"let g:gitgutter_sign_modified_removed = emoji#for('collision')
 set completefunc=emoji#complete
 
 " invoke with '-'
 nmap - <Plug>(choosewin)
 
+nmap <F7> :Vista<CR>
 nmap <F8> :TagbarToggle<CR>
-
-let g:NERDTreeGitStatusUseNerdFonts = 1
-let g:NERDTreeGitStatusShowIgnored = 1
-let g:NERDTreeGitStatusUntrackedFilesMode = 'all'
-let g:NERDTreeGitStatusConcealBrackets = 1
-let g:NERDTreeGitStatusShowClean = 1
 
 let g:clang_format#style_options = {
             \ "AccessModifierOffset" : -4,
@@ -539,20 +568,6 @@ autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " Toggle auto formatting:
 nmap <Leader>C :ClangFormatAutoToggle<CR>
 
-let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'✹',
-                \ 'Staged'    :'✚',
-                \ 'Untracked' :'✭',
-                \ 'Renamed'   :'➜',
-                \ 'Unmerged'  :'═',
-                \ 'Deleted'   :'✖',
-                \ 'Dirty'     :'✗',
-                \ 'Ignored'   :'☒',
-                \ 'Clean'     :'✔︎',
-                \ 'Unknown'   :'?',
-                \ }
-
-
 
 " this if for the powerline in terminal
 "POWERLINE_SCRIPT=/usr/share/powerline/bindings/bash/powerline.sh
@@ -561,18 +576,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 "fi
 
 
-"" Vim 在与屏幕/键盘交互时使用的编码(取决于实际的终端的设定)
-"set langmenu=zh_CN.UTF-8
-"" 设置打开文件的编码格式
-"set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-"set fileencoding=utf-8 "" 解决菜单乱码 "source $VIMRUNTIME/delmenu.vim
-"source $VIMRUNTIME/menu.vim
-"" 解决consle输出乱码
-""set termencoding = cp936
-"" 设置中文提示
-"language messages zh_CN.utf-8
-"" 设置中文帮助
-"set helplang=cn
 "let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
 "let g:airline_theme="dark"      " 设置主题
 "" 开启tabline
@@ -590,46 +593,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 "set guifont=DroidSansMono\ Nerd\ Font\ 11   "must set same terminal font with this"
 "" set guifont=3270\ Nerd\ Font\ 11
 
-"" NERDTree settings
-"" open a NERDTree automatically when vim starts up if no files were specified
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"" open NERDTree automatically when vim starts up on opening a directory
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-" map a specific key or shortcut to open NERDTree
-map <C-n> :NERDTreeToggle<CR>
-" close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" Let NERDTree igonre files
-let NERDTreeIgnore = ['\.pyc$', '\.swp$']
-let NERDTreeWinSize = 45
-
-" TextEdit might fail if hidden is not set.
-set hidden
-
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-" Give more space for displaying messages.
-set cmdheight=2
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=750
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -683,8 +646,6 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
@@ -741,20 +702,13 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " provide custom statusline: lightline.vim, vim-airline.
 "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> <space>ad  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> <space>n  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> <space>p  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>rl  :<C-u>CocListResume<CR>
+  " mappings
+nnoremap <silent> <space><space> :<C-u>CocFzfList<CR>
+nnoremap <silent> <space>a       :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> <space>d       :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <space>c       :<C-u>CocFzfList commands<CR>
+nnoremap <silent> <space>e       :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
+nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
