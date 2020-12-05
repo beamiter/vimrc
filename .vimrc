@@ -62,7 +62,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'liuchengxu/vista.vim'
 Plug 'luochen1990/rainbow'
 "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'dominikduda/vim_current_word'
+"Plug 'dominikduda/vim_current_word'
 
 " 主题插件
 Plug 'rafi/awesome-vim-colorschemes'
@@ -108,9 +108,6 @@ let g:maplocalleader = ','
 
 let &t_TI = ""
 let &t_TE = ""
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 set foldmethod=manual
 set termguicolors
@@ -161,7 +158,6 @@ else
   set signcolumn=yes
 endif
 
-highlight! link CursorColumn TagbarHighlight
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:vista_default_executive = 'coc'
@@ -700,3 +696,7 @@ nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
 nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
 nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
 nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
+
+" Highlight the symbol and its references when holding the cursor.
+highlight CursorColumn term=italic,standout,reverse,bold cterm=italic,standout,reverse,bold gui=italic,standout,reverse,bold ctermfg=6 guifg=#48B9C7
+autocmd CursorHold * silent call CocActionAsync('highlight')
