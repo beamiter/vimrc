@@ -53,7 +53,7 @@ Plug 'mengelbrecht/lightline-bufferline'
 "Plug 'kyazdani42/nvim-web-devicons'
 "Plug 'romgrk/barbar.nvim' " only support neovim0.5
 
-Plug 'kristijanhusak/defx-icons'
+"Plug 'kristijanhusak/defx-icons' "bells ans whisles, useless
 Plug 'liuchengxu/vim-which-key'
 " On-demand lazy load
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
@@ -331,7 +331,7 @@ nnoremap <leader>lv :loadview <CR>
 
 nmap <silent> <F2> :CocCommand explorer<CR>
 "nmap <silent> <F3> :Defx -columns=indent:mark:icons:filename:type <CR>
-nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=indent:mark:icons:filename:type <CR>
+nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
 call defx#custom#option('_', {
       \ 'winwidth': 50,
       \ 'split': 'vertical',
@@ -414,19 +414,19 @@ function! s:defx_my_settings() abort
   autocmd BufWritePost * call defx#redraw()
 endfunction
 
-let g:defx_icons_enable_syntax_highlight = 1
-let g:defx_icons_column_length = 1
-let g:defx_icons_directory_icon = ''
-let g:defx_icons_mark_icon = '*'
-let g:defx_icons_copy_icon = ''
-let g:defx_icons_move_icon = ''
-let g:defx_icons_parent_icon = ''
-let g:defx_icons_default_icon = ''
-let g:defx_icons_directory_symlink_icon = ''
-" Options below are applicable only when using "tree" feature
-let g:defx_icons_root_opened_tree_icon = ''
-let g:defx_icons_nested_opened_tree_icon = ''
-let g:defx_icons_nested_closed_tree_icon = ''
+"let g:defx_icons_enable_syntax_highlight = 1
+"let g:defx_icons_column_length = 1
+"let g:defx_icons_directory_icon = ''
+"let g:defx_icons_mark_icon = '*'
+"let g:defx_icons_copy_icon = ''
+"let g:defx_icons_move_icon = ''
+"let g:defx_icons_parent_icon = ''
+"let g:defx_icons_default_icon = ''
+"let g:defx_icons_directory_symlink_icon = ''
+"" Options below are applicable only when using "tree" feature
+"let g:defx_icons_root_opened_tree_icon = ''
+"let g:defx_icons_nested_opened_tree_icon = ''
+"let g:defx_icons_nested_closed_tree_icon = ''
 
 let g:lightline = {
       \ 'colorscheme': 'powerline',
