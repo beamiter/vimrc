@@ -547,7 +547,7 @@ set completefunc=emoji#complete
 " invoke with '-'
 nmap - <Plug>(choosewin)
 
-nmap <F7> :Vista<CR>
+nmap <F7> :Vista!!<CR>
 nmap <F8> :TagbarToggle<CR>
 
 let g:clang_format#style_options = {
@@ -696,6 +696,7 @@ nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
 nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
 nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
 nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
+nnoremap <silent> <space>hl      :<C-u>call CocActionAsync('highlight')<CR>
 
 " Highlight the symbol and its references when holding the cursor.
 highlight CursorColumn term=italic,standout,reverse,bold cterm=italic,standout,reverse,bold gui=italic,standout,reverse,bold ctermfg=6 guifg=#48B9C7
