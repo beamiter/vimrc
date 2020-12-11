@@ -122,8 +122,7 @@ set autoindent
 set smartindent
 set expandtab
 set background=dark " must put it befor syntax to work
-"colorscheme space-vim-dark
-colorscheme ayu
+colorscheme alduin "ayu space-vim-dark
 syntax on
 syntax enable
 set pastetoggle=<F9>
@@ -696,8 +695,7 @@ nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
 nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
 nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
 nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
-nnoremap <silent> <space>hl      :<C-u>call CocActionAsync('highlight')<CR>
+nnoremap <silent> <space>hl      :<C-u>highlight CursorColumn term=italic,standout,reverse,bold cterm=italic,standout,reverse,bold gui=italic,standout,reverse,bold ctermfg=6 guifg=#48B9C7<CR>
 
 " Highlight the symbol and its references when holding the cursor.
-highlight CursorColumn term=italic,standout,reverse,bold cterm=italic,standout,reverse,bold gui=italic,standout,reverse,bold ctermfg=6 guifg=#48B9C7
 autocmd CursorHold * silent call CocActionAsync('highlight')
