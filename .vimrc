@@ -548,6 +548,9 @@ nmap - <Plug>(choosewin)
 
 nmap <F7> :Vista!!<CR>
 nmap <F8> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+let g:tagbar_autopreview = 1
+let g:tagbar_previewwin_pos = "rightbelow"
 
 let g:clang_format#style_options = {
             \ "AccessModifierOffset" : -4,
