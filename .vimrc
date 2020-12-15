@@ -89,6 +89,7 @@ Plug 'jacoborus/tender.vim'
 Plug 'sjl/badwolf'
 Plug 'romgrk/doom-one.vim'
 Plug 'ajmwagar/vim-deus'
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 Plug 'rhysd/vim-clang-format'
 Plug 'sbdchd/neoformat'
@@ -122,7 +123,7 @@ set autoindent
 set smartindent
 set expandtab
 set background=dark " must put it befor syntax to work
-colorscheme alduin "ayu space-vim-dark
+colorscheme dracula "alduin ayu space-vim-dark
 syntax on
 syntax enable
 set pastetoggle=<F9>
