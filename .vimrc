@@ -12,6 +12,14 @@ call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 
+Plug 'prabirshrestha/vim-lsp' " vim-lsp
+" or
+Plug 'autozimu/LanguageClient-neovim' " LanguageClient-neovim
+"" or
+"Plug 'neovim/nvim-lsp' " nvim-lsp
+
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+
 Plug 'kana/vim-operator-user'
 
 Plug 'preservim/nerdcommenter' "the same as above nerdcommenter"
@@ -188,6 +196,10 @@ let g:coc_global_extensions = [
             \ 'coc-yank',
             \ 'coc-snippets',
             \  ]
+
+call coc#config('clangd', {
+      \ 'semanticHighlighting': 'true'
+      \ })
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
