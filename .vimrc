@@ -11,10 +11,11 @@ call plug#begin('~/.vim/plugged')
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
+Plug 'sheerun/vim-polyglot'
 
 Plug 'prabirshrestha/vim-lsp' " vim-lsp
-" or
-Plug 'autozimu/LanguageClient-neovim' " LanguageClient-neovim
+"" or
+"Plug 'autozimu/LanguageClient-neovim' " LanguageClient-neovim
 "" or
 "Plug 'neovim/nvim-lsp' " nvim-lsp
 
@@ -98,6 +99,8 @@ Plug 'sjl/badwolf'
 Plug 'romgrk/doom-one.vim'
 Plug 'ajmwagar/vim-deus'
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'tomasiser/vim-code-dark'
+Plug 'mg979/vim-studio-dark'
 
 Plug 'rhysd/vim-clang-format'
 Plug 'sbdchd/neoformat'
@@ -106,7 +109,6 @@ Plug 'prettier/vim-prettier'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
-Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 
@@ -278,14 +280,11 @@ let g:any_jump_disable_vcs_ignore = 0
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_airline_tabline = 1
 let g:webdevicons_enable_airline_statusline = 1
-let g:webdevicons_enable_ctrlp = 1
 let g:webdevicons_enable_startify = 1
 let g:webdevicons_enable_flagship_statusline = 1
 let g:WebDevIconsUnicodeDecorateFileNodes = 1
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
-let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
-let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-let g:webdevicons_enable_denite = 1
+let g:webdevicons_enable_denite = 0
 let g:WebDevIconsTabAirLineAfterGlyphPadding = ' '
 let g:WebDevIconsTabAirLineBeforeGlyphPadding = ' '
 "let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = 'ƛ'
@@ -704,14 +703,117 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
   " mappings
 nnoremap <silent> <space><space> :<C-u>CocFzfList<CR>
 nnoremap <silent> <space>a       :<C-u>CocFzfList diagnostics<CR>
-nnoremap <silent> <space>d       :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <space>ld      :<C-u>CocFzfList diagnostics --current-buf<CR>
 nnoremap <silent> <space>lc      :<C-u>CocFzfList commands<CR>
 nnoremap <silent> <space>e       :<C-u>CocFzfList extensions<CR>
 nnoremap <silent> <space>ll      :<C-u>CocFzfList location<CR>
 nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
 nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
-nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
+nnoremap <silent> <space>lp      :<C-u>CocFzfListResume<CR>
 nnoremap <silent> <space>hl      :<C-u>highlight CursorColumn term=italic,standout,reverse,bold cterm=italic,standout,reverse,bold gui=italic,standout,reverse,bold ctermfg=6 guifg=#48B9C7<CR>
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
+
+"" Change file/rec command.
+"call denite#custom#var('file/rec', 'command',
+"\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+"" For ripgrep
+" Note: rg is faster than ag
+call denite#custom#var('file/rec', 'command',
+\ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
+
+" Change sorters.
+call denite#custom#source(
+\ 'file/rec', 'sorters', ['sorter/sublime'])
+
+call denite#custom#source(
+\ 'file/rec', 'max_candidates', 1000)
+call denite#custom#option('_',
+\ 'max_dynamic_update_candidates', 100000)
+
+""" Change default action.
+""call denite#custom#kind('file', 'default_action', 'split')
+
+"" Ag command on grep source
+"call denite#custom#var('grep', {
+	"\ 'command': ['ag'],
+	"\ 'default_opts': ['-i', '--vimgrep'],
+	"\ 'recursive_opts': [],
+	"\ 'pattern_opt': [],
+	"\ 'separator': ['--'],
+	"\ 'final_opts': [],
+	"\ })
+
+" Ripgrep command on grep source
+call denite#custom#var('grep', {
+  \ 'command': ['rg'],
+  \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+  \ 'recursive_opts': [],
+  \ 'pattern_opt': ['--regexp'],
+  \ 'separator': ['--'],
+  \ 'final_opts': [],
+  \ })
+
+
+" Define alias
+call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+call denite#custom#var('file/rec/git', 'command',
+      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+
+call denite#custom#alias('source', 'file/rec/py', 'file/rec')
+call denite#custom#var('file/rec/py', 'command',
+\ ['scantree.py', '--path', ':directory'])
+
+" Change ignore_globs
+call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Custom options for Denite
+"   auto_resize             - Auto resize the Denite window height automatically.
+"   prompt                  - Customize denite prompt
+"   direction               - Specify Denite window direction as directly below current pane
+"   winminheight            - Specify min height for Denite window
+"   highlight_mode_insert   - Specify h1-CursorLine in insert mode
+"   prompt_highlight        - Specify color of prompt
+"   highlight_matched_char  - Matched characters highlight
+"   highlight_matched_range - matched range highlight
+let s:denite_options = {'default' : {
+\ 'auto_resize': 1,
+\ 'direction': 'botright',
+\ 'winminheight': '10',
+\ 'winwidth': '40',
+\ 'highlight_mode_insert': 'Visual',
+\ 'highlight_mode_normal': 'Visual',
+\ 'prompt_highlight': 'Function',
+\ 'highlight_matched_char': 'Function',
+\ 'highlight_matched_range': 'Normal',
+\ }}
+
+nnoremap <silent> <space>db      :<C-u>Denite buffer<CR>
+nnoremap <silent> <space>df      :<C-u>Denite file<CR>
+nnoremap <silent> <space>do      :<C-u>Denite outline<CR>
+nnoremap <silent> <space>dg      :<C-u>Denite grep<CR>
+nnoremap <space>dr               :<C-u>Denite file/rec -input=
