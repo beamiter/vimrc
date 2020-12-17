@@ -133,7 +133,7 @@ set autoindent
 set smartindent
 set expandtab
 set background=dark " must put it befor syntax to work
-colorscheme dracula "alduin ayu space-vim-dark
+colorscheme codedark " dracula alduin ayu space-vim-dark
 syntax on
 syntax enable
 set pastetoggle=<F9>
@@ -176,6 +176,17 @@ let g:vista_curser_delay = 100
 let g:vista_echo_cursor_stragegy = 'both'
 let g:vista_finder_alternative_executives = ['ctags', 'vim_lsp', 'nvim_lsp']
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_WildIgnore = {
+        \ 'dir': ['.svn','.git','.hg'],
+        \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
+        \}
+nnoremap <silent> <space>lf      :<C-u>LeaderfFunction<CR>
+nnoremap <silent> <space>lo      :<C-u>LeaderfColorscheme<CR>
+nnoremap <silent> <space>lm      :<C-u>LeaderfCommand<CR>
+
+
 
 " coc configuration
 let g:coc_global_extensions = [
@@ -816,4 +827,6 @@ nnoremap <silent> <space>db      :<C-u>Denite buffer<CR>
 nnoremap <silent> <space>df      :<C-u>Denite file<CR>
 nnoremap <silent> <space>do      :<C-u>Denite outline<CR>
 nnoremap <silent> <space>dg      :<C-u>Denite grep<CR>
+nnoremap <silent> <space>dc      :<C-u>Denite colorscheme<CR>
+nnoremap <silent> <space>dm      :<C-u>Denite command<CR>
 nnoremap <space>dr               :<C-u>Denite file/rec -input=
