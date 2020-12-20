@@ -11,9 +11,7 @@
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
-    # colorscheme = "gruvbox"
-    colorscheme = "SpaceVim"
-    # colorscheme = "default"
+    colorscheme = "gruvbox"
     colorscheme_bg = "dark"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
@@ -26,9 +24,10 @@
     enable_tabline_filetype_icon = true
     enable_statusline_mode = false
 
-    filemanager = "defx"
+    # use coc for auto aomplete
+    autocomplete_method = "coc"
 
-    # disabled_plugins = ["deoplete.nvim", "asyncomplete.vim"]
+    disabled_plugins = ["neomake"]
 
 # Enable autocomplete layer
 [[layers]]
@@ -38,52 +37,60 @@ auto_completion_tab_key_behavior = "smart"
 
 [[layers]]
 name = 'shell'
-default_position = 'top'
-default_height = 30
+default_position = 'float'
+default_height = 50
 
 [[layers]]
-name = 'lang#c'
-cpp = 'c11'
-# enable_clang_syntax_highlight = true
+    name = 'lang#c'
+    enable_clang_syntax_highlight = true
+[[layers]]
+  name = "lsp"
+  filetypes = [
+    "c",
+    "cpp"
+  ]
+  [layers.override_cmd]
+    c = ["clangd"]
 
 [[layers]]
-name = 'lsp'
-filetypes = [
-  'c',
-  'cpp'
-]
-[layers.override_cmd]
-c = ['clangd']
+  name = "git"
 
 [[layers]]
-name = "lang#rust"
+  # name = "fzf"
+  name = "leaderf"
 
 [[layers]]
-name = "lsp"
-filetypes = [
-  "rust"
-]
-[layers.override_cmd]
-rust = ["rls"]
-
-[[layers]]
-name = "format"
-
-[[layers]]
-name = 'colorscheme'
-
-[[custom_plugins]]
-name = "mhartington/oceanic-next"
-merged = false
+  name = "colorscheme"
 
 [[custom_plugins]]
 name = "rafi/awesome-vim-colorschemes"
 merged = false
 
-# [[custom_plugins]]
-# name = "neoclide/coc.nvim"
-# merged = false
+[[custom_plugins]]
+name = 'tomasiser/vim-code-dark'
+merged = false
 
 [[custom_plugins]]
-name = "jiangmiao/auto-pairs"
+name = 'mg979/vim-studio-dark'
 merged = false
+
+[[layers]]
+  name = "colorscheme"
+  random_theme = false
+  frequency = "daily"
+
+[[layers]]
+  name = "lang#toml"
+
+[[layers]]
+  name = "lang#vim"
+
+[[layers]]
+  name = "lang#python"
+  enable_typeinfo = true
+  python_file_head = [
+      '#!/usr/bin/env python',
+      '# -*- coding: utf-8 -*-',
+      '',
+      ''
+  ]
