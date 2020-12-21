@@ -29,6 +29,14 @@
 
     disabled_plugins = ["neomake"]
 
+
+# # add these in .SpaceVim/config/main.vim
+# set nocompatible
+# let &t_TI = ""
+# let &t_TE = ""
+# let g:mapleader = ','
+
+
 # Enable autocomplete layer
 [[layers]]
 name = 'autocomplete'
@@ -94,3 +102,7 @@ merged = false
       '',
       ''
   ]
+
+[[custom_plugins]]
+name = 'jackguo380/vim-lsp-cxx-highlight'
+merged = false
