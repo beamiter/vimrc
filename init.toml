@@ -49,8 +49,8 @@ default_position = 'float'
 default_height = 50
 
 [[layers]]
-    name = 'lang#c'
-    enable_clang_syntax_highlight = true
+  name = 'lang#c'
+  enable_clang_syntax_highlight = true
 [[layers]]
   name = "lsp"
   filetypes = [
