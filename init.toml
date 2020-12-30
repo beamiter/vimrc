@@ -28,6 +28,7 @@
     autocomplete_method = "coc"
 
     disabled_plugins = ["neomake"]
+    enable_language_specific_leader = false
 
 
 # # add these in .SpaceVim/config/main.vim
@@ -105,4 +106,8 @@ merged = false
 
 [[custom_plugins]]
 name = 'jackguo380/vim-lsp-cxx-highlight'
+merged = false
+
+[[custom_plugins]]
+name = 'jiangmiao/auto-pairs'
 merged = false
