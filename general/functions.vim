@@ -1,0 +1,1 @@
+" autocmd VimEnter * call Rooter
