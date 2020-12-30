@@ -31,7 +31,7 @@ call denite#custom#source(
 call denite#custom#source(
 \ 'file/rec', 'max_candidates', 1000)
 call denite#custom#option('_',
-\ 'max_dynamic_update_candidates', 100000)
+\ 'max_dynamic_update_candidates', 10000)
 
 """ Change default action.
 ""call denite#custom#kind('file', 'default_action', 'split')
@@ -94,11 +94,3 @@ let s:denite_options = {'default' : {
 \ 'highlight_matched_char': 'Function',
 \ 'highlight_matched_range': 'Normal',
 \ }}
-
-nnoremap <silent> <space>db      :<C-u>Denite buffer<CR>
-nnoremap <silent> <space>df      :<C-u>Denite file<CR>
-nnoremap <silent> <space>do      :<C-u>Denite outline<CR>
-nnoremap <silent> <space>dg      :<C-u>Denite grep<CR>
-nnoremap <silent> <space>dc      :<C-u>Denite colorscheme<CR>
-nnoremap <silent> <space>dm      :<C-u>Denite command<CR>
-nnoremap <space>dr               :<C-u>Denite file/rec -input=

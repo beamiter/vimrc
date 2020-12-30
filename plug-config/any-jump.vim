@@ -1,3 +1,5 @@
+" Disable difault keybindings
+let g:any_jump_disable_default_keybindings = 1
 
 " Show line numbers in search rusults
 let g:any_jump_list_numbers = 0
