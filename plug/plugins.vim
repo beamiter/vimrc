@@ -83,6 +83,11 @@ else
 endif
 Plug 'junegunn/gv.vim'
 
+Plug 'skywind3000/asyncrun.vim'
+Plug 'voldikss/LeaderF-floaterm'
+Plug 'voldikss/fzf-floaterm'
+Plug 'voldikss/vim-floaterm'
+
 " Effective working
 Plug 'junegunn/goyo.vim'
 

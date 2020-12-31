@@ -19,6 +19,7 @@ let g:coc_global_extensions = [
             \ 'coc-highlight',
             \ 'coc-yank',
             \ 'coc-snippets',
+            \ 'coc-floaterm',
             \  ]
 
 call coc#config('clangd', {
@@ -76,20 +77,6 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
-
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>as  <Plug>(coc-codeaction-selected)
-nmap <leader>as  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.

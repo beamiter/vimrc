@@ -1,10 +1,22 @@
 " Create map to add keys to
-let g:which_key_map =  {}
-let g:which_key_map0 = {}
+let @s = 'veS"'
+
+let g:which_key_display_names = {'<CR>': '↵', '<TAB>': '⇆'}
+" Define a separator
+let g:which_key_sep = '→'
+" Hide status line
+autocmd! FileType which_key
+autocmd  FileType which_key set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
 
 " Register which key map
 autocmd VimEnter * call which_key#register("<Space>", "g:which_key_map")
 autocmd VimEnter * call which_key#register("\\", "g:which_key_map0")
+
+
+
+let g:which_key_map =  {}
+let g:which_key_map0 = {}
 
 " Map leader to which_key
 nnoremap <silent> <leader> :silent <c-u> :silent WhichKey '<Space>'<CR>
@@ -33,15 +45,31 @@ function! GitCurrentFile()
 endfunction
 command GCurrent call GitCurrentFile()
 
-" p is for project
-let g:which_key_map.p = {
-      \ 'name' : '+project util' ,
+
+" a is for action
+let g:which_key_map.a = {
+      \ 'name' : '+actions' ,
+      \ ';' : ['<Plug>(coc-refactor)'                , 'refactor'],
+      \ 'a' : ['<Plug>(coc-codeaction)'              , 'code action'],
+      \ 'A' : ['<Plug>(coc-codeaction-selected)'     , 'selected action'],
+      \ 'f' : ['<Plug>(coc-format-selected)'         , 'format selected'],
+      \ 'F' : ['<Plug>(coc-format)'                  , 'format'],
+      \ 'n' : ['<Plug>(coc-diagnostic-next)'         , 'next diagnostic'],
+      \ 'N' : ['<Plug>(coc-diagnostic-next-error)'   , 'next error'],
+      \ 'p' : ['<Plug>(coc-diagnostic-prev)'         , 'prev diagnostic'],
+      \ 'P' : ['<Plug>(coc-diagnostic-prev-error)'   , 'prev error'],
+      \ 'q' : ['<Plug>(coc-fix-current)'             , 'quickfix'],
+      \ 'r' : ['<Plug>(coc-rename)'                  , 'rename'],
+      \ 's' : [':CocList -I symbols'                 , 'symbols'],
+      \ 'S' : [':CocList snippets'                   , 'snippets'],
       \ }
+
 
 " c is for comment
 let g:which_key_map.c = {
       \ 'name' : '+comment | format' ,
       \ }
+
 
 " f is for find and replace
 let g:which_key_map.f = {
@@ -61,6 +89,33 @@ let g:which_key_map.f = {
       \ 'w' : [':CocFzfList windows', 'w'],
       \ 'q' : [':CocFzfList quickfix', 'quickfix'],
       \ }
+
+
+" g is for git
+let g:which_key_map.g = {
+      \ 'name' : '+git' ,
+      \ 'a' : [':Git add .'                          , 'add all'],
+      \ 'b' : [':Git blame'                          , 'blame'],
+      \ 'c' : [':Git commit'                         , 'commit'],
+      \ 'd' : [':Git diff'                           , 'diff'],
+      \ 'f' : [':GCurrent'                           , 'log curent file'],
+      \ 's' : [':Gstatus'                            , 'status'],
+      \ 'S' : ['<Plug>(GitGutterStageHunk)'          , 'stage hunk'],
+      \ 'h' : [':GitGutterLineHighlightsToggle'      , 'highlight hunks'],
+      \ 'j' : ['<Plug>(GitGutterNextHunk)'           , 'next hunk'],
+      \ 'k' : ['<Plug>(GitGutterPrevHunk)'           , 'prev hunk'],
+      \ 'l' : [':Git log'                            , 'log'],
+      \ 'u' : ['<Plug>(GitGutterUndoHunk)'           , 'undo hunk'],
+      \ 'V' : [':GV'                                 , 'view commits'],
+      \ 'v' : [':GV!'                                , 'view buffer commits'],
+      \ }
+
+
+" p is for project
+let g:which_key_map.p = {
+      \ 'name' : '+project util' ,
+      \ }
+
 
 " s is for search
 let g:which_key_map.s = {
@@ -99,19 +154,21 @@ let g:which_key_map.s = {
       \},
       \}
 
-" g is for git
-let g:which_key_map.g = {
-      \ 'name' : '+git' ,
-      \ 'a' : [':Git add .'                          , 'add all'],
-      \ 'b' : [':Git blame'                          , 'blame'],
-      \ 'c' : [':Git commit'                         , 'commit'],
-      \ 'd' : [':Git diff'                           , 'diff'],
-      \ 'f' : [':GCurrent'                           , 'log curent file'],
-      \ 's' : [':Gstatus'                            , 'status'],
-      \ 'h' : [':GitGutterLineHighlightsToggle'      , 'highlight hunks'],
-      \ 'j' : ['<Plug>(GitGutterNextHunk)'           , 'next hunk'],
-      \ 'k' : ['<Plug>(GitGutterPrevHunk)'           , 'prev hunk'],
-      \ 'l' : [':Git log'                            , 'log'],
-      \ 'V' : [':GV'                                 , 'view commits'],
-      \ 'v' : [':GV!'                                , 'view buffer commits'],
+
+" t is for terminal
+let g:which_key_map.t = {
+      \ 'name' : '+terminal' ,
+      \ ';' : [':FloatermNew --wintype=normal --height=6'        , 'terminal'],
+      \ 'f' : [':FloatermNew fzf'                               , 'fzf'],
+      \ 'g' : [':FloatermNew lazygit'                           , 'git'],
+      \ 'd' : [':FloatermNew lazydocker'                        , 'docker'],
+      \ 'n' : [':FloatermNew node'                              , 'node'],
+      \ 'N' : [':FloatermNew nnn'                               , 'nnn'],
+      \ 'p' : [':FloatermNew python'                            , 'python'],
+      \ 'm' : [':FloatermNew lazynpm'                           , 'npm'],
+      \ 'r' : [':FloatermNew ranger'                            , 'ranger'],
+      \ 't' : [':FloatermToggle'                                , 'toggle'],
+      \ 'y' : [':FloatermNew ytop'                              , 'ytop'],
+      \ 's' : [':FloatermNew ncdu'                              , 'ncdu'],
       \ }
+
