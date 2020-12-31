@@ -33,9 +33,14 @@ function! GitCurrentFile()
 endfunction
 command GCurrent call GitCurrentFile()
 
+" p is for project
+let g:which_key_map.p = {
+      \ 'name' : '+project util' ,
+      \ }
+
 " c is for comment
 let g:which_key_map.c = {
-      \ 'name' : '+nerd commenter' ,
+      \ 'name' : '+comment | format' ,
       \ }
 
 " f is for find and replace

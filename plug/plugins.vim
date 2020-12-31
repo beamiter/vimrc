@@ -98,8 +98,9 @@ Plug 'junegunn/vim-emoji'
 " Even better % nv&hl matching words
 Plug 'andymass/vim-matchup'
 
-" Undo from history
-Plug 'simnalamburt/vim-mundo'
+" do not use vim-mundo
+"" Undo from history
+"Plug 'simnalamburt/vim-mundo'
 
 " More powerful repeat
 Plug 'tpope/vim-repeat'
@@ -141,8 +142,8 @@ Plug 'terryma/vim-multiple-cursors'
 " Find and replace
 Plug 'brooth/far.vim'
 
-" Vim gutentags
-Plug 'ludovicchabant/vim-gutentags'
+ ""Vim gutentags
+"Plug 'ludovicchabant/vim-gutentags'
 
 " Interactive scratchpad for hackers
 Plug 'metakirby5/codi.vim'

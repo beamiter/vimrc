@@ -27,8 +27,8 @@ set ambiwidth=double
 " 总是显示状态栏
 set laststatus=2
 set showtabline=2
-set undofile
-set undodir=~/.vim/undo
+"set undofile
+"set undodir=~/.vim/undo
 set encoding=utf-8
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -53,4 +53,5 @@ else
   set signcolumn=yes
 endif
 
-colorscheme codedark " dracula alduin ayu space-vim-dark
+"codedark  dracula alduin ayu space-vim-dark
+colorscheme angr
