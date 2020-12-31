@@ -82,11 +82,14 @@ else
   Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
 endif
 Plug 'junegunn/gv.vim'
+Plug 'lambdalisue/gina.vim'
 
 Plug 'skywind3000/asyncrun.vim'
 Plug 'voldikss/LeaderF-floaterm'
 Plug 'voldikss/fzf-floaterm'
 Plug 'voldikss/vim-floaterm'
+
+Plug 'lambdalisue/fern.vim'
 
 " Effective working
 Plug 'junegunn/goyo.vim'
