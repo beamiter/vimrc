@@ -20,6 +20,7 @@ let g:coc_global_extensions = [
             \ 'coc-yank',
             \ 'coc-snippets',
             \ 'coc-floaterm',
+            \ 'coc-fzf-preview',
             \  ]
 
 call coc#config('clangd', {

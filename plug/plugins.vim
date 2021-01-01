@@ -52,10 +52,10 @@ endif
 
 " Fzf asynchronous search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
 " Fzf preview
 Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/rpc' }
+Plug 'junegunn/fzf.vim'
 
 " LeaderF asynchronous search
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
@@ -89,7 +89,17 @@ Plug 'voldikss/LeaderF-floaterm'
 Plug 'voldikss/fzf-floaterm'
 Plug 'voldikss/vim-floaterm'
 
+" Fern tree viewer
 Plug 'lambdalisue/fern.vim'
+" Fix cursor hold bound with fern
+Plug 'antoinemadec/FixCursorHold.nvim'
+" Use fern as default tree viewer
+Plug 'lambdalisue/fern-hijack.vim'
+" Add git status
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/glyph-palette.vim'
 
 " Effective working
 Plug 'junegunn/goyo.vim'

@@ -1,4 +1,4 @@
-nmap <Leader>py <Plug>(Prettier)
+nmap `p  <Plug>(Prettier)
 
 " Max line length that prettier will wrap on: a number or 'auto' (use
 " textwidth).
