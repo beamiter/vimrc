@@ -19,3 +19,5 @@ sudo make install
             --with-python3-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
 
 pip install --user flake8 autoflake isort coverage
+
+# install 'bat' to support highlight color in preview

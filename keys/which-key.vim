@@ -94,9 +94,8 @@ let g:which_key_map.f = {
 " g is for git
 let g:which_key_map.g = {
       \ 'name' : '+git' ,
-      \ 'a' : [':Git add .'                          , 'add all'],
       \ 'b' : [':Git blame'                          , 'blame'],
-      \ 'c' : [':Git commit'                         , 'commit'],
+      \ 'c' : [':BCommits'                           , 'commit'],
       \ 'd' : [':Git diff'                           , 'diff'],
       \ 'f' : [':GCurrent'                           , 'log curent file'],
       \ 's' : [':Gstatus'                            , 'status'],
@@ -108,9 +107,8 @@ let g:which_key_map.g = {
       \ 'u' : ['<Plug>(GitGutterUndoHunk)'           , 'undo hunk'],
       \ 'V' : [':GV'                                 , 'view commits'],
       \ 'v' : [':GV!'                                , 'view buffer commits'],
+      \ 'y' : [':Goyo'                               , 'goyo mode'],
       \ }
-
-
 
 
 " s is for search
@@ -157,9 +155,7 @@ let g:which_key_map.t = {
       \ ';' : [':FloatermNew --wintype=normal --height=6'       , 'terminal'],
       \ 'f' : [':FloatermNew fzf'                               , 'fzf'],
       \ 'g' : [':FloatermNew lazygit'                           , 'git'],
-      \ 'd' : [':FloatermNew lazydocker'                        , 'docker'],
       \ 'n' : [':FloatermNew node'                              , 'node'],
-      \ 'N' : [':FloatermNew nnn'                               , 'nnn'],
       \ 'p' : [':FloatermNew python'                            , 'python'],
       \ 'm' : [':FloatermNew lazynpm'                           , 'npm'],
       \ 'r' : [':FloatermNew ranger'                            , 'ranger'],
@@ -169,22 +165,26 @@ let g:which_key_map.t = {
       \ }
 
 
+nnoremap <leader>rw :<C-u>CocCommand fzf-preview.ProjectGrep <C-R>=expand("<cword>")<CR><CR>
+
 " r is for project
 let g:which_key_map.r = {
       \ 'name' : '+preview util' ,
       \ 'f' : [':CocCommand fzf-preview.ProjectFiles',                     'project files'],
       \ 'g' : [':CocCommand fzf-preview.GitFiles',                         'git files'],
       \ 'd' : [':CocCommand fzf-preview.DirectoryFiles',                   'directory files'],
-      \ 'b' : [':CocCommand fzf_preview.Buffers',                          'file buffers'],
-      \ 'h' : [':CocCommand fzf_preview.ProjectOldFiles',                  'project old files'],
-      \ 'm' : [':CocCommand fzf_preview.ProjectMruFiles',                  'project mru files'],
-      \ 'w' : [':CocCommand fzf_preview.ProjectGrep {word}',               'grep current word'],
-      \ 'H' : [':CocCommand fzf_preview.OldFiles',                         'old files'],
-      \ 'M' : [':CocCommand fzf_preview.MruFiles',                         'mru files'],
-      \ 'q' : [':CocCommand fzf_preview.QuickFix',                         'quick fix'],
-      \ 'a' : [':CocCommand fzf_preview.GitActions',                       'git actions'],
-      \ 's' : [':CocCommand fzf_preview.GitStatus',                        'git status'],
-      \ 't' : [':CocCommand fzf_preview.VistaBufferCtags',                 'vista current tags'],
-      \ 'c' : [':CocCommand fzf_preview.CocCurrentDiagnostics',            'current diagnostics'],
+      \ 'b' : [':CocCommand fzf-preview.Buffers',                          'file buffers'],
+      \ 'h' : [':CocCommand fzf-preview.ProjectOldFiles',                  'project old files'],
+      \ 'm' : [':CocCommand fzf-preview.ProjectMruFiles',                  'project mru files'],
+      \ 'H' : [':CocCommand fzf-preview.OldFiles',                         'old files'],
+      \ 'M' : [':CocCommand fzf-preview.MruFiles',                         'mru files'],
+      \ 'q' : [':CocCommand fzf-preview.QuickFix',                         'quick fix'],
+      \ 'c' : [':CocCommand fzf-preview.GitActions',                       'git actions'],
+      \ 'l' : [':CocCommand fzf-preview.GitCurrentLogs',                   'git current logs'],
+      \ 'L' : [':CocCommand fzf-preview.GitLogs',                          'git logs'],
+      \ 's' : [':CocCommand fzf-preview.GitStatus',                        'git status'],
+      \ 't' : [':CocCommand fzf-preview.VistaBufferCtags',                 'vista current tags'],
+      \ 'a' : [':CocCommand fzf-preview.CocCurrentDiagnostics',            'current diagnostics'],
+      \ 'w' : 'grep current word',
       \ }
 

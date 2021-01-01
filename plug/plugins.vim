@@ -51,10 +51,12 @@ else
 endif
 
 " Fzf asynchronous search
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Fzf preview
-Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
-Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/rpc' }
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Vim script RPC
+"Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/rpc' }
+" Remote Plugins
+"Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/remote', 'do': ':UpdateRemotePlugins' }
 Plug 'junegunn/fzf.vim'
 
 " LeaderF asynchronous search
@@ -209,7 +211,7 @@ Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 " Initialize plugin system
 call plug#end()
 
-"autocmd VimEnter *
-  "\  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  "\|   PlugInstall --sync | q
-  "\| endif
+autocmd VimEnter *
+  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | q
+  \| endif
