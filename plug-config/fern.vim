@@ -28,8 +28,8 @@ let g:fern_git_status#disable_directories = 0
 
 "let g:fern#renderer = "nerdfont"
 
-augroup my-glyph-palette
-  autocmd! *
-  autocmd FileType fern call glyph_palette#apply()
-  autocmd FileType nerdtree,startify call glyph_palette#apply()
-augroup END
+"augroup my-glyph-palette
+  "autocmd! *
+  "autocmd FileType fern call glyph_palette#apply()
+  "autocmd FileType nerdtree,startify call glyph_palette#apply()
+"augroup END
