@@ -211,7 +211,7 @@ Plug 'ryanoasis/vim-devicons'  "this Plug must be put at the last"
 " Initialize plugin system
 call plug#end()
 
-autocmd VimEnter *
-  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \|   PlugInstall --sync | q
-  \| endif
+"autocmd VimEnter *
+  "\  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  "\|   PlugInstall --sync | q
+  "\| endif

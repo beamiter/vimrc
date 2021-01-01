@@ -2,8 +2,15 @@
 let g:lightline = {
       \ 'colorscheme': 'powerline',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste', 'scroll' ], [ 'gitbranch', 'gitstatus', 'readonly',
-      \               'filename', 'modified' ] ],
+      \   'left': [ [ 'winnr', 'mode', 'paste' ],
+      \             [ 'gitbranch', 'gitstatus', 'readonly',
+      \               'filename', 'modified', 'cocstatus' ] ],
+      \ },
+		  \ 'inactive': {
+		  \ 'left': [ [ 'winnr' ], ['winnr'] ],
+		  \ 'right': [ [ 'lineinfo' ],
+		  \            [ 'percent' ],
+      \            [ 'filename' ] ],
       \ },
       \ 'tabline': {
       \   'left': [ ['buffers'] ],
@@ -12,11 +19,8 @@ let g:lightline = {
       \ 'component_function': {
       \   'gitbranch': 'FugitiveStatusline',
       \   'gitstatus': 'GitStatus',
-      \   'readonly': 'LightlineReadonly',
-      \   'modified': 'LightlineModified',
       \   'tabnum': 'lightline#tab#tabnum',
-      "\   'scroll': 'ScrollStatus',
-	    \   'cocstatus': 'coc#status',
+			\   'cocstatus': 'coc#status',
       \ },
       \ 'component_expand': {
       \   'buffers': 'lightline#bufferline#buffers',
@@ -27,17 +31,7 @@ let g:lightline = {
       \ }
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
-let g:scrollstatus_size = 10
-let g:scrollstatus_symbol_track = '-'
-let g:scrollstatus_symbol_bar = '|'
-
 function! GitStatus()
   let [a,m,r] = GitGutterGetHunkSummary()
   return printf('+%d ~%d -%d', a, m, r)
-endfunction
-function! LightlineReadonly()
-	return &readonly ? 'RO' : 'RW'
-endfunction
-function! LightlineModified()
-	return &modifiable && &modified ? '+' : ''
 endfunction
