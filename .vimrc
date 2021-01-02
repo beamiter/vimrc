@@ -13,6 +13,7 @@ source $HOME/.vim/keys/which-key.vim
 source $HOME/.vim/plug-config/any-jump.vim
 source $HOME/.vim/plug-config/bufferline.vim
 source $HOME/.vim/plug-config/choosewin.vim
+source $HOME/.vim/plug-config/my-choosewin.vim
 source $HOME/.vim/plug-config/coc-fzf.vim
 source $HOME/.vim/plug-config/coc.vim
 source $HOME/.vim/plug-config/defx.vim

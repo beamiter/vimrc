@@ -10,10 +10,21 @@ autocmd  FileType which_key set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
 
 " Register which key map
-autocmd VimEnter * call which_key#register("<Space>", "g:which_key_map")
-autocmd VimEnter * call which_key#register("\\", "g:which_key_map0")
+"autocmd VimEnter * call which_key#register('<Space>', "g:which_key_map")
+"autocmd VimEnter * call which_key#register(',', "g:which_key_map0")
 
+call which_key#register('<Space>', "g:which_key_map")
+call which_key#register(',', "g:which_key_map0")
 
+" register dictionary for the <Space>-prefix
+"call which_key#register(' ', "g:space_prefix_dict")
+" register dictionary for the ,-prefix
+"call which_key#register(',', "g:comma_prefix_dict")
+
+"nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+"vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+"nnoremap <localleader> :<c-u>WhichKey  ','<CR>
+"vnoremap <localleader> :<c-u>WhichKeyVisual  ','<CR>
 
 let g:which_key_map =  {}
 let g:which_key_map0 = {}
@@ -23,8 +34,19 @@ nnoremap <silent> <leader> :silent <c-u> :silent WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :silent <c-u> :silent WhichKeyVisual '<Space>'<CR>
 
 " Map localleader to which_key
-nnoremap <silent> <localleader> :silent <c-u> :silent WhichKey "\\"<CR>
-vnoremap <silent> <localleader> :silent <c-u> :silent WhichKeyVisual "\\"<CR>
+nnoremap <silent> <localleader> :silent <c-u> :silent WhichKey ','<CR>
+vnoremap <silent> <localleader> :silent <c-u> :silent WhichKeyVisual ','<CR>
+
+let g:which_key_map0['1'] = 'win-1'
+let g:which_key_map0['2'] = 'win-2'
+let g:which_key_map0['3'] = 'win-3'
+let g:which_key_map0['4'] = 'win-4'
+let g:which_key_map0['5'] = 'win-5'
+let g:which_key_map0['6'] = 'win-6'
+let g:which_key_map0['7'] = 'win-7'
+let g:which_key_map0['8'] = 'win-8'
+let g:which_key_map0['9'] = 'win-9'
+let g:which_key_map0['0'] = 'win-10'
 
 " Coc Search & refactor
 nnoremap <leader>? :<C-u>CocSearch <C-R>=expand("<cword>")<CR><CR>
@@ -36,8 +58,8 @@ let g:which_key_map['?'] = 'search word'
 "autocmd  FileType which_key set laststatus=0 noshowmode noruler
   "\| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
 
-let g:which_key_map['h'] = [ '<C-W>s'                                          , 'split below']
-let g:which_key_map['v'] = [ '<C-W>v'                                          , 'split right']
+let g:which_key_map0['s'] = [ '<C-W>s'                                          , 'split below']
+let g:which_key_map0['v'] = [ '<C-W>v'                                          , 'split right']
 
 " nnoremap <leader>gf :<C-u>Git log <C-R>=expand("%")<CR><CR>
 function! GitCurrentFile()

@@ -1,2 +1,6 @@
-let g:mapleader = "\<Space>"
-let g:localmapleader = "\\"
+"let g:mapleader = "\<space>"
+"let g:maplocalleader = ","
+let mapleader = "\<space>"
+let maplocalleader = ","
+
+imap jk <ESC>
