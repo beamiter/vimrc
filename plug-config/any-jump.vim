@@ -1,3 +1,10 @@
+
+" Jump to definition under cursore
+nnoremap <leader>j :AnyJump<CR>
+
+" Visual mode: jump to selected text in visual mode
+xnoremap <leader>j :AnyJumpVisual<CR>
+
 " Disable difault keybindings
 let g:any_jump_disable_default_keybindings = 1
 
