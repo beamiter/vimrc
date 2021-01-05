@@ -11,7 +11,6 @@ source $HOME/.vim/keys/mappings.vim
 source $HOME/.vim/keys/which-key.vim
 
 source $HOME/.vim/plug-config/any-jump.vim
-source $HOME/.vim/plug-config/bufferline.vim
 source $HOME/.vim/plug-config/choosewin.vim
 source $HOME/.vim/plug-config/coc-fzf.vim
 source $HOME/.vim/plug-config/coc.vim
@@ -25,6 +24,7 @@ source $HOME/.vim/plug-config/fzf.vim
 source $HOME/.vim/plug-config/prettier.vim
 source $HOME/.vim/plug-config/LeaderF.vim
 "source $HOME/.vim/plug-config/lightline.vim
+"source $HOME/.vim/plug-config/bufferline.vim
 source $HOME/.vim/plug-config/startify.vim
 source $HOME/.vim/plug-config/tagbar.vim
 source $HOME/.vim/plug-config/vista.vim
