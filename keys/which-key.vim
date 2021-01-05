@@ -58,8 +58,8 @@ let g:which_key_map['?'] = 'search word'
 "autocmd  FileType which_key set laststatus=0 noshowmode noruler
   "\| autocmd BufLeave <buffer> set laststatus=2 noshowmode ruler
 
-let g:which_key_map0['s'] = [ '<C-W>s'                                          , 'split below']
-let g:which_key_map0['v'] = [ '<C-W>v'                                          , 'split right']
+let g:which_key_map0['s'] = [ '<C-W>s'                  , 'split below']
+let g:which_key_map0['v'] = [ '<C-W>v'                  , 'split right']
 
 " nnoremap <leader>gf :<C-u>Git log <C-R>=expand("%")<CR><CR>
 function! GitCurrentFile()
@@ -96,20 +96,19 @@ let g:which_key_map.c = {
 " f is for find and replace
 let g:which_key_map.f = {
       \ 'name' : '+find | replace' ,
-      \ 'a' : [':Farr --source=agnvim'     , 'agnvim'],
-      \ 'r' : [':Farr --source=rgnvim'     , 'rgnvim'],
-      \ 'd' : [':CocFzfList diagnostics --current-buf', 'current diagnostics'],
-      \ 'o' : [':CocFzfList outline', 'outline'],
-      \ 's' : [':CocFzfList symbols', 'workspace outline'],
-      \ 't' : [':CocFzfList tags', 'tags'],
-      \ 'c' : [':CocFzfList bcommits', 'current buffer commits'],
-      \ 'C' : [':CocFzfList commits', 'commits'],
-      \ 'b' : [':CocFzfList buffers', 'buffer'],
-      \ 'f' : [':CocFzfList files', 'file'],
-      \ 'l' : [':CocFzfList lists', 'lists'],
-      \ 'h' : [':CocFzfList mru', 'history'],
-      \ 'w' : [':CocFzfList windows', 'w'],
-      \ 'q' : [':CocFzfList quickfix', 'quickfix'],
+      \ 'a' : [':Farr --source=agnvim'                         , 'agnvim'],
+      \ 'r' : [':Farr --source=rgnvim'                         , 'rgnvim'],
+      \ 'd' : [':CocFzfList diagnostics --current-buf'         , 'current diagnostics'],
+      \ 'o' : [':CocFzfList outline'                           , 'outline'],
+      \ 's' : [':CtrlSF'                                       , 'find in project'],
+      \ 'c' : [':CocFzfList bcommits'                          , 'buffer commits'],
+      \ 'C' : [':CocFzfList commits'                           , 'commits'],
+      \ 'b' : [':CocFzfList buffers'                           , 'buffer'],
+      \ 'f' : [':CocFzfList files'                             , 'file'],
+      \ 'l' : [':CocFzfList lists'                             , 'lists'],
+      \ 'h' : [':CocFzfList mru'                               , 'history'],
+      \ 'w' : [':CocFzfList windows'                           , 'windows'],
+      \ 'q' : [':CocFzfList quickfix'                          , 'quickfix'],
       \ }
 
 
@@ -132,39 +131,43 @@ let g:which_key_map.g = {
       \ 'y' : [':Goyo'                               , 'goyo mode'],
       \ }
 
+" p is for project and related
+let g:which_key_map.p = {
+      \ 'name' : '+project util' ,
+      \ }
 
 " s is for search
 let g:which_key_map.s = {
       \ 'name' : '+search l/f/d' ,
       \ 'l' : {
       \ 'name' : 'leaderf',
-      \ 'b' : [':LeaderfBuffer', 'buffer'],
-      \ 'f' : [':LeaderfFile', 'file'],
-      \ 'p' : [':LeaderfFileCword', 'find in project'],
-      \ 'h' : [':LeaderfMru', 'recent file'],
-      \ 'r' : [':Leaderf rg', 'rg search'],
+      \ 'b' : [':LeaderfBuffer'                 , 'buffer'],
+      \ 'f' : [':LeaderfFile'                   , 'file'],
+      \ 'p' : [':LeaderfFileCword'              , 'find in project'],
+      \ 'h' : [':LeaderfMru'                    , 'recent file'],
+      \ 'r' : [':Leaderf rg'                    , 'rg search'],
       \},
       \ 'f' : {
       \ 'name' : 'fzf',
-      \ 'b' : [':Buffers', 'buffer'],
-      \ 's' : [':GFiles?', 'git status'],
-      \ 'f' : [':Files', 'file'],
-      \ 'a' : [':Ag', 'ag search'],
-      \ 'r' : [':Rg', 'rg search'],
-      \ 'w' : [':Windows', 'windows'],
-      \ 'h' : [':History', 'history'],
-      \ 'V' : [':Commits', 'view commits'],
-      \ 'v' : [':BCommits', 'view buffer commits'],
-      \ 'm' : [':Maps', 'mappings'],
+      \ 'b' : [':Buffers'                       , 'buffer'],
+      \ 's' : [':GFiles?'                       , 'git status'],
+      \ 'f' : [':Files'                         , 'file'],
+      \ 'a' : [':Ag'                            , 'ag search'],
+      \ 'r' : [':Rg'                            , 'rg search'],
+      \ 'w' : [':Windows'                       , 'windows'],
+      \ 'h' : [':History'                       , 'history'],
+      \ 'V' : [':Commits'                       , 'view commits'],
+      \ 'v' : [':BCommits'                      , 'view buffer commits'],
+      \ 'm' : [':Maps'                          , 'mappings'],
       \},
       \ 'd' : {
       \ 'name' : 'denite',
-      \ 'b' : [':Denite buffer', 'buffer'],
-      \ 'f' : [':Denite file', 'file'],
-      \ 'o' : [':Denite outline', 'outline'],
-      \ 'h' : [':Denite file/old', 'old file'],
-      \ 'r' : [':Denite file/rec', 'recursive file'],
-      \ 'g' : [':Denite grep', 'grep'],
+      \ 'b' : [':Denite buffer'                 , 'buffer'],
+      \ 'f' : [':Denite file'                   , 'file'],
+      \ 'o' : [':Denite outline'                , 'outline'],
+      \ 'h' : [':Denite file/old'               , 'old file'],
+      \ 'r' : [':Denite file/rec'               , 'recursive file'],
+      \ 'g' : [':Denite grep'                   , 'grep'],
       \},
       \}
 
@@ -185,21 +188,21 @@ nnoremap <leader>rw :<C-u>CocCommand fzf-preview.ProjectGrep <C-R>=expand("<cwor
 " r is for project
 let g:which_key_map.r = {
       \ 'name' : '+preview util' ,
-      \ 'f' : [':CocCommand fzf-preview.ProjectFiles',                     'project files'],
-      \ 'g' : [':CocCommand fzf-preview.GitFiles',                         'git files'],
-      \ 'd' : [':CocCommand fzf-preview.DirectoryFiles',                   'directory files'],
-      \ 'b' : [':CocCommand fzf-preview.Buffers',                          'file buffers'],
-      \ 'h' : [':CocCommand fzf-preview.ProjectOldFiles',                  'project old files'],
-      \ 'm' : [':CocCommand fzf-preview.ProjectMruFiles',                  'project mru files'],
-      \ 'H' : [':CocCommand fzf-preview.OldFiles',                         'old files'],
-      \ 'M' : [':CocCommand fzf-preview.MruFiles',                         'mru files'],
-      \ 'q' : [':CocCommand fzf-preview.QuickFix',                         'quick fix'],
-      \ 'c' : [':CocCommand fzf-preview.GitActions',                       'git actions'],
-      \ 'l' : [':CocCommand fzf-preview.GitCurrentLogs',                   'git current logs'],
-      \ 'L' : [':CocCommand fzf-preview.GitLogs',                          'git logs'],
-      \ 's' : [':CocCommand fzf-preview.GitStatus',                        'git status'],
-      \ 'o' : [':CocCommand fzf-preview.BufferTags',                       'current buffer tags'],
-      \ 'a' : [':CocCommand fzf-preview.CocCurrentDiagnostics',            'current diagnostics'],
+      \ 'f' : [':CocCommand fzf-preview.ProjectFiles'               , 'project files'],
+      \ 'g' : [':CocCommand fzf-preview.GitFiles'                   , 'git files'],
+      \ 'd' : [':CocCommand fzf-preview.DirectoryFiles'             , 'directory files'],
+      \ 'b' : [':CocCommand fzf-preview.Buffers'                    , 'file buffers'],
+      \ 'h' : [':CocCommand fzf-preview.ProjectOldFiles'            , 'project old files'],
+      \ 'm' : [':CocCommand fzf-preview.ProjectMruFiles'            , 'project mru files'],
+      \ 'H' : [':CocCommand fzf-preview.OldFiles'                   , 'old files'],
+      \ 'M' : [':CocCommand fzf-preview.MruFiles'                   , 'mru files'],
+      \ 'q' : [':CocCommand fzf-preview.QuickFix'                   , 'quick fix'],
+      \ 'c' : [':CocCommand fzf-preview.GitActions'                 , 'git actions'],
+      \ 'l' : [':CocCommand fzf-preview.GitCurrentLogs'             , 'git current logs'],
+      \ 'L' : [':CocCommand fzf-preview.GitLogs'                    , 'git logs'],
+      \ 's' : [':CocCommand fzf-preview.GitStatus'                  , 'git status'],
+      \ 'o' : [':CocCommand fzf-preview.BufferTags'                 , 'current buffer tags'],
+      \ 'a' : [':CocCommand fzf-preview.CocCurrentDiagnostics'      , 'current diagnostics'],
       \ 'w' : 'grep current word',
       \ }
 

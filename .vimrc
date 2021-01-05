@@ -14,6 +14,7 @@ source $HOME/.vim/plug-config/any-jump.vim
 source $HOME/.vim/plug-config/choosewin.vim
 source $HOME/.vim/plug-config/coc-fzf.vim
 source $HOME/.vim/plug-config/coc.vim
+source $HOME/.vim/plug-config/ctrlsf.vim
 source $HOME/.vim/plug-config/defx.vim
 source $HOME/.vim/plug-config/denite.vim
 source $HOME/.vim/plug-config/devicons.vim
