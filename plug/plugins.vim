@@ -65,14 +65,18 @@ Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 " Favorite grep tool asynchronous search
 Plug 'mhinz/vim-grepper'
 
+" Code search and view tool
+Plug 'dyng/ctrlsf.vim'
+
 " Easy motion
 Plug 'easymotion/vim-easymotion'
 
 "Plug 'vim-airline/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
 " light line for status line and tag line
-Plug 'itchyny/lightline.vim'
-Plug 'mengelbrecht/lightline-bufferline'
+"Plug 'itchyny/lightline.vim'
+"Plug 'mengelbrecht/lightline-bufferline'
+Plug 'liuchengxu/eleline.vim'
 "Plug 'romgrk/barbar.nvim' " only support neovim0.5
 
 " Git

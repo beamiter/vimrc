@@ -24,7 +24,7 @@ source $HOME/.vim/plug-config/format.vim
 source $HOME/.vim/plug-config/fzf.vim
 source $HOME/.vim/plug-config/prettier.vim
 source $HOME/.vim/plug-config/LeaderF.vim
-source $HOME/.vim/plug-config/lightline.vim
+"source $HOME/.vim/plug-config/lightline.vim
 source $HOME/.vim/plug-config/startify.vim
 source $HOME/.vim/plug-config/tagbar.vim
 source $HOME/.vim/plug-config/vista.vim
