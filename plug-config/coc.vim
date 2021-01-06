@@ -16,12 +16,14 @@ let g:coc_global_extensions = [
             \ 'coc-yaml',
             \ 'coc-lists',
             \ 'coc-clangd',
+            \ 'coc-pyright',
             \ 'coc-highlight',
             \ 'coc-yank',
             \ 'coc-snippets',
             \ 'coc-floaterm',
             \ 'coc-fzf-preview',
             \  ]
+            "\ 'coc-jedi',
 
 call coc#config('clangd', {
       \ 'semanticHighlighting': 'true'

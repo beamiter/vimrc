@@ -157,6 +157,8 @@ Plug 'luochen1990/rainbow'
 "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 "Plug 'dominikduda/vim_current_word'
 
+"Plug 'RRethy/vim-illuminate'
+
 " Vim rooter
 Plug 'airblade/vim-rooter'
 
