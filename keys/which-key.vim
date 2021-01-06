@@ -73,6 +73,8 @@ let g:which_key_map.a = {
       \ 'name' : '+actions' ,
       \ ';' : ['<Plug>(coc-refactor)'                , 'refactor'],
       \ 'a' : ['<Plug>(coc-codeaction)'              , 'code action'],
+      \ 'c' : ['RandomLocalCS'                       , 'random color scheme'],
+      \ 'C' : ['UpdateLocalCS'                       , 'save color scheme'],
       \ 'A' : ['<Plug>(coc-codeaction-selected)'     , 'selected action'],
       \ 'f' : ['<Plug>(coc-format-selected)'         , 'format selected'],
       \ 'F' : ['<Plug>(coc-format)'                  , 'format'],
@@ -139,6 +141,16 @@ let g:which_key_map.p = {
 " s is for search
 let g:which_key_map.s = {
       \ 'name' : '+search l/f/d' ,
+      \ 'b' : [':Buffers'                       , 'buffer'],
+      \ 's' : [':GFiles?'                       , 'git status'],
+      \ 'f' : [':Files'                         , 'file'],
+      \ 'a' : [':Ag'                            , 'ag search'],
+      \ 'r' : [':Rg'                            , 'rg search'],
+      \ 'w' : [':Windows'                       , 'windows'],
+      \ 'h' : [':History'                       , 'history'],
+      \ 'V' : [':Commits'                       , 'view commits'],
+      \ 'v' : [':BCommits'                      , 'view buffer commits'],
+      \ 'm' : [':Maps'                          , 'mappings'],
       \ 'l' : {
       \ 'name' : 'leaderf',
       \ 'b' : [':LeaderfBuffer'                 , 'buffer'],
@@ -146,8 +158,9 @@ let g:which_key_map.s = {
       \ 'p' : [':LeaderfFileCword'              , 'find in project'],
       \ 'h' : [':LeaderfMru'                    , 'recent file'],
       \ 'r' : [':Leaderf rg'                    , 'rg search'],
+      \ 'o' : [':LeaderfBufTag'                 , 'buf tag'],
       \},
-      \ 'f' : {
+      \ 'z' : {
       \ 'name' : 'fzf',
       \ 'b' : [':Buffers'                       , 'buffer'],
       \ 's' : [':GFiles?'                       , 'git status'],

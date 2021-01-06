@@ -19,7 +19,6 @@ source $HOME/.vim/plug-config/defx.vim
 source $HOME/.vim/plug-config/denite.vim
 source $HOME/.vim/plug-config/devicons.vim
 source $HOME/.vim/plug-config/easymotion.vim
-source $HOME/.vim/plug-config/fern.vim
 source $HOME/.vim/plug-config/format.vim
 source $HOME/.vim/plug-config/fzf.vim
 source $HOME/.vim/plug-config/prettier.vim

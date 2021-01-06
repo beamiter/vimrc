@@ -8,6 +8,7 @@ set backspace=2
 set number
 set relativenumber
 set tabstop=2
+set switchbuf="useopen"
 set softtabstop=2
 set shiftwidth=2
 set autoindent

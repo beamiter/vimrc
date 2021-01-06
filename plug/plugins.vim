@@ -95,16 +95,9 @@ Plug 'voldikss/LeaderF-floaterm'
 Plug 'voldikss/fzf-floaterm'
 Plug 'voldikss/vim-floaterm'
 
-" Fern tree viewer
-Plug 'lambdalisue/fern.vim'
 " Fix cursor hold bound with fern
 Plug 'antoinemadec/FixCursorHold.nvim'
-" Use fern as default tree viewer
-Plug 'lambdalisue/fern-hijack.vim'
-" Add git status
-Plug 'lambdalisue/fern-git-status.vim'
 Plug 'lambdalisue/nerdfont.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 "Plug 'lambdalisue/glyph-palette.vim'
 
 " Effective working

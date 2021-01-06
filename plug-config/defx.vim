@@ -1,5 +1,6 @@
 "nmap <silent> <F3> :Defx -columns=indent:mark:icons:filename:type <CR>
-nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:h')` -columns=mark:indent:icon:filename:type:size:time <CR>
+"nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
+nmap <silent> <F3> :Defx -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
 
 call defx#custom#option('_', {
       \ 'winwidth': 40,
