@@ -128,8 +128,8 @@ Plug 'mhinz/vim-startify'
 " Quoting/parenthesizing made simple
 Plug 'tpope/vim-surround'
 
-" Auto pairs
-Plug 'jiangmiao/auto-pairs'
+"" Auto pairs
+"Plug 'jiangmiao/auto-pairs'
 
 " Indent line
 Plug 'Yggdroot/indentLine'
