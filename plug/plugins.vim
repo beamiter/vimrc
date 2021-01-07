@@ -161,8 +161,8 @@ Plug 'terryma/vim-multiple-cursors'
 " Find and replace
 Plug 'brooth/far.vim'
 
- ""Vim gutentags
-"Plug 'ludovicchabant/vim-gutentags'
+ "Vim gutentags
+Plug 'ludovicchabant/vim-gutentags'
 
 " Interactive scratchpad for hackers
 Plug 'metakirby5/codi.vim'
