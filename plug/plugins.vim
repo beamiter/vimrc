@@ -128,8 +128,8 @@ Plug 'mhinz/vim-startify'
 " Quoting/parenthesizing made simple
 Plug 'tpope/vim-surround'
 
-"" Auto pairs
-"Plug 'jiangmiao/auto-pairs'
+" Auto pairs
+Plug 'jiangmiao/auto-pairs'
 
 " Indent line
 Plug 'Yggdroot/indentLine'
@@ -161,8 +161,9 @@ Plug 'terryma/vim-multiple-cursors'
 " Find and replace
 Plug 'brooth/far.vim'
 
- "Vim gutentags
-Plug 'ludovicchabant/vim-gutentags'
+" gutentags is buggy
+ ""Vim gutentags
+"Plug 'ludovicchabant/vim-gutentags'
 
 " Interactive scratchpad for hackers
 Plug 'metakirby5/codi.vim'
@@ -172,10 +173,12 @@ Plug 'metakirby5/codi.vim'
 
 
 " 主题插件
+" collections, ascending by star
+"Plug 'flazz/vim-colorschemes'
 Plug 'rafi/awesome-vim-colorschemes'
-Plug 'flazz/vim-colorschemes'
+Plug 'chriskempson/base16-vim'
+"Plug 'rainglow/vim'
 
-Plug 'rainglow/vim'
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
