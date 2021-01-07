@@ -4,18 +4,25 @@ colorscheme angr
 
 " Json to store ever-selected colorscheme info
 let s:local_color_json = $HOME..'/.vim/color.json'
+" Store activate last colorscheme command
+let s:local_color_vim = $HOME..'/.vim/color.vim'
 " Dict to load colorscheme config info from json
 let s:local_color_conf = {}
 " Key to represent last selected colorscheme
 let s:local_color_key = 'selected_color_scheme'
-" Try to reload laste selected colorscheme
-if filereadable(s:local_color_json)
-  let s:local_color_conf = json_decode(join(readfile(s:local_color_json, ''), ''))
-  if has_key(s:local_color_conf, s:local_color_key)
-    execute 'colorscheme' s:local_color_conf[s:local_color_key]
-    redraw
-  endif
+" restore last colorscheme at startup
+if filereadable(s:local_color_vim)
+  execute 'source' s:local_color_vim
 endif
+"" Try to reload laste selected colorscheme by json
+"" But it is too slow to decode json at the startup
+"if filereadable(s:local_color_json)
+  "let s:local_color_conf = json_decode(join(readfile(s:local_color_json, ''), ''))
+  "if has_key(s:local_color_conf, s:local_color_key)
+    "execute 'colorscheme' s:local_color_conf[s:local_color_key]
+    "redraw
+  "endif
+"endif
 
 function! s:UpdateLocalColorScheme() abort
   " Get current colorscheme
@@ -38,6 +45,8 @@ function! s:UpdateLocalColorScheme() abort
   endif
   " Rewrite config json file
   call writefile([json_encode(s:local_color_conf)], s:local_color_json)
+  " Store activate last colorscheme command
+  call writefile(['colorscheme '..l:color_current], s:local_color_vim)
 endfunction
 
 " Binding function calling whith command
