@@ -19,6 +19,7 @@ set mouse=a                             " Enable your mouse
 set splitbelow                          " Horizontal splits will automatically be below
 set splitright                          " Vertical splits will automatically be to the right
 set cursorline                          " Enable highlighting of the current line
+set nocursorline                        " Enable highlighting of the current line
 set noshowmode                          " We don't need to see things like -- INSERT -- anymore
 set clipboard=unnamedplus               " Copy paste between vim and everything else
 set background=dark " must put it befor syntax to work

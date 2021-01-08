@@ -114,4 +114,4 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-nmap <silent> <F2> :CocCommand explorer<CR>
+nmap <silent> <F4> :CocCommand explorer<CR>
