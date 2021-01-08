@@ -43,12 +43,14 @@ Plug 'preservim/tagbar'
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'}
 else
   Plug 'Shougo/defx.nvim'
   Plug 'Shougo/denite.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+Plug 'preservim/nerdtree'
 
 " Fzf asynchronous search
 "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
