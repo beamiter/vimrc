@@ -164,13 +164,14 @@ let g:which_key_map.s = {
       \ 'a' : [':Ag'                                           , 'ag search'],
       \ 'A' : [':Farr --source=agnvim'                         , 'farr agnvim'],
       \ 'd' : [':CocFzfList diagnostics --current-buf'         , 'current diagnostics'],
+      \ 'f' : ['<Plug>LeaderfRgPrompt'                              , 'leaderf rg prompt'],
       \ 'g' : [':Leaderf rg'                                   , 'leaderf rg search'],
       \ 'G' : [':Denite grep'                                  , 'denite grep'],
       \ 'q' : [':CocFzfList quickfix'                          , 'quickfix'],
       \ 'r' : [':Rg'                                           , 'rg search'],
       \ 'R' : [':Farr --source=rgnvim'                         , 'farr rgnvim'],
       \ 's' : [':CtrlSF'                                       , 'find in project'],
-      \ 'w' : [':LeaderfFileCword'                             , 'leaderf file cword'],
+      \ 'w' : ['<Plug>LeaderfRgBangCwordLiteralNoBoundary'          , 'leaderf file cword'],
       \}
 
 

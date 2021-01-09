@@ -18,7 +18,8 @@ call plug#begin('~/.vim/plugged')
 " Intelligence
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
+"" use coc-fzf-preview instead
+"Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 
 " Luanguage pack
 Plug 'sheerun/vim-polyglot'
