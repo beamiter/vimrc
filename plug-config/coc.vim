@@ -29,6 +29,18 @@ call coc#config('clangd', {
       \ 'semanticHighlighting': 'true'
       \ })
 
+call coc#config('list', {
+      \ 'semanticHighlighting': 'true',
+      \ 'insertMappings': {
+      \ '<C-S>': 'action:split',
+      \ '<C-X>': 'action:vsplit',
+      \ },
+      \ 'normalMappings': {
+      \ 'x': 'action:vsplit',
+      \ 'd': 'action:delete',
+      \}
+      \ })
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.

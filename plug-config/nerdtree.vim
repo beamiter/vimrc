@@ -1,6 +1,4 @@
-"nnoremap <F2> :NERDTreeToggle<CR>
-nnoremap <expr> <F2>
-    \ exists('b:NERDTree') ? ':NERDTreeToggle<CR>' : ':NERDTreeFind<CR>'
+nnoremap <F2> :NERDTreeToggle<CR>
 
 " Start NERDTree when Vim starts with a directory argument.
 autocmd StdinReadPre * let s:std_in=1
