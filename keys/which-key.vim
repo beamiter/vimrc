@@ -76,7 +76,6 @@ let g:which_key_map.a = {
       \ 'C' : ['RandomLocalCS'                       , 'random color scheme'],
       \ 'f' : ['<Plug>(coc-format-selected)'         , 'format selected'],
       \ 'F' : ['<Plug>(coc-format)'                  , 'format'],
-      \ 'h' : [':nohighlight'                        , 'nohighlight'],
       \ 'l' : [':CocList lists'                      , 'lists'],
       \ 'm' : [':Maps'                               , 'mappings'],
       \ 'n' : ['<Plug>(coc-diagnostic-next)'         , 'next diagnostic'],
@@ -96,9 +95,9 @@ let g:which_key_map.b = {
       \ 'name' : '+buffers',
       \ 'c' : [':CocList buffers'               , 'coc buffers'],
       \ 'd' : [':Denite buffer'                 , 'denite buffers'],
-      \ 'f' : [':Buffers'                       , 'fzf buffer'],
+      \ 'z' : [':Buffers'                       , 'fzf buffer'],
       \ 'b' : [':Buffers'                       , 'buffers'],
-      \ 'l' : [':LeaderfBuffer'                 , 'leaderf buffer'],
+      \ 'f' : [':LeaderfBuffer'                 , 'leaderf buffer'],
       \ 'm' : [':CocList bcommits'              , 'coc buffer commits'],
       \ 'M' : [':BCommits'                      , 'fzf buffer commits'],
       \ 'o' : [':CocList outline'               , 'coc outline'],
@@ -116,15 +115,14 @@ let g:which_key_map.c = {
 let g:which_key_map.f = {
       \ 'name' : '+files',
       \ 'c' : [':CocList files'                 , 'coc file'],
-      \ 'd' : [':Denite file'                   , 'denite file'],
-      \ 'f' : [':Files'                         , 'fzf file'],
+      \ 'd' : [':Denite file/rec'                   , 'denite file/rec'],
+      \ 'z' : [':Files'                         , 'fzf file'],
       \ 'h' : [':History'                       , 'fzf history'],
       \ 'H' : [':Denite file/old'               , 'denite file/old'],
-      \ 'l' : [':LeaderfFile'                   , 'leaderf file'],
+      \ 'f' : [':LeaderfFile'                   , 'leaderf file'],
       \ 'm' : [':CocList mru'                   , 'coc mru'],
       \ 'M' : [':LeaderfMru'                    , 'leaderf mru'],
       \ 't' : [':LeaderfBufTag'                 , 'leaderf buf tag'],
-      \ 'r' : [':Denite file/rec'               , 'denite file/rec'],
       \}
 
 
@@ -137,6 +135,8 @@ let g:which_key_map.g = {
       \ 'C' : [':BCommits'                           , 'fzf buffer commits'],
       \ 'd' : [':SignifyDiff'                        , 'signify diff'],
       \ 'D' : [':Git diff'                           , 'git diff'],
+      \ 'e' : [':Gina compare'                       , 'gina compare'],
+      \ 'E' : [':Gina diff'                          , 'gina diff'],
       \ 'f' : [':GCurrent'                           , 'curent log'],
       \ 'g' : ['<Plug>(GitGutterPreviewHunk)'        , 'preview hunk'],
       \ 'h' : ['<Plug>(GitGutterStageHunk)'          , 'stage hunk'],
@@ -214,8 +214,9 @@ let g:which_key_map.r = {
 " w is for windows
 let g:which_key_map.w = {
       \ 'name' : '+windows',
-      \ 'w' : [':CocList windows'                , 'coc windows'],
-      \ 'W' : [':Windows'                        , 'fzf windows'],
+      \ 'c' : [':CocList windows'                , 'coc windows'],
+      \ 'z' : [':Windows'                        , 'fzf windows'],
+      \ 'f' : [':LeaderWindow'                   , 'leaderf windows'],
       \ 's' : [':wincmd s'                       , 'horizontal split'],
       \ 'v' : [':wincmd v'                       , 'vertical split'],
       \}
