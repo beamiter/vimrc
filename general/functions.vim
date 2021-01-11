@@ -26,27 +26,27 @@ endif
 
 function! s:UpdateLocalColorScheme() abort
   " Get current colorscheme
-  let l:color_current = execute("colorscheme")[1:]
+  let color_current = execute("colorscheme")[1:]
   " Initialize colorscheme json config file
   if !filereadable(s:local_color_json)
-    let s:local_color_conf = {l:color_current : 1}
-    let s:local_color_conf[s:local_color_key] = l:color_current
+    let s:local_color_conf = {color_current : 1}
+    let s:local_color_conf[s:local_color_key] = color_current
   else
     " Load config info
     let s:local_color_conf = json_decode(join(readfile(s:local_color_json, ''), ''))
     " Update colorscheme dictionary
-    if has_key(s:local_color_conf, l:color_current)
-      let s:local_color_conf[l:color_current] += 1
+    if has_key(s:local_color_conf, color_current)
+      let s:local_color_conf[color_current] += 1
     else
-      let s:local_color_conf[l:color_current] = 1
+      let s:local_color_conf[color_current] = 1
     endif
     " Update the selected colorscheme
-    let s:local_color_conf[s:local_color_key] = l:color_current
+    let s:local_color_conf[s:local_color_key] = color_current
   endif
   " Rewrite config json file
   call writefile([json_encode(s:local_color_conf)], s:local_color_json)
   " Store activate last colorscheme command
-  call writefile(['colorscheme '..l:color_current], s:local_color_vim)
+  call writefile(['colorscheme '..color_current], s:local_color_vim)
 endfunction
 
 " Binding function calling whith command
@@ -84,40 +84,50 @@ command! -nargs=0 -bang RandomLocalCS call GetRandomColorScheme()
 " Binding command with short key
 nnoremap <Space><Space> :<C-u>RandomLocalCS<CR>
 
+let s:buf_nr_list = []
+function s:UpdateBufferList() abort
+  if empty(s:buf_nr_list)
+    call extend(s:buf_nr_list, filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+  else
+    let cur_nr = bufnr('%')
+    if index(s:buf_nr_list, cur_nr) == -1
+      call add(s:buf_nr_list, cur_nr)
+    endif
+    " echomsg s:buf_nr_list
+    filter(s:buf_nr_list, 'buflisted(v:val)')
+    " echomsg s:buf_nr_list
+  endif
+endfunction
+command! UpdateBL call s:UpdateBufferList()
+
+"call s:UpdateBufferList()
+"echomsg s:buf_nr_list
+
+function s:GetBufferNames(buf_list) abort
+  let buf_nr = deepcopy(a:buf_list)
+  return map(buf_nr, 'fnamemodify(bufname(v:val), ":t")')
+endfunction
+
+"echomsg s:GetBufferNames(s:buf_nr_list)
+"echomsg s:buf_nr_list
 
 " <TODO>
-set tabline=%!MyTabLine()
-function MyTabLine()
+function UpdateTabLine()
   let s = ''
-  for i in range(tabpagenr('$'))
-    " select the highlighting
-    if i + 1 == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
+  call s:UpdateBufferList()
+  let names = s:GetBufferNames(s:buf_nr_list)
 
-    " set the tab page number (for mouse clicks)
-    let s .= '%' . (i + 1) . 'T'
-
-    " the label is made by MyTabLabel()
-    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+  for i in range(len(names))
+    let s .= '%#TabLineSel#'
+    let s .= '[ '.(i + 1).' ]'.names[i]
+    "let s .= '%#TabLineSel#'
+    let s .= ' | '
   endfor
 
   " after the last tab fill with TabLineFill and reset tab page nr
-  let s .= '%#TabLineFill#%T'
+  "let s .= '%#TabLineFill#%T'
+  "let s .= '%=%#TabLine#%999Xclose'
 
-  " right-align the label to close the current tab page
-  if tabpagenr('$') > 1
-    let s .= '%=%#TabLine#%999Xclose'
-  endif
-
-  echomsg s
-  return s
-endfunction
-
-function MyTabLabel(n)
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  return bufname(buflist[winnr - 1])
+  " echomsg s
+  let &tabline = s
 endfunction
