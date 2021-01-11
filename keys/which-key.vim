@@ -216,7 +216,7 @@ let g:which_key_map.w = {
       \ 'name' : '+windows',
       \ 'c' : [':CocList windows'                , 'coc windows'],
       \ 'z' : [':Windows'                        , 'fzf windows'],
-      \ 'f' : [':LeaderWindow'                   , 'leaderf windows'],
+      \ 'f' : [':LeaderfWindow'                  , 'leaderf windows'],
       \ 's' : [':wincmd s'                       , 'horizontal split'],
       \ 'v' : [':wincmd v'                       , 'vertical split'],
       \}
