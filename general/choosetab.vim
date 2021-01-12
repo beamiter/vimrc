@@ -42,33 +42,53 @@ function s:UpdateTabLineFunc()
   let s = ''
   call s:UpdateBufferListFunc()
   let names = s:GetBufferNamesFunc(s:buf_nr_list)
+  if len(names) != len(s:buf_nr_list)
+    echoerr 'Buf nr and corresponding name not equal'
+    return
+  endif
 
   for i in range(len(names))
-    " Highlight selected
+    " Use this tmp to decide append or insert
+    let tmp = ""
+    let is_current = 0
+    " Highlight selected, both tail name and buf nr match
     if names[i] ==# fnamemodify(bufname(), ':t')
-      let s .= '%#TabLineSel#'
+          \ && s:buf_nr_list[i] == bufnr('%')
+      let is_current = 1
+      let tmp .= '%#TabLineSel#'
     else
-      let s .= '%#TabLine#'
+      let tmp .= '%#TabLine#'
     endif
     " 0-9
     if i <= 9
-      let s .= '['.(i + 1).']'.names[i]
+      let tmp .= '['.(i + 1).']'.names[i]
     " a-z
     elseif i <= 35
-      let s .= '['.nr2char(97 + i - 10).']'.names[i]
+      let tmp .= '['.nr2char(97 + i - 10).']'.names[i]
     else
       " Not support counting yet
-      let s .= names[i]
+      let tmp .= names[i]
     endif
-    let s .= '%#TabLine#'
-    if i < len(names) - 1
-      " Seperator
-      let s .= ' | '
+    let tmp .= '%#TabLine#'
+    " Seperator
+    let tmp .= ' | '
+
+    if is_current
+      let s = tmp.s
+    else
+      let s .= tmp
     endif
   endfor
 
+  " Brilliant work, put selected at the first play all
+  " the times
   let s .= '%#TabLineFill#%T'
   "let s .= '%=%#TabLine#%999Xclose'
+
+  " Where to truncate line if too long.
+  " Default is at the start.
+  " No width fields allowed.
+  let s .= '%<'
 
   " For debug
   "echomsg s

@@ -104,15 +104,16 @@ let g:which_key_map.a = {
 " b is for buffers.
 let g:which_key_map.b = {
       \ 'name' : '+buffers',
-      \ 'c' : [':CocList buffers'               , 'coc buffers'],
-      \ 'd' : [':Denite buffer'                 , 'denite buffers'],
-      \ 'z' : [':Buffers'                       , 'fzf buffer'],
       \ 'b' : [':Buffers'                       , 'buffers'],
+      \ 'c' : [':CocList buffers'               , 'coc buffers'],
+      \ 'd' : [':bwipeout'                      , 'wipeout buffer'],
+      \ 'e' : [':Denite buffer'                 , 'denite buffers'],
       \ 'f' : [':LeaderfBuffer'                 , 'leaderf buffer'],
       \ 'm' : [':CocList bcommits'              , 'coc buffer commits'],
       \ 'M' : [':BCommits'                      , 'fzf buffer commits'],
       \ 'o' : [':CocList outline'               , 'coc outline'],
       \ 'O' : [':Denite outline'                , 'denite outline'],
+      \ 'z' : [':Buffers'                       , 'fzf buffer'],
       \}
 
 
@@ -126,14 +127,14 @@ let g:which_key_map.c = {
 let g:which_key_map.f = {
       \ 'name' : '+files',
       \ 'c' : [':CocList files'                 , 'coc file'],
-      \ 'd' : [':Denite file/rec'                   , 'denite file/rec'],
-      \ 'z' : [':Files'                         , 'fzf file'],
+      \ 'd' : [':Denite file/rec'               , 'denite file/rec'],
       \ 'h' : [':History'                       , 'fzf history'],
       \ 'H' : [':Denite file/old'               , 'denite file/old'],
       \ 'f' : [':LeaderfFile'                   , 'leaderf file'],
       \ 'm' : [':CocList mru'                   , 'coc mru'],
       \ 'M' : [':LeaderfMru'                    , 'leaderf mru'],
       \ 't' : [':LeaderfBufTag'                 , 'leaderf buf tag'],
+      \ 'z' : [':Files'                         , 'fzf file'],
       \}
 
 
@@ -226,8 +227,8 @@ let g:which_key_map.r = {
 let g:which_key_map.w = {
       \ 'name' : '+windows',
       \ 'c' : [':CocList windows'                , 'coc windows'],
-      \ 'z' : [':Windows'                        , 'fzf windows'],
       \ 'f' : [':LeaderfWindow'                  , 'leaderf windows'],
       \ 's' : [':wincmd s'                       , 'horizontal split'],
       \ 'v' : [':wincmd v'                       , 'vertical split'],
+      \ 'z' : [':Windows'                        , 'fzf windows'],
       \}
