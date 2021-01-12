@@ -29,4 +29,3 @@ source $HOME/.vim/plug-config/LeaderF.vim
 source $HOME/.vim/plug-config/startify.vim
 source $HOME/.vim/plug-config/tagbar.vim
 source $HOME/.vim/plug-config/vista.vim
-source $HOME/.vim/plug-config/nerdtree.vim

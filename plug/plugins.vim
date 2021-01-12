@@ -50,7 +50,7 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'preservim/nerdtree'
+"Plug 'preservim/nerdtree'
 
 " Fzf asynchronous search
 "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
