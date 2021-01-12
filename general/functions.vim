@@ -86,48 +86,90 @@ nnoremap <Space><Space> :<C-u>RandomLocalCS<CR>
 
 let s:buf_nr_list = []
 function s:UpdateBufferList() abort
+  " Initialization
   if empty(s:buf_nr_list)
-    call extend(s:buf_nr_list, filter(range(1, bufnr('$')), 'buflisted(v:val)'))
-  else
-    let cur_nr = bufnr('%')
-    if index(s:buf_nr_list, cur_nr) == -1
-      call add(s:buf_nr_list, cur_nr)
-    endif
-    " echomsg s:buf_nr_list
-    filter(s:buf_nr_list, 'buflisted(v:val)')
-    " echomsg s:buf_nr_list
+    let s:buf_nr_list = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    return
   endif
+  " Increasing update
+  " Get current buf
+  let cur_nr = bufnr('%')
+  " Add new buf
+  if index(s:buf_nr_list, cur_nr) == -1
+    call add(s:buf_nr_list, cur_nr)
+  endif
+  " Remove not listed
+  if !empty(s:buf_nr_list)
+    " Pay attention to the grammar
+    let s:buf_nr_list = filter(s:buf_nr_list, 'buflisted(v:val)')
+  endif
+  "echomsg s:buf_nr_list
 endfunction
-command! UpdateBL call s:UpdateBufferList()
-
-"call s:UpdateBufferList()
-"echomsg s:buf_nr_list
 
 function s:GetBufferNames(buf_list) abort
   let buf_nr = deepcopy(a:buf_list)
+  " Double check to ensure valid buf list
+  let buf_nr = filter(buf_nr, 'buflisted(v:val)')
   return map(buf_nr, 'fnamemodify(bufname(v:val), ":t")')
 endfunction
 
-"echomsg s:GetBufferNames(s:buf_nr_list)
-"echomsg s:buf_nr_list
-
 " <TODO>
-function UpdateTabLine()
+function s:UpdateTabLine()
   let s = ''
   call s:UpdateBufferList()
   let names = s:GetBufferNames(s:buf_nr_list)
 
   for i in range(len(names))
-    let s .= '%#TabLineSel#'
-    let s .= '[ '.(i + 1).' ]'.names[i]
-    "let s .= '%#TabLineSel#'
-    let s .= ' | '
+    if names[i] ==# fnamemodify(bufname(), ':t')
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+    let s .= '['.(i + 1).']'.names[i]
+    let s .= '%#TabLine#'
+    if i < len(names) - 1
+      let s .= ' | '
+    endif
   endfor
 
   " after the last tab fill with TabLineFill and reset tab page nr
-  "let s .= '%#TabLineFill#%T'
+  let s .= '%#TabLineFill#%T'
   "let s .= '%=%#TabLine#%999Xclose'
 
-  " echomsg s
-  let &tabline = s
+  "echomsg s
+  let &l:tabline = s
 endfunction
+
+function JumpToBuffer(n) abort
+  "echomsg s:buf_nr_list
+  if a:n > len(s:buf_nr_list)
+    echomsg 'The selected buffer number is not valid!'
+    return
+  endif
+  if a:n == 0
+    if len(s:buf_nr_list) >= 10
+      execute 'buffer '.s:buf_nr_list[9]
+    endif
+  endif
+  execute 'buffer '.s:buf_nr_list[a:n - 1]
+endfunction
+
+augroup tablinediy
+  autocmd!
+   autocmd BufWinEnter,BufEnter,BufWritePost,BufWinLeave * call s:UpdateTabLine()
+augroup END
+
+" Initialize at the start
+call s:UpdateBufferList()
+call s:UpdateTabLine()
+
+noremap <leader>1 :<C-u>call JumpToBuffer(1)  <CR>
+noremap <leader>2 :<C-u>call JumpToBuffer(2)  <CR>
+noremap <leader>3 :<C-u>call JumpToBuffer(3)  <CR>
+noremap <leader>4 :<C-u>call JumpToBuffer(4)  <CR>
+noremap <leader>5 :<C-u>call JumpToBuffer(5)  <CR>
+noremap <leader>6 :<C-u>call JumpToBuffer(6)  <CR>
+noremap <leader>7 :<C-u>call JumpToBuffer(7)  <CR>
+noremap <leader>8 :<C-u>call JumpToBuffer(8)  <CR>
+noremap <leader>9 :<C-u>call JumpToBuffer(9)  <CR>
+noremap <leader>0 :<C-u>call JumpToBuffer(10) <CR>

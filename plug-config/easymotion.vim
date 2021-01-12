@@ -14,5 +14,5 @@ let g:EasyMotion_smartcase = 1
 " JK motions: Line motions
 "nmap <localleader>j <Plug>(easymotion-j)
 "nmap <localleader>k <Plug>(easymotion-k)
-nmap <c-j> <Plug>(easymotion-j)
-nmap <c-k> <Plug>(easymotion-k)
+nmap <a-j> <Plug>(easymotion-j)
+nmap <a-k> <Plug>(easymotion-k)
