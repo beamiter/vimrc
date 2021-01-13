@@ -8,23 +8,15 @@ function s:UpdateTabLineFunc()
   if !buflisted(bufnr('%'))
     return
   endif
-  let s = ''
   let i = 0
+  let tmp_dict = []
   let buf_info = getbufinfo({'buflisted':1})
   "call sort(buf_info, {a, b -> a.lastused < b.lastused})
   for buf in buf_info
     let i += 1
     " Use this tmp to decide append or insert.
     let tmp = ""
-    let is_current = 0
-    " Highlight selected.
-    if buf.bufnr == bufnr('%')
-      let is_current = 1
-      let tmp .= '%#TabLineSel#'
-    else
-      let tmp .= '%#TabLine#'
-    endif
-    let name = fnamemodify(copy(buf.name), ':t')
+    let name = fnamemodify(buf.name, ':t')
     " 1-9
     if i <= 9
       let tmp .= '['.i.']'.name
@@ -38,13 +30,18 @@ function s:UpdateTabLineFunc()
     let tmp .= '%#TabLine#'
     " Seperator
     let tmp .= ' | '
-
-    if is_current
-      let s = tmp.s
+    " Highlight selected.
+    if buf.bufnr == bufnr('%')
+      let tmp = '%#TabLineSel#'..tmp
+      call insert(tmp_dict, tmp)
     else
-      let s .= tmp
+      let tmp = '%#TabLine#'..tmp
+      call add(tmp_dict, tmp)
     endif
+
+    "let s .= tmp
   endfor
+  let s = join(tmp_dict, '')
 
   " Brilliant work, put selected at the first play all
   " the times
