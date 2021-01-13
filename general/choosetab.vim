@@ -5,11 +5,13 @@ let s:buf_nr_list = []
 " <TODO> Extend more flexibilities
 " Update tab line
 function s:UpdateTabLineFunc()
+  if !buflisted(bufnr('%'))
+    return
+  endif
   let s = ''
   let i = 0
   let buf_info = getbufinfo({'buflisted':1})
-  call sort(buf_info, {a, b -> (a.lastused > b.lastused
-        \|| a.bufnr < b.bufnr) })
+  "call sort(buf_info, {a, b -> a.lastused < b.lastused})
   for buf in buf_info
     let i += 1
     " Use this tmp to decide append or insert.
@@ -94,8 +96,9 @@ command! -nargs=1 JumpToBuffer call s:JumpToBufferFunc(<args>)
 " Group for the autocmd
 augroup tablinediy
   autocmd!
-   autocmd BufWinEnter,BufEnter,BufLeave,BufWinLeave * call s:UpdateTabLineFunc()
-   autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc()
+   "autocmd BufWinEnter,BufEnter,BufLeave,BufWinLeave * call s:UpdateTabLineFunc()
+   "autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc()
+   autocmd BufWinEnter * call s:UpdateTabLineFunc()
 augroup END
 
 " Initialize at the start
