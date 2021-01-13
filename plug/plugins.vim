@@ -91,6 +91,7 @@ else
 endif
 Plug 'junegunn/gv.vim'
 Plug 'lambdalisue/gina.vim'
+Plug 'rhysd/git-messenger.vim'
 
 Plug 'skywind3000/asyncrun.vim'
 Plug 'voldikss/LeaderF-floaterm'

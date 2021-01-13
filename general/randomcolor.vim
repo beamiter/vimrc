@@ -74,7 +74,7 @@ endfunction
 function! GetRandomColorSchemeFunc() abort
   let s:colorschemes = getcompletion('', 'color')
   let s:len = len(s:colorschemes)
-  let s:id = GenerateRandomNumberFunc(0, s:len)
+  let s:id = GenerateRandomNumberFunc(0, s:len - 1)
   echomsg 'Colorscheme total number: '.s:len.' selected: '.s:id.' '.s:colorschemes[s:id]
   exe 'colorscheme' s:colorschemes[s:id]
   redraw

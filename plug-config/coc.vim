@@ -30,15 +30,22 @@ call coc#config('clangd', {
       \ })
 
 call coc#config('list', {
-      \ 'semanticHighlighting': 'true',
       \ 'insertMappings': {
       \ '<C-S>': 'action:split',
       \ '<C-X>': 'action:vsplit',
+      \ "<C-n>": "normal:j",
+      \ "<C-p>": "normal:k",
+      \ "<C-j>": "normal:j",
+      \ "<C-k>": "normal:k",
       \ },
       \ 'normalMappings': {
       \ 'x': 'action:vsplit',
       \ 'd': 'action:delete',
-      \}
+      \ "<C-n>": "normal:j",
+      \ "<C-p>": "normal:k",
+      \ "<C-j>": "normal:j",
+      \ "<C-k>": "normal:k",
+      \ }
       \ })
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -126,4 +133,4 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-nmap <silent> <F4> :CocCommand explorer<CR>
+nmap <silent> <F2> :CocCommand explorer<CR>
