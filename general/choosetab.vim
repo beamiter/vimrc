@@ -4,14 +4,17 @@ let s:buf_nr_list = []
 
 " <TODO> Extend more flexibilities
 " Update tab line
-function s:UpdateTabLineFunc()
+function s:UpdateTabLineFunc(flag)
   if !buflisted(bufnr('%'))
     return
   endif
   let i = 0
   let tmp_dict = []
+  let current = ''
   let buf_info = getbufinfo({'buflisted':1})
-  "call sort(buf_info, {a, b -> a.lastused < b.lastused})
+  if a:flag
+    call sort(buf_info, {a, b -> a.lastused < b.lastused})
+  endif
   for buf in buf_info
     let i += 1
     " Use this tmp to decide append or insert.
@@ -37,14 +40,14 @@ function s:UpdateTabLineFunc()
     " Highlight selected.
     if buf.bufnr == bufnr('%')
       let tmp = '%#TabLineSel#'..tmp
-      call insert(tmp_dict, tmp)
+      let current = tmp
     else
       let tmp = '%#TabLine#'..tmp
       call add(tmp_dict, tmp)
     endif
-
-    "let s .= tmp
   endfor
+
+  call add(tmp_dict, current)
   let s = join(tmp_dict, '')
 
   " Brilliant work, put selected at the first play all
@@ -55,7 +58,7 @@ function s:UpdateTabLineFunc()
   " Where to truncate line if too long.
   " Default is at the start.
   " No width fields allowed.
-  let s .= '%<'
+  "let s .= '%<'
 
   " For debug
   "echomsg s
@@ -92,18 +95,19 @@ function s:JumpToBufferFunc(n) abort
     echomsg 'Must input 1-10 or a-z !'
   endif
 endfunction
-command! -nargs=1 JumpToBuffer call s:JumpToBufferFunc(<args>)
+command! -nargs=1 JumpToBuffer :call s:JumpToBufferFunc(<args>)
 
 " Group for the autocmd
 augroup tablinediy
   autocmd!
-   "autocmd BufWinEnter,BufEnter,BufLeave,BufWinLeave * call s:UpdateTabLineFunc()
-   "autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc()
-   autocmd BufWinEnter,BufWritePost * call s:UpdateTabLineFunc()
+   "autocmd BufWinEnter,BufEnter,BufLeave,BufWinLeave * call s:UpdateTabLineFunc(0)
+   "autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc(0)
+   autocmd BufWinEnter,BufWritePost * call s:UpdateTabLineFunc(0)
+   autocmd WinEnter * call s:UpdateTabLineFunc(0)
 augroup END
 
 " Initialize at the start
-call s:UpdateTabLineFunc()
+call s:UpdateTabLineFunc(0)
 
 function s:TestForFunFunc(...) abort
   echomsg a:0
