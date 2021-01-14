@@ -100,3 +100,11 @@ augroup END
 
 " Initialize at the start
 call s:UpdateTabLineFunc()
+
+function s:TestForFunFunc(...) abort
+  echomsg a:0
+  echomsg a:000
+endfunction
+
+command! -bang -bar -nargs=* TFT :call s:TestForFunFunc(<f-args>, <bang>0)
+<Plug>TFTPrompt :<c-u>TFT<Space>

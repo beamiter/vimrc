@@ -74,7 +74,7 @@ let g:which_key_map['?'] = 'search word'
 function! GitCurrentFile()
   execute 'Git log '.expand('%:p')
 endfunction
-command GCurrent call GitCurrentFile()
+command! -nargs=0 GCurrent :call GitCurrentFile()
 
 
 " a is for actions.
@@ -174,17 +174,18 @@ let g:which_key_map.p = {
       \ }
 
 
+noremap <Plug>RgPrompt :<C-U>Rg<Space>
+noremap <Plug>AgPrompt :<C-U>Ag<Space>
 " s is for search && replace.
 let g:which_key_map.s = {
       \ 'name' : '+search&replace' ,
-      \ 'a' : [':Ag'                                           , 'ag search'],
+      \ 'a' : ['<Plug>AgPrompt'                                , 'ag search'],
       \ 'A' : [':Farr --source=agnvim'                         , 'farr agnvim'],
       \ 'd' : [':CocList diagnostics --current-buf'            , 'current diagnostics'],
       \ 'f' : ['<Plug>LeaderfRgPrompt'                         , 'leaderf rg prompt'],
-      \ 'g' : [':Leaderf rg'                                   , 'leaderf rg search'],
-      \ 'G' : [':Denite grep'                                  , 'denite grep'],
+      \ 'g' : [':Denite grep'                                  , 'denite grep'],
       \ 'q' : [':CocList quickfix'                             , 'quickfix'],
-      \ 'r' : [':Rg'                                           , 'rg search'],
+      \ 'r' : ['<Plug>RgPrompt'                                , 'rg search'],
       \ 'R' : [':Farr --source=rgnvim'                         , 'farr rgnvim'],
       \ 's' : [':CtrlSF'                                       , 'find in project'],
       \ 'w' : ['<Plug>LeaderfRgBangCwordLiteralNoBoundary'     , 'leaderf file cword'],
