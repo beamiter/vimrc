@@ -17,6 +17,10 @@ function s:UpdateTabLineFunc()
     " Use this tmp to decide append or insert.
     let tmp = ""
     let name = fnamemodify(buf.name, ':t')
+    if buf.changed
+      let tmp .= '+'
+    endif
+
     " 1-9
     if i <= 9
       let tmp .= '['.i.']'.name
@@ -95,7 +99,7 @@ augroup tablinediy
   autocmd!
    "autocmd BufWinEnter,BufEnter,BufLeave,BufWinLeave * call s:UpdateTabLineFunc()
    "autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc()
-   autocmd BufWinEnter * call s:UpdateTabLineFunc()
+   autocmd BufWinEnter,BufWritePost * call s:UpdateTabLineFunc()
 augroup END
 
 " Initialize at the start
@@ -107,4 +111,4 @@ function s:TestForFunFunc(...) abort
 endfunction
 
 command! -bang -bar -nargs=* TFT :call s:TestForFunFunc(<f-args>, <bang>0)
-<Plug>TFTPrompt :<c-u>TFT<Space>
+noremap <Plug>TFTPrompt :<c-u>TFT<Space>

@@ -48,6 +48,8 @@ let g:which_key_map0['8'] = 'win-8'
 let g:which_key_map0['9'] = 'win-9'
 let g:which_key_map0['0'] = 'win-10'
 
+let g:which_key_map0['o'] = ['<Plug>TFTPrompt', 'color eggs']
+
 let g:which_key_map['1'] = 'tab-1'
 let g:which_key_map['2'] = 'tab-2'
 let g:which_key_map['3'] = 'tab-3'
