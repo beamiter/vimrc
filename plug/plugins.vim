@@ -176,10 +176,10 @@ Plug 'metakirby5/codi.vim'
 
 
 " 主题插件
-" collections, ascending by star
+" collections, ascending by star, use single package every time
 "Plug 'flazz/vim-colorschemes'
 Plug 'rafi/awesome-vim-colorschemes'
-Plug 'chriskempson/base16-vim'
+"Plug 'chriskempson/base16-vim'
 "Plug 'rainglow/vim'
 
 Plug 'tomasr/molokai'

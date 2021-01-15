@@ -106,7 +106,7 @@ let g:which_key_map.a = {
 " b is for buffers.
 let g:which_key_map.b = {
       \ 'name' : '+buffers',
-      \ 'b' : [':Buffers'                       , 'buffers'],
+      \ 'b' : [':LeaderfBuffer'                 , 'buffers'],
       \ 'c' : [':CocList buffers'               , 'coc buffers'],
       \ 'd' : [':bwipeout'                      , 'wipeout buffer'],
       \ 'e' : [':Denite buffer'                 , 'denite buffers'],
