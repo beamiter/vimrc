@@ -72,9 +72,9 @@ function s:UpdateTabLineFunc(flag)
 
   "let s:buf_nr_list = filter(range(1, bufnr('$')), 'buflisted(v:val)')
   let s:buf_nr_list = map(buf_info, 'v:val.bufnr')
-  if exists('*webdevicons#hardRefresh')
-    call webdevicons#hardRefresh()
-  endif
+  "if exists('*webdevicons#hardRefresh')
+    "call webdevicons#hardRefresh()
+  "endif
 endfunction
 
 " Enrich functionality and feature
