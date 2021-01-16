@@ -26,15 +26,17 @@ function s:UpdateTabLineFunc(flag)
 
     " 1-9
     if i <= 9
-      let tmp .= '['.i.']'.name
+      "let tmp .= '['.i.']'.name
+      let tmp .= i.' '.name
     " a-z
     elseif i <= 35
-      let tmp .= '['.nr2char(87 + i).']'.name
+      "let tmp .= '['.nr2char(87 + i).']'.name
+      let tmp .= nr2char(87 + i).' '.name
     else
       " Not support counting yet
       let tmp .= name
     endif
-    let tmp .= '%#TabLine#'
+    "let tmp .= '%#TabLine#'
     "" Seperator
     if exists('*WebDevIconsGetFileTypeSymbol')
       let tmp .= ' ' . WebDevIconsGetFileTypeSymbol(name) . ' '
@@ -43,10 +45,10 @@ function s:UpdateTabLineFunc(flag)
     endif
     " Highlight selected.
     if buf.bufnr == bufnr('%')
-      let tmp = '%#TabLineSel#'..tmp
+      "let tmp = '%#TabLineSel#'..tmp
       let current = tmp
     else
-      let tmp = '%#TabLine#'..tmp
+      "let tmp = '%#TabLine#'..tmp
       call add(tmp_dict, tmp)
     endif
   endfor
@@ -56,7 +58,7 @@ function s:UpdateTabLineFunc(flag)
 
   " Brilliant work, put selected at the first play all
   " the times
-  let s .= '%#TabLineFill#%T'
+  "let s .= '%#TabLineFill#%T'
   "let s .= '%=%#TabLine#%999Xclose'
 
   " Where to truncate line if too long.
@@ -109,8 +111,8 @@ augroup tablinediy
   autocmd!
    "autocmd BufWinEnter,BufEnter,BufLeave,BufWinLeave * call s:UpdateTabLineFunc(0)
    "autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc(0)
-   autocmd BufWinEnter,BufWritePost * call s:UpdateTabLineFunc(0)
-   autocmd WinEnter * call s:UpdateTabLineFunc(0)
+   autocmd BufWinEnter,BufWinLeave,BufWritePost * call s:UpdateTabLineFunc(0)
+   autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc(0)
 augroup END
 
 " Initialize at the start
