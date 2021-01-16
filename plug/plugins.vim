@@ -206,7 +206,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'tomasiser/vim-code-dark'
 Plug 'mg979/vim-studio-dark'
 
-Plug 'rhysd/vim-clang-format'
+"Plug 'rhysd/vim-clang-format'
 Plug 'sbdchd/neoformat'
 Plug 'prettier/vim-prettier'
 

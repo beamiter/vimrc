@@ -35,8 +35,12 @@ function s:UpdateTabLineFunc(flag)
       let tmp .= name
     endif
     let tmp .= '%#TabLine#'
-    " Seperator
-    let tmp .= ' | '
+    "" Seperator
+    if exists('*WebDevIconsGetFileTypeSymbol')
+      let tmp .= ' ' . WebDevIconsGetFileTypeSymbol(name) . ' '
+    else
+      let tmp .= ' | '
+    endif
     " Highlight selected.
     if buf.bufnr == bufnr('%')
       let tmp = '%#TabLineSel#'..tmp
@@ -66,6 +70,9 @@ function s:UpdateTabLineFunc(flag)
 
   "let s:buf_nr_list = filter(range(1, bufnr('$')), 'buflisted(v:val)')
   let s:buf_nr_list = map(buf_info, 'v:val.bufnr')
+  if exists('*webdevicons#hardRefresh')
+    call webdevicons#hardRefresh()
+  endif
 endfunction
 
 " Enrich functionality and feature

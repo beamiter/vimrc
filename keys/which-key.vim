@@ -62,10 +62,10 @@ let g:which_key_map['9'] = 'tab-9'
 let g:which_key_map['0'] = 'tab-10'
 
 " Coc Search & refactor
-nnoremap <leader>? :<C-u>CocSearch <C-R>=expand("<cword>")<CR><CR>
-nnoremap <leader>rw :<C-u>CocCommand fzf-preview.ProjectGrep <C-R>=expand("<cword>")<CR><CR>
-
-let g:which_key_map['?'] = 'search word'
+nnoremap <Plug>(CocSearchCurrent) :<C-u>CocSearch
+                  \ <C-R>=expand("<cword>")<CR><CR>
+nnoremap <Plug>(GrepCurrentWord) :<C-u>CocCommand fzf-preview.ProjectGrep
+                  \ <C-R>=expand("<cword>")<CR><CR>
 
 "" Hide status line
 "autocmd! FileType which_key
@@ -85,23 +85,17 @@ let g:which_key_map.a = {
       \ ';' : ['<Plug>(coc-refactor)'                , 'refactor'],
       \ 'a' : ['<Plug>(coc-codeaction)'              , 'code action'],
       \ 'A' : ['<Plug>(coc-codeaction-selected)'     , 'selected action'],
-      \ 'c' : ['UpdateLocalCS'                       , 'save color scheme'],
-      \ 'C' : ['RandomLocalCS'                       , 'random color scheme'],
-      \ 'f' : ['<Plug>(coc-format-selected)'         , 'format selected'],
-      \ 'F' : ['<Plug>(coc-format)'                  , 'format'],
+      \ 'f' : [':Neoformat'                          , 'format files'],
       \ 'l' : [':CocList lists'                      , 'lists'],
-      \ 'm' : [':Maps'                               , 'mappings'],
       \ 'n' : ['<Plug>(coc-diagnostic-next)'         , 'next diagnostic'],
       \ 'N' : ['<Plug>(coc-diagnostic-next-error)'   , 'next error'],
       \ 'P' : ['<Plug>(coc-diagnostic-prev-error)'   , 'prev error'],
       \ 'p' : ['<Plug>(coc-diagnostic-prev)'         , 'prev diagnostic'],
       \ 'q' : ['<Plug>(coc-fix-current)'             , 'quickfix'],
       \ 'r' : ['<Plug>(coc-rename)'                  , 'rename'],
-      \ 's' : [':CocList -I symbols'                 , 'symbols'],
-      \ 'S' : [':CocList snippets'                   , 'snippets'],
-      \ 'w' : [':CocList words'                      , 'words']
+      \ 's' : ['<Plug>(CocSearchCurrent)'            , 'search/refact word'],
+      \ 'z' : ['UpdateLocalCS'                       , 'save color scheme'],
       \ }
-
 
 " b is for buffers.
 let g:which_key_map.b = {
@@ -190,7 +184,7 @@ let g:which_key_map.s = {
       \ 'r' : ['<Plug>RgPrompt'                                , 'rg search'],
       \ 'R' : [':Farr --source=rgnvim'                         , 'farr rgnvim'],
       \ 's' : [':CtrlSF'                                       , 'find in project'],
-      \ 'w' : ['<Plug>LeaderfRgBangCwordLiteralNoBoundary'     , 'leaderf file cword'],
+      \ 'w' : ['<Plug>LeaderfRgBangCwordLiteralBoundary'       , 'leaderf file cword'],
       \}
 
 
@@ -223,7 +217,7 @@ let g:which_key_map.r = {
       \ 'q' : [':CocCommand fzf-preview.QuickFix'                   , 'quick fix'],
       \ 's' : [':CocCommand fzf-preview.GitStatus'                  , 'git status'],
       \ 't' : [':CocCommand fzf-preview.BufferTags'                 , 'current buffer tags'],
-      \ 'w' : 'grep current word',
+      \ 'w' : ['<Plug>(GrepCurrentWord)'                            , 'grep current word'],
       \ }
 
 
