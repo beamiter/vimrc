@@ -36,19 +36,19 @@ function s:UpdateTabLineFunc(flag)
       " Not support counting yet
       let tmp .= name
     endif
-    "let tmp .= '%#TabLine#'
+    let tmp .= '%#TabLine#'
     "" Seperator
-    if exists('*WebDevIconsGetFileTypeSymbol')
+    if 0 && exists('*WebDevIconsGetFileTypeSymbol')
       let tmp .= ' ' . WebDevIconsGetFileTypeSymbol(name) . ' '
     else
       let tmp .= ' | '
     endif
     " Highlight selected.
     if buf.bufnr == bufnr('%')
-      "let tmp = '%#TabLineSel#'..tmp
+      let tmp = '%#TabLineSel#'..tmp
       let current = tmp
     else
-      "let tmp = '%#TabLine#'..tmp
+      let tmp = '%#TabLine#'..tmp
       call add(tmp_dict, tmp)
     endif
   endfor
