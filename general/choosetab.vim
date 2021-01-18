@@ -38,7 +38,7 @@ function s:UpdateTabLineFunc(flag)
     endif
     let tmp .= '%#TabLine#'
     "" Seperator
-    if 0 && exists('*WebDevIconsGetFileTypeSymbol')
+    if exists('*WebDevIconsGetFileTypeSymbol')
       let tmp .= ' ' . WebDevIconsGetFileTypeSymbol(name) . ' '
     else
       let tmp .= ' | '
@@ -58,7 +58,7 @@ function s:UpdateTabLineFunc(flag)
 
   " Brilliant work, put selected at the first play all
   " the times
-  "let s .= '%#TabLineFill#%T'
+  let s .= '%#TabLineFill#%T'
   "let s .= '%=%#TabLine#%999Xclose'
 
   " Where to truncate line if too long.
@@ -69,12 +69,11 @@ function s:UpdateTabLineFunc(flag)
   " For debug
   "echomsg s
   let &l:tabline = s
+  " The 'mode' is essential to fix the icon view bug
+  mode
 
   "let s:buf_nr_list = filter(range(1, bufnr('$')), 'buflisted(v:val)')
   let s:buf_nr_list = map(buf_info, 'v:val.bufnr')
-  "if exists('*webdevicons#hardRefresh')
-    "call webdevicons#hardRefresh()
-  "endif
 endfunction
 
 " Enrich functionality and feature

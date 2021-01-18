@@ -82,5 +82,5 @@ endfunction
 
 " Binding function calling whith command
 command! -nargs=0 -bang RandomLocalCS call GetRandomColorSchemeFunc()
-" Binding command with short key
-nnoremap <Space><Space> :<C-u>RandomLocalCS<CR>
+"" Binding command with short key
+"nnoremap <Space><Space> :<C-u>RandomLocalCS<CR>
