@@ -70,7 +70,13 @@ function s:UpdateTabLineFunc(flag)
   "echomsg s
   let &l:tabline = s
   " The 'mode' is essential to fix the icon view bug
-  mode
+  let suffix = fnamemodify(name, ':e')
+  if !empty(suffix) &&
+        \ exists('g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols')
+    if has_key(g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols, suffix)
+      mode
+    endif
+  endif
 
   "let s:buf_nr_list = filter(range(1, bufnr('$')), 'buflisted(v:val)')
   let s:buf_nr_list = map(buf_info, 'v:val.bufnr')
@@ -110,8 +116,7 @@ augroup tablinediy
   autocmd!
    "autocmd BufWinEnter,BufEnter,BufLeave,BufWinLeave * call s:UpdateTabLineFunc(0)
    "autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc(0)
-   autocmd BufWinEnter,BufWinLeave,BufWritePost * call s:UpdateTabLineFunc(0)
-   autocmd WinEnter,WinLeave * call s:UpdateTabLineFunc(0)
+   autocmd BufWinEnter,BufWritePost * call s:UpdateTabLineFunc(0)
 augroup END
 
 " Initialize at the start
