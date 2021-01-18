@@ -11,6 +11,7 @@ function s:UpdateTabLineFunc(flag)
   let i = 0
   let tmp_dict = []
   let current = ''
+  let others = ''
   let buf_info = getbufinfo({'buflisted':1})
   if a:flag
     call sort(buf_info, {a, b -> a.lastused < b.lastused})
@@ -36,8 +37,7 @@ function s:UpdateTabLineFunc(flag)
       " Not support counting yet
       let tmp .= name
     endif
-    let tmp .= '%#TabLine#'
-    "" Seperator
+    " Seperator
     if exists('*WebDevIconsGetFileTypeSymbol')
       let tmp .= ' ' . WebDevIconsGetFileTypeSymbol(name) . ' '
     else
@@ -45,14 +45,15 @@ function s:UpdateTabLineFunc(flag)
     endif
     " Highlight selected.
     if buf.bufnr == bufnr('%')
-      let tmp = '%#TabLineSel#'..tmp
-      let current = tmp
+      let current .= tmp
     else
-      let tmp = '%#TabLine#'..tmp
-      call add(tmp_dict, tmp)
+      let others .= tmp
     endif
   endfor
 
+  let current = '%#TabLineSel#' .. current
+  let others = '%#TabLine#' .. others
+  call add(tmp_dict, others)
   call add(tmp_dict, current)
   let s = join(tmp_dict, '')
 
