@@ -8,7 +8,6 @@ function s:UpdateTabLineFunc(flag)
   if !buflisted(bufnr('%'))
     return
   endif
-  let i = 0
   let tmp_dict = []
   let current = ''
   let others = ''
@@ -16,11 +15,20 @@ function s:UpdateTabLineFunc(flag)
   if a:flag
     call sort(buf_info, {a, b -> a.lastused < b.lastused})
   endif
+  let i = 0
   for buf in buf_info
     let i += 1
-    " Use this tmp to decide append or insert.
-    let tmp = ""
     let name = fnamemodify(buf.name, ':t')
+    let tmp = ""
+
+    " Seperator, put at the front of file
+    if exists('*WebDevIconsGetFileTypeSymbol')
+      let tmp .= ' ' . WebDevIconsGetFileTypeSymbol(name) . ' '
+    else
+      let tmp .= ' | '
+    endif
+
+    " Indicate weather the file is modified
     if buf.changed
       let tmp .= '+'
     endif
@@ -37,12 +45,7 @@ function s:UpdateTabLineFunc(flag)
       " Not support counting yet
       let tmp .= name
     endif
-    " Seperator
-    if exists('*WebDevIconsGetFileTypeSymbol')
-      let tmp .= ' ' . WebDevIconsGetFileTypeSymbol(name) . ' '
-    else
-      let tmp .= ' | '
-    endif
+
     " Highlight selected.
     if buf.bufnr == bufnr('%')
       let current .= tmp
@@ -51,14 +54,14 @@ function s:UpdateTabLineFunc(flag)
     endif
   endfor
 
+  " Assign groups, selected or not.
   let current = '%#TabLineSel#' .. current
   let others = '%#TabLine#' .. others
   call add(tmp_dict, others)
   call add(tmp_dict, current)
   let s = join(tmp_dict, '')
 
-  " Brilliant work, put selected at the first play all
-  " the times
+  " Fill or close group.
   let s .= '%#TabLineFill#%T'
   "let s .= '%=%#TabLine#%999Xclose'
 
