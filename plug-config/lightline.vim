@@ -9,7 +9,7 @@ let g:lightline = {
       \             [ 'percent' ],
       \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
       \ 'inactive': {
-      \  'left': [ [ 'filename' ] ],
+      \  'left': [ [ 'winnr', 'filename' ] ],
       \  'right': [ [ 'lineinfo' ],
       \             [ 'percent' ] ] },
       \ 'tabline': {
