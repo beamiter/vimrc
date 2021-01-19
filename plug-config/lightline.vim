@@ -13,7 +13,7 @@ let g:lightline = {
       \  'right': [ [ 'lineinfo' ],
       \             [ 'percent' ] ] },
       \ 'tabline': {
-      \  'left': [ [ 'tabs' ] ],
+      \  'left': [ [ 'buffers' ] ],
       \  'right': [ [ 'close' ] ] },
       \ 'component_function': {
       \  'cocstatus': 'coc#status',
@@ -21,10 +21,10 @@ let g:lightline = {
       \  'gitstatus': 'GitStatus',
       \ },
       \ 'component_expand': {
-      \ 'tabs': 'lightline#tabs',
+      \ 'buffers': 'lightline#bufferline#buffers',
       \ },
       \ 'component_type': {
-      \ 'tabs': 'tabsel',
+      \ 'buffers': 'tabsel',
       \ },
       \ }
       " \ 'gitbranch': 'FugitiveHead'
@@ -32,7 +32,7 @@ let g:lightline = {
 
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
-function! GitStatus()
+function! GitStatus() abort
   let [a,m,r] = GitGutterGetHunkSummary()
   return printf('+%d ~%d -%d', a, m, r)
 endfunction

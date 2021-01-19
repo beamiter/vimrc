@@ -80,7 +80,7 @@ Plug 'easymotion/vim-easymotion'
 "Plug 'vim-airline/vim-airline-themes'
 " light line for status line and tag line
 Plug 'itchyny/lightline.vim'
-"Plug 'mengelbrecht/lightline-bufferline'
+Plug 'mengelbrecht/lightline-bufferline'
 "Plug 'liuchengxu/eleline.vim'
 "Plug 'romgrk/barbar.nvim' " only support neovim0.5
 
@@ -166,10 +166,6 @@ Plug 'terryma/vim-multiple-cursors'
 
 " Find and replace
 Plug 'brooth/far.vim'
-
-" gutentags is buggy
- ""Vim gutentags
-"Plug 'ludovicchabant/vim-gutentags'
 
 " Interactive scratchpad for hackers
 Plug 'metakirby5/codi.vim'

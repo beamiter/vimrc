@@ -11,7 +11,7 @@ source $HOME/.vim/keys/mappings.vim
 source $HOME/.vim/keys/which-key.vim
 
 source $HOME/.vim/plug-config/any-jump.vim
-"source $HOME/.vim/plug-config/bufferline.vim
+source $HOME/.vim/plug-config/bufferline.vim
 source $HOME/.vim/plug-config/choosewin.vim
 source $HOME/.vim/plug-config/coc-fzf-preview.vim
 source $HOME/.vim/plug-config/coc.vim
@@ -23,7 +23,6 @@ source $HOME/.vim/plug-config/devicons.vim
 source $HOME/.vim/plug-config/easymotion.vim
 source $HOME/.vim/plug-config/format.vim
 source $HOME/.vim/plug-config/fzf.vim
-"source $HOME/.vim/plug-config/gutentags.vim
 source $HOME/.vim/plug-config/lightline.vim
 source $HOME/.vim/plug-config/LeaderF.vim
 source $HOME/.vim/plug-config/memolist.vim

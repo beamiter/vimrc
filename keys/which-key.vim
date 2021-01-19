@@ -50,17 +50,6 @@ let g:which_key_map0['0'] = 'win-10'
 
 let g:which_key_map0['o'] = ['<Plug>TFTPrompt', 'color eggs']
 
-let g:which_key_map['1'] = 'tab-1'
-let g:which_key_map['2'] = 'tab-2'
-let g:which_key_map['3'] = 'tab-3'
-let g:which_key_map['4'] = 'tab-4'
-let g:which_key_map['5'] = 'tab-5'
-let g:which_key_map['6'] = 'tab-6'
-let g:which_key_map['7'] = 'tab-7'
-let g:which_key_map['8'] = 'tab-8'
-let g:which_key_map['9'] = 'tab-9'
-let g:which_key_map['0'] = 'tab-10'
-
 " Coc Search & refactor
 nnoremap <Plug>(CocSearchCurrent) :<C-u>CocSearch
                   \ <C-R>=expand("<cword>")<CR><CR>

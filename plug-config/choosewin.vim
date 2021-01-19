@@ -16,14 +16,14 @@ noremap <silent> <localleader>9 :<C-u>9 wincmd w<CR>
 noremap <silent> <localleader>0 :<C-u>10 wincmd w<CR>
 
 
-" This is my own choose tabs configuration
-noremap <silent> <leader>1 :<C-u>JumpToBuffer 1 <CR>
-noremap <silent> <leader>2 :<C-u>JumpToBuffer 2 <CR>
-noremap <silent> <leader>3 :<C-u>JumpToBuffer 3 <CR>
-noremap <silent> <leader>4 :<C-u>JumpToBuffer 4 <CR>
-noremap <silent> <leader>5 :<C-u>JumpToBuffer 5 <CR>
-noremap <silent> <leader>6 :<C-u>JumpToBuffer 6 <CR>
-noremap <silent> <leader>7 :<C-u>JumpToBuffer 7 <CR>
-noremap <silent> <leader>8 :<C-u>JumpToBuffer 8 <CR>
-noremap <silent> <leader>9 :<C-u>JumpToBuffer 9 <CR>
-noremap <silent> <leader>0 :<C-u>JumpToBuffer 10 <CR>
+"" This is my own choose tabs configuration
+"noremap <silent> <leader>1 :<C-u>JumpToBuffer 1 <CR>
+"noremap <silent> <leader>2 :<C-u>JumpToBuffer 2 <CR>
+"noremap <silent> <leader>3 :<C-u>JumpToBuffer 3 <CR>
+"noremap <silent> <leader>4 :<C-u>JumpToBuffer 4 <CR>
+"noremap <silent> <leader>5 :<C-u>JumpToBuffer 5 <CR>
+"noremap <silent> <leader>6 :<C-u>JumpToBuffer 6 <CR>
+"noremap <silent> <leader>7 :<C-u>JumpToBuffer 7 <CR>
+"noremap <silent> <leader>8 :<C-u>JumpToBuffer 8 <CR>
+"noremap <silent> <leader>9 :<C-u>JumpToBuffer 9 <CR>
+"noremap <silent> <leader>0 :<C-u>JumpToBuffer 10 <CR>
