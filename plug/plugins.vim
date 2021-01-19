@@ -70,6 +70,9 @@ Plug 'mhinz/vim-grepper'
 " Code search and view tool
 Plug 'dyng/ctrlsf.vim'
 
+" Use ctlp
+Plug 'ctrlpvim/ctrlp.vim'
+
 " Easy motion
 Plug 'easymotion/vim-easymotion'
 
@@ -174,6 +177,8 @@ Plug 'metakirby5/codi.vim'
 "" Quick scope
 "Plug 'unblevable/quick-scope'
 
+" Memo list
+Plug 'glidenote/memolist.vim'
 
 " 主题插件
 " collections, ascending by star, use single package every time
