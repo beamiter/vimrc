@@ -24,7 +24,7 @@ source $HOME/.vim/plug-config/easymotion.vim
 source $HOME/.vim/plug-config/format.vim
 source $HOME/.vim/plug-config/fzf.vim
 "source $HOME/.vim/plug-config/gutentags.vim
-"source $HOME/.vim/plug-config/lightline.vim
+source $HOME/.vim/plug-config/lightline.vim
 source $HOME/.vim/plug-config/LeaderF.vim
 source $HOME/.vim/plug-config/memolist.vim
 source $HOME/.vim/plug-config/prettier.vim

@@ -1,34 +1,35 @@
-
 let g:lightline = {
-      \ 'colorscheme': 'powerline',
+      \ 'colorscheme': 'darcula',
       \ 'active': {
-      \   'left': [ [ 'winnr', 'mode', 'paste' ],
-      \             [ 'gitbranch', 'gitstatus', 'readonly',
-      \               'filename', 'modified', 'cocstatus' ] ],
-      \ },
-		  \ 'inactive': {
-		  \ 'left': [ [ 'winnr' ], ['winnr'] ],
-		  \ 'right': [ [ 'lineinfo' ],
-		  \            [ 'percent' ],
-      \            [ 'filename' ] ],
-      \ },
+      \  'left': [ [ 'winnr', 'mode', 'paste' ],
+      \            [ 'gitbranch', 'gitstatus', 'readonly',
+      \              'filename', 'modified',
+      \              'cocstatus' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ],
+      \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
+      \ 'inactive': {
+      \  'left': [ [ 'filename' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ] ] },
       \ 'tabline': {
-      \   'left': [ ['buffers'] ],
-      \   'right': [ ['close'] ]
-      \ },
+      \  'left': [ [ 'tabs' ] ],
+      \  'right': [ [ 'close' ] ] },
       \ 'component_function': {
-      \   'gitbranch': 'FugitiveStatusline',
-      \   'gitstatus': 'GitStatus',
-      \   'tabnum': 'lightline#tab#tabnum',
-			\   'cocstatus': 'coc#status',
+      \  'cocstatus': 'coc#status',
+      \  'gitbranch': 'FugitiveStatusline',
+      \  'gitstatus': 'GitStatus',
       \ },
       \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers',
+      \ 'tabs': 'lightline#tabs',
       \ },
       \ 'component_type': {
-      \   'buffers': 'tabsel'
+      \ 'tabs': 'tabsel',
+      \ },
       \ }
-      \ }
+      " \ 'gitbranch': 'FugitiveHead'
+      " \   'buffers': 'lightline#bufferline#buffers',
+
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 function! GitStatus()

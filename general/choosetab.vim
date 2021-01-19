@@ -74,10 +74,9 @@ function s:UpdateTabLineFunc(flag)
   "echomsg s
   let &l:tabline = s
   " The 'mode' is essential to fix the icon view bug
-  let suffix = fnamemodify(name, ':e')
-  if !empty(suffix) &&
+  if !empty(&filetype) &&
         \ exists('g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols')
-    if has_key(g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols, suffix)
+    if has_key(g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols, &filetype)
       mode
     endif
   endif
