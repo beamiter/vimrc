@@ -1,7 +1,6 @@
 
 " coc configuration
 let g:coc_global_extensions = [
-            \ 'coc-bookmark',
             \ 'coc-cmake',
             \ 'coc-explorer',
             \ 'coc-git',
