@@ -182,7 +182,7 @@ let g:which_key_map.s = {
 let g:which_key_map.t = {
       \ 'name' : '+terminal' ,
       \ ';' : [':FloatermNew --wintype=normal --height=6'       , 'terminal'],
-      \ 'n' : [':FloatermNewNew'                                , 'new'],
+      \ 'n' : [':FloatermNew'                                   , 'new'],
       \ 'j' : [':FloatermNewNext'                               , 'next'],
       \ 'k' : [':FloatermNewPrev'                               , 'prev'],
       \ 't' : [':FloatermToggle'                                , 'toggle'],
