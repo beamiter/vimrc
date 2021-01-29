@@ -83,8 +83,8 @@ let g:which_key_map.a = {
       \ 'q' : ['<Plug>(coc-fix-current)'             , 'quickfix'],
       \ 'r' : ['<Plug>(coc-rename)'                  , 'rename'],
       \ 's' : ['<Plug>(CocSearchCurrent)'            , 'search/refact word'],
-      \ 'u' : ['RandomLocalCS'                       , 'random color scheme'],
-      \ 'v' : ['UpdateLocalCS'                       , 'save color scheme'],
+      \ 'u' : 'random color scheme',
+      \ 'v' : 'save color scheme',
       \ }
 
 " b is for buffers.
