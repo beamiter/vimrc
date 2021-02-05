@@ -1,8 +1,13 @@
-# vimrc
-vimrc
+#+TITLE: My Vim & Emacs Configs
+#+AUTUOR: Yin JiAN
+#+DATE: 02.05.2012
+#+EMAIL: beamiter@163.com
+#+KEYWORDS: Vim, Emacs, LSP
+#+LANGUAGE: Vimscript, Eclisp
 
-install vim to support python2/3
+* *Install vim to support python2/3*
 
+#+BEGIN_SRC shell
 ./configure --with-features=huge \
             --enable-multibyte \
             --enable-rubyinterp=yes \
@@ -14,10 +19,19 @@ install vim to support python2/3
 make
 
 sudo make install
+#+END_SRC
 
-# with-python3-config-dir is deprecated
++with-python3-config-dir+ is deprecated
+#+BEGIN_SRC shell
             --with-python3-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
+#+END_SRC
 
+* *Install python related package*
+#+BEGIN_SRC shell
 pip install --user flake8 autoflake isort coverage
+#+END_SRC
 
-# install 'bat' to support highlight color in preview
+* *Some helpful tips*
+1. install *bat* to support highlight color in preview.
+2. remember to install acompany *clangd* version with *clang*
+   to full lsp support.
