@@ -23,14 +23,14 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 
 " Vim lsp
-Plug 'prabirshrestha/vim-lsp' " vim-lsp
+Plug 'prabirshrestha/vim-lsp'
 "" or
 "Plug 'autozimu/LanguageClient-neovim' " LanguageClient-neovim
 "" or
 "Plug 'neovim/nvim-lsp' " nvim-lsp
 
 " Lsp supported highlight
-Plug 'jackguo380/vim-lsp-cxx-highlight'
+"Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Comment
 Plug 'preservim/nerdcommenter'
@@ -72,11 +72,7 @@ Plug 'mengelbrecht/lightline-bufferline'
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-if has('nvim') || has('patch-8.0.902')
-  Plug 'mhinz/vim-signify'
-else
-  Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
-endif
+"Plug 'mhinz/vim-signify'
 Plug 'junegunn/gv.vim'
 Plug 'lambdalisue/gina.vim'
 Plug 'rhysd/git-messenger.vim'
