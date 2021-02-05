@@ -15,14 +15,11 @@ source $HOME/.vim/plug-config/bufferline.vim
 source $HOME/.vim/plug-config/choosewin.vim
 source $HOME/.vim/plug-config/coc-fzf-preview.vim
 source $HOME/.vim/plug-config/coc.vim
-source $HOME/.vim/plug-config/ctrlp.vim
 source $HOME/.vim/plug-config/ctrlsf.vim
 source $HOME/.vim/plug-config/defx.vim
-source $HOME/.vim/plug-config/denite.vim
 source $HOME/.vim/plug-config/devicons.vim
 source $HOME/.vim/plug-config/easymotion.vim
 source $HOME/.vim/plug-config/format.vim
-source $HOME/.vim/plug-config/fzf.vim
 source $HOME/.vim/plug-config/lightline.vim
 source $HOME/.vim/plug-config/LeaderF.vim
 source $HOME/.vim/plug-config/memolist.vim

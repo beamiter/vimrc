@@ -93,12 +93,10 @@ let g:which_key_map.b = {
       \ 'b' : [':LeaderfBuffer'                 , 'buffers'],
       \ 'c' : [':CocList buffers'               , 'coc buffers'],
       \ 'd' : [':bwipeout'                      , 'wipeout buffer'],
-      \ 'e' : [':Denite buffer'                 , 'denite buffers'],
       \ 'f' : [':LeaderfBuffer'                 , 'leaderf buffer'],
       \ 'm' : [':CocList bcommits'              , 'coc buffer commits'],
       \ 'M' : [':BCommits'                      , 'fzf buffer commits'],
       \ 'o' : [':CocList outline'               , 'coc outline'],
-      \ 'O' : [':Denite outline'                , 'denite outline'],
       \ 'z' : [':Buffers'                       , 'fzf buffer'],
       \}
 
@@ -113,9 +111,7 @@ let g:which_key_map.c = {
 let g:which_key_map.f = {
       \ 'name' : '+files',
       \ 'c' : [':CocList files'                 , 'coc file'],
-      \ 'd' : [':Denite file/rec'               , 'denite file/rec'],
       \ 'h' : [':History'                       , 'fzf history'],
-      \ 'H' : [':Denite file/old'               , 'denite file/old'],
       \ 'f' : [':LeaderfFile'                   , 'leaderf file'],
       \ 'm' : [':CocList mru'                   , 'coc mru'],
       \ 'M' : [':LeaderfMru'                    , 'leaderf mru'],
@@ -169,7 +165,6 @@ let g:which_key_map.s = {
       \ 'A' : [':Farr --source=agnvim'                         , 'farr agnvim'],
       \ 'd' : [':CocList diagnostics --current-buf'            , 'current diagnostics'],
       \ 'f' : ['<Plug>LeaderfRgPrompt'                         , 'leaderf rg prompt'],
-      \ 'g' : [':Denite grep'                                  , 'denite grep'],
       \ 'q' : [':CocList quickfix'                             , 'quickfix'],
       \ 'r' : ['<Plug>RgPrompt'                                , 'rg search'],
       \ 'R' : [':Farr --source=rgnvim'                         , 'farr rgnvim'],

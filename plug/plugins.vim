@@ -18,8 +18,6 @@ call plug#begin('~/.vim/plugged')
 " Intelligence
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"" use coc-fzf-preview instead
-"Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 
 " Luanguage pack
 Plug 'sheerun/vim-polyglot'
@@ -36,29 +34,20 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Comment
 Plug 'preservim/nerdcommenter'
-"Plug 'scrooloose/nerdcommenter'
 
 " Tagbar
 Plug 'preservim/tagbar'
 
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/defx.nvim'
-  Plug 'Shougo/denite.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-"Plug 'preservim/nerdtree'
 
 " Fzf asynchronous search
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Vim script RPC
-"Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/rpc' }
-" Remote Plugins
-"Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/remote', 'do': ':UpdateRemotePlugins' }
 Plug 'junegunn/fzf.vim'
 
 " LeaderF asynchronous search
@@ -70,9 +59,6 @@ Plug 'mhinz/vim-grepper'
 " Code search and view tool
 Plug 'dyng/ctrlsf.vim'
 
-" Use ctlp
-Plug 'ctrlpvim/ctrlp.vim'
-
 " Easy motion
 Plug 'easymotion/vim-easymotion'
 
@@ -82,7 +68,6 @@ Plug 'easymotion/vim-easymotion'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 "Plug 'liuchengxu/eleline.vim'
-"Plug 'romgrk/barbar.nvim' " only support neovim0.5
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -121,10 +106,6 @@ Plug 'junegunn/vim-emoji'
 " Even better % nv&hl matching words
 Plug 'andymass/vim-matchup'
 
-" do not use vim-mundo
-"" Undo from history
-"Plug 'simnalamburt/vim-mundo'
-
 " More powerful repeat
 Plug 'tpope/vim-repeat'
 
@@ -156,8 +137,6 @@ Plug 'luochen1990/rainbow'
 "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 "Plug 'dominikduda/vim_current_word'
 
-"Plug 'RRethy/vim-illuminate'
-
 " Vim rooter
 Plug 'airblade/vim-rooter'
 
@@ -169,9 +148,6 @@ Plug 'brooth/far.vim'
 
 " Interactive scratchpad for hackers
 Plug 'metakirby5/codi.vim'
-
-"" Quick scope
-"Plug 'unblevable/quick-scope'
 
 " Memo list
 Plug 'glidenote/memolist.vim'
