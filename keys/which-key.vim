@@ -116,6 +116,8 @@ let g:which_key_map.f = {
       \ 'm' : [':CocList mru'                   , 'coc mru'],
       \ 'M' : [':LeaderfMru'                    , 'leaderf mru'],
       \ 't' : [':LeaderfBufTag'                 , 'leaderf buf tag'],
+      \ 's' : [':Vista!!'                       , 'vista toggle'],
+      \ 'S' : [':TagbarToggle'                  , 'tagbar toggle'],
       \ 'z' : [':Files'                         , 'fzf file'],
       \}
 
@@ -172,15 +174,14 @@ let g:which_key_map.s = {
       \}
 
 
-" t is for terminal
-let g:which_key_map.t = {
-      \ 'name' : '+terminal' ,
-      \ ';' : [':FloatermNew --wintype=normal --height=6'       , 'terminal'],
-      \ 'n' : [':FloatermNew'                                   , 'new'],
-      \ 'j' : [':FloatermNewNext'                               , 'next'],
-      \ 'k' : [':FloatermNewPrev'                               , 'prev'],
-      \ 't' : [':FloatermToggle'                                , 'toggle'],
-      \ }
+	nnoremap   <silent>   <F5>    :FloatermPrev<CR>
+	tnoremap   <silent>   <F5>    <C-\><C-n>:FloatermPrev<CR>
+	nnoremap   <silent>   <F6>    :FloatermNew<CR>
+	tnoremap   <silent>   <F6>    <C-\><C-n>:FloatermNew<CR>
+	nnoremap   <silent>   <F7>    :FloatermNext<CR>
+	tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNext<CR>
+	nnoremap   <silent>   <F8>    :FloatermToggle<CR>
+	tnoremap   <silent>   <F8>    <C-\><C-n>:FloatermToggle<CR>
 
 
 " r is for previews
