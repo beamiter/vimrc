@@ -28,7 +28,8 @@ sudo make install
 
 * *Install python related package*
 #+BEGIN_SRC shell
-pip install --user flake8 autoflake isort coverage yapf
+pip install --user flake8 autoflake isort coverage yapf autopep8 pylint
+conda install flake8 autoflake isort coverage yapf autopep8 pylint
 #+END_SRC
 
 * *Some helpful tips*
