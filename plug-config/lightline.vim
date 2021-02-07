@@ -13,7 +13,7 @@ let g:lightline = {
       \  'right': [ [ 'lineinfo' ],
       \             [ 'percent' ] ] },
       \ 'tabline': {
-      \  'left': [ [ 'buffers' ] ],
+		  \  'left': [ [ 'readonly', 'absolutepath', 'modified' ] ],
       \  'right': [ [ 'close' ] ] },
       \ 'component_function': {
       \  'cocstatus': 'coc#status',
@@ -21,14 +21,12 @@ let g:lightline = {
       \  'gitstatus': 'GitStatus',
       \ },
       \ 'component_expand': {
-      \ 'buffers': 'lightline#bufferline#buffers',
       \ },
       \ 'component_type': {
       \ 'buffers': 'tabsel',
       \ },
       \ }
       " \ 'gitbranch': 'FugitiveHead'
-      " \   'buffers': 'lightline#bufferline#buffers',
 
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 

@@ -37,17 +37,6 @@ vnoremap <silent> <leader> :silent <c-u> :silent WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :silent <c-u> :silent WhichKey ','<CR>
 vnoremap <silent> <localleader> :silent <c-u> :silent WhichKeyVisual ','<CR>
 
-let g:which_key_map0['1'] = 'win-1'
-let g:which_key_map0['2'] = 'win-2'
-let g:which_key_map0['3'] = 'win-3'
-let g:which_key_map0['4'] = 'win-4'
-let g:which_key_map0['5'] = 'win-5'
-let g:which_key_map0['6'] = 'win-6'
-let g:which_key_map0['7'] = 'win-7'
-let g:which_key_map0['8'] = 'win-8'
-let g:which_key_map0['9'] = 'win-9'
-let g:which_key_map0['0'] = 'win-10'
-
 let g:which_key_map0['o'] = ['<Plug>TFTPrompt', 'color eggs']
 
 " Coc Search & refactor
