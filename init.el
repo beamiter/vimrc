@@ -56,7 +56,20 @@
 (global-evil-leader-mode)
 (evil-leader/set-leader "<SPC>")
 (evil-mode 1)
+(projectile-mode 1)
+(which-key-setup-minibuffer)
 (which-key-mode)
+
+;; -------- key mapping --------
+;; Allow C-h to trigger which-key before it is done automatically
+(setq which-key-show-early-on-C-h t)
+(setq which-key-idle-delay 1)
+(define-key projectile-mode-map (kbd "C-c p") `projectile-command-map)
+(evil-leader/set-key
+  "ff" 'find-file
+  "bb" 'switch-to-buffer
+  "bk" 'kill-buffer
+  "p"  'projectile-command-map)
 
 ;; -------- normal default --------
 (setq make-backup-files nil)
@@ -66,26 +79,30 @@
 (helm-mode 1)
 (setq lsp-enable-file-watchers nil)
 (setq lsp-rust-sysroot 1)
-(projectile-mode +1)
 (dashboard-setup-startup-hook)
 
 ;; -------- themes --------
 (load-theme 'monokai 1)
 
-;; -------- key mapping --------
-(define-key projectile-mode-map (kbd "C-c p") `projectile-command-map)
+;; -------- ui --------
+(setq lsp-ui-doc-enable nil)
 
 ;; -------- lsp --------
 (global-company-mode 1)
 (add-hook 'c++-mode-hook #'lsp-deferred)
-(add-hook 'rust-mode-hook #'lsp-deferred)
-(require 'lsp-pyright)
-(add-hook 'python-mode-hook #'lsp-deferred)
-;(use-package lsp-pyright
-  ;:ensure t
-  ;:hook (python-mode . (lambda ()
-                          ;(require 'lsp-pyright)
-                          ;(lsp))))  ; or lsp-deferred
+;(add-hook 'rust-mode-hook #'lsp-deferred)
+(use-package rust-mode
+  :ensure t
+  :hook (rust-mode . (lambda ()
+                       (require 'rust-mode)
+                       (lsp))))
+;(require 'lsp-pyright)
+;(add-hook 'python-mode-hook #'lsp-deferred)
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
 
 ;(require 'lsp-python-ms)
 ;(setq lsp-python-ms-auto-install-server t)
