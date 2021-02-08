@@ -74,7 +74,7 @@
 ;; -------- normal default --------
 (setq make-backup-files nil)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+;(scroll-bar-mode -1)
 (electric-pair-mode 1)
 (helm-mode 1)
 (setq lsp-enable-file-watchers nil)
