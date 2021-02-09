@@ -28,8 +28,14 @@ sudo make install
 
 * *Install python related package*
 #+BEGIN_SRC shell
-pip install --user flake8 autoflake isort coverage yapf autopep8 pylint
+pip3 install --user flake8 autoflake isort coverage yapf autopep8 pylint
 conda install flake8 autoflake isort coverage yapf autopep8 pylint
+pip3 install python-language-server
+#+END_SRC
+
+* *Install rust lsp*
+#+BEGIN_SRC shell
+rustup component add rls rust-analyser rust-src
 #+END_SRC
 
 * *Some helpful tips*
