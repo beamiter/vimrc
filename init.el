@@ -10,6 +10,8 @@
                       company
                       dap-mode
                       dashboard
+                      doom-modeline
+                      doom-themes
                       evil
                       flycheck
                       ;helm-lsp
@@ -24,7 +26,6 @@
                       lsp-ui
                       magit
                       monokai-theme
-                      project
                       projectile
                       undo-fu
                       undo-tree
@@ -52,43 +53,88 @@
 ;; -----------------------------------------------------------------------------
 
 
-;; -------- startup --------
-;(dashboard-setup-startup-hook)
-
-;; -------- key binding --------
-(global-evil-leader-mode)
-(evil-leader/set-leader "<SPC>")
-(evil-mode 1)
-(projectile-mode 1)
-(which-key-setup-minibuffer)
-(which-key-mode)
-
-;; -------- key mapping --------
-;; Allow C-h to trigger which-key before it is done automatically
-(setq which-key-show-early-on-C-h t)
-(setq which-key-idle-delay 1)
-(define-key projectile-mode-map (kbd "C-c p") `projectile-command-map)
-(evil-leader/set-key
-  "ff" 'find-file
-  "bb" 'switch-to-buffer
-  "bk" 'kill-buffer
-  "p"  'projectile-command-map)
-
 ;; -------- normal default --------
 (setq make-backup-files nil)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 ;(scroll-bar-mode -1)
 (electric-pair-mode 1)
-(helm-mode 1)
-(setq lsp-enable-file-watchers nil)
-(setq lsp-rust-sysroot 1)
+
+;; -------- startup --------
+(dashboard-setup-startup-hook)
+
+;; -------- key binding --------
+(use-package evil-leader
+  :config
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+    "ff" 'find-file
+    "bb" 'switch-to-buffer
+    "bk" 'kill-buffer
+    "p"  'projectile-command-map)
+  :ensure t
+  :hook (after-init . (lambda ()
+                        (global-evil-leader-mode)
+                        (evil-mode 1))))
+;(projectile-mode 1)
+(use-package projectile
+  :config
+  (define-key projectile-mode-map (kbd "C-c p") `projectile-command-map)
+  :ensure t
+  :hook (after-init . projectile-mode))
+
+(use-package helm
+  :ensure t
+  :hook (after-init . (lambda() (helm-mode 1))))
+
+(use-package lsp-mode
+  :config
+  (setq lsp-enable-file-watchers nil)
+  (setq lsp-rust-sysroot 1)
+  :ensure t)
 
 ;; -------- themes --------
-(load-theme 'monokai 1)
+;(load-theme 'monokai 1)
+(use-package all-the-icons)
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
+
+(use-package doom-themes
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t)
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 ;; -------- ui --------
-(setq lsp-ui-doc-enable nil)
+(use-package lsp-ui
+  :config
+  (setq lsp-ui-doc-enable nil)
+  :ensure t)
+
+;; -------- key mapping --------
+;; We should put it at the last to avoud bug
+;; Allow C-h to trigger which-key before it is done automatically
+(use-package which-key
+  :config
+  (setq which-key-show-early-on-C-h t)
+  (setq which-key-idle-delay 1)
+  :ensure t
+  :hook (after-init . (lambda ()
+                        (which-key-setup-minibuffer)
+                        (which-key-mode)
+                        )))
 
 ;; -------- lsp --------
 (global-company-mode 1)
@@ -130,10 +176,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(display-line-numbers (quote relative))
+ '(display-line-numbers 'relative)
  '(inhibit-startup-screen t)
  '(lsp-ui-sideline-actions-icon nil)
- '(package-selected-packages (quote (lsp-mode monokai-theme company))))
+ '(package-selected-packages '(lsp-mode monokai-theme company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
