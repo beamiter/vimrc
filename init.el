@@ -52,6 +52,9 @@
 ;; -----------------------------------------------------------------------------
 
 
+;; -------- startup --------
+;(dashboard-setup-startup-hook)
+
 ;; -------- key binding --------
 (global-evil-leader-mode)
 (evil-leader/set-leader "<SPC>")
@@ -74,12 +77,12 @@
 ;; -------- normal default --------
 (setq make-backup-files nil)
 (tool-bar-mode -1)
+(menu-bar-mode -1)
 ;(scroll-bar-mode -1)
 (electric-pair-mode 1)
 (helm-mode 1)
 (setq lsp-enable-file-watchers nil)
 (setq lsp-rust-sysroot 1)
-(dashboard-setup-startup-hook)
 
 ;; -------- themes --------
 (load-theme 'monokai 1)
