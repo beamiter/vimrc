@@ -35,9 +35,6 @@ Plug 'prabirshrestha/vim-lsp'
 " Comment
 Plug 'preservim/nerdcommenter'
 
-" Tagbar
-Plug 'preservim/tagbar'
-
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 else

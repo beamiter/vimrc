@@ -35,12 +35,6 @@ let g:vista#renderer#icons = {
 \   "variable": "\uf71b",
 \  }
 
-" This is the tagbar configuration
-let g:tagbar_autofocus = 1
-let g:tagbar_show_visibility = 1
-let g:tagbar_previewwin_pos = "rightbelow"
-let g:tagbar_width = 45
-
 let g:clang_format#style_options = {
             \ "AccessModifierOffset" : -4,
             \ "AllowShortIfStatementsOnASingleLine" : "true",

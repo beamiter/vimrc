@@ -106,7 +106,6 @@ let g:which_key_map.f = {
       \ 'M' : [':LeaderfMru'                    , 'leaderf mru'],
       \ 't' : [':LeaderfBufTag'                 , 'leaderf buf tag'],
       \ 's' : [':Vista!!'                       , 'vista toggle'],
-      \ 'S' : [':TagbarToggle'                  , 'tagbar toggle'],
       \ 'z' : [':Files'                         , 'fzf file'],
       \}
 
