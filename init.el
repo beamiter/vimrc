@@ -13,6 +13,7 @@
                       doom-modeline
                       doom-themes
                       evil
+                      evil-nerd-commenter
                       flycheck
                       ;helm-lsp
                       helm
@@ -30,6 +31,7 @@
                       undo-fu
                       undo-tree
                       use-package
+                      vimrc-mode
                       which-key
                       ))
 (setq package-selected-packages my/packages)
