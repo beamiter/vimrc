@@ -172,6 +172,7 @@
   :ensure t
   :defer t
   :init
+  (defvar treemacs-no-load-time-warnings t)
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config
@@ -269,10 +270,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(display-line-numbers 'relative)
+ '(display-line-numbers (quote relative))
  '(inhibit-startup-screen t)
  '(lsp-ui-sideline-actions-icon nil)
- '(package-selected-packages '(lsp-mode monokai-theme company)))
+ '(package-selected-packages (quote (lsp-mode monokai-theme company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
