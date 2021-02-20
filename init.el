@@ -20,6 +20,7 @@
                       evil
                       evil-nerd-commenter
                       flycheck
+                      git-gutter
                       ;helm-lsp
                       helm
                       ivy
