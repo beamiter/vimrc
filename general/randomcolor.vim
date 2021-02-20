@@ -1,6 +1,7 @@
 " Set default colorscheme here
 "codedark  dracula alduin ayu space-vim-dark
-colorscheme angr
+"colorscheme angr
+colorscheme purify
 
 " Json to store ever-selected colorscheme info
 let s:local_color_json = $HOME..'/.vim/color.json'

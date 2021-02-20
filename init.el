@@ -5,6 +5,7 @@
 (package-initialize)
 
 (defvar my/packages '(
+                      ag
                       all-the-icons
                       evil-leader
                       clang-format
@@ -30,6 +31,8 @@
                       magit
                       monokai-theme
                       projectile
+                      rainbow-delimiters
+                      ripgrep
                       undo-fu
                       undo-tree
                       use-package
@@ -59,10 +62,12 @@
 
 ;; -------- normal default --------
 (setq make-backup-files nil)
-(tool-bar-mode -1)
+(setq scroll-conservatively 101)
+(show-paren-mode 1)
+(electric-pair-mode 1)
 (menu-bar-mode -1)
 ;(scroll-bar-mode -1)
-(electric-pair-mode 1)
+(tool-bar-mode -1)
 
 ;; -------- startup --------
 (dashboard-setup-startup-hook)
@@ -72,9 +77,6 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    "ff" 'find-file
-    "bb" 'switch-to-buffer
-    "bk" 'kill-buffer
     "ci" 'evilnc-comment-or-uncomment-lines
     "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
     "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
@@ -151,6 +153,7 @@
 
 ;; -------- lsp --------
 (global-company-mode 1)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'c++-mode-hook #'lsp-deferred)
 ;(add-hook 'rust-mode-hook #'lsp-deferred)
 (use-package rust-mode
