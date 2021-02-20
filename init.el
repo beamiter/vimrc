@@ -91,7 +91,6 @@
   :hook (after-init . (lambda ()
                         (global-evil-leader-mode)
                         (evil-mode 1))))
-;(projectile-mode 1)
 (use-package projectile
   :config
   (define-key projectile-mode-map (kbd "C-c p") `projectile-command-map)
@@ -124,12 +123,6 @@
   (load-theme 'doom-one t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;; (doom-themes-neotree-config)
-  ;; or for treemacs users
-  ;;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  ;;(doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
 ;; -------- ui --------
@@ -182,6 +175,7 @@
 ;(add-hook 'before-save-hook (lambda () (when (eq 'rust-mode major-mode)
                                            ;(lsp-format-buffer))))
 
+;; -------- treemacs config --------
 (use-package treemacs
   :ensure t
   :defer t
@@ -276,7 +270,12 @@
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
 
+;; -------- evil nerd commenter --------
 (evilnc-default-hotkeys)
+
+;; -------- git gutter --------
+(global-git-gutter-mode t)
+
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
