@@ -7,6 +7,8 @@
 (defvar my/packages '(
                       ag
                       all-the-icons
+                      avy
+                      evil-easymotion
                       evil-leader
                       clang-format
                       company
@@ -275,6 +277,11 @@
 
 ;; -------- git gutter --------
 (global-git-gutter-mode t)
+
+; -------- avy --------
+(use-package avy
+  :config
+  (global-set-key (kbd "M-s") 'avy-goto-char-2))
 
 
 ;; -----------------------------------------------------------------------------
