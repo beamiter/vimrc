@@ -7,7 +7,9 @@
 (defvar my/packages '(
                       all-the-icons
                       evil-leader
+                      clang-format
                       company
+                      company-lsp
                       dap-mode
                       dashboard
                       doom-themes
