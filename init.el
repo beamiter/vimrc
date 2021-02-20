@@ -75,6 +75,15 @@
     "ff" 'find-file
     "bb" 'switch-to-buffer
     "bk" 'kill-buffer
+    "ci" 'evilnc-comment-or-uncomment-lines
+    "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
+    "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
+    "cc" 'evilnc-copy-and-comment-lines
+    "cp" 'evilnc-comment-or-uncomment-paragraphs
+    "cr" 'comment-or-uncomment-region
+    "cv" 'evilnc-toggle-invert-comment-line-by-line
+    "."  'evilnc-copy-and-comment-operator
+    "\\" 'evilnc-comment-operator ; if you prefer backslash key
     "p"  'projectile-command-map)
   :ensure t
   :hook (after-init . (lambda ()
@@ -263,6 +272,9 @@
   :after treemacs persp-mode ;;or perspective vs. persp-mode
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
+
+(evilnc-default-hotkeys)
+
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
