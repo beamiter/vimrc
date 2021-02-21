@@ -12,11 +12,12 @@ source $HOME/.vim/keys/which-key.vim
 
 source $HOME/.vim/plug-config/any-jump.vim
 source $HOME/.vim/plug-config/choosewin.vim
-source $HOME/.vim/plug-config/coc-fzf-preview.vim
-source $HOME/.vim/plug-config/coc.vim
+"source $HOME/.vim/plug-config/coc-fzf-preview.vim
+"source $HOME/.vim/plug-config/coc.vim
 source $HOME/.vim/plug-config/ctrlsf.vim
 source $HOME/.vim/plug-config/defx.vim
 source $HOME/.vim/plug-config/devicons.vim
+source $HOME/.vim/plug-config/deoplete.vim
 source $HOME/.vim/plug-config/easymotion.vim
 source $HOME/.vim/plug-config/format.vim
 source $HOME/.vim/plug-config/lightline.vim

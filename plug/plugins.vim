@@ -17,13 +17,16 @@ call plug#begin('~/.vim/plugged')
 
 " Intelligence
 " Use release branch (recommend)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Luanguage pack
 Plug 'sheerun/vim-polyglot'
 
 " Vim lsp
 Plug 'prabirshrestha/vim-lsp'
+" auto configurations for language server for vim-lsp
+Plug 'mattn/vim-lsp-settings'
+" deoplete source for vim-lsp
+Plug 'lighttiger2505/deoplete-vim-lsp'
 "" or
 "Plug 'autozimu/LanguageClient-neovim' " LanguageClient-neovim
 "" or
@@ -37,8 +40,12 @@ Plug 'preservim/nerdcommenter'
 
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+  " dard powered asynchronous completion framework
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/defx.nvim'
+  " dard powered asynchronous completion framework
+  Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif

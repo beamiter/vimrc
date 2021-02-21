@@ -39,12 +39,6 @@ vnoremap <silent> <localleader> :silent <c-u> :silent WhichKeyVisual ','<CR>
 
 let g:which_key_map0['o'] = ['<Plug>TFTPrompt', 'color eggs']
 
-" Coc Search & refactor
-nnoremap <Plug>(CocSearchCurrent) :<C-u>CocSearch
-                  \ <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Plug>(GrepCurrentWord) :<C-u>CocCommand fzf-preview.ProjectGrep
-                  \ <C-R>=expand("<cword>")<CR><CR>
-
 "" Hide status line
 "autocmd! FileType which_key
 "autocmd  FileType which_key set laststatus=0 noshowmode noruler
@@ -60,18 +54,7 @@ command! -nargs=0 GCurrent :call GitCurrentFile()
 " a is for actions.
 let g:which_key_map.a = {
       \ 'name' : '+actions' ,
-      \ ';' : ['<Plug>(coc-refactor)'                , 'refactor'],
-      \ 'a' : ['<Plug>(coc-codeaction)'              , 'code action'],
-      \ 'A' : ['<Plug>(coc-codeaction-selected)'     , 'selected action'],
       \ 'f' : [':Neoformat'                          , 'format files'],
-      \ 'l' : [':CocList lists'                      , 'lists'],
-      \ 'n' : ['<Plug>(coc-diagnostic-next)'         , 'next diagnostic'],
-      \ 'N' : ['<Plug>(coc-diagnostic-next-error)'   , 'next error'],
-      \ 'P' : ['<Plug>(coc-diagnostic-prev-error)'   , 'prev error'],
-      \ 'p' : ['<Plug>(coc-diagnostic-prev)'         , 'prev diagnostic'],
-      \ 'q' : ['<Plug>(coc-fix-current)'             , 'quickfix'],
-      \ 'r' : ['<Plug>(coc-rename)'                  , 'rename'],
-      \ 's' : ['<Plug>(CocSearchCurrent)'            , 'search/refact word'],
       \ 'u' : 'random color scheme',
       \ 'v' : 'save color scheme',
       \ }
@@ -80,12 +63,9 @@ let g:which_key_map.a = {
 let g:which_key_map.b = {
       \ 'name' : '+buffers',
       \ 'b' : [':LeaderfBuffer'                 , 'buffers'],
-      \ 'c' : [':CocList buffers'               , 'coc buffers'],
       \ 'd' : [':bwipeout'                      , 'wipeout buffer'],
       \ 'f' : [':LeaderfBuffer'                 , 'leaderf buffer'],
-      \ 'm' : [':CocList bcommits'              , 'coc buffer commits'],
       \ 'M' : [':BCommits'                      , 'fzf buffer commits'],
-      \ 'o' : [':CocList outline'               , 'coc outline'],
       \ 'z' : [':Buffers'                       , 'fzf buffer'],
       \}
 
@@ -99,10 +79,8 @@ let g:which_key_map.c = {
 " f is for files
 let g:which_key_map.f = {
       \ 'name' : '+files',
-      \ 'c' : [':CocList files'                 , 'coc file'],
       \ 'h' : [':History'                       , 'fzf history'],
       \ 'f' : [':LeaderfFile'                   , 'leaderf file'],
-      \ 'm' : [':CocList mru'                   , 'coc mru'],
       \ 'M' : [':LeaderfMru'                    , 'leaderf mru'],
       \ 't' : [':LeaderfBufTag'                 , 'leaderf buf tag'],
       \ 's' : [':Vista!!'                       , 'vista toggle'],
@@ -115,7 +93,6 @@ let g:which_key_map.g = {
       \ 'name' : '+git' ,
       \ 'b' : [':Git blame'                          , 'fzf blame'],
       \ 'B' : [':Gina blame'                         , 'gina blame'],
-      \ 'c' : [':CocList bcommits'                   , 'coc buffer commits'],
       \ 'C' : [':BCommits'                           , 'fzf buffer commits'],
       \ 'd' : [':Git diff'                           , 'git diff'],
       \ 'D' : [':Gina diff'                          , 'gina diff'],
@@ -128,7 +105,6 @@ let g:which_key_map.g = {
       \ 'k' : ['<Plug>(GitGutterPrevHunk)'           , 'prev hunk'],
       \ 'l' : [':Git log'                            , 'git log'],
       \ 'm' : 'git messenger' ,
-      \ 'o' : [':CocList commits'                    , 'coc commits'],
       \ 'O' : [':Commits'                            , 'fzf commits'],
       \ 's' : [':GFiles?'                            , 'git status'],
       \ 'S' : [':Gstatus'                            , 'fugitive status'],
@@ -152,9 +128,7 @@ let g:which_key_map.s = {
       \ 'name' : '+search&replace' ,
       \ 'a' : ['<Plug>AgPrompt'                                , 'ag search'],
       \ 'A' : [':Farr --source=agnvim'                         , 'farr agnvim'],
-      \ 'd' : [':CocList diagnostics --current-buf'            , 'current diagnostics'],
       \ 'f' : ['<Plug>LeaderfRgPrompt'                         , 'leaderf rg prompt'],
-      \ 'q' : [':CocList quickfix'                             , 'quickfix'],
       \ 'r' : ['<Plug>RgPrompt'                                , 'rg search'],
       \ 'R' : [':Farr --source=rgnvim'                         , 'farr rgnvim'],
       \ 's' : [':CtrlSF'                                       , 'find in project'],
@@ -172,32 +146,9 @@ let g:which_key_map.s = {
 	tnoremap   <silent>   <F8>    <C-\><C-n>:FloatermToggle<CR>
 
 
-" r is for previews
-let g:which_key_map.r = {
-      \ 'name' : '+preview' ,
-      \ 'a' : [':CocCommand fzf-preview.CocCurrentDiagnostics'      , 'current diagnostics'],
-      \ 'b' : [':CocCommand fzf-preview.Buffers'                    , 'file buffers'],
-      \ 'c' : [':CocCommand fzf-preview.GitActions'                 , 'git actions'],
-      \ 'd' : [':CocCommand fzf-preview.DirectoryFiles'             , 'directory files'],
-      \ 'f' : [':CocCommand fzf-preview.ProjectFiles'               , 'project files'],
-      \ 'g' : [':CocCommand fzf-preview.GitFiles'                   , 'git files'],
-      \ 'h' : [':CocCommand fzf-preview.ProjectOldFiles'            , 'project old files'],
-      \ 'H' : [':CocCommand fzf-preview.OldFiles'                   , 'old files'],
-      \ 'l' : [':CocCommand fzf-preview.GitCurrentLogs'             , 'git current logs'],
-      \ 'L' : [':CocCommand fzf-preview.GitLogs'                    , 'git logs'],
-      \ 'm' : [':CocCommand fzf-preview.ProjectMruFiles'            , 'project mru files'],
-      \ 'M' : [':CocCommand fzf-preview.MruFiles'                   , 'mru files'],
-      \ 'q' : [':CocCommand fzf-preview.QuickFix'                   , 'quick fix'],
-      \ 's' : [':CocCommand fzf-preview.GitStatus'                  , 'git status'],
-      \ 't' : [':CocCommand fzf-preview.BufferTags'                 , 'current buffer tags'],
-      \ 'w' : ['<Plug>(GrepCurrentWord)'                            , 'grep current word'],
-      \ }
-
-
 " w is for windows
 let g:which_key_map.w = {
       \ 'name' : '+windows',
-      \ 'c' : [':CocList windows'                , 'coc windows'],
       \ 'f' : [':LeaderfWindow'                  , 'leaderf windows'],
       \ 's' : [':wincmd s'                       , 'horizontal split'],
       \ 'v' : [':wincmd v'                       , 'vertical split'],

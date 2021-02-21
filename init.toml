@@ -24,9 +24,6 @@
     enable_tabline_filetype_icon = true
     enable_statusline_mode = false
 
-    # use coc for auto aomplete
-    autocomplete_method = "coc"
-
     disabled_plugins = ["neomake"]
     enable_language_specific_leader = false
 

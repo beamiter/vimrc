@@ -3,8 +3,8 @@ let g:vista_curser_delay = 100
 let g:vista_echo_cursor_stragegy = 'both'
 " Executive used when opening vista sidebar without specifying it.
 " See all the avaliable executives via `:echo g:vista#executives`.
-let g:vista_default_executive = 'coc'
-let g:vista_finder_alternative_executives = ['coc', 'ctags', 'vim_lsp', 'nvim_lsp']
+let g:vista_default_executive = 'vim_lsp'
+let g:vista_finder_alternative_executives = ['ctags', 'vim_lsp', 'nvim_lsp']
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 
 " How each level is indented and what to prepend.
