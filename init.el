@@ -67,6 +67,8 @@
 ;; -------- normal default --------
 (setq make-backup-files nil)
 (setq scroll-conservatively 101)
+;; set frame transparency
+(set-frame-parameter nil 'alpha '(95 . 100))
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (menu-bar-mode -1)
