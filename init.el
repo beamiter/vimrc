@@ -75,6 +75,7 @@
 (menu-bar-mode -1)
 ;(scroll-bar-mode -1)
 (tool-bar-mode -1)
+(xterm-mouse-mode t)
 
 ;; -------- startup --------
 (dashboard-setup-startup-hook)
