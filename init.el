@@ -8,6 +8,7 @@
                       ag
                       all-the-icons
                       avy
+                      eglot
                       evil-easymotion
                       evil-leader
                       clang-format
