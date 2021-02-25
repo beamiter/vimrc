@@ -99,6 +99,14 @@
   :hook (after-init . (lambda ()
                         (global-evil-leader-mode)
                         (evil-mode 1))))
+
+;; customize the company select short cut
+(with-eval-after-load "company"
+  (define-key company-active-map (kbd "C-p") #'company-select-previous-or-abort)
+  (define-key company-active-map (kbd "C-k") #'company-select-previous-or-abort)
+  (define-key company-active-map (kbd "C-n") #'company-select-next-or-abort)
+  (define-key company-active-map (kbd "C-j") #'company-select-next-or-abort))
+
 (use-package projectile
   :config
   (define-key projectile-mode-map (kbd "C-c p") `projectile-command-map)
