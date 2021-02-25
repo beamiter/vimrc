@@ -100,6 +100,10 @@
                         (global-evil-leader-mode)
                         (evil-mode 1))))
 
+;; evil custome key maps
+(define-key evil-normal-state-map (kbd "[c") 'git-gutter:previous-hunk)
+(define-key evil-normal-state-map (kbd "]c") 'git-gutter:next-hunk)
+
 ;; customize the company select short cut
 (with-eval-after-load "company"
   (define-key company-active-map (kbd "C-p") #'company-select-previous-or-abort)
@@ -399,7 +403,7 @@
 ; -------- avy --------
 (use-package avy
   :config
-  (global-set-key (kbd "M-s") 'avy-goto-char-2))
+  (define-key evil-normal-state-map (kbd "s") 'avy-goto-char-2))
 
 
 ;; -----------------------------------------------------------------------------
@@ -411,10 +415,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(display-line-numbers 'relative)
+ '(display-line-numbers (quote relative))
+ '(evil-undo-system (quote undo-fu))
  '(inhibit-startup-screen t)
  '(lsp-ui-sideline-actions-icon nil)
- '(package-selected-packages '(lsp-mode monokai-theme company)))
+ '(package-selected-packages (quote (lsp-mode monokai-theme company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
