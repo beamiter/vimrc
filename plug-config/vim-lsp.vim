@@ -25,7 +25,7 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
     " I love this autocmd as it will close quickfix automatically after I
     " choose some thing in it.
-    autocmd FileType qf nnoremap <buffer> <CR> <CR> :cclose<CR>
+    autocmd FileType qf nnoremap <buffer><silent> <CR> <CR> :cclose<CR>
 augroup END
 
 let g:lsp_use_lua = has('nvim-0.4.0') || (has('lua') && has('patch-8.2.0775'))
