@@ -43,6 +43,7 @@
                       use-package
                       vimrc-mode
                       which-key
+                      xclip
                       ))
 (setq package-selected-packages my/packages)
 ;(add-to-list 'my/packages 'monokai-theme)
@@ -75,6 +76,7 @@
 (menu-bar-mode -1)
 ;(scroll-bar-mode -1)
 (tool-bar-mode -1)
+(xclip-mode 1)
 (xterm-mouse-mode t)
 
 ;; -------- startup --------
