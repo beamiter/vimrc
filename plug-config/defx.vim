@@ -3,8 +3,8 @@
 nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
 
 call defx#custom#option('_', {
-      \ 'winwidth': 60,
-      \ 'split': 'horizontal',
+      \ 'winwidth': 50,
+      \ 'split': 'vertical',
       \ 'direction': 'botright',
       \ 'show_ignored_files': 0,
       \ 'buffer_name': '',
