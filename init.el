@@ -71,6 +71,7 @@
 ;; -------- normal default --------
 (setq evil-want-keybinding nil)
 (setq make-backup-files nil)
+(setq neo-window-width 50)
 (setq scroll-conservatively 101)
 ;; set frame transparency
 (set-frame-parameter nil 'alpha '(95 . 100))
