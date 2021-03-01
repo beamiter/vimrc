@@ -19,6 +19,7 @@
                       doom-themes
                       doom-modeline
                       evil
+                      evil-collection
                       evil-nerd-commenter
                       flycheck
                       format-all
@@ -35,6 +36,7 @@
                       lsp-ui
                       magit
                       monokai-theme
+                      neotree
                       projectile
                       rainbow-delimiters
                       ripgrep
@@ -67,6 +69,7 @@
 
 
 ;; -------- normal default --------
+(setq evil-want-keybinding nil)
 (setq make-backup-files nil)
 (setq scroll-conservatively 101)
 ;; set frame transparency
@@ -101,6 +104,15 @@
   :hook (after-init . (lambda ()
                         (global-evil-leader-mode)
                         (evil-mode 1))))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+;; global-set-key
+(global-set-key [f3] 'neotree-toggle)
 
 ;; evil custome key maps
 (define-key evil-normal-state-map (kbd "[c") 'git-gutter:previous-hunk)
