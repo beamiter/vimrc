@@ -102,6 +102,8 @@
     "cv" 'evilnc-toggle-invert-comment-line-by-line
     "."  'evilnc-copy-and-comment-operator
     "\\" 'evilnc-comment-operator ; if you prefer backslash key
+    "tt" 'treemacs
+    "td" 'treemacs-display-current-project-exclusively
     "ws" 'evil-window-split
     "wv" 'evil-window-vsplit
     "0"  'winum-select-window-0-or-10
@@ -145,7 +147,8 @@
 
 ;; global-set-key
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key [f3] 'neotree-toggle)
+;(global-set-key [f3] 'neotree-toggle)
+(global-set-key [f3] 'treemacs)
 
 ;; evil custome key maps
 (define-key evil-normal-state-map (kbd "[c") 'git-gutter:previous-hunk)
