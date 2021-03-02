@@ -45,6 +45,7 @@
                       use-package
                       vimrc-mode
                       which-key
+                      winum
                       xclip
                       ))
 (setq package-selected-packages my/packages)
@@ -100,6 +101,16 @@
     "cv" 'evilnc-toggle-invert-comment-line-by-line
     "."  'evilnc-copy-and-comment-operator
     "\\" 'evilnc-comment-operator ; if you prefer backslash key
+    "0"  'winum-select-window-0-or-10
+    "1"  'winum-select-window-1
+    "2"  'winum-select-window-2
+    "3"  'winum-select-window-3
+    "4"  'winum-select-window-4
+    "5"  'winum-select-window-5
+    "6"  'winum-select-window-6
+    "7"  'winum-select-window-7
+    "8"  'winum-select-window-8
+    "9"  'winum-select-window-9
     "p"  'projectile-command-map)
   :ensure t
   :hook (after-init . (lambda ()
@@ -111,6 +122,23 @@
   :ensure t
   :config
   (evil-collection-init))
+
+;; winum
+(setq winum-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "C-`") 'winum-select-window-by-number)
+      (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+      (define-key map (kbd "M-1") 'winum-select-window-1)
+      (define-key map (kbd "M-2") 'winum-select-window-2)
+      (define-key map (kbd "M-3") 'winum-select-window-3)
+      (define-key map (kbd "M-4") 'winum-select-window-4)
+      (define-key map (kbd "M-5") 'winum-select-window-5)
+      (define-key map (kbd "M-6") 'winum-select-window-6)
+      (define-key map (kbd "M-7") 'winum-select-window-7)
+      (define-key map (kbd "M-8") 'winum-select-window-8)
+      map))
+(use-package winum)
+(winum-mode)
 
 ;; global-set-key
 (global-set-key [f3] 'neotree-toggle)
