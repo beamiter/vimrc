@@ -92,6 +92,7 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
+    "bb" 'ibuffer
     "ci" 'evilnc-comment-or-uncomment-lines
     "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
     "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
@@ -101,6 +102,8 @@
     "cv" 'evilnc-toggle-invert-comment-line-by-line
     "."  'evilnc-copy-and-comment-operator
     "\\" 'evilnc-comment-operator ; if you prefer backslash key
+    "ws" 'evil-window-split
+    "wv" 'evil-window-vsplit
     "0"  'winum-select-window-0-or-10
     "1"  'winum-select-window-1
     "2"  'winum-select-window-2
@@ -141,6 +144,7 @@
 (winum-mode)
 
 ;; global-set-key
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key [f3] 'neotree-toggle)
 
 ;; evil custome key maps
@@ -317,6 +321,8 @@
 (add-hook 'c++-mode-hook #'lsp-deferred)
 ;(add-hook 'rust-mode-hook #'lsp-deferred)
 (use-package rust-mode
+  :config
+  (setq rust-format-on-save t)
   :ensure t
   :hook (rust-mode . (lambda ()
                        (require 'rust-mode)
