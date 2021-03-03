@@ -471,7 +471,8 @@
  '(evil-undo-system (quote undo-fu))
  '(inhibit-startup-screen t)
  '(lsp-ui-sideline-actions-icon nil)
- '(package-selected-packages (quote (lsp-mode monokai-theme company))))
+ '(package-selected-packages (quote (lsp-mode monokai-theme company)))
+ '(treemacs-width 50))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
