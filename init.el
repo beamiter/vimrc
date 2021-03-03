@@ -92,6 +92,7 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
+    "af" 'format-all-buffer
     "bb" 'ibuffer
     "ci" 'evilnc-comment-or-uncomment-lines
     "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
