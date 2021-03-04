@@ -470,7 +470,9 @@
  ;; If there is more than one, they won't work right.
  '(display-line-numbers (quote relative))
  '(evil-undo-system (quote undo-fu))
+ '(helm-minibuffer-history-key "M-p")
  '(inhibit-startup-screen t)
+ '(lsp-idle-delay 0.2)
  '(lsp-ui-sideline-actions-icon nil)
  '(package-selected-packages (quote (lsp-mode monokai-theme company)))
  '(treemacs-width 50))

@@ -21,19 +21,23 @@ call plug#begin('~/.vim/plugged')
 " Luanguage pack
 Plug 'sheerun/vim-polyglot'
 
-" Vim lsp
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"" Vim lsp
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"" auto configurations for language server for vim-lsp
+"Plug 'mattn/vim-lsp-settings'
+"" deoplete source for vim-lsp
+""Plug 'lighttiger2505/deoplete-vim-lsp'
 
-" auto configurations for language server for vim-lsp
-Plug 'mattn/vim-lsp-settings'
-" deoplete source for vim-lsp
-"Plug 'lighttiger2505/deoplete-vim-lsp'
-"" or
-"Plug 'autozimu/LanguageClient-neovim' " LanguageClient-neovim
-"" or
-"Plug 'neovim/nvim-lsp' " nvim-lsp
+" LanguageClient-neovim
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" nvim-lsp
+"Plug 'neovim/nvim-lsp'
 
 " Lsp supported highlight
 "Plug 'jackguo380/vim-lsp-cxx-highlight'
@@ -44,11 +48,11 @@ Plug 'preservim/nerdcommenter'
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   " dard powered asynchronous completion framework
-  "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/defx.nvim'
   " dard powered asynchronous completion framework
-  "Plug 'Shougo/deoplete.nvim'
+  Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
