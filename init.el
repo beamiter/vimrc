@@ -174,11 +174,14 @@
   :config
   (setq highlight-indent-guides-method 'character)
   ;(setq highlight-indent-guides-method 'column)
-  (setq highlight-indent-guides-auto-enabled nil)
-  (set-face-background 'highlight-indent-guides-odd-face "darkgray")
-  (set-face-background 'highlight-indent-guides-even-face "dimgray")
-  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+  ;(setq highlight-indent-guides-auto-enabled nil)
+  ;(set-face-background 'highlight-indent-guides-odd-face "darkgray")
+  ;(set-face-background 'highlight-indent-guides-even-face "dimgray")
+  ;(set-face-foreground 'highlight-indent-guides-character-face "dimgray")
   :hook (prog-mode . highlight-indent-guides-mode))
+
+(use-package highlight-indentation
+  :hook (prog-mode . highlight-indentation-mode))
 
 (use-package helm
   :ensure t
