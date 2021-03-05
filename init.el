@@ -26,6 +26,8 @@
                       git-gutter
                       ;helm-lsp
                       helm
+                      highlight-indent-guides
+                      highlight-indentation
                       ivy
                       ;lsp-ivy
                       lsp-pyright
@@ -167,6 +169,19 @@
   (define-key projectile-mode-map (kbd "C-c p") `projectile-command-map)
   :ensure t
   :hook (after-init . projectile-mode))
+
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-method 'character)
+  ;(setq highlight-indent-guides-method 'column)
+  ;(setq highlight-indent-guides-auto-enabled nil)
+  ;(set-face-background 'highlight-indent-guides-odd-face "darkgray")
+  ;(set-face-background 'highlight-indent-guides-even-face "dimgray")
+  ;(set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+  :hook (prog-mode . highlight-indent-guides-mode))
+
+(use-package highlight-indentation
+  :hook (prog-mode . highlight-indentation-mode))
 
 (use-package helm
   :ensure t
