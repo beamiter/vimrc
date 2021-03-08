@@ -70,8 +70,10 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
+(debug-on-variable-change 'echo-keystroke)
 
 ;; -------- normal default --------
+;(setq echo-keystroke nil)
 (setq evil-want-keybinding nil)
 (setq make-backup-files nil)
 (setq neo-window-width 50)
