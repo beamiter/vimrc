@@ -307,7 +307,7 @@
           treemacs-tag-follow-delay              1.5
           treemacs-user-mode-line-format         nil
           treemacs-user-header-line-format       nil
-          treemacs-width                         35
+          treemacs-width                         45
           treemacs-workspace-switch-cleanup      nil)
 
     ;; The default width and height of the icons is 22 pixels. If you are
@@ -381,8 +381,7 @@
  '(inhibit-startup-screen t)
  '(lsp-idle-delay 0.2)
  '(lsp-ui-sideline-actions-icon nil)
- '(package-selected-packages (quote (lsp-mode monokai-theme company)))
- '(treemacs-width 50))
+ '(package-selected-packages (quote (lsp-mode monokai-theme company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
