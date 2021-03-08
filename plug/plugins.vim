@@ -30,13 +30,13 @@ Plug 'sheerun/vim-polyglot'
 "" deoplete source for vim-lsp
 ""Plug 'lighttiger2505/deoplete-vim-lsp'
 
-" LanguageClient-neovim
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+"" LanguageClient-neovim
+"Plug 'autozimu/LanguageClient-neovim', {
+    "\ 'branch': 'next',
+    "\ 'do': 'bash install.sh',
+    "\ }
 
-" nvim-lsp
+"" nvim-lsp
 "Plug 'neovim/nvim-lsp'
 
 " Lsp supported highlight
@@ -48,14 +48,22 @@ Plug 'preservim/nerdcommenter'
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   " dard powered asynchronous completion framework
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  Plug 'Shougo/defx.nvim'
-  " dard powered asynchronous completion framework
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'Shougo/defx.nvim'
+" dard powered asynchronous completion framework
+"Plug 'Shougo/deoplete.nvim'
 endif
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+
+Plug 'ncm2/ncm2'
+
+" NOTE: you need to install completion sources to get completions. Check
+" our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-pyclang'
 
 " Fzf asynchronous search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
