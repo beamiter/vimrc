@@ -25,8 +25,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'prabirshrestha/vim-lsp'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" auto configurations for language server for vim-lsp
-Plug 'mattn/vim-lsp-settings'
 
 "" nvim-lsp
 "Plug 'neovim/nvim-lsp'
