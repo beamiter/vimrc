@@ -21,20 +21,12 @@ call plug#begin('~/.vim/plugged')
 " Luanguage pack
 Plug 'sheerun/vim-polyglot'
 
-"" Vim lsp
-"Plug 'prabirshrestha/vim-lsp'
+" Vim lsp
+Plug 'prabirshrestha/vim-lsp'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
-"" auto configurations for language server for vim-lsp
-"Plug 'mattn/vim-lsp-settings'
-"" deoplete source for vim-lsp
-""Plug 'lighttiger2505/deoplete-vim-lsp'
-
-"" LanguageClient-neovim
-"Plug 'autozimu/LanguageClient-neovim', {
-    "\ 'branch': 'next',
-    "\ 'do': 'bash install.sh',
-    "\ }
+" auto configurations for language server for vim-lsp
+Plug 'mattn/vim-lsp-settings'
 
 "" nvim-lsp
 "Plug 'neovim/nvim-lsp'
@@ -47,12 +39,8 @@ Plug 'preservim/nerdcommenter'
 
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-  " dard powered asynchronous completion framework
-  "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
 Plug 'Shougo/defx.nvim'
-" dard powered asynchronous completion framework
-"Plug 'Shougo/deoplete.nvim'
 endif
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
@@ -63,8 +51,7 @@ Plug 'ncm2/ncm2'
 " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-pyclang'
-Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-vim-lsp'
 
 " Fzf asynchronous search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
