@@ -5,7 +5,7 @@ nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark
 call defx#custom#option('_', {
       \ 'winwidth': 50,
       \ 'split': 'vertical',
-      \ 'direction': 'botright',
+      \ 'direction': 'topleft',
       \ 'show_ignored_files': 0,
       \ 'buffer_name': '',
       \ 'toggle': 1,

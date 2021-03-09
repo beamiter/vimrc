@@ -22,6 +22,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 let g:ncm2#popup_delay = 100
 let g:ncm2#matcher = "prefix"
+let g:ncm2#popup_limit = 8
+let g:ncm2#total_popup_limit = 8
 
 " wrap existing omnifunc
 " Note that omnifunc does not run in background and may probably block the
