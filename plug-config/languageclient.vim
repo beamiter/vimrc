@@ -10,7 +10,7 @@ augroup END
 " Always draw sign column. Prevent buffer moving when adding/deleting sign.
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'python': ['/usr/local/bin/pyls'],
+    \ 'python': ['pyls'],
     \ 'cpp': ['clangd'],
     \ }
 
