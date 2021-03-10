@@ -44,3 +44,4 @@ rustup component add rls rust-analyser rust-src
    to full lsp support.
 3. popular wm: *i3, herbstluft, awesome, spectrwm, bspwm*.
 4. helpful toolkits: *dmenu, feh, scrot, flameshot*.
+5. set git proxy: *git clone -c http.proxy=http://127.0.0.1:7890*

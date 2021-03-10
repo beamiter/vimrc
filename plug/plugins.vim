@@ -22,9 +22,17 @@ call plug#begin('~/.vim/plugged')
 Plug 'sheerun/vim-polyglot'
 
 " Vim lsp
-Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'ncm2/ncm2-vim-lsp'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+" LanguageClient depends on rust, that is cool.
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    "\ 'do': 'make release',
+    \ }
 
 "" nvim-lsp
 "Plug 'neovim/nvim-lsp'
@@ -49,7 +57,6 @@ Plug 'ncm2/ncm2'
 " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-vim-lsp'
 
 " Fzf asynchronous search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -149,9 +156,6 @@ Plug 'brooth/far.vim'
 
 " Interactive scratchpad for hackers
 Plug 'metakirby5/codi.vim'
-
-" Memo list
-Plug 'glidenote/memolist.vim'
 
 " 主题插件
 " collections, ascending by star, use single package every time

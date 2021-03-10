@@ -18,10 +18,10 @@ source $HOME/.vim/plug-config/devicons.vim
 source $HOME/.vim/plug-config/easymotion.vim
 source $HOME/.vim/plug-config/format.vim
 source $HOME/.vim/plug-config/lightline.vim
+source $HOME/.vim/plug-config/languageclient.vim
 source $HOME/.vim/plug-config/LeaderF.vim
-source $HOME/.vim/plug-config/memolist.vim
 source $HOME/.vim/plug-config/ncm2.vim
 source $HOME/.vim/plug-config/prettier.vim
 source $HOME/.vim/plug-config/startify.vim
-source $HOME/.vim/plug-config/vim-lsp.vim
+"source $HOME/.vim/plug-config/vim-lsp.vim
 source $HOME/.vim/plug-config/vista.vim
