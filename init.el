@@ -206,20 +206,20 @@
 ;(load-theme 'monokai 1)
 (use-package all-the-icons)
 
-;(use-package doom-themes
-  ;:config
-  ;;; Global settings (defaults)
-  ;(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        ;doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  ;(load-theme 'doom-material t)
-  ;;; Enable flashing mode-line on errors
-  ;;(doom-themes-visual-bell-config)
-  ;(doom-themes-org-config))
-
-(use-package base16-theme
-  :ensure t
+(use-package doom-themes
   :config
-  (load-theme 'base16-google-dark t))
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-material t)
+  ;; Enable flashing mode-line on errors
+  ;(doom-themes-visual-bell-config)
+  (doom-themes-org-config))
+
+;(use-package base16-theme
+  ;:ensure t
+  ;:config
+  ;(load-theme 'base16-atelier-cave t))
 
 ;; -------- ui --------
 (use-package lsp-ui
