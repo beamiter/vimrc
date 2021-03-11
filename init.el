@@ -8,6 +8,7 @@
                       ag
                       all-the-icons
                       avy
+                      base16-theme
                       eglot
                       evil-easymotion
                       evil-leader
@@ -188,8 +189,8 @@
   ;(set-face-foreground 'highlight-indent-guides-character-face "dimgray")
   :hook (prog-mode . highlight-indent-guides-mode))
 
-(use-package highlight-indentation
-  :hook (prog-mode . highlight-indentation-mode))
+;(use-package highlight-indentation
+  ;:hook (prog-mode . highlight-indentation-mode))
 
 (use-package helm
   :ensure t
@@ -205,15 +206,20 @@
 ;(load-theme 'monokai 1)
 (use-package all-the-icons)
 
-(use-package doom-themes
+;(use-package doom-themes
+  ;:config
+  ;;; Global settings (defaults)
+  ;(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        ;doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  ;(load-theme 'doom-material t)
+  ;;; Enable flashing mode-line on errors
+  ;;(doom-themes-visual-bell-config)
+  ;(doom-themes-org-config))
+
+(use-package base16-theme
+  :ensure t
   :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-material t)
-  ;; Enable flashing mode-line on errors
-  ;(doom-themes-visual-bell-config)
-  (doom-themes-org-config))
+  (load-theme 'base16-google-dark t))
 
 ;; -------- ui --------
 (use-package lsp-ui
