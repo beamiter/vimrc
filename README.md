@@ -45,3 +45,4 @@ rustup component add rls rust-analyser rust-src
 3. popular wm: *i3, herbstluft, awesome, spectrwm, bspwm*.
 4. helpful toolkits: *dmenu, feh, scrot, flameshot*.
 5. set git proxy: *git clone -c http.proxy=http://127.0.0.1:7890*
+6. set terminal proxy: *export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890*
