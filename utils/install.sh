@@ -8,3 +8,7 @@ ln -s $HOME/vimrc/general/
 ln -s $HOME/vimrc/keys/
 ln -s $HOME/vimrc/plug/
 ln -s $HOME/vimrc/plug-config/
+
+# 3, option, link doom emacs config
+cd $HOME/
+ln -s $HOME/vimrc/.doom.d/
