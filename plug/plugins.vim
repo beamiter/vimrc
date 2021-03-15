@@ -161,8 +161,7 @@ Plug 'metakirby5/codi.vim'
 " collections, ascending by star, use single package every time
 "Plug 'flazz/vim-colorschemes'
 "Plug 'rafi/awesome-vim-colorschemes'
-"Plug 'chriskempson/base16-vim'
-Plug 'rainglow/vim'
+Plug 'mswift42/vim-themes'
 
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
