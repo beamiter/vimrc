@@ -46,3 +46,13 @@ rustup component add rls rust-analyser rust-src
 4. helpful toolkits: *dmenu, feh, scrot, flameshot*.
 5. set git proxy: *git clone -c http.proxy=http://127.0.0.1:7890*
 6. set terminal proxy: *export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890*
+7. setup bspwm:
+#+BEGIN_SRC shell
+cp /usr/share/doc/bspwm/examples/bspwmrc $HOME/.config/bspwm/
+cp /usr/share/doc/bspwm/examples/sxhkdrc $HOME/.config/sxhkd/
+#+END_SRC
+edit $HOME/.xinitrc
+#+BEGIN_SRC shell
+sxhkd &
+exec bspwm
+#+END_SRC
