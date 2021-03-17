@@ -56,3 +56,9 @@ edit $HOME/.xinitrc
 sxhkd &
 exec bspwm
 #+END_SRC
+8. fix issues:
+icecc - icecream seems to have invoked itself recursively
+#+BEGIN_SRC shell
+export PATH=/usr/lib/ccache:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export CCACHE_PREFIX=icecc
+#+END_SRC
