@@ -33,7 +33,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -55,3 +55,9 @@
 
 ;(require 'ace-window)
 (use-package ace-window)
+
+(setq doom-theme 'doom-dracula)
+
+(global-set-key [f3] 'treemacs)
+(map! :leader
+      :desc "format all buffer" "a f" #'format-all-buffer)
