@@ -58,6 +58,9 @@
 
 (setq doom-theme 'doom-dracula)
 
+(setq lsp-ui-imenu-auto-refresh-delay 5)
+(setq lsp-idle-delay 0.1)
+
 (global-set-key [f3] 'treemacs)
 (map! :leader
       :desc "format all buffer" "a f" #'format-all-buffer)
