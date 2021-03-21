@@ -51,12 +51,14 @@ endif
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 
-Plug 'ncm2/ncm2'
+"Plug 'ncm2/ncm2'
+"" NOTE: you need to install completion sources to get completions. Check
+"" our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
+"Plug 'ncm2/ncm2-bufword'
+"Plug 'ncm2/ncm2-path'
 
-" NOTE: you need to install completion sources to get completions. Check
-" our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
+" Use release branch (recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Fzf asynchronous search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }

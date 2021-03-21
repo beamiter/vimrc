@@ -12,15 +12,16 @@ source $HOME/.vim/keys/which-key.vim
 
 source $HOME/.vim/plug-config/any-jump.vim
 source $HOME/.vim/plug-config/choosewin.vim
+source $HOME/.vim/plug-config/coc.vim
 source $HOME/.vim/plug-config/ctrlsf.vim
 source $HOME/.vim/plug-config/defx.vim
 source $HOME/.vim/plug-config/devicons.vim
 source $HOME/.vim/plug-config/easymotion.vim
 source $HOME/.vim/plug-config/format.vim
 source $HOME/.vim/plug-config/lightline.vim
-source $HOME/.vim/plug-config/languageclient.vim
+"source $HOME/.vim/plug-config/languageclient.vim
 source $HOME/.vim/plug-config/LeaderF.vim
-source $HOME/.vim/plug-config/ncm2.vim
+"source $HOME/.vim/plug-config/ncm2.vim
 source $HOME/.vim/plug-config/prettier.vim
 source $HOME/.vim/plug-config/startify.vim
 "source $HOME/.vim/plug-config/vim-lsp.vim

@@ -55,7 +55,6 @@ command! -nargs=0 GCurrent :call GitCurrentFile()
 let g:which_key_map.a = {
       \ 'name' : '+actions' ,
       \ 'f' : [':Neoformat'                          , 'format files'],
-      \ 'r' : ['<Plug>(lcn-rename)'                  , 'rename'],
       \ 'u' : 'random color scheme',
       \ 'v' : 'save color scheme',
       \ }
@@ -117,7 +116,6 @@ let g:which_key_map.g = {
 " m for menu
 let g:which_key_map.m = {
       \ 'name' : '+menu' ,
-      \ 'l' : ['<Plug>(lcn-menu)'                      , 'lcn menu'],
       \ }
 
 
