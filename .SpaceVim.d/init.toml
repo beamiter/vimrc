@@ -1,0 +1,133 @@
+#=============================================================================
+# dark_powered.toml --- dark powered configuration example for SpaceVim
+# Copyright (c) 2016-2020 Wang Shidong & Contributors
+# Author: Wang Shidong < wsdjeg at 163.com >
+# URL: https://spacevim.org
+# License: GPLv3
+#=============================================================================
+
+# All SpaceVim option below [option] section
+[options]
+    # set spacevim theme. by default colorscheme layer is not loaded,
+    # if you want to use more colorscheme, please load the colorscheme
+    # layer
+    colorscheme = "dracula"
+    colorscheme_bg = "dark"
+    # Disable guicolors in basic mode, many terminal do not support 24bit
+    # true colors
+    enable_guicolors = true
+    # Disable statusline separator, if you want to use other value, please
+    # install nerd fonts
+    statusline_separator = "arrow"
+    statusline_iseparator = "arrow"
+    buffer_index_type = 4
+    enable_tabline_filetype_icon = true
+    enable_statusline_mode = false
+
+    autocomplete_method = "coc"
+
+    disabled_plugins = ["fcitx"]
+
+    bootstrap_before = 'myspacevim#before'
+    bootstrap_after = 'myspacevim#after'
+
+# Enable autocomplete layer
+[[layers]]
+name = 'autocomplete'
+auto_completion_return_key_behavior = "complete"
+auto_completion_tab_key_behavior = "smart"
+auto_completion_enable_snippets_in_popup = false
+
+[[layers]]
+name = 'shell'
+default_position = 'top'
+default_height = 30
+
+[[layers]]
+name = 'leaderf'
+
+[[layers]]
+name = 'git'
+
+[[layers]]
+name = 'VersionControl'
+
+[[layers]]
+name = 'lang#c'
+# enable_clang_syntax_highlight = true
+
+[[layers]]
+name = 'format'
+
+[[layers]]
+name = 'lsp'
+filetypes = [
+  'c',
+  'cpp',
+  'python',
+  'rust',
+]
+
+[[layers]]
+name = 'colorscheme'
+
+[[layers]]
+name = "lang#toml"
+
+[[layers]]
+  name = "lang#vim"
+
+[[layers]]
+name = "lang#python"
+enable_typeinfo = true
+python_file_head = [
+    '#!/usr/bin/env python',
+    '# -*- coding: utf-8 -*-',
+    '',
+    ''
+]
+
+# [[custom_plugins]]
+# name = 'jackguo380/vim-lsp-cxx-highlight'
+# merged = false
+#
+# [[custom_plugins]]
+# name = 'jiangmiao/auto-pairs'
+# merged = false
+
+[[custom_plugins]]
+# name = "rafi/awesome-vim-colorschemes"
+# name = 'flazz/vim-colorschemes'
+name = 'mswift42/vim-themes'
+
+# name = 'altercation/vim-colors-solarized'
+# name = 'rhysd/vim-color-spring-night'
+# name = 'mhinz/vim-janah'
+# name = 'mhartington/oceanic-next'
+# name = 'hzchirs/vim-material'
+# name = 'joshdick/onedark.vim'
+# name = 'drewtempelmeyer/palenight.vim'
+# name = 'srcery-colors/srcery-vim'
+# name = 'rakr/vim-one'
+# name = 'arcticicestudio/nord-vim'
+# name = 'itchyny/landscape.vim'
+# name = 'phongnh/vim-leaderf-solarized-theme'
+# name = 'connorholyday/vim-snazzy'
+# name = 'nanotech/jellybeans.vim'
+# name = 'jacoborus/tender.vim'
+# name = 'sjl/badwolf'
+# name = 'romgrk/doom-one.vim'
+# name = 'ajmwagar/vim-deus'
+merged = false
+
+[[custom_plugins]]
+name = 'dracula/vim'
+merged = false
+
+[[custom_plugins]]
+name = 'tomasiser/vim-code-dark'
+merged = false
+
+[[custom_plugins]]
+name = 'mg979/vim-studio-dark'
+merged = false
