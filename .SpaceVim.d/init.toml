@@ -53,10 +53,6 @@ name = 'git'
 name = 'VersionControl'
 
 [[layers]]
-name = 'lang#c'
-# enable_clang_syntax_highlight = true
-
-[[layers]]
 name = 'format'
 
 [[layers]]
@@ -69,13 +65,11 @@ filetypes = [
 ]
 
 [[layers]]
-name = 'colorscheme'
+name = 'lang#c'
+# enable_clang_syntax_highlight = true
 
 [[layers]]
-name = "lang#toml"
-
-[[layers]]
-  name = "lang#vim"
+name = "lang#rust"
 
 [[layers]]
 name = "lang#python"
@@ -86,6 +80,15 @@ python_file_head = [
     '',
     ''
 ]
+
+[[layers]]
+name = "lang#toml"
+
+[[layers]]
+name = "lang#vim"
+
+[[layers]]
+name = 'colorscheme'
 
 # [[custom_plugins]]
 # name = 'jackguo380/vim-lsp-cxx-highlight'
