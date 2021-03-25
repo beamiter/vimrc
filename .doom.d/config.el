@@ -63,4 +63,4 @@
 
 (global-set-key [f3] 'treemacs)
 (map! :leader
-      :desc "format all buffer" "a f" #'format-all-buffer)
+      :desc "format all buffer" "b f" #'format-all-buffer)
