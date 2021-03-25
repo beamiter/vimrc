@@ -56,7 +56,9 @@ This function should only modify configuration layer settings."
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      ;; spell-checking
-     syntax-checking
+     ;; syntax-checking
+     (syntax-checking :variables syntax-checking-enable-tooltips nil)
+     (syntax-checking :variables syntax-checking-enable-by-default nil)
      version-control
      treemacs)
 
