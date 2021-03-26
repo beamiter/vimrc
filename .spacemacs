@@ -396,7 +396,7 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
@@ -414,7 +414,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t 
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
@@ -536,6 +536,14 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+;; Reference Link:
+;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+(setq lsp-lens-enable t)
+(spacemacs/set-leader-keys "bf" 'clang-format-buffer)
+(setq lsp-eldoc-enable-hover nil)
+(setq helm-buffer-max-length nil)
+(setq lsp-ui-doc-show-with-mouse nil)
+(setq lsp-ui-doc-show-with-cursor nil)
 (setq lsp-ui-sideline-show-diagnostics nil))
 
 
