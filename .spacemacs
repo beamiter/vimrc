@@ -539,6 +539,7 @@ before packages are loaded."
 ;; Reference Link:
 ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
 (setq lsp-lens-enable t)
+(setq lsp-ui-sideline-enable nil)
 (spacemacs/set-leader-keys "bf" 'clang-format-buffer)
 (setq lsp-eldoc-enable-hover nil)
 (setq helm-buffer-max-length nil)
