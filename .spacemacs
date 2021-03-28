@@ -40,17 +40,21 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      auto-completion
      better-defaults
-     (c-c++ :variables c-c++-backend 'lsp-clangd)
+     (c-c++ :variables
+            c-c++-backend 'lsp-clangd)
      emacs-lisp
      git
      helm
-     lsp
+     (lsp :variables
+          lsp-rust-server 'rust-analyzer)
      ;; markdown
      multiple-cursors
      ;; org
-     (python :variables python-backend 'lsp)
+     (python :variables
+             python-backend 'lsp)
      ;; (python :variables python-backend 'anaconda)
-     (rust :variables rust-backend 'lsp)
+     (rust :variables
+           rust-backend 'lsp)
      ;; (rust :variables rust-backend 'lsp)
      ;; (shell :variables
      ;;        shell-default-height 30

@@ -35,7 +35,8 @@ pip3 install python-language-server
 
 * *Install rust lsp*
 #+BEGIN_SRC shell
-rustup component add rls rust-analyser rust-src
+rustup component add rls rust-analysis rust-src
+install rust-analyzer from github release.
 #+END_SRC
 
 * *Some helpful tips*
