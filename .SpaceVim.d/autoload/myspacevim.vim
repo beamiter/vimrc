@@ -5,6 +5,8 @@ function! myspacevim#before() abort
 endfunction
 
 function! myspacevim#after() abort
+    " let g:Lf_UseCache = 0
+    " let g:Lf_UseMemoryCache = 0
     " iunmap jk
     " call SpaceVim#custom#SPCGroupName(['G'], '+TestGroup')
     " call SpaceVim#custom#SPC('nore', ['G', 't'], 'echom 1', 'echomessage 1', 1)
