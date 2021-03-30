@@ -28,7 +28,10 @@
 
     disabled_plugins = ["fcitx.vim", "neomake"]
 
-    enable_vimfiler_welcome = 0
+    enable_vimfiler_welcome = false
+    # enable_cursorcolumn = true
+    # enable_cursorline = true
+    project_rooter_outermost = false
 
     bootstrap_before = 'myspacevim#before'
     bootstrap_after = 'myspacevim#after'
