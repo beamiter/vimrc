@@ -549,6 +549,7 @@ before packages are loaded."
 (spacemacs/set-leader-keys "bf" 'clang-format-buffer)
 (setq lsp-eldoc-enable-hover nil)
 (setq helm-buffer-max-length nil)
+(setq helm-enable-auto-resize t)
 (setq lsp-ui-doc-show-with-mouse nil)
 (setq lsp-ui-doc-show-with-cursor nil)
 (setq lsp-ui-sideline-show-diagnostics nil))
