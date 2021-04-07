@@ -41,7 +41,8 @@ This function should only modify configuration layer settings."
      auto-completion
      better-defaults
      (c-c++ :variables
-            c-c++-backend 'lsp-clangd)
+            c-c++-backend 'lsp-clangd
+            c-c++-lsp-enable-semantic-highlight nil)
      emacs-lisp
      git
      helm
