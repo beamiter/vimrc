@@ -173,7 +173,7 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'emacs
+   dotspacemacs-editing-style 'vim
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -546,12 +546,14 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
 ;; Reference Link:
 ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+(setq x-meta-keysym 'super
+      x-super-keysym 'meta)
+(setq helm-buffer-max-length nil)
+(setq helm-enable-auto-resize t)
 (setq lsp-lens-enable t)
 (setq lsp-ui-sideline-enable nil)
 (spacemacs/set-leader-keys "bf" 'clang-format-buffer)
 (setq lsp-eldoc-enable-hover nil)
-(setq helm-buffer-max-length nil)
-(setq helm-enable-auto-resize t)
 (setq lsp-ui-doc-show-with-mouse nil)
 (setq lsp-ui-doc-show-with-cursor nil)
 (setq lsp-ui-sideline-show-diagnostics nil))
