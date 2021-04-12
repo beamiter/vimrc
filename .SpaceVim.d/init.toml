@@ -98,6 +98,8 @@ name = "lang#vim"
 
 [[layers]]
 name = 'colorscheme'
+random_theme = true
+frequency = "1h" #daily, hourly, weekly
 
 # [[custom_plugins]]
 # name = 'jackguo380/vim-lsp-cxx-highlight'
@@ -112,24 +114,64 @@ merged = false
 # name = 'flazz/vim-colorschemes'
 name = 'mswift42/vim-themes'
 
-# name = 'altercation/vim-colors-solarized'
-# name = 'rhysd/vim-color-spring-night'
-# name = 'mhinz/vim-janah'
-# name = 'mhartington/oceanic-next'
-# name = 'hzchirs/vim-material'
-# name = 'joshdick/onedark.vim'
-# name = 'drewtempelmeyer/palenight.vim'
-# name = 'srcery-colors/srcery-vim'
-# name = 'rakr/vim-one'
-# name = 'arcticicestudio/nord-vim'
-# name = 'itchyny/landscape.vim'
-# name = 'phongnh/vim-leaderf-solarized-theme'
-# name = 'connorholyday/vim-snazzy'
-# name = 'nanotech/jellybeans.vim'
-# name = 'jacoborus/tender.vim'
-# name = 'sjl/badwolf'
-# name = 'romgrk/doom-one.vim'
-# name = 'ajmwagar/vim-deus'
+[[custom_plugins]]
+name = 'rhysd/vim-color-spring-night'
+merged = false
+[[custom_plugins]]
+name = 'mhinz/vim-janah'
+merged = false
+[[custom_plugins]]
+name = 'mhartington/oceanic-next'
+merged = false
+[[custom_plugins]]
+name = 'hzchirs/vim-material'
+merged = false
+[[custom_plugins]]
+name = 'joshdick/onedark.vim'
+merged = false
+[[custom_plugins]]
+name = 'drewtempelmeyer/palenight.vim'
+merged = false
+
+[[custom_plugins]]
+name = 'altercation/vim-colors-solarized'
+merged = false
+[[custom_plugins]]
+name = 'ajmwagar/vim-deus'
+merged = false
+[[custom_plugins]]
+name = 'romgrk/doom-one.vim'
+merged = false
+[[custom_plugins]]
+name = 'sjl/badwolf'
+merged = false
+[[custom_plugins]]
+name = 'jacoborus/tender.vim'
+merged = false
+[[custom_plugins]]
+name = 'nanotech/jellybeans.vim'
+merged = false
+[[custom_plugins]]
+name = 'phongnh/vim-leaderf-solarized-theme'
+merged = false
+[[custom_plugins]]
+name = 'itchyny/landscape.vim'
+merged = false
+[[custom_plugins]]
+name = 'rakr/vim-one'
+merged = false
+[[custom_plugins]]
+name = 'arcticicestudio/nord-vim'
+merged = false
+[[custom_plugins]]
+name = 'srcery-colors/srcery-vim'
+merged = false
+[[custom_plugins]]
+name = 'connorholyday/vim-snazzy'
+merged = false
+
+[[custom_plugins]]
+name = 'jnurmine/Zenburn'
 merged = false
 
 [[custom_plugins]]
