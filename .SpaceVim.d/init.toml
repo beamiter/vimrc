@@ -98,8 +98,8 @@ name = "lang#vim"
 
 [[layers]]
 name = 'colorscheme'
-random_theme = true
-frequency = "hourly" #daily, hourly, weekly
+# random_theme = true
+# frequency = "hourly" #daily, hourly, weekly
 
 # [[custom_plugins]]
 # name = 'jackguo380/vim-lsp-cxx-highlight'
