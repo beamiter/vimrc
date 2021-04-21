@@ -27,12 +27,12 @@ Plug 'sheerun/vim-polyglot'
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-" LanguageClient depends on rust, that is cool.
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    "\ 'do': 'make release',
-    \ }
+"" LanguageClient depends on rust, that is cool.
+"Plug 'autozimu/LanguageClient-neovim', {
+"    \ 'branch': 'next',
+"    \ 'do': 'bash install.sh',
+"    "\ 'do': 'make release',
+"    \ }
 
 "" nvim-lsp
 "Plug 'neovim/nvim-lsp'
