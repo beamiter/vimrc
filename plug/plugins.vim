@@ -139,9 +139,6 @@ Plug 'liuchengxu/vim-which-key'
 "" On-demand lazy load
 "Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
-" Vista
-Plug 'liuchengxu/vista.vim'
-
 " Rainbow brackets
 Plug 'luochen1990/rainbow'
 "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
