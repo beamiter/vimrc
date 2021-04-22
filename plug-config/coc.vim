@@ -179,7 +179,6 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ 'coc-lists',
   \ 'coc-marketplace',
-  \ 'coc-pairs',
   \ 'coc-pyright',
   \ 'coc-rls',
   \ 'coc-sh',
@@ -190,3 +189,4 @@ let g:coc_global_extensions = [
   \ 'coc-yank',
   \ 'coc-yaml',
   \ ]
+  "\ 'coc-pairs',
