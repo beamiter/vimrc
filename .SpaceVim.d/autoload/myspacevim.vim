@@ -1,5 +1,8 @@
 function! myspacevim#before() abort
     set nocompatible
+    let &t_TI = ""
+    let &t_TE = ""
+    let g:mapleader = ','
     " let g:neomake_c_enabled_makers = ['clang']
     " nnoremap jk <Esc>
 endfunction
