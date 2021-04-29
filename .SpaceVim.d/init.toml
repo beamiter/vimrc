@@ -50,6 +50,7 @@ default_height = 30
 
 [[layers]]
 name = 'fzf'
+# name = 'leaderf'
 
 [[layers]]
 name = 'git'
@@ -151,9 +152,9 @@ merged = false
 [[custom_plugins]]
 name = 'nanotech/jellybeans.vim'
 merged = false
-[[custom_plugins]]
-name = 'phongnh/vim-leaderf-solarized-theme'
-merged = false
+# [[custom_plugins]]
+# name = 'phongnh/vim-leaderf-solarized-theme'
+# merged = false
 [[custom_plugins]]
 name = 'itchyny/landscape.vim'
 merged = false
