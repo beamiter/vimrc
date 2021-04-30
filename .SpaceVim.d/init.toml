@@ -26,6 +26,8 @@
 
     autocomplete_method = "coc"
 
+    filemanager = "defx"
+
     disabled_plugins = ["fcitx.vim", "neomake"]
 
     enable_vimfiler_welcome = false
@@ -101,6 +103,14 @@ name = "lang#vim"
 name = 'colorscheme'
 # random_theme = true
 # frequency = "hourly" #daily, hourly, weekly
+
+[[custom_plugins]]
+name = 'roxma/nvim-yarp'
+merged = false
+
+[[custom_plugins]]
+name = 'roxma/vim-hug-neovim-rpc'
+merged = false
 
 # [[custom_plugins]]
 # name = 'jackguo380/vim-lsp-cxx-highlight'
