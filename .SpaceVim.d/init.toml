@@ -11,7 +11,7 @@
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
-    colorscheme = "molokai"
+    colorscheme = "xcodelight"
     colorscheme_bg = "dark"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
@@ -120,10 +120,10 @@ merged = false
 name = 'jiangmiao/auto-pairs'
 merged = false
 
-[[custom_plugins]]
-# name = "rafi/awesome-vim-colorschemes"
-# name = 'flazz/vim-colorschemes'
-name = 'mswift42/vim-themes'
+# [[custom_plugins]]
+# # name = "rafi/awesome-vim-colorschemes"
+# # name = 'flazz/vim-colorschemes'
+# name = 'mswift42/vim-themes'
 
 [[custom_plugins]]
 name = 'rhysd/vim-color-spring-night'
@@ -143,7 +143,6 @@ merged = false
 [[custom_plugins]]
 name = 'drewtempelmeyer/palenight.vim'
 merged = false
-
 [[custom_plugins]]
 name = 'altercation/vim-colors-solarized'
 merged = false
@@ -180,19 +179,18 @@ merged = false
 [[custom_plugins]]
 name = 'connorholyday/vim-snazzy'
 merged = false
-
 [[custom_plugins]]
 name = 'jnurmine/Zenburn'
 merged = false
-
 [[custom_plugins]]
 name = 'dracula/vim'
 merged = false
-
 [[custom_plugins]]
 name = 'tomasiser/vim-code-dark'
 merged = false
-
 [[custom_plugins]]
 name = 'mg979/vim-studio-dark'
+merged = false
+[[custom_plugins]]
+name = 'arzg/vim-colors-xcode'
 merged = false
