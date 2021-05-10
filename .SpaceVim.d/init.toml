@@ -194,3 +194,6 @@ merged = false
 [[custom_plugins]]
 name = 'arzg/vim-colors-xcode'
 merged = false
+[[custom_plugins]]
+name = 'wojciechkepka/vim-github-dark'
+merged = false
