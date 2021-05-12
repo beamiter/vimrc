@@ -1,0 +1,63 @@
+Vimrc README -*- mode: org -*-
+
+#+TITLE: My Vim & Emacs Configs
+#+AUTUOR: YinJian
+#+DATE: 2021.05.12
+#+EMAIL: beamiter@163.com
+#+KEYWORDS: Vim, Emacs, LSP
+#+LANGUAGE: Vimscript, Eclisp
+
+* *Install vim to support python2/3*
+
+#+BEGIN_SRC shell
+./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-rubyinterp=yes \
+            --enable-python3interp=yes \
+            --enable-perlinterp=yes \
+            --enable-luainterp=yes \
+            --enable-gui=gtk2 --enable-cscope --prefix=/usr
+
+make
+
+sudo make install
+#with-python3-config-dir is deprecated
+            #--with-python3-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
+#+END_SRC
+
+* *Install python related package*
+#+BEGIN_SRC shell
+pip3 install --user flake8 autoflake isort coverage yapf autopep8 pylint
+conda install flake8 autoflake isort coverage yapf autopep8 pylint
+pip3 install python-language-server
+#+END_SRC
+
+* *Install rust lsp*
+Install rust-analyzer from github release.
+#+BEGIN_SRC shell
+rustup component add rls rust-analysis rust-src
+#+END_SRC
+
+* *Some helpful tips*
+1. Install *bat* to support highlight color in fzf preview.
+2. Install latest *clangd* version to have better experience.
+3. Popular wm: *i3, herbstluft, awesome, spectrwm, bspwm, qtile, xmonad, leftwm*.
+4. Helpful toolkits: *dmenu, feh, scrot, flameshot, shutter*.
+5. Set git proxy: *git clone -c http.proxy=http://127.0.0.1:7890*
+6. Set terminal proxy: *export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890*
+7. Setup bspwm:
+  #+BEGIN_SRC shell
+      cp /usr/share/doc/bspwm/examples/bspwmrc $HOME/.config/bspwm/
+      cp /usr/share/doc/bspwm/examples/sxhkdrc $HOME/.config/sxhkd/
+
+      #Edit $HOME/.xsessionrc
+      sxhkd &
+      exec bspwm
+#+END_SRC
+8. Fix issues:
+  #+BEGIN_SRC shell
+  #icecc - icecream seems to have invoked itself recursively
+  export PATH=/usr/lib/ccache:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  export CCACHE_PREFIX=icecc
+  #+END_SRC
+9. *Plantuml* is great, *emacs org-mode* is great. 
