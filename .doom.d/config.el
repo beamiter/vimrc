@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'github)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -53,14 +53,28 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;(require 'ace-window)
-(use-package ace-window)
+(setq lsp-lens-enable t)
+(setq lsp-ui-sideline-enable nil)
+(setq lsp-eldoc-enable-hover nil)
+(setq lsp-ui-doc-show-with-mouse nil)
+(setq lsp-ui-doc-show-with-cursor nil)
+(setq lsp-ui-sideline-show-diagnostics nil)
 
-(setq doom-theme 'doom-dracula)
+;; Example
+; (after! evil
+ ; (setq evil-magic nil))
+; (add_hook! python-mode
+ ; (setq python-shell-interpreter "bpython"))
+; (set-hook! 'python-mode-hook python-indent-offset 2)
+; (set-hook! python-mode python-indent-offset 2)
+; (use-package! hl-todo
+ ; :hook (prog-mode . hl-todo-mode)
+; :init
+; :config
+; (setq hl-todo-highlight-punctuation ":"))
 
-(setq lsp-ui-imenu-auto-refresh-delay 5)
-(setq lsp-idle-delay 0.1)
+(use-package! github-theme)
 
-(global-set-key [f3] 'treemacs)
+;; define-key, global-set-key, map!, undefine-key!, define-key!
 (map! :leader
-      :desc "format all buffer" "b f" #'format-all-buffer)
+      :desc "format all buffer" "b f" #'format-all-buffer) ;; 'clang-format-buffer
