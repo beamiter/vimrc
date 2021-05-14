@@ -74,6 +74,7 @@
 ; (setq hl-todo-highlight-punctuation ":"))
 
 (use-package! github-theme)
+(use-package! xclip)
 
 ;; define-key, global-set-key, map!, undefine-key!, define-key!
 (map! :leader

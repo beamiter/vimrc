@@ -8,13 +8,11 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
-(package! format-all)
-
 (package! ace-window)
-
-(package! github-theme)
-
 (package! base16-theme)
+(package! format-all)
+(package! github-theme)
+(package! xclip)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
