@@ -61,3 +61,4 @@ rustup component add rls rust-analysis rust-src
   export CCACHE_PREFIX=icecc
   #+END_SRC
 9. *Plantuml* is great, *emacs org-mode* is great. 
+10. VPN address: https://gsou.buzz/ and so on.
