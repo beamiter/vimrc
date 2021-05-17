@@ -84,6 +84,9 @@ name = 'lang#c'
 name = "lang#rust"
 
 [[layers]]
+name = "lang#julia"
+
+[[layers]]
 name = "lang#python"
 enable_typeinfo = true
 python_file_head = [
