@@ -72,9 +72,9 @@ filetypes = [
   'python',
   'rust',
 ]
-  [layers.override_cmd]
-    rust = ["rust-analyzer"]
-    # rust = ["rls"]
+[layers.override_cmd]
+  rust = ["rust-analyzer"]
+  # rust = ["rls"]
 
 [[layers]]
 name = 'lang#c'
