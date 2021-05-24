@@ -24,6 +24,8 @@
   (package-install 'git-gutter))
 (unless (package-installed-p 'helm)
   (package-install 'helm))
+(unless (package-installed-p 'helm-projectile)
+  (package-install 'helm-projectile))
 (unless (package-installed-p 'lsp-mode)
   (package-install 'lsp-mode))
 (unless (package-installed-p 'lsp-ui)
@@ -75,7 +77,7 @@
 ;; optionally
 (use-package lsp-ui :commands lsp-ui-mode)
 ;; if you are helm user
-;;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
 ;;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 ;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
@@ -89,9 +91,9 @@
   :config
   (which-key-mode))
 
-;; (use-package helm
-;;   :ensure t
-;;   :hook (after-init . (lambda() (helm-mode 1))))
+(use-package helm
+  :ensure t
+  :hook (after-init . (lambda() (helm-mode 1))))
 
 (use-package projectile
   :ensure t
@@ -134,22 +136,31 @@
   :config
   (define-key evil-normal-state-map (kbd "s") 'avy-goto-char-2))
 
+(use-package helm-projectile
+  :init
+  (setq helm-projectile-fuzzy-match t)
+  (helm-projectile-on))
+  
+
 ;; -------- evil nerd commenter --------
 (evilnc-default-hotkeys)
 
 ;; -------- git gutter --------
 (global-git-gutter-mode t)
 
+(setq lsp-ui-doc-enable nil)
 ;; set scroll style
 (setq scroll-conservatively 101)
 ;; dashboard startup
 (dashboard-setup-startup-hook)
+(electric-pair-mode 1)
 (global-company-mode 1)
 (menu-bar-mode -1)
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (winum-mode 1)
 (xclip-mode 1)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -158,7 +169,7 @@
  '(display-line-numbers 'relative)
  '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(avy xclip winum which-key use-package rainbow-delimiters projectile magit lsp-ui helm format-all evil-surround evil-nerd-commenter evil-leader evil-collection dashboard company)))
+   '(helm-ag helm-rg avy xclip winum which-key use-package rainbow-delimiters projectile magit lsp-ui helm format-all evil-surround evil-nerd-commenter evil-leader evil-collection dashboard company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
