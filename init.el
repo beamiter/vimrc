@@ -28,6 +28,8 @@
   (package-install 'helm-projectile))
 (unless (package-installed-p 'lsp-treemacs)
   (package-install 'lsp-treemacs))
+(unless (package-installed-p 'lsp-julia)
+  (package-install 'lsp-julia))
 (unless (package-installed-p 'lsp-mode)
   (package-install 'lsp-mode))
 (unless (package-installed-p 'lsp-ui)
@@ -71,6 +73,7 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (c++-mode . lsp-deferred)
+	 (julia-mode . lsp-deferred)
 	 (prog-mode . rainbow-delimiters-mode)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
@@ -244,6 +247,10 @@
   :after treemacs persp-mode ;;or perspective vs. persp-mode
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
+
+(use-package lsp-julia
+  :config
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
 
 ;; -------- other config --------
 (setq lsp-ui-doc-enable nil)
