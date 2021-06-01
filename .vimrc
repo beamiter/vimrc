@@ -6,6 +6,9 @@ set relativenumber
 set colorcolumn=80
 imap jk <ESC>
 
+autocmd FileType json,markdown let g:indentLine_conceallevel=0
+autocmd FileType javascript,python,c,cpp,java,vim,shell let g:indentLine_conceallevel=2
+
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -279,7 +282,7 @@ nmap ]c <Plug>(coc-git-nextconflict)
 
 let g:coc_global_extensions = ['coc-clangd', 'coc-git', 'coc-cmake', 'coc-floaterm', 'coc-highlight',
 		       	\'coc-julia', 'coc-rust-analyzer', 'coc-snippets', 'coc-vimlsp', 'coc-yank',
-			\'coc-explorer', 'coc-pyright', 'coc-sh']
+			\'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json']
 
 nnoremap <space>e :CocCommand explorer<CR>
 
