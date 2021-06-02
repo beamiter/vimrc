@@ -71,6 +71,7 @@ filetypes = [
   'cpp',
   'python',
   'rust',
+  'julia',
 ]
 [layers.override_cmd]
   # rust = ["rust-analyzer"]
