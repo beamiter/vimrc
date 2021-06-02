@@ -73,7 +73,7 @@ filetypes = [
   'rust',
 ]
 [layers.override_cmd]
-  rust = ["rust-analyzer"]
+  # rust = ["rust-analyzer"]
   # rust = ["rls"]
 
 [[layers]]
