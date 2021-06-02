@@ -60,6 +60,21 @@
 (setq lsp-ui-doc-show-with-cursor nil)
 (setq lsp-ui-sideline-show-diagnostics nil)
 
+;; Bellow is general configuration for julia.
+; (setq lsp-julia-package-dir nil)
+; (setq lsp-julia-default-environment "~/.julia/environments/v1.6")
+; (setq lsp-enable-folding t)
+
+(setq lsp-julia-package-dir nil)
+; (setq lsp-julia-default-environment "~/.julia/environments/v1.6")
+; (setq eglot-jl-language-server-project "~/.julia/environments/v1.6")
+; (after! eglot-jl
+ ; (setq eglot-jl-language-server-project eglot-jl-base))
+(after! julia-mode
+  (add-hook! 'julia-mode-hook
+    (setq-local lsp-enable-folding t
+                lsp-folding-range-limit 100)))
+
 ;; Example
 ; (after! evil
  ; (setq evil-magic nil))
