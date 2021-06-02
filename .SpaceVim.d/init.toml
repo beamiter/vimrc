@@ -24,7 +24,7 @@
     enable_tabline_filetype_icon = true
     enable_statusline_mode = false
 
-    autocomplete_method = "coc"
+    # autocomplete_method = "coc"
 
     filemanager = "defx"
 
@@ -44,6 +44,9 @@ name = 'autocomplete'
 auto_completion_return_key_behavior = "complete"
 auto_completion_tab_key_behavior = "smart"
 auto_completion_enable_snippets_in_popup = false
+auto_completion_delay = 200
+auto_completion_complete_with_key_sequence = "nil"
+auto_completion_complete_with_key_sequence_delay = 0.1
 
 [[layers]]
 name = 'shell'
