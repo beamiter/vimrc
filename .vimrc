@@ -69,6 +69,10 @@ Plug 'sbdchd/neoformat'
 
 Plug 'preservim/nerdcommenter'
 
+Plug 'JuliaEditorSupport/julia-vim'
+"Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+"Plug 'roxma/nvim-completion-manager'  " optional
+
 " Initialize plugin system
 call plug#end()
 
