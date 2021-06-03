@@ -137,9 +137,6 @@ merged = false
 # name = 'jackguo380/vim-lsp-cxx-highlight'
 # merged = false
 #
-[[custom_plugins]]
-name = 'jiangmiao/auto-pairs'
-merged = false
 
 # [[custom_plugins]]
 # # name = "rafi/awesome-vim-colorschemes"
