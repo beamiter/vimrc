@@ -53,6 +53,8 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(setq confirm-kill-emacs nil)
+
 (setq lsp-lens-enable t)
 (setq lsp-ui-sideline-enable nil)
 (setq lsp-eldoc-enable-hover nil)
@@ -90,7 +92,21 @@
 
 (use-package! github-theme)
 (use-package! xclip)
+(use-package! winum
+ :config
+ (winum-mode 1))
 
 ;; define-key, global-set-key, map!, undefine-key!, define-key!
 (map! :leader
       :desc "format all buffer" "b f" #'format-all-buffer) ;; 'clang-format-buffer
+(map! :leader
+  "0" 'winum-select-window-0-or-10
+  "1" 'winum-select-window-1
+  "2" 'winum-select-window-2
+  "3" 'winum-select-window-3
+  "4" 'winum-select-window-4
+  "5" 'winum-select-window-5
+  "6" 'winum-select-window-6
+  "7" 'winum-select-window-7
+  "8" 'winum-select-window-8
+  "9" 'winum-select-window-9)
