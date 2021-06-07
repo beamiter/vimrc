@@ -100,6 +100,8 @@
 (map! :leader
       :desc "format all buffer" "b f" #'format-all-buffer) ;; 'clang-format-buffer
 (map! :leader
+      :desc "treemacs toggle" "f t" #'treemacs)
+(map! :leader
   "0" 'winum-select-window-0-or-10
   "1" 'winum-select-window-1
   "2" 'winum-select-window-2
