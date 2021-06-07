@@ -1,7 +1,10 @@
 set nocompatible
 
-filetype off
 imap jk <ESC>
+
+filetype off
+syntax on
+
 set clipboard+=unnamedplus
 set colorcolumn=80
 set nobackup
@@ -9,7 +12,8 @@ set nowritebackup
 set number
 set relativenumber
 set shortmess+=c
-syntax on
+set showtabline=2
+set termguicolors
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -19,21 +23,44 @@ endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'JuliaEditorSupport/julia-vim'
-Plug 'neovim/nvim-lspconfig'
+" LSP, according to alphabetical order
 Plug 'hrsh7th/nvim-compe'
+Plug 'JuliaEditorSupport/julia-vim'
 Plug 'kabouzeid/nvim-lspinstall'
-Plug 'liuchengxu/vim-which-key'
-Plug 'jiangmiao/auto-pairs'
+Plug 'neovim/nvim-lspconfig'
+" OTHERS, according to alphabetical order
+Plug 'airblade/vim-gitgutter'
+Plug 'andymass/vim-matchup'
 Plug 'arzg/vim-colors-xcode'
+Plug 'dyng/ctrlsf.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'itchyny/lightline.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'liuchengxu/vim-which-key'
+Plug 'luochen1990/rainbow'
+Plug 'mhinz/vim-grepper'
+"Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'mhinz/vim-startify'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'preservim/nerdcommenter'
+Plug 't9md/vim-choosewin'
+Plug 'tpope/vim-fugitive'
+Plug 'sbdchd/neoformat'
 Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
 colorscheme xcodelight
 
-" use vim script to config neovim
-"""""""""""""""" which-key
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" USE VIM SCRIPT TO CONFIG NEOVIM
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""" which-key
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
 call which_key#register('<Space>', "g:which_key_map")
@@ -47,27 +74,158 @@ vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 let g:which_key_map =  {}
 let g:which_key_map['w'] = {
       \ 'name' : '+windows' ,
-      \ 'w' : ['<C-W>w'     , 'other-window']          ,
-      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
-      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
-      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
-      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
-      \ 'h' : ['<C-W>h'     , 'window-left']           ,
-      \ 'j' : ['<C-W>j'     , 'window-below']          ,
-      \ 'l' : ['<C-W>l'     , 'window-right']          ,
-      \ 'k' : ['<C-W>k'     , 'window-up']             ,
-      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
-      \ 'J' : [':resize +5'  , 'expand-window-below']   ,
-      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
-      \ 'K' : [':resize -5'  , 'expand-window-up']      ,
-      \ '=' : ['<C-W>='     , 'balance-window']        ,
-      \ 's' : ['<C-W>s'     , 'split-window-below']    , 
-      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
-      \ '?' : ['FZF'    , 'fzf-window']            ,
+      \ 'w' : ['<C-W>w'        , 'other-window']          ,
+      \ 'd' : ['<C-W>c'        , 'delete-window']         ,
+      \ '2' : ['<C-W>v'        , 'layout-double-columns'] ,
+      \ 'h' : ['<C-W>h'        , 'window-left']           ,
+      \ 'j' : ['<C-W>j'        , 'window-below']          ,
+      \ 'l' : ['<C-W>l'        , 'window-right']          ,
+      \ 'k' : ['<C-W>k'        , 'window-up']             ,
+      \ 'o' : ['<C-W>o'        , 'window-only']             ,
+      \ 'H' : ['<C-W>5<'       , 'expand-window-left']    ,
+      \ 'J' : [':resize +5'    , 'expand-window-below']   ,
+      \ 'L' : ['<C-W>5>'       , 'expand-window-right']   ,
+      \ 'K' : [':resize -5'    , 'expand-window-up']      ,
+      \ '=' : ['<C-W>='        , 'balance-window']        ,
+      \ 's' : ['<C-W>s'        , 'split-window-below']    ,
+      \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
       \ }
 
+"""""""""""""""""" easymotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+nmap s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap s <Plug>(easymotion-overwin-f2)
+" Turn on case-insensitive feature
+let g:EasyMotion_smartcase = 1
+" JK motions: Line motions
+map <localleader>j <Plug>(easymotion-j)
+map <localleader>k <Plug>(easymotion-k)
+
+"""""""""""""""""" neoformat
+map <leader>bf :Neoformat<CR>
+
+"""""""""""""""""" wincmd
+noremap <silent> <leader>1 :<C-u>1  wincmd w<CR>
+noremap <silent> <leader>2 :<C-u>2  wincmd w<CR>
+noremap <silent> <leader>3 :<C-u>3  wincmd w<CR>
+noremap <silent> <leader>4 :<C-u>4  wincmd w<CR>
+noremap <silent> <leader>5 :<C-u>5  wincmd w<CR>
+noremap <silent> <leader>6 :<C-u>6  wincmd w<CR>
+noremap <silent> <leader>7 :<C-u>7  wincmd w<CR>
+noremap <silent> <leader>8 :<C-u>8  wincmd w<CR>
+noremap <silent> <leader>9 :<C-u>9  wincmd w<CR>
+noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
+
+
+"""""""""""""""""" fzf-vim
+map <leader>bb :Buffers<CR>
+map <leader>ff :Files<CR>
+map <leader>fh :History<CR>
+
+"""""""""""""""""" vim-choosewin
+" invoke with '-'
+nmap  -  <Plug>(choosewin)
+
+"""""""""""""""""" nvim-tree
+let g:nvim_tree_side = 'right' "left by default
+let g:nvim_tree_width = 40 "30 by default
+let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
+let g:nvim_tree_gitignore = 1 "0 by default
+let g:nvim_tree_auto_open = 1 "0 by default, opens the tree when typing `vim $DIR` or `vim`
+let g:nvim_tree_auto_close = 1 "0 by default, closes the tree when it's the last window
+let g:nvim_tree_auto_ignore_ft = [ 'startify', 'dashboard' ] "empty by default, don't auto open tree on specific filetypes.
+let g:nvim_tree_quit_on_open = 0 "0 by default, closes the tree when you open a file
+let g:nvim_tree_follow = 1 "0 by default, this option allows the cursor to be updated when entering a buffer
+let g:nvim_tree_indent_markers = 1 "0 by default, this option shows indent markers when folders are open
+let g:nvim_tree_hide_dotfiles = 1 "0 by default, this option hides files and folders starting with a dot `.`
+let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
+let g:nvim_tree_highlight_opened_files = 1 "0 by default, will enable folder and file icon highlight for opened files/directories.
+let g:nvim_tree_root_folder_modifier = ':~' "This is the default. See :help filename-modifiers for more options
+let g:nvim_tree_tab_open = 1 "0 by default, will open the tree when entering a new tab and the tree was previously open
+let g:nvim_tree_width_allow_resize  = 1 "0 by default, will not resize the tree when opening a file
+let g:nvim_tree_disable_netrw = 0 "1 by default, disables netrw
+let g:nvim_tree_hijack_netrw = 0 "1 by default, prevents netrw from automatically opening when opening directories (but lets you keep its other utilities)
+let g:nvim_tree_add_trailing = 1 "0 by default, append a trailing slash to folder names
+let g:nvim_tree_group_empty = 1 " 0 by default, compact folders that only contain a single folder into one node in the file tree
+let g:nvim_tree_lsp_diagnostics = 1 "0 by default, will show lsp diagnostics in the signcolumn. See :help nvim_tree_lsp_diagnostics
+let g:nvim_tree_disable_window_picker = 1 "0 by default, will disable the window picker.
+let g:nvim_tree_hijack_cursor = 0 "1 by default, when moving cursor in the tree, will position the cursor at the start of the file on the current line
+let g:nvim_tree_window_picker_exclude = {
+    \   'filetype': [
+    \     'packer',
+    \     'qf'
+    \   ],
+    \   'buftype': [
+    \     'terminal'
+    \   ]
+    \ }
+" Dictionary of buffer option names mapped to a list of option values that
+" indicates to the window picker that the buffer's window should not be
+" selectable.
+let g:nvim_tree_special_files = [ 'README.md', 'Makefile', 'MAKEFILE' ] " List of filenames that gets highlighted with NvimTreeSpecialFile
+let g:nvim_tree_show_icons = {
+    \ 'git': 1,
+    \ 'folders': 0,
+    \ 'files': 0,
+    \ 'folder_arrows': 0,
+    \ }
+"If 0, do not show the icons for one of 'git' 'folder' and 'files'
+"1 by default, notice that if 'files' is 1, it will only display
+"if nvim-web-devicons is installed and on your runtimepath.
+"if folder is 1, you can also tell folder_arrows 1 to show small arrows next to the folder icons.
+"but this will not work when you set indent_markers (because of UI conflict)
+
+" default will show icon by default if no icon is provided
+" default shows no icon by default
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ 'git': {
+    \   'unstaged': "✗",
+    \   'staged': "✓",
+    \   'unmerged': "",
+    \   'renamed': "➜",
+    \   'untracked': "★",
+    \   'deleted': "",
+    \   'ignored': "◌"
+    \   },
+    \ 'folder': {
+    \   'arrow_open': "",
+    \   'arrow_closed': "",
+    \   'default': "",
+    \   'open': "",
+    \   'empty': "",
+    \   'empty_open': "",
+    \   'symlink': "",
+    \   'symlink_open': "",
+    \   },
+    \   'lsp': {
+    \     'hint': "",
+    \     'info': "",
+    \     'warning': "",
+    \     'error': "",
+    \   }
+    \ }
+
+nnoremap <F3> :NvimTreeToggle<CR>
+nnoremap <leader>tn :NvimTreeFindFile<CR>
+nnoremap <leader>tr :NvimTreeRefresh<CR>
+nnoremap <leader>tt :NvimTreeToggle<CR>
+" NvimTreeOpen and NvimTreeClose are also available if you need them
+
+set termguicolors " this variable must be enabled for colors to be applied properly
+
+" a list of groups can be found at `:help nvim_tree_highlight`
+highlight NvimTreeFolderIcon guibg=blue
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""
-" use lua to config neovim
+" USE LUA TO CONFIG NEOVIM
+""""""""""""""""""""""""""""""""""""""""""""""""""""
 " begin
 
 lua << EOF
@@ -95,7 +253,7 @@ require'lspconfig'.julials.setup{}
 -- nvim-lspconfig
 local nvim_lsp = require('lspconfig')
 
--- Use an on_attach function to only map the following keys 
+-- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -113,18 +271,18 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.bnf.implementation()<CR>', opts)
   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<leader>ld', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  buf_set_keymap('n', '<leader>lq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
 end
 

@@ -104,7 +104,7 @@ let g:which_key_map['w'] = {
       \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
       \ 'K' : [':resize -5'  , 'expand-window-up']      ,
       \ '=' : ['<C-W>='     , 'balance-window']        ,
-      \ 's' : ['<C-W>s'     , 'split-window-below']    , 
+      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
       \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
       \ '?' : ['FZF'    , 'fzf-window']            ,
       \ }
