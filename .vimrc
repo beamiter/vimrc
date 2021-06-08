@@ -1,10 +1,22 @@
 set nocompatible
 let &t_TI = ""
 let &t_TE = ""
-syntax on
-set relativenumber
-set colorcolumn=80
+
 imap jk <ESC>
+
+filetype off
+syntax on
+
+set backspace=indent,eol,start
+set clipboard+=unnamedplus
+set colorcolumn=80
+set nobackup
+set nowritebackup
+set number
+set relativenumber
+set shortmess+=c
+set showtabline=2
+set termguicolors
 
 autocmd FileType json,markdown let g:indentLine_conceallevel=0
 autocmd FileType javascript,python,c,cpp,java,vim,shell let g:indentLine_conceallevel=2
@@ -19,40 +31,16 @@ endif
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
-" Make sure you use single quotes
 
-Plug 'tpope/vim-fugitive'
-
-" Plugin outside ~/.vim/plugged with post-update hook
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-Plug 't9md/vim-choosewin'
-
-Plug 'itchyny/lightline.vim'
-
-Plug 'liuchengxu/vim-which-key'
-
-Plug 'ntpeters/vim-better-whitespace'
-
-Plug 'andymass/vim-matchup'
-
-Plug 'jiangmiao/auto-pairs'
-
-Plug 'Yggdroot/indentLine'
-
-Plug 'luochen1990/rainbow'
-
-" On-demand lazy load
-"Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-
-" To register the descriptions when using the on-demand load feature,
-" use the autocmd hook to call which_key#register(), e.g., register for the Space key:
-" autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
-
-" Use release branch (recommend)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
+" According to plug name alphabetical order
+                        ;
+		        ;
+		        ;
+         Plug 'jiangmiao/auto-pairs'
+          Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	                ;
+	   	        ;
+		        ;
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -60,21 +48,34 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-
-Plug 'mhinz/vim-startify'
-
-Plug 'easymotion/vim-easymotion'
-
-Plug 'sbdchd/neoformat'
-
-Plug 'preservim/nerdcommenter'
-
+                        ;
+			;
+			;
+              Plug 'dyng/ctrlsf.vim'
+          Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+          Plug 'junegunn/fzf.vim'
+     Plug 'benwainwright/fzf-project'
+          Plug 'Yggdroot/indentLine'
 Plug 'JuliaEditorSupport/julia-vim'
-"Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
-"Plug 'roxma/nvim-completion-manager'  " optional
+           Plug 'itchyny/lightline.vim'
+            Plug 'sbdchd/neoformat'
+         Plug 'preservim/nerdcommenter'
+       Plug 'luochen1990/rainbow'
+          Plug 'ntpeters/vim-better-whitespace'
+              Plug 't9md/vim-choosewin'
+              Plug 'arzg/vim-colors-xcode'
+        Plug 'easymotion/vim-easymotion'
+             Plug 'tpope/vim-fugitive'
+             Plug 'mhinz/vim-grepper'
+          Plug 'andymass/vim-matchup'
+             Plug 'mhinz/vim-startify'
+        Plug 'liuchengxu/vim-which-key'
+	                ;
+			;
+			;
 
-" Initialize plugin system
 call plug#end()
+colorscheme xcodelight
 
 """""""""""""""" which-key
 let g:mapleader = "\<Space>"
@@ -90,23 +91,21 @@ vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 let g:which_key_map =  {}
 let g:which_key_map['w'] = {
       \ 'name' : '+windows' ,
-      \ 'w' : ['<C-W>w'     , 'other-window']          ,
-      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
-      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
-      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
-      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
-      \ 'h' : ['<C-W>h'     , 'window-left']           ,
-      \ 'j' : ['<C-W>j'     , 'window-below']          ,
-      \ 'l' : ['<C-W>l'     , 'window-right']          ,
-      \ 'k' : ['<C-W>k'     , 'window-up']             ,
-      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
-      \ 'J' : [':resize +5'  , 'expand-window-below']   ,
-      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
-      \ 'K' : [':resize -5'  , 'expand-window-up']      ,
-      \ '=' : ['<C-W>='     , 'balance-window']        ,
-      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
-      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
-      \ '?' : ['FZF'    , 'fzf-window']            ,
+      \ 'w' : ['<C-W>w'        , 'other-window']          ,
+      \ 'd' : ['<C-W>c'        , 'delete-window']         ,
+      \ '2' : ['<C-W>v'        , 'layout-double-columns'] ,
+      \ 'h' : ['<C-W>h'        , 'window-left']           ,
+      \ 'j' : ['<C-W>j'        , 'window-below']          ,
+      \ 'l' : ['<C-W>l'        , 'window-right']          ,
+      \ 'k' : ['<C-W>k'        , 'window-up']             ,
+      \ 'o' : ['<C-W>o'        , 'window-only']             ,
+      \ 'H' : ['<C-W>5<'       , 'expand-window-left']    ,
+      \ 'J' : [':resize +5'    , 'expand-window-below']   ,
+      \ 'L' : ['<C-W>5>'       , 'expand-window-right']   ,
+      \ 'K' : [':resize -5'    , 'expand-window-up']      ,
+      \ '=' : ['<C-W>='        , 'balance-window']        ,
+      \ 's' : ['<C-W>s'        , 'split-window-below']    ,
+      \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
       \ }
 
 
@@ -259,24 +258,6 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-"" Mappings for CoCList
-"" Show all diagnostics.
-"nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-"" Manage extensions.
-"nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-"" Show commands.
-"nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-"" Find symbol of current document.
-"nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-"" Search workspace symbols.
-"nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-"" Do default action for next item.
-"nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-"" Do default action for previous item.
-"nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-"" Resume latest coc list.
-"nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
 " navigate chunks of current buffer
 nmap [g <Plug>(coc-git-prevchunk)
 nmap ]g <Plug>(coc-git-nextchunk)
@@ -288,12 +269,19 @@ let g:coc_global_extensions = ['coc-clangd', 'coc-git', 'coc-cmake', 'coc-floate
 		       	\'coc-julia', 'coc-rust-analyzer', 'coc-snippets', 'coc-vimlsp', 'coc-yank',
 			\'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json']
 
-nnoremap <space>e :CocCommand explorer<CR>
+if has("python3") || has("python")
+  nnoremap <F3> :Defx<CR>
+else
+  nnoremap <F3> :CocCommand explorer<CR>
+endif
 
-nnoremap <space>ff :FZF<CR>
+"""""""""""""""""" fzf-vim
+map <leader>bb :Buffers<CR>
+map <leader>ff :Files<CR>
+map <leader>fn :FzfChooseProjectFile<CR>
+map <leader>fh :History<CR>
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
-
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
 nmap s <Plug>(easymotion-overwin-f)
@@ -301,20 +289,20 @@ nmap s <Plug>(easymotion-overwin-f)
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
 nmap s <Plug>(easymotion-overwin-f2)
-
 " Turn on case-insensitive feature
 let g:EasyMotion_smartcase = 1
-
 " JK motions: Line motions
 map <localleader>j <Plug>(easymotion-j)
 map <localleader>k <Plug>(easymotion-k)
 
+"""""""""""""""""" neoformat
 map <leader>bf :Neoformat<CR>
 
+"""""""""""""""""" vim-choosewin
 " invoke with '-'
 nmap  -  <Plug>(choosewin)
 
-" This is my own choose windows configuration
+"""""""""""""""""" wincmd
 noremap <silent> <leader>1 :<C-u>1 wincmd w<CR>
 noremap <silent> <leader>2 :<C-u>2 wincmd w<CR>
 noremap <silent> <leader>3 :<C-u>3 wincmd w<CR>
@@ -325,7 +313,3 @@ noremap <silent> <leader>7 :<C-u>7 wincmd w<CR>
 noremap <silent> <leader>8 :<C-u>8 wincmd w<CR>
 noremap <silent> <leader>9 :<C-u>9 wincmd w<CR>
 noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
-
-
-map <leader>bb :Buffers<CR>
-map <leader>ff :Files<CR>

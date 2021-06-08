@@ -23,34 +23,46 @@ endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" LSP, according to alphabetical order
-Plug 'hrsh7th/nvim-compe'
+" LSP, according to plug name alphabetical order
+                        ;
+			;
+			;
 Plug 'JuliaEditorSupport/julia-vim'
-Plug 'kabouzeid/nvim-lspinstall'
-Plug 'neovim/nvim-lspconfig'
-" OTHERS, according to alphabetical order
-Plug 'airblade/vim-gitgutter'
-Plug 'andymass/vim-matchup'
-Plug 'arzg/vim-colors-xcode'
-Plug 'dyng/ctrlsf.vim'
-Plug 'easymotion/vim-easymotion'
-Plug 'itchyny/lightline.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'kyazdani42/nvim-web-devicons' " for file icons
-Plug 'kyazdani42/nvim-tree.lua'
-Plug 'liuchengxu/vim-which-key'
-Plug 'luochen1990/rainbow'
-Plug 'mhinz/vim-grepper'
-"Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
-Plug 'mhinz/vim-startify'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'preservim/nerdcommenter'
-Plug 't9md/vim-choosewin'
-Plug 'tpope/vim-fugitive'
-Plug 'sbdchd/neoformat'
-Plug 'Yggdroot/indentLine'
+           Plug 'hrsh7th/nvim-compe'
+            Plug 'neovim/nvim-lspconfig'
+         Plug 'kabouzeid/nvim-lspinstall'
+	                ;
+			;
+			;
+" OTHERS, according to plug name alphabetical order
+                   ;
+		   ;
+		   ;
+    Plug 'jiangmiao/auto-pairs'
+         Plug 'dyng/ctrlsf.vim'
+     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+     Plug 'junegunn/fzf.vim'
+Plug 'benwainwright/fzf-project'
+     Plug 'Yggdroot/indentLine'
+      Plug 'itchyny/lightline.vim'
+    Plug 'preservim/nerdcommenter'
+       Plug 'sbdchd/neoformat'
+   Plug 'kyazdani42/nvim-web-devicons' " for file icons
+   Plug 'kyazdani42/nvim-tree.lua'
+  Plug 'luochen1990/rainbow'
+         Plug 'arzg/vim-colors-xcode'
+     Plug 'airblade/vim-gitgutter'
+     Plug 'andymass/vim-matchup'
+   Plug 'easymotion/vim-easymotion'
+   Plug 'liuchengxu/vim-which-key'
+        Plug 'mhinz/vim-grepper'
+        Plug 'mhinz/vim-startify'
+     Plug 'ntpeters/vim-better-whitespace'
+         Plug 't9md/vim-choosewin'
+        Plug 'tpope/vim-fugitive'
+                   ;
+		   ;
+		   ;
 
 call plug#end()
 
@@ -125,6 +137,7 @@ noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
 """""""""""""""""" fzf-vim
 map <leader>bb :Buffers<CR>
 map <leader>ff :Files<CR>
+map <leader>fn :FzfChooseProjectFile<CR>
 map <leader>fh :History<CR>
 
 """""""""""""""""" vim-choosewin
