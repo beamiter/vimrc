@@ -33,14 +33,8 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " According to plug name alphabetical order
-                        ;
-		        ;
-		        ;
-         Plug 'jiangmiao/auto-pairs'
-          Plug 'neoclide/coc.nvim', {'branch': 'release'}
-	                ;
-	   	        ;
-		        ;
+Plug 'jiangmiao/auto-pairs'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -48,31 +42,25 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-                        ;
-			;
-			;
-              Plug 'dyng/ctrlsf.vim'
-          Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-          Plug 'junegunn/fzf.vim'
-     Plug 'benwainwright/fzf-project'
-          Plug 'Yggdroot/indentLine'
+Plug 'dyng/ctrlsf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'benwainwright/fzf-project'
+Plug 'Yggdroot/indentLine'
 Plug 'JuliaEditorSupport/julia-vim'
-           Plug 'itchyny/lightline.vim'
-            Plug 'sbdchd/neoformat'
-         Plug 'preservim/nerdcommenter'
-       Plug 'luochen1990/rainbow'
-          Plug 'ntpeters/vim-better-whitespace'
-              Plug 't9md/vim-choosewin'
-              Plug 'arzg/vim-colors-xcode'
-        Plug 'easymotion/vim-easymotion'
-             Plug 'tpope/vim-fugitive'
-             Plug 'mhinz/vim-grepper'
-          Plug 'andymass/vim-matchup'
-             Plug 'mhinz/vim-startify'
-        Plug 'liuchengxu/vim-which-key'
-	                ;
-			;
-			;
+Plug 'itchyny/lightline.vim'
+Plug 'sbdchd/neoformat'
+Plug 'preservim/nerdcommenter'
+Plug 'luochen1990/rainbow'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 't9md/vim-choosewin'
+Plug 'arzg/vim-colors-xcode'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-grepper'
+Plug 'andymass/vim-matchup'
+Plug 'mhinz/vim-startify'
+Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 colorscheme xcodelight
@@ -270,7 +258,89 @@ let g:coc_global_extensions = ['coc-clangd', 'coc-git', 'coc-cmake', 'coc-floate
 			\'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json']
 
 if has("python3") || has("python")
-  nnoremap <F3> :Defx<CR>
+  " direction = topleft or botright
+  nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
+  call defx#custom#option('_', {
+        \ 'winwidth': 40,
+        \ 'split': 'vertical',
+        \ 'direction': 'botright',
+        \ 'show_ignored_files': 0,
+        \ 'buffer_name': '',
+        \ 'toggle': 1,
+        \ 'resume': 1
+        \ })
+  autocmd FileType defx call s:defx_my_settings()
+  function! s:defx_my_settings() abort
+    " Define mappings
+    nnoremap <silent><buffer><expr> <CR>
+    \ defx#do_action('open')
+    nnoremap <silent><buffer><expr> c
+    \ defx#do_action('copy')
+    nnoremap <silent><buffer><expr> m
+    \ defx#do_action('move')
+    nnoremap <silent><buffer><expr> p
+    \ defx#do_action('paste')
+    nnoremap <silent><buffer><expr> l
+    \ defx#do_action('drop')
+    nnoremap <silent><buffer><expr> e
+    \ defx#do_action('open', 'vsplit')
+    nnoremap <silent><buffer><expr> E
+    \ defx#do_action('open', 'split')
+    nnoremap <silent><buffer><expr> P
+    \ defx#do_action('preview')
+    nnoremap <silent><buffer><expr> o
+    \ defx#do_action('open_tree', 'toggle')
+    nnoremap <silent><buffer><expr> K
+    \ defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr> N
+    \ defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> M
+    \ defx#do_action('new_multiple_files')
+    nnoremap <silent><buffer><expr> C
+    \ defx#do_action('toggle_columns',
+    \                'mark:indent:icon:filename:type:size:time')
+    nnoremap <silent><buffer><expr> S
+    \ defx#do_action('toggle_sort', 'time')
+    nnoremap <silent><buffer><expr> d
+    \ defx#do_action('remove')
+    nnoremap <silent><buffer><expr> r
+    \ defx#do_action('rename')
+    nnoremap <silent><buffer><expr> !
+    \ defx#do_action('execute_command')
+    nnoremap <silent><buffer><expr> x
+    \ defx#do_action('execute_system')
+    nnoremap <silent><buffer><expr> yy
+    \ defx#do_action('yank_path')
+    nnoremap <silent><buffer><expr> .
+    \ defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> ;
+    \ defx#do_action('repeat')
+    nnoremap <silent><buffer><expr> h
+    \ defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> ~
+    \ defx#do_action('cd')
+    nnoremap <silent><buffer><expr> q
+    \ defx#do_action('quit')
+    nnoremap <silent><buffer><expr> <Space>
+    \ defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> *
+    \ defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> j
+    \ line('.') == line('$') ? 'gg' : 'j'
+    nnoremap <silent><buffer><expr> k
+    \ line('.') == 1 ? 'G' : 'k'
+    nnoremap <silent><buffer><expr> <C-l>
+    \ defx#do_action('redraw')
+    nnoremap <silent><buffer><expr> <C-g>
+    \ defx#do_action('print')
+    nnoremap <silent><buffer><expr> cd
+    \ defx#do_action('change_vim_cwd')
+  	nnoremap <silent><buffer><expr> > defx#do_action('resize',
+  	\ defx#get_context().winwidth + 10)
+  	nnoremap <silent><buffer><expr> < defx#do_action('resize',
+  	\ defx#get_context().winwidth - 10)
+    autocmd BufWritePost * call defx#redraw()
+  endfunction
 else
   nnoremap <F3> :CocCommand explorer<CR>
 endif
