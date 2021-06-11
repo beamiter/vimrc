@@ -7,12 +7,15 @@ syntax on
 
 set clipboard+=unnamedplus
 set colorcolumn=80
+set expandtab
 set nobackup
 set nowritebackup
 set number
 set relativenumber
+set shiftwidth=4
 set shortmess+=c
 set showtabline=2
+set tabstop=4
 set termguicolors
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
