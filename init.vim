@@ -43,6 +43,7 @@ Plug 'preservim/nerdcommenter'
 Plug 'sbdchd/neoformat'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
+Plug 'marko-cerovac/material.nvim'
 Plug 'luochen1990/rainbow'
 Plug 'arzg/vim-colors-xcode'
 Plug 'airblade/vim-gitgutter'
