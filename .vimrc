@@ -244,11 +244,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
 " navigate chunks of current buffer
 nmap [g <Plug>(coc-git-prevchunk)
 nmap ]g <Plug>(coc-git-nextchunk)
@@ -386,3 +381,30 @@ noremap <silent> <leader>7 :<C-u>7 wincmd w<CR>
 noremap <silent> <leader>8 :<C-u>8 wincmd w<CR>
 noremap <silent> <leader>9 :<C-u>9 wincmd w<CR>
 noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
+
+"""""""""""""""" lightline
+let g:lightline = {
+      \ 'colorscheme': 'darcula',
+      \ 'active': {
+      \  'left': [ [ 'winnr', 'mode', 'paste' ],
+      \            [ 'gitbranch', 'gitstatus', 'readonly',
+      \              'filename', 'modified' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ],
+      \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
+      \ 'inactive': {
+      \  'left': [ [ 'winnr', 'filename' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ] ] },
+      \ 'tabline': {
+	  \  'left': [ [ 'readonly', 'absolutepath', 'modified' ] ],
+      \  'right': [ [ 'close' ] ] },
+      \ 'component_function': {
+      \  'gitbranch': 'FugitiveStatusline',
+      \ },
+      \ 'component_expand': {
+      \ },
+      \ 'component_type': {
+      \ 'buffers': 'tabsel',
+      \ },
+      \ }

@@ -64,6 +64,33 @@ colorscheme xcodelight
 " USE VIM SCRIPT TO CONFIG NEOVIM
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""" lightline
+let g:lightline = {
+      \ 'colorscheme': 'darcula',
+      \ 'active': {
+      \  'left': [ [ 'winnr', 'mode', 'paste' ],
+      \            [ 'gitbranch', 'gitstatus', 'readonly',
+      \              'filename', 'modified' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ],
+      \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
+      \ 'inactive': {
+      \  'left': [ [ 'winnr', 'filename' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ] ] },
+      \ 'tabline': {
+	  \  'left': [ [ 'readonly', 'absolutepath', 'modified' ] ],
+      \  'right': [ [ 'close' ] ] },
+      \ 'component_function': {
+      \  'gitbranch': 'FugitiveStatusline',
+      \ },
+      \ 'component_expand': {
+      \ },
+      \ 'component_type': {
+      \ 'buffers': 'tabsel',
+      \ },
+      \ }
+
 """""""""""""""""" which-key
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
