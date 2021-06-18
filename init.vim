@@ -64,6 +64,9 @@ colorscheme xcodelight
 " USE VIM SCRIPT TO CONFIG NEOVIM
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""" quickfix
+:autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
+
 """""""""""""""" lightline
 let g:lightline = {
       \ 'colorscheme': 'darcula',
