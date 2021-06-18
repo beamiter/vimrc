@@ -102,7 +102,6 @@
 (map! :leader
       :desc "treemacs toggle" "f t" #'treemacs)
 (map! :leader
-  "0" 'winum-select-window-0-or-10
   "1" 'winum-select-window-1
   "2" 'winum-select-window-2
   "3" 'winum-select-window-3
@@ -112,3 +111,4 @@
   "7" 'winum-select-window-7
   "8" 'winum-select-window-8
   "9" 'winum-select-window-9)
+(map! (:leader (:desc "treemacs select window" :g "0" #'treemacs-select-window)) )
