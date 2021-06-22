@@ -62,11 +62,15 @@ Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-grepper'
 Plug 'andymass/vim-matchup'
+Plug 'rakr/vim-one'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
-colorscheme xcodelight
+
+"colorscheme xcodelight
+colorscheme one
+set background=light " dark
 
 """""""""""""""" which-key
 let g:mapleader = "\<Space>"

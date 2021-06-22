@@ -45,20 +45,23 @@ Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'marko-cerovac/material.nvim'
 Plug 'luochen1990/rainbow'
-Plug 'arzg/vim-colors-xcode'
-Plug 'airblade/vim-gitgutter'
-Plug 'andymass/vim-matchup'
-Plug 'easymotion/vim-easymotion'
-Plug 'liuchengxu/vim-which-key'
-Plug 'mhinz/vim-grepper'
-Plug 'mhinz/vim-startify'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
+Plug 'arzg/vim-colors-xcode'
+Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-grepper'
+Plug 'andymass/vim-matchup'
+Plug 'rakr/vim-one'
+Plug 'mhinz/vim-startify'
+Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
-colorscheme xcodelight
+"colorscheme xcodelight
+colorscheme one
+set background=light " dark
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE VIM SCRIPT TO CONFIG NEOVIM
