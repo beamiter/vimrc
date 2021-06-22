@@ -31,6 +31,7 @@ Plug 'JuliaEditorSupport/julia-vim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
 Plug 'kabouzeid/nvim-lspinstall'
+Plug 'RishabhRD/nvim-lsputils'
 " OTHERS, according to plug name alphabetical order
 Plug 'jiangmiao/auto-pairs'
 Plug 'dyng/ctrlsf.vim'
@@ -44,6 +45,7 @@ Plug 'sbdchd/neoformat'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'marko-cerovac/material.nvim'
+Plug 'RishabhRD/popfix'
 Plug 'luochen1990/rainbow'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
@@ -394,6 +396,16 @@ vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+
 EOF
 
 "end
