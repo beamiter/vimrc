@@ -261,7 +261,9 @@ let g:coc_global_extensions = ['coc-clangd', 'coc-git', 'coc-cmake', 'coc-floate
 
 if has("python3") || has("python")
   " direction = topleft or botright
-  nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
+  nmap <silent> <F3> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')` <CR>
+  "nmap <silent> <F3> :Defx -split=vertical -winwidth=40 -direction=topleft <CR>
+  "nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
   call defx#custom#option('_', {
         \ 'winwidth': 40,
         \ 'split': 'vertical',
