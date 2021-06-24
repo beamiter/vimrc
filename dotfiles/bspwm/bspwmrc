@@ -2,6 +2,7 @@
 
 sxhkd &
 xsetroot -cursor_name left_ptr &
+~/.fehbg &
 
 bspc monitor -d I II III IV V VI VII VIII IX X
 
