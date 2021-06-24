@@ -65,6 +65,7 @@ Plug 'andymass/vim-matchup'
 Plug 'rakr/vim-one'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
+"Plug 'ycm-core/YouCompleteMe'
 
 call plug#end()
 
@@ -251,9 +252,9 @@ nmap ]g <Plug>(coc-git-nextchunk)
 nmap [c <Plug>(coc-git-prevconflict)
 nmap ]c <Plug>(coc-git-nextconflict)
 
-let g:coc_global_extensions = ['coc-clangd', 'coc-git', 'coc-cmake', 'coc-floaterm', 'coc-highlight',
-		       	\'coc-julia', 'coc-rust-analyzer', 'coc-snippets', 'coc-vimlsp', 'coc-yank',
-			\'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json']
+let g:coc_global_extensions = ['coc-git', 'coc-cmake', 'coc-floaterm', 'coc-highlight',
+            \'coc-julia', 'coc-rust-analyzer', 'coc-snippets', 'coc-vimlsp', 'coc-yank',
+            \'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json', 'coc-clangd']
 
 if has("python3") || has("python")
   " direction = topleft or botright
