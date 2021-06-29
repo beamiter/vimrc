@@ -62,3 +62,7 @@ rustup component add rls rust-analysis rust-src
   #+END_SRC
 9. *Plantuml* is great, *emacs org-mode* is great. 
 10. VPN address: https://gsou.buzz/ and so on.
+11. config coc clangd semanticHighlighting.
+{
+    "clangd.semanticHighlighting": true
+}
