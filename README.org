@@ -66,3 +66,4 @@ rustup component add rls rust-analysis rust-src
 {
     "clangd.semanticHighlighting": true
 }
+12. Volumn control in terminal: alsamixer
