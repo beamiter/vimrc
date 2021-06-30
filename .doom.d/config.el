@@ -100,6 +100,8 @@
 (map! :leader
       :desc "format all buffer" "b f" #'format-all-buffer) ;; 'clang-format-buffer
 (map! :leader
+      :desc "comment-line" "c m" #'comment-line) ;; 'evilnc-comment-or-uncomment-lines
+(map! :leader
       :desc "treemacs toggle" "f t" #'treemacs)
 (map! :leader
   "1" 'winum-select-window-1
