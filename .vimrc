@@ -2,7 +2,7 @@ set nocompatible
 let &t_TI = ""
 let &t_TE = ""
 
-imap jk <ESC>
+"imap jk <ESC>
 
 filetype off
 syntax on
