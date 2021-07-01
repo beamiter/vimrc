@@ -15,10 +15,10 @@ set nobackup
 set nowritebackup
 set number
 set relativenumber
-set shiftwidth=4
+set shiftwidth=2
 set shortmess+=c
 set showtabline=2
-set tabstop=4
+set tabstop=2
 set termguicolors
 
 autocmd FileType json,markdown let g:indentLine_conceallevel=0
