@@ -63,6 +63,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-grepper'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'andymass/vim-matchup'
+Plug 'airblade/vim-gitgutter'
 Plug 'rakr/vim-one'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
@@ -253,13 +254,15 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " navigate chunks of current buffer
-nmap [g <Plug>(coc-git-prevchunk)
-nmap ]g <Plug>(coc-git-nextchunk)
+"nmap [g <Plug>(coc-git-prevchunk)
+"nmap ]g <Plug>(coc-git-nextchunk)
+nmap [g <Plug>(GitGutterPrevHunk)
+nmap ]g <Plug>(GitGutterNextHunk)
 " navigate conflicts of current buffer
-nmap [c <Plug>(coc-git-prevconflict)
-nmap ]c <Plug>(coc-git-nextconflict)
+"nmap [c <Plug>(coc-git-prevconflict)
+"nmap ]c <Plug>(coc-git-nextconflict)
 
-let g:coc_global_extensions = ['coc-git', 'coc-cmake', 'coc-floaterm', 'coc-highlight',
+let g:coc_global_extensions = ['coc-cmake', 'coc-floaterm', 'coc-highlight',
             \'coc-julia', 'coc-rust-analyzer', 'coc-snippets', 'coc-vimlsp', 'coc-yank',
             \'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json', 'coc-clangd']
 
