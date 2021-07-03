@@ -7,7 +7,7 @@ alt + Return
 	terminator
 
 # program launcher
-alt + @space
+alt + d
 	dmenu_run
 
 # make sxhkd reload its configuration files:
