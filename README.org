@@ -67,3 +67,12 @@ rustup component add rls rust-analysis rust-src
     "clangd.semanticHighlighting": true
 }
 12. Volumn control in terminal: alsamixer
+13. Add dwm.desktop in /usr/share/xsessions/dwm.desktop
+i.e. dwm.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Name=Dwm
+Comment=Dynamic window manager
+Exec=dwm
+Icon=dwm
+Type=XSession
