@@ -1,6 +1,9 @@
 set nocompatible
 let &t_TI = ""
 let &t_TE = ""
+" set Vim-specific sequences for RGB colors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 "imap jk <ESC>
 
