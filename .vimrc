@@ -53,6 +53,8 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'benwainwright/fzf-project'
+Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'itchyny/lightline.vim'
@@ -76,7 +78,7 @@ Plug 'liuchengxu/vim-which-key'
 call plug#end()
 
 "colorscheme xcodelight
-colorscheme one
+colorscheme gruvbox-material
 set background=light " dark
 
 """""""""""""""" which-key
