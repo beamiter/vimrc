@@ -79,7 +79,7 @@ call plug#end()
 
 "colorscheme xcodelight
 colorscheme gruvbox-material
-set background=light " dark
+set background=dark " dark
 
 """""""""""""""" which-key
 let g:mapleader = "\<Space>"
