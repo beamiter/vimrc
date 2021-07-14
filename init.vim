@@ -1,6 +1,6 @@
 set nocompatible
 
-imap jk <ESC>
+"imap jk <ESC>
 
 filetype off
 syntax on
@@ -12,10 +12,10 @@ set nobackup
 set nowritebackup
 set number
 set relativenumber
-set shiftwidth=4
+set shiftwidth=2
 set shortmess+=c
 set showtabline=2
-set tabstop=4
+set tabstop=2
 set termguicolors
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -37,7 +37,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'benwainwright/fzf-project'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
@@ -47,8 +46,12 @@ Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 "Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'marko-cerovac/material.nvim'
+Plug 'nvim-lua/plenary.nvim'
 Plug 'RishabhRD/popfix'
+Plug 'nvim-lua/popup.nvim'
 Plug 'luochen1990/rainbow'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-project.nvim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
@@ -58,24 +61,16 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-grepper'
 Plug 'andymass/vim-matchup'
 Plug 'rakr/vim-one'
+Plug 'airblade/vim-rooter'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
-" configure nvcode-color-schemes
-let g:nvcode_termcolors=256
-syntax on
-colorscheme nvcode " Or whatever colorscheme you make
+colorscheme dracula " Or whatever colorscheme you make
 "colorscheme xcodelight
 "colorscheme one
 "set background=light " dark
-" checks if your terminal has 24-bit color support
-if (has("termguicolors"))
-    set termguicolors
-    hi LineNr ctermbg=NONE guibg=NONE
-endif
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE VIM SCRIPT TO CONFIG NEOVIM
@@ -83,6 +78,10 @@ endif
 
 """""""""""""""" quickfix
 :autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
+
+"""""""""""""""" gitgutter
+nmap [g <Plug>(GitGutterPrevHunk)
+nmap ]g <Plug>(GitGutterNextHunk)
 
 """""""""""""""" lightline
 let g:lightline = {
@@ -176,8 +175,15 @@ noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
 """""""""""""""""" fzf-vim
 map <leader>bb :Buffers<CR>
 map <leader>ff :Files<CR>
-map <leader>fn :FzfChooseProjectFile<CR>
-map <leader>fh :History<CR>
+map <leader>fm :History<CR>
+
+
+"""""""""""""""""" telescope
+" Find files using Telescope command-line sugar.
+nnoremap <leader>fh <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+
 
 """""""""""""""""" vim-choosewin
 " invoke with '-'
@@ -281,6 +287,21 @@ highlight NvimTreeFolderIcon guibg=blue
 " begin
 
 lua << EOF
+require'telescope'.load_extension('project')
+local actions = require('telescope.actions')
+require'telescope'.setup {
+defaults = {
+  mappings = {
+    i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-n>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<C-p>"] = actions.move_selection_previous,
+      },
+    },
+  }
+}
+
 -- nvim-lspinstall
 local function setup_servers()
   require'lspinstall'.setup()
