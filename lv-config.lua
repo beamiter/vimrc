@@ -10,7 +10,7 @@ an executable
 
 -- general
 
-O.format_on_save = true
+O.format_on_save = false
 O.completion.autocomplete = true
 O.colorscheme = "spacegray"
 O.auto_close_tree = 0
@@ -22,6 +22,7 @@ O.leader_key = " "
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 O.plugin.dashboard.active = true
 O.plugin.floatterm.active = true
+O.plugin.telescope_project.active = true
 O.plugin.zen.active = false
 O.plugin.zen.window.height = 0.90
 
