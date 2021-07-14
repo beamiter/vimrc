@@ -65,6 +65,7 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
 Plug 'easymotion/vim-easymotion'
+Plug 'felipec/vim-felipec'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-grepper'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
@@ -78,8 +79,10 @@ Plug 'liuchengxu/vim-which-key'
 call plug#end()
 
 "colorscheme xcodelight
-colorscheme gruvbox-material
-set background=light " dark
+"colorscheme gruvbox-material
+colorscheme felipec
+"set background=light
+set background=dark
 
 """""""""""""""" which-key
 let g:mapleader = "\<Space>"
