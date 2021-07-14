@@ -42,8 +42,10 @@ Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'sbdchd/neoformat'
+Plug 'christianchiarulli/nvcode-color-schemes.vim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
+"Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'marko-cerovac/material.nvim'
 Plug 'RishabhRD/popfix'
 Plug 'luochen1990/rainbow'
@@ -61,9 +63,19 @@ Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
+" configure nvcode-color-schemes
+let g:nvcode_termcolors=256
+syntax on
+colorscheme nvcode " Or whatever colorscheme you make
 "colorscheme xcodelight
-colorscheme one
-set background=light " dark
+"colorscheme one
+"set background=light " dark
+" checks if your terminal has 24-bit color support
+if (has("termguicolors"))
+    set termguicolors
+    hi LineNr ctermbg=NONE guibg=NONE
+endif
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE VIM SCRIPT TO CONFIG NEOVIM
