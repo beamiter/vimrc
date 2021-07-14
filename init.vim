@@ -52,6 +52,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'luochen1990/rainbow'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-project.nvim'
+Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
@@ -287,7 +288,7 @@ highlight NvimTreeFolderIcon guibg=blue
 " begin
 
 lua << EOF
-require'telescope'.load_extension('project')
+-- require'telescope'.load_extension('project')
 local actions = require('telescope.actions')
 require'telescope'.setup {
 defaults = {
