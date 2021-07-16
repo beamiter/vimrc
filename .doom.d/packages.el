@@ -10,6 +10,7 @@
 ;(package! some-package)
 (package! ace-window)
 (package! base16-theme)
+(package! dracula-theme)
 (package! format-all)
 (package! github-theme)
 (package! xclip)

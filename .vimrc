@@ -60,6 +60,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'sbdchd/neoformat'
 Plug 'preservim/nerdcommenter'
 Plug 'luochen1990/rainbow'
+Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
@@ -80,7 +81,8 @@ call plug#end()
 
 "colorscheme xcodelight
 "colorscheme gruvbox-material
-colorscheme felipec
+"colorscheme felipec
+colorscheme dracula
 "set background=light
 set background=dark
 
