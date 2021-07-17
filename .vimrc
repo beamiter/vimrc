@@ -55,6 +55,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
+Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'itchyny/lightline.vim'
 Plug 'sbdchd/neoformat'
@@ -432,3 +433,10 @@ let g:lightline = {
       \ 'buffers': 'tabsel',
       \ },
       \ }
+
+"""""""""""""""""" JuliaFormatter
+map <leader>bb :Buffers<CR>
+" normal mode mapping
+nnoremap <localleader>jf :JuliaFormatterFormat<CR>
+" visual mode mapping
+vnoremap <localleader>jf :JuliaFormatterFormat<CR>

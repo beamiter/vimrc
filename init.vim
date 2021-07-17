@@ -38,6 +38,7 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'Yggdroot/indentLine'
+Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'sbdchd/neoformat'
@@ -177,6 +178,14 @@ noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
 map <leader>bb :Buffers<CR>
 map <leader>ff :Files<CR>
 map <leader>fm :History<CR>
+
+
+"""""""""""""""""" JuliaFormatter
+map <leader>bb :Buffers<CR>
+" normal mode mapping
+nnoremap <localleader>jf :JuliaFormatterFormat<CR>
+" visual mode mapping
+vnoremap <localleader>jf :JuliaFormatterFormat<CR>
 
 
 """""""""""""""""" telescope
