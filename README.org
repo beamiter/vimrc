@@ -76,3 +76,7 @@ Comment=Dynamic window manager
 Exec=dwm
 Icon=dwm
 Type=XSession
+14. use xrandr to swap monitor position
+  #+BEGIN_SRC shell
+  xrandr --output eDP-1 --right-of HDMI-1
+  #+END_SRC
