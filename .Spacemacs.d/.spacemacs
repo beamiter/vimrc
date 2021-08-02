@@ -32,7 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(html
+   '(vimscript
+     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -556,6 +557,10 @@ before packages are loaded."
 (setq lsp-ui-doc-show-with-mouse nil)
 (setq lsp-ui-doc-show-with-cursor nil)
 (setq lsp-ui-sideline-show-diagnostics nil))
+
+(set-terminal-coding-system 'utf-8)
+(modify-coding-system-alist 'process "*" 'utf-8)
+(setq default-process-coding-system '(utf-8 . utf-8))
 
 
 ;; Do not write anything past this comment. This is where Emacs will
