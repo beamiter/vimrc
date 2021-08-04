@@ -122,6 +122,8 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 
+set timeoutlen=500
+
 " Define prefix dictionary
 let g:which_key_map =  {}
 let g:which_key_map['w'] = {
