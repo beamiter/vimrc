@@ -80,3 +80,4 @@ Type=XSession
   #+BEGIN_SRC shell
   xrandr --output eDP-1 --right-of HDMI-1
   #+END_SRC
+15. bluetooth tools: blueman/blueman-manager in ubuntu
