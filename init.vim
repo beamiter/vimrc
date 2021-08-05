@@ -17,6 +17,7 @@ set shortmess+=c
 set showtabline=2
 set tabstop=2
 set termguicolors
+set noautochdir
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -45,14 +46,11 @@ Plug 'sbdchd/neoformat'
 Plug 'christianchiarulli/nvcode-color-schemes.vim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
-"Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'marko-cerovac/material.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'RishabhRD/popfix'
 Plug 'nvim-lua/popup.nvim'
-Plug 'luochen1990/rainbow'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-project.nvim'
 Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
@@ -63,7 +61,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-grepper'
 Plug 'andymass/vim-matchup'
 Plug 'rakr/vim-one'
-Plug 'airblade/vim-rooter'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 
@@ -225,6 +222,7 @@ let g:nvim_tree_group_empty = 1 " 0 by default, compact folders that only contai
 let g:nvim_tree_lsp_diagnostics = 1 "0 by default, will show lsp diagnostics in the signcolumn. See :help nvim_tree_lsp_diagnostics
 let g:nvim_tree_disable_window_picker = 1 "0 by default, will disable the window picker.
 let g:nvim_tree_hijack_cursor = 0 "1 by default, when moving cursor in the tree, will position the cursor at the start of the file on the current line
+let g:nvim_tree_update_cwd = 0 "0 by default, will update the tree cwd when changing nvim's directory (DirChanged event). Behaves strangely with autochdir set.
 let g:nvim_tree_window_picker_exclude = {
     \   'filetype': [
     \     'packer',
@@ -288,8 +286,6 @@ nnoremap <leader>tr :NvimTreeRefresh<CR>
 nnoremap <leader>tt :NvimTreeToggle<CR>
 " NvimTreeOpen and NvimTreeClose are also available if you need them
 
-set termguicolors " this variable must be enabled for colors to be applied properly
-
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
 
@@ -299,7 +295,6 @@ highlight NvimTreeFolderIcon guibg=blue
 " begin
 
 lua << EOF
--- require'telescope'.load_extension('project')
 local actions = require('telescope.actions')
 require'telescope'.setup {
 defaults = {

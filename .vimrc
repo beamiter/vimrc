@@ -24,6 +24,7 @@ set shortmess+=c
 set showtabline=2
 set tabstop=2
 set termguicolors
+set noautochdir
 
 autocmd FileType json,markdown let g:indentLine_conceallevel=0
 autocmd FileType javascript,python,c,cpp,java,vim,shell let g:indentLine_conceallevel=2
@@ -60,7 +61,6 @@ Plug 'JuliaEditorSupport/julia-vim'
 Plug 'itchyny/lightline.vim'
 Plug 'sbdchd/neoformat'
 Plug 'preservim/nerdcommenter'
-Plug 'luochen1990/rainbow'
 Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
@@ -73,10 +73,8 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'andymass/vim-matchup'
 Plug 'airblade/vim-gitgutter'
 Plug 'rakr/vim-one'
-Plug 'airblade/vim-rooter'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
-"Plug 'ycm-core/YouCompleteMe'
 
 call plug#end()
 
