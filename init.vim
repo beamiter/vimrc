@@ -28,6 +28,7 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 
 " LSP, according to plug name alphabetical order
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
@@ -56,7 +57,7 @@ Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
-Plug 'dominikduda/vim_current_word'
+"Plug 'dominikduda/vim_current_word'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -77,6 +78,10 @@ colorscheme dracula " Or whatever colorscheme you make
 " USE VIM SCRIPT TO CONFIG NEOVIM
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
+
+"""""""""""""""" coc
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 """""""""""""""" haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
