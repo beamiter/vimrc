@@ -38,6 +38,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'neovimhaskell/haskell-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'itchyny/lightline.vim'
@@ -74,6 +75,16 @@ colorscheme dracula " Or whatever colorscheme you make
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE VIM SCRIPT TO CONFIG NEOVIM
 """"""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""" haskell
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
 """""""""""""""" quickfix
 :autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
