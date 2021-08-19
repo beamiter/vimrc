@@ -112,6 +112,7 @@ endif
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
+hi! link CocHighlightText CocListBlackGreen
 
 """""""""""""""" haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
