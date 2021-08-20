@@ -28,7 +28,7 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 
 " LSP, according to plug name alphabetical order
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
@@ -110,9 +110,9 @@ else
   set signcolumn=yes
 endif
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-hi! link CocHighlightText CocListBlackGreen
+"" Highlight the symbol and its references when holding the cursor.
+"autocmd CursorHold * silent call CocActionAsync('highlight')
+"hi! link CocHighlightText CocListBlackGreen
 
 """""""""""""""" haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
