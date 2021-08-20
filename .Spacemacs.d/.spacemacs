@@ -33,8 +33,14 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(haskell
+    (haskell
+     :variables
+     haskell-completion-backend 'lsp
+     haskell-process-suggest-remove-import-lines nil
+     lsp-haskell-process-path-hie "haskell-language-server-wrapper"
+     )
+     lsp
      protobuf
-     ;; (haskell :variables haskell-completion-backend 'lsp)
      vimscript
      html
      ;; ----------------------------------------------------------------
