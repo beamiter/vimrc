@@ -34,6 +34,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(haskell
      protobuf
+     ;; (haskell :variables haskell-completion-backend 'lsp)
      vimscript
      html
      ;; ----------------------------------------------------------------
