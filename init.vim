@@ -376,6 +376,7 @@ end
 -- Manually lspconfig
 require'lspconfig'.clangd.setup{}
 require'lspconfig'.julials.setup{}
+require'lspconfig'.hls.setup{}
 
 
 -- nvim-lspconfig
