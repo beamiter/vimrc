@@ -39,6 +39,7 @@ This function should only modify configuration layer settings."
      haskell-process-suggest-remove-import-lines nil
      lsp-haskell-process-path-hie "haskell-language-server-wrapper"
      )
+     gtags
      lsp
      protobuf
      vimscript
