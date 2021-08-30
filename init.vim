@@ -63,6 +63,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-grepper'
 Plug 'andymass/vim-matchup'
+Plug 'bluz71/vim-moonfly-colors'
 Plug 'rakr/vim-one'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
@@ -337,6 +338,9 @@ nnoremap <leader>tt :NvimTreeToggle<CR>
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
 
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE LUA TO CONFIG NEOVIM
 """"""""""""""""""""""""""""""""""""""""""""""""""""
@@ -435,7 +439,14 @@ require'compe'.setup {
   max_abbr_width = 100;
   max_kind_width = 100;
   max_menu_width = 100;
-  documentation = true;
+  documentation = {
+    border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
+    winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
+    max_width = 120,
+    min_width = 60,
+    max_height = math.floor(vim.o.lines * 0.3),
+    min_height = 1,
+  };
 
   source = {
     path = true;
@@ -445,6 +456,7 @@ require'compe'.setup {
     nvim_lua = true;
     vsnip = true;
     ultisnips = true;
+    luasnip = true;
   };
 }
 
@@ -494,6 +506,12 @@ vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typ
 vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
 vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
 vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = false
+  }
+)
 
 EOF
 
