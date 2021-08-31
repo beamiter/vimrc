@@ -223,13 +223,12 @@ noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
 
 
 """""""""""""""""" fzf-vim
-map <leader>bb :Buffers<CR>
-map <leader>ff :Files<CR>
-map <leader>fm :History<CR>
+"map <leader>bb :Buffers<CR>
+"map <leader>ff :Files<CR>
+"map <leader>fh :History<CR>
 
 
 """""""""""""""""" JuliaFormatter
-map <leader>bb :Buffers<CR>
 " normal mode mapping
 nnoremap <localleader>jf :JuliaFormatterFormat<CR>
 " visual mode mapping
@@ -238,9 +237,10 @@ vnoremap <localleader>jf :JuliaFormatterFormat<CR>
 
 """""""""""""""""" telescope
 " Find files using Telescope command-line sugar.
-nnoremap <leader>fh <cmd>Telescope find_files<cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>bb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope oldfiles<cr>
 
 
 """""""""""""""""" vim-choosewin
