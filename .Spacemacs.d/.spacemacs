@@ -423,7 +423,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
    ;; `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode t
+   ;;dotspacemacs-smartparens-strict-mode t
 
    ;; If non-nil smartparens-mode will be enabled in programming modes.
    ;; (default t)
