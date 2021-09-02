@@ -356,8 +356,8 @@ nnoremap <leader>tt :NvimTreeToggle<CR>
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
 
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
-autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()
+"autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+""autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE LUA TO CONFIG NEOVIM
