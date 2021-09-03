@@ -5,6 +5,7 @@ set nocompatible
 filetype off
 syntax on
 
+set autoindent
 set clipboard+=unnamedplus
 set colorcolumn=80
 set expandtab
@@ -356,7 +357,7 @@ nnoremap <leader>tt :NvimTreeToggle<CR>
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
 
-"autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 ""autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
@@ -445,7 +446,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "pyright", "rust_analyzer", "tsserver", "clangd", "julials" }
+local servers = { "pyright", "rust_analyzer", "tsserver", "clangd", "julials", "hls"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end

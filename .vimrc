@@ -10,6 +10,7 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 filetype off
 syntax on
 
+set autoindent
 set backspace=indent,eol,start
 set clipboard+=unnamedplus
 set colorcolumn=80
