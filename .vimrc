@@ -14,7 +14,10 @@ set autoindent
 set backspace=indent,eol,start
 set clipboard+=unnamedplus
 set colorcolumn=80
+set encoding=utf-8
 set expandtab
+set guioptions=
+set guifont=SauceCodePro\ Nerd\ Font\ Regular\ 11
 set nobackup
 set noswapfile
 set nowritebackup
