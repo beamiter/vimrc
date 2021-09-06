@@ -10,6 +10,8 @@ Vimrc README -*- mode: org -*-
 * *Install vim to support python2/3*
 Install vim-gtk or vim-gnome first to support compiling with gui.
 #+BEGIN_SRC shell
+sudo apt-get build-dep vim-gnome
+
 ./configure --with-features=huge \
             --enable-multibyte \
             --enable-gui=auto \
@@ -22,8 +24,8 @@ Install vim-gtk or vim-gnome first to support compiling with gui.
             --enable-gtk2-check \
             --enable-gnome-check \
             --prefix=/usr \
-            --enable-fail-if-missing \
             --enable-luainterp=yes \
+            --enable-fail-if-missing \
 
 make
 
