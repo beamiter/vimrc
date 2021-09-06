@@ -8,15 +8,22 @@ Vimrc README -*- mode: org -*-
 #+LANGUAGE: Vimscript, Eclisp
 
 * *Install vim to support python2/3*
-
+Install vim-gtk or vim-gnome first to support compiling with gui.
 #+BEGIN_SRC shell
 ./configure --with-features=huge \
             --enable-multibyte \
+            --enable-gui=auto \
+            --with-x \
             --enable-rubyinterp=yes \
             --enable-python3interp=yes \
             --enable-perlinterp=yes \
+            --enable-fontset \
+            --enable-cscope \
+            --enable-gtk2-check \
+            --enable-gnome-check \
+            --prefix=/usr \
+            --enable-fail-if-missing \
             --enable-luainterp=yes \
-            --enable-gui=gtk2 --enable-cscope --prefix=/usr
 
 make
 
