@@ -396,6 +396,8 @@ if has("python3") || has("python")
 else
   nnoremap <F3> :CocCommand explorer<CR>
 endif
+" Use coc-explorer as file tree
+map <leader>ft :CocCommand explorer<CR>
 
 """""""""""""""""" fzf-vim
 map <leader>bb :Buffers<CR>
