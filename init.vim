@@ -60,6 +60,7 @@ Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
 "Plug 'dominikduda/vim_current_word'
 Plug 'easymotion/vim-easymotion'
+Plug 'voldikss/vim-floaterm'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-grepper'
@@ -80,6 +81,16 @@ colorscheme dracula " Or whatever colorscheme you make
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE VIM SCRIPT TO CONFIG NEOVIM
 """"""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""" vim-floaterm
+nnoremap   <silent>   <F5>    :FloatermNew<CR>
+tnoremap   <silent>   <F5>    <C-\><C-n>:FloatermNew<CR>
+nnoremap   <silent>   <F6>    :FloatermPrev<CR>
+tnoremap   <silent>   <F6>    <C-\><C-n>:FloatermPrev<CR>
+nnoremap   <silent>   <F7>    :FloatermNext<CR>
+tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNext<CR>
+nnoremap   <silent>   <F8>   :FloatermToggle<CR>
+tnoremap   <silent>   <F8>   <C-\><C-n>:FloatermToggle<CR>
 
 """""""""""""""" quickhl
 nmap <Space>m <Plug>(quickhl-manual-this)

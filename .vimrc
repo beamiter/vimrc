@@ -74,6 +74,7 @@ Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
 Plug 'easymotion/vim-easymotion'
 Plug 'felipec/vim-felipec'
+Plug 'voldikss/vim-floaterm'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-grepper'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
@@ -124,6 +125,15 @@ let g:which_key_map['w'] = {
       \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
       \ }
 
+"""""""""""""""" vim-floaterm
+nnoremap   <silent>   <F5>    :FloatermNew<CR>
+tnoremap   <silent>   <F5>    <C-\><C-n>:FloatermNew<CR>
+nnoremap   <silent>   <F6>    :FloatermPrev<CR>
+tnoremap   <silent>   <F6>    <C-\><C-n>:FloatermPrev<CR>
+nnoremap   <silent>   <F7>    :FloatermNext<CR>
+tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNext<CR>
+nnoremap   <silent>   <F8>   :FloatermToggle<CR>
+tnoremap   <silent>   <F8>   <C-\><C-n>:FloatermToggle<CR>
 
 """""""""""""""" coc.nvim
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
