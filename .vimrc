@@ -68,6 +68,7 @@ Plug 'JuliaEditorSupport/julia-vim'
 Plug 'itchyny/lightline.vim'
 Plug 'sbdchd/neoformat'
 Plug 'preservim/nerdcommenter'
+Plug 'preservim/nerdtree'
 Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
@@ -93,6 +94,17 @@ call plug#end()
 colorscheme dracula
 "set background=light
 set background=dark
+
+"""""""""""""""" nerdtree
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 """""""""""""""" which-key
 let g:mapleader = "\<Space>"
@@ -317,7 +329,7 @@ let g:coc_global_extensions = ['coc-cmake', 'coc-floaterm', 'coc-highlight',
             \'coc-julia', 'coc-rust-analyzer', 'coc-snippets', 'coc-vimlsp', 'coc-yank',
             \'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json', 'coc-clangd']
 
-if has("python3") || has("python")
+if 0 && has("python3") || has("python")
   " direction = topleft or botright
   nmap <silent> <F3> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')` <CR>
   "nmap <silent> <F3> :Defx -split=vertical -winwidth=40 -direction=topleft <CR>
@@ -404,10 +416,12 @@ if has("python3") || has("python")
     autocmd BufWritePost * call defx#redraw()
   endfunction
 else
-  nnoremap <F3> :CocCommand explorer<CR>
+  nnoremap <F3> :NERDTreeToggle<CR>
+  "nnoremap <F3> :CocCommand explorer<CR>
 endif
 " Use coc-explorer as file tree
-map <leader>ft :CocCommand explorer<CR>
+"map <leader>ft :CocCommand explorer<CR>
+nnoremap <leader>ft :NERDTreeFind<CR>
 
 """""""""""""""""" fzf-vim
 map <leader>bb :Buffers<CR>
