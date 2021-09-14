@@ -4,7 +4,7 @@ sxhkd &
 xsetroot -cursor_name left_ptr &
 ~/.fehbg &
 
-$HOME/.config/polybar/launch.sh
+#$HOME/.config/polybar/launch.sh
 
 #bspc monitor HDMI-1 -d 1 2 3 4 5 6 7 8 9
 #bspc monitor eDP-1 -d 0
