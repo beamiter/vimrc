@@ -4,7 +4,7 @@ workspaces = []
 tags = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 layouts = ["MainAndVertStack", "MainAndHorizontalStack", "MainAndDeck", "GridHorizontal", "EvenHorizontal", "EvenVertical", "Fibonacci", "CenterMain", "CenterMainBalanced", "Monocle", "RightWiderLeftStack", "LeftWiderRightStack"]
 scratchpad = []
-disable_current_tag_swap = false
+disable_current_tag_swap = true
 focus_behaviour = "Sloppy"
 focus_new_windows = true
 
@@ -36,11 +36,11 @@ value = "loginctl kill-session $XDG_SESSION_ID"
 modifier = ["modkey", "Shift"]
 key = "x"
 
-[[keybind]]
-command = "Execute"
-value = "slock"
-modifier = ["modkey", "Control"]
-key = "l"
+#[[keybind]]
+#command = "Execute"
+#value = "slock"
+#modifier = ["modkey", "Control"]
+#key = "l"
 
 [[keybind]]
 command = "MoveToLastWorkspace"
@@ -89,11 +89,23 @@ key = "j"
 
 [[keybind]]
 command = "FocusWorkspaceNext"
-modifier = ["modkey"]
+modifier = ["modkey", "Control"]
 key = "l"
 
 [[keybind]]
 command = "FocusWorkspacePrevious"
+modifier = ["modkey", "Control"]
+key = "h"
+
+[[keybind]]
+command = "IncreaseMainWidth"
+value = "5"
+modifier = ["modkey"]
+key = "l"
+
+[[keybind]]
+command = "DecreaseMainWidth"
+value = "5"
 modifier = ["modkey"]
 key = "h"
 
