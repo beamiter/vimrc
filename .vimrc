@@ -77,12 +77,13 @@ Plug 'easymotion/vim-easymotion'
 Plug 'felipec/vim-felipec'
 Plug 'voldikss/vim-floaterm'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-grepper'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'andymass/vim-matchup'
 Plug 'bluz71/vim-moonfly-colors'
-Plug 'airblade/vim-gitgutter'
 Plug 'rakr/vim-one'
+Plug 'airblade/vim-rooter'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 
@@ -94,6 +95,9 @@ call plug#end()
 colorscheme dracula
 "set background=light
 set background=dark
+
+"""""""""""""""" vim-rooter
+"let g:rooter_manual_only = 1
 
 """""""""""""""" nerdtree
 " Start NERDTree when Vim starts with a directory argument.
@@ -434,10 +438,15 @@ endif
 nnoremap <leader>ft :call MyNerdToggle()<CR>
 
 """""""""""""""""" fzf-vim
+function! s:find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+command! ProjectFiles execute 'Files' s:find_git_root()
 map <leader>bb :Buffers<CR>
 map <leader>ff :Files<CR>
 map <leader>fn :FzfChooseProjectFile<CR>
 map <leader>fh :History<CR>
+map <leader>pf :ProjectFiles<CR>
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
