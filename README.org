@@ -97,3 +97,4 @@ Type=XSession
   hc set_monitors 1920x1080+0+0 1920x1080+1920+0
   xsetroot -cursor_name left_ptr
   #+END_SRC
+17. export TERM=xterm-256color

@@ -239,7 +239,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(github material-light kaolin-light
+   dotspacemacs-themes '(kaolin-dark github material-light kaolin-light
        material dakrone doom-monokai-spectrum spacemacs-dark spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
@@ -555,8 +555,11 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
 ;; Reference Link:
 ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
-(setq x-meta-keysym 'super
-      x-super-keysym 'meta)
+;; (setq x-meta-keysym 'super
+;;       x-super-keysym 'meta)
+;; (setq x-meta-keysym 'alt
+;;       x-alt-keysym 'meta)
+(setq x-alt-keysym 'meta)
 (setq helm-buffer-max-length nil)
 (setq helm-enable-auto-resize t)
 (setq lsp-lens-enable t)
