@@ -10,6 +10,7 @@ set clipboard+=unnamedplus
 set colorcolumn=80
 set expandtab
 set nobackup
+set noswapfile
 set nowritebackup
 set number
 set relativenumber
