@@ -98,3 +98,4 @@ Type=XSession
   xsetroot -cursor_name left_ptr
   #+END_SRC
 17. export TERM=xterm-256color
+18. sudo cp /etc/nixos/configuration.nix ~/vimrc/dotfiles/nixos/

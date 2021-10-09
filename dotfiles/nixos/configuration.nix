@@ -133,6 +133,7 @@
     firefox
     git
     gcc
+    google-chrome
     julia_16-bin
     llvm
     neovim
@@ -144,6 +145,11 @@
     vimHugeX
     wget
   ];
+
+  i18n.inputMethod = {
+   enabled = "ibus";
+   ibus.engines = with pkgs.ibus-engines; [ libpinyin ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
