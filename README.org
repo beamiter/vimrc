@@ -29,6 +29,9 @@ sudo apt-get build-dep vim-gnome
 
 make
 
+* *Token*
+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
+
 sudo make install
 #with-python3-config-dir is deprecated
             #--with-python3-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \

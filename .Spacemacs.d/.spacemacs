@@ -38,13 +38,13 @@ This function should only modify configuration layer settings."
      haskell-process-suggest-remove-import-lines nil
      lsp-haskell-process-path-hie "haskell-language-server-wrapper"
      )
-    (exwm :variables exwm-enable-systray t
-                     exwm-autostart-xdg-applications nil
-                     exwm-terminal-command "terminator"
-                     exwm-locking-command "i3lock -n"
-                     exwm-hide-tiling-modeline nil
-                     exwm-workspace-switch-wrap t
-                     exwm-randr-command nil)
+   ;; (exwm :variables exwm-enable-systray t
+   ;;                  exwm-autostart-xdg-applications nil
+   ;;                  exwm-terminal-command "terminator"
+   ;;                  exwm-locking-command "i3lock -n"
+   ;;                  exwm-hide-tiling-modeline nil
+   ;;                  exwm-workspace-switch-wrap t
+   ;;                  exwm-randr-command nil)
      gtags
      lsp
      protobuf
