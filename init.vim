@@ -6,7 +6,8 @@ filetype off
 syntax on
 
 set autoindent
-set clipboard+=unnamedplus
+"set clipboard+=unnamedplus
+set clipboard^=unnamed,unnamedplus
 set colorcolumn=80
 set expandtab
 set nobackup
