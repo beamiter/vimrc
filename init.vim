@@ -15,12 +15,15 @@ set noswapfile
 set nowritebackup
 set number
 set relativenumber
-set shiftwidth=2
+set shiftwidth=4
 set shortmess+=c
 set showtabline=2
-set tabstop=2
+set tabstop=4
 set termguicolors
 set noautochdir
+
+autocmd FileType c,cpp setlocal shiftwidth=2
+autocmd FileType c,cpp setlocal tabstop=2
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
