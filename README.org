@@ -62,7 +62,7 @@ rustup component add rls rust-analysis rust-src
       #Edit $HOME/.xsessionrc
       sxhkd &
       exec bspwm
-#+END_SRC
+  #+END_SRC
 8. Fix issues:
   #+BEGIN_SRC shell
   #icecc - icecream seems to have invoked itself recursively
@@ -97,5 +97,6 @@ Type=XSession
   hc set_monitors 1920x1080+0+0 1920x1080+1920+0
   xsetroot -cursor_name left_ptr
   #+END_SRC
+  god use arandr (another xrandr gui)
 17. export TERM=xterm-256color
 18. sudo cp /etc/nixos/configuration.nix ~/vimrc/dotfiles/nixos/
