@@ -18,7 +18,6 @@ set encoding=utf-8
 set expandtab
 set guioptions=
 set guifont=SauceCodePro\ Nerd\ Font\ Regular\ 11.5
-set guifontset=
 set guifontwide=Sans\ Regular\ 11.5
 set nobackup
 set noswapfile
