@@ -120,7 +120,7 @@
   users.users.yj = {
     isNormalUser = true;
     home = "/home/yj";
-    extraGroups = [ "wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "docker"]; # Enable ‘sudo’ for the user.
   };
 
   # List packages installed in system profile. To search, run:
@@ -129,6 +129,8 @@
     #vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     curl
     clang_12
+    clang-tools
+    cmake
     emacs
     firefox
     git
@@ -143,6 +145,7 @@
     rustup
     terminator
     vimHugeX
+    vscode
     wget
   ];
 
@@ -163,6 +166,12 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  services.flatpak.enable = true;
+
+  virtualisation.docker.enable = true;
+  #virtualisation.docker.enableNvidia = true;
+  #users.users.yj.extraGroups = [ "docker" ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
