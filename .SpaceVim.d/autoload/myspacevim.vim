@@ -16,4 +16,8 @@ function! myspacevim#after() abort
     " call SpaceVim#custom#LangSPCGroupName('python', ['G'], '+TestGroup')
     " call SpaceVim#custom#LangSPC('python', 'nore', ['G', 't'], 'echom 1', 'echomessage 1', 1)
     nmap <space>ac <Plug>(coc-codeaction)
-endfunction
+
+    """""""""""""""" gitgutter
+    nmap [g <Plug>(GitGutterPrevHunk)
+    nmap ]g <Plug>(GitGutterNextHunk)
+  endfunction
