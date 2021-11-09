@@ -41,7 +41,7 @@
 # Enable autocomplete layer
 [[layers]]
 name = 'autocomplete'
-auto_completion_return_key_behavior = "complete"
+auto_completion_return_key_behavior = "smart"
 auto_completion_tab_key_behavior = "smart"
 auto_completion_enable_snippets_in_popup = false
 auto_completion_delay = 200
