@@ -38,6 +38,10 @@
     bootstrap_before = 'myspacevim#before'
     bootstrap_after = 'myspacevim#after'
 
+[[layers]]
+name = 'core'
+enable_smooth_scrolling = false
+
 # Enable autocomplete layer
 [[layers]]
 name = 'autocomplete'
