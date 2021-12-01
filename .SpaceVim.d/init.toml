@@ -81,8 +81,8 @@ filetypes = [
   # 'julia',
 ]
 [layers.override_cmd]
-  # rust = ["rust-analyzer"]
-  rust = ["rls"]
+  rust = ["rust-analyzer"]
+  # rust = ["rls"]
 
 [[layers]]
 name = 'lang#c'
