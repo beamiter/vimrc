@@ -3,6 +3,7 @@ function! myspacevim#before() abort
     let &t_TI = ""
     let &t_TE = ""
     let g:mapleader = ','
+    set clipboard+=unnamedplus
     " let g:neomake_c_enabled_makers = ['clang']
     " nnoremap jk <Esc>
 endfunction
