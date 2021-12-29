@@ -38,7 +38,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
-Plug 'kabouzeid/nvim-lspinstall'
+Plug 'williamboman/nvim-lsp-installer'
+Plug 'simrat39/rust-tools.nvim'
 Plug 'RishabhRD/nvim-lsputils'
 " OTHERS, according to plug name alphabetical order
 Plug 'jiangmiao/auto-pairs'
@@ -283,11 +284,8 @@ nnoremap <leader>fh <cmd>Telescope oldfiles<cr>
 nmap  -  <Plug>(choosewin)
 
 """""""""""""""""" nvim-tree
-let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
-let g:nvim_tree_gitignore = 1 "0 by default
 let g:nvim_tree_quit_on_open = 1 "0 by default, closes the tree when you open a file
 let g:nvim_tree_indent_markers = 1 "0 by default, this option shows indent markers when folders are open
-let g:nvim_tree_hide_dotfiles = 1 "0 by default, this option hides files and folders starting with a dot `.`
 let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
 let g:nvim_tree_highlight_opened_files = 1 "0 by default, will enable folder and file icon highlight for opened files/directories.
 let g:nvim_tree_root_folder_modifier = ':~' "This is the default. See :help filename-modifiers for more options
@@ -389,32 +387,29 @@ defaults = {
   }
 }
 
--- nvim-lspinstall
-local function setup_servers()
-  require'lspinstall'.setup()
-  local servers = require'lspinstall'.installed_servers()
-  for _, server in pairs(servers) do
-    require'lspconfig'[server].setup{}
+
+--- nvim-lsp-installer
+local lsp_installer = require "nvim-lsp-installer"
+
+-- Include the servers you want to have installed by default below
+local servers = {
+  "bashls",
+  "pylsp",
+  "clangd",
+  "julials",
+  "cmake",
+  "rust_analyzer",
+}
+
+for _, name in pairs(servers) do
+  local server_is_found, server = lsp_installer.get_server(name)
+  if server_is_found then
+    if not server:is_installed() then
+      print("Installing " .. name)
+      server:install()
+    end
   end
 end
-
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
--- Manually lspconfig
-local servers = {clangd, julials, hls}
-for _, server in pairs(servers) do
-  require("lspconfig")[server].setup {
-    on_attach = on_attach
-  }
-end
---require'lspconfig'.clangd.setup{}
---require'lspconfig'.julials.setup{}
---require'lspconfig'.hls.setup{}
 
 
 -- nvim-lspconfig
@@ -455,7 +450,6 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "pyright", "rust_analyzer", "tsserver", "clangd", "julials", "hls"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
