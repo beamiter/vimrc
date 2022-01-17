@@ -262,7 +262,8 @@ noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
 "map <leader>bb :Buffers<CR>
 "map <leader>ff :Files<CR>
 "map <leader>fh :History<CR>
-
+nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
 
 """""""""""""""""" JuliaFormatter
 " normal mode mapping

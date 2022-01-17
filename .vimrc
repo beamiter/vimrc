@@ -449,6 +449,8 @@ map <leader>ff :Files<CR>
 map <leader>fn :FzfChooseProjectFile<CR>
 map <leader>fh :History<CR>
 map <leader>pf :ProjectFiles<CR>
+nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
