@@ -500,17 +500,30 @@ let g:lightline = {
       \  'right': [ [ 'lineinfo' ],
       \             [ 'percent' ] ] },
       \ 'tabline': {
-	  \  'left': [ [ 'readonly', 'absolutepath', 'modified' ] ],
+      \  'left': [ ['buffers'] ],
       \  'right': [ [ 'close' ] ] },
       \ 'component_function': {
       \  'gitbranch': 'FugitiveStatusline',
       \ },
       \ 'component_expand': {
+      \ 'buffers': 'lightline#bufferline#buffers'
       \ },
       \ 'component_type': {
       \ 'buffers': 'tabsel',
       \ },
       \ }
+let g:lightline#bufferline#show_number = 2
+let g:lightline#bufferline#enable_nerdfont = 1
+nmap <localleader>1 <Plug>lightline#bufferline#go(1)
+nmap <localleader>2 <Plug>lightline#bufferline#go(2)
+nmap <localleader>3 <Plug>lightline#bufferline#go(3)
+nmap <localleader>4 <Plug>lightline#bufferline#go(4)
+nmap <localleader>5 <Plug>lightline#bufferline#go(5)
+nmap <localleader>6 <Plug>lightline#bufferline#go(6)
+nmap <localleader>7 <Plug>lightline#bufferline#go(7)
+nmap <localleader>8 <Plug>lightline#bufferline#go(8)
+nmap <localleader>9 <Plug>lightline#bufferline#go(9)
+nmap <localleader>0 <Plug>lightline#bufferline#go(10)
 
 """""""""""""""""" JuliaFormatter
 map <leader>bb :Buffers<CR>

@@ -50,6 +50,7 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 Plug 'preservim/nerdcommenter'
 Plug 'sbdchd/neoformat'
 Plug 'christianchiarulli/nvcode-color-schemes.vim'
@@ -167,33 +168,6 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 nmap [g <Plug>(GitGutterPrevHunk)
 nmap ]g <Plug>(GitGutterNextHunk)
 
-"""""""""""""""" lightline
-let g:lightline = {
-      \ 'colorscheme': 'darcula',
-      \ 'active': {
-      \  'left': [ [ 'winnr', 'mode', 'paste' ],
-      \            [ 'gitbranch', 'gitstatus', 'readonly',
-      \              'filename', 'modified' ] ],
-      \  'right': [ [ 'lineinfo' ],
-      \             [ 'percent' ],
-      \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
-      \ 'inactive': {
-      \  'left': [ [ 'winnr', 'filename' ] ],
-      \  'right': [ [ 'lineinfo' ],
-      \             [ 'percent' ] ] },
-      \ 'tabline': {
-	  \  'left': [ [ 'readonly', 'absolutepath', 'modified' ] ],
-      \  'right': [ [ 'close' ] ] },
-      \ 'component_function': {
-      \  'gitbranch': 'FugitiveStatusline',
-      \ },
-      \ 'component_expand': {
-      \ },
-      \ 'component_type': {
-      \ 'buffers': 'tabsel',
-      \ },
-      \ }
-
 """""""""""""""""" which-key
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
@@ -257,6 +231,45 @@ noremap <silent> <leader>8 :<C-u>8  wincmd w<CR>
 noremap <silent> <leader>9 :<C-u>9  wincmd w<CR>
 noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
 
+"""""""""""""""" lightline
+let g:lightline = {
+      \ 'colorscheme': 'darcula',
+      \ 'active': {
+      \  'left': [ [ 'winnr', 'mode', 'paste' ],
+      \            [ 'gitbranch', 'gitstatus', 'readonly',
+      \              'filename', 'modified' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ],
+      \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
+      \ 'inactive': {
+      \  'left': [ [ 'winnr', 'filename' ] ],
+      \  'right': [ [ 'lineinfo' ],
+      \             [ 'percent' ] ] },
+      \ 'tabline': {
+	  \  'left': [ [ 'buffers' ] ],
+      \  'right': [ [ 'close' ] ] },
+      \ 'component_function': {
+      \  'gitbranch': 'FugitiveStatusline',
+      \ },
+      \ 'component_expand': {
+      \ 'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \ 'buffers': 'tabsel',
+      \ },
+      \ }
+let g:lightline#bufferline#show_number = 2
+let g:lightline#bufferline#enable_nerdfont = 1
+nmap <localleader>1 <Plug>lightline#bufferline#go(1)
+nmap <localleader>2 <Plug>lightline#bufferline#go(2)
+nmap <localleader>3 <Plug>lightline#bufferline#go(3)
+nmap <localleader>4 <Plug>lightline#bufferline#go(4)
+nmap <localleader>5 <Plug>lightline#bufferline#go(5)
+nmap <localleader>6 <Plug>lightline#bufferline#go(6)
+nmap <localleader>7 <Plug>lightline#bufferline#go(7)
+nmap <localleader>8 <Plug>lightline#bufferline#go(8)
+nmap <localleader>9 <Plug>lightline#bufferline#go(9)
+nmap <localleader>0 <Plug>lightline#bufferline#go(10)
 
 """""""""""""""""" fzf-vim
 "map <leader>bb :Buffers<CR>
