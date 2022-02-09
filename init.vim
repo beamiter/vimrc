@@ -36,11 +36,20 @@ call plug#begin('~/.local/share/nvim/plugged')
 " LSP, according to plug name alphabetical order
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'JuliaEditorSupport/julia-vim'
-Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
+Plug 'glepnir/lspsaga.nvim'
+
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+" For vsnip users.
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'simrat39/rust-tools.nvim'
-Plug 'RishabhRD/nvim-lsputils'
 " OTHERS, according to plug name alphabetical order
 Plug 'jiangmiao/auto-pairs'
 Plug 'dyng/ctrlsf.vim'
@@ -79,6 +88,8 @@ Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
+
+set completeopt=menu,menuone,noselect
 
 colorscheme dracula " Or whatever colorscheme you make
 "colorscheme xcodelight
@@ -375,7 +386,7 @@ nnoremap <leader>tr :NvimTreeRefresh<CR>
 nnoremap <leader>tt :NvimTreeToggle<CR>
 " NvimTreeOpen, NvimTreeClose, NvimTreeFocus and NvimTreeResize are also available if you need them
 
-autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line"})
+"autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line"})
 
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
@@ -402,9 +413,8 @@ defaults = {
 
 
 --- nvim-lsp-installer
-local lsp_installer = require "nvim-lsp-installer"
+local lsp_installer_servers = require('nvim-lsp-installer.servers')
 
--- Include the servers you want to have installed by default below
 local servers = {
   "bashls",
   "pylsp",
@@ -414,57 +424,74 @@ local servers = {
   "rust_analyzer",
 }
 
-for _, name in pairs(servers) do
-  local server_is_found, server = lsp_installer.get_server(name)
-  if server_is_found then
-    if not server:is_installed() then
-      print("Installing " .. name)
-      server:install()
+-- Loop through the servers listed above and set them up. If a server is
+-- not already installed, install it.
+for _, server_name in pairs(servers) do
+    local server_available, server = lsp_installer_servers.get_server(server_name)
+    if server_available then
+        server:on_ready(function ()
+            -- When this particular server is ready (i.e. when installation is finished or the server is already installed),
+            -- this function will be invoked. Make sure not to also use the "catch-all" lsp_installer.on_server_ready()
+            -- function to set up your servers, because by doing so you'd be setting up the same server twice.
+            local opts = {}
+            -- (optional) Customize the options passed to the server
+            -- if server.name == "tsserver" then
+            --     opts.root_dir = function() ... end
+            -- end
+            --server:setup(opts)
+        end)
+        if not server:is_installed() then
+            -- Queue the server to be installed.
+            print("Installing " .. server_name)
+            server:install()
+        end
     end
-  end
 end
 
-
 -- nvim-lspconfig
-local nvim_lsp = require('lspconfig')
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  --Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
-
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.bnf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<leader>ld', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float(0, {scope="line"})<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<leader>lq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+for _, lsp in pairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      -- This will be the default in neovim 0.7+
+      debounce_text_changes = 150,
+    },
+    capabilities = capabilities
+  }
 end
 
 -- nvim-tree setup
@@ -531,92 +558,74 @@ require'nvim-tree'.setup {
   }
 }
 
--- Compe setup
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = {
-    border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
-    winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
-    max_width = 120,
-    min_width = 60,
-    max_height = math.floor(vim.o.lines * 0.3),
-    min_height = 1,
-  };
+-- Setup nvim-cmp.
+local cmp = require'cmp'
 
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    vsnip = true;
-    ultisnips = true;
-    luasnip = true;
-  };
-}
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
+  mapping = {
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  },
+    ['<Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end,
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+  }, {
+    { name = 'buffer' },
+  })
+})
 
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  elseif check_back_space() then
-    return t "<Tab>"
-  else
-    return vim.fn['compe#complete']()
-  end
-end
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  else
-    return t "<S-Tab>"
-  end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-
-vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
-vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
-vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-      virtual_text = false
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
   }
-)
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
 
 EOF
 
