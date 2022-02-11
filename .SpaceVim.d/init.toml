@@ -78,7 +78,7 @@ filetypes = [
   'cpp',
   'python',
   'rust',
-  # 'julia',
+  'julia',
 ]
 [layers.override_cmd]
   rust = ["rust-analyzer"]
@@ -91,8 +91,8 @@ name = 'lang#c'
 [[layers]]
 name = "lang#rust"
 #
-# [[layers]]
-# name = "lang#julia"
+[[layers]]
+name = "lang#julia"
 
 [[layers]]
 name = "lang#python"
