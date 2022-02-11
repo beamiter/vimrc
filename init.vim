@@ -501,6 +501,13 @@ for _, lsp in pairs(servers) do
     capabilities = capabilities
   }
 end
+require'lspconfig'.julials.setup{
+    settings = {
+        julia = {
+            environmentPath = "~/.julia/environments/v1.6",
+            },
+        },
+}
 
 -- nvim-tree setup
 -- following options are the default
