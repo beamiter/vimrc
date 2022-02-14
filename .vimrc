@@ -29,7 +29,7 @@ set shortmess+=c
 set showtabline=2
 set tabstop=4
 set termguicolors
-set noautochdir
+set autochdir
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
@@ -86,7 +86,7 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'andymass/vim-matchup'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'rakr/vim-one'
-Plug 'airblade/vim-rooter'
+"Plug 'airblade/vim-rooter'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 
@@ -228,7 +228,7 @@ endif
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gt <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 

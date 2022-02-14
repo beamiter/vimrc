@@ -20,7 +20,7 @@ set shortmess+=c
 set showtabline=2
 set tabstop=4
 set termguicolors
-set noautochdir
+set autochdir
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
