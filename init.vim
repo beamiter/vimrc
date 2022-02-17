@@ -1,6 +1,7 @@
 set nocompatible
 
 "imap jk <ESC>
+"
 
 filetype off
 syntax on
