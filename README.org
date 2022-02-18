@@ -101,3 +101,4 @@ Type=XSession
 17. export TERM=xterm-256color
 18. sudo cp /etc/nixos/configuration.nix ~/vimrc/dotfiles/nixos/
 19. julia --project=~/.julia/environments/nvim-lspconfig -e 'using Pkg; Pkg.add("LanguageServer")'
+20. julia config for doom emacs: pkg"add SymbolServer, LanguageServer#master"
