@@ -20,7 +20,11 @@ set shortmess+=c
 set showtabline=2
 set tabstop=4
 set termguicolors
-set autochdir
+set noautochdir
+
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
+set timeoutlen=500
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
@@ -73,8 +77,6 @@ Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
-"Plug 'dominikduda/vim_current_word'
-Plug 'easymotion/vim-easymotion'
 Plug 'voldikss/vim-floaterm'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -84,13 +86,17 @@ Plug 'bluz71/vim-moonfly-colors'
 Plug 'rakr/vim-one'
 Plug 't9md/vim-quickhl'
 Plug 'mhinz/vim-startify'
-Plug 'liuchengxu/vim-which-key'
+Plug 'folke/which-key.nvim'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'phaazon/hop.nvim'
+
 
 call plug#end()
 
 set completeopt=menu,menuone,noselect
 
-colorscheme dracula " Or whatever colorscheme you make
+colorscheme tokyonight
+"colorscheme dracula " Or whatever colorscheme you make
 "colorscheme xcodelight
 "colorscheme one
 "set background=light " dark
@@ -177,54 +183,6 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 """""""""""""""" gitgutter
 nmap [g <Plug>(GitGutterPrevHunk)
 nmap ]g <Plug>(GitGutterNextHunk)
-
-"""""""""""""""""" which-key
-let g:mapleader = "\<Space>"
-let g:maplocalleader = ','
-call which_key#register('<Space>', "g:which_key_map")
-"call which_key#register(',', "g:which_key_map")
-nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
-vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
-
-set timeoutlen=500
-
-" Define prefix dictionary
-let g:which_key_map =  {}
-let g:which_key_map['w'] = {
-      \ 'name' : '+windows' ,
-      \ 'w' : ['<C-W>w'        , 'other-window']          ,
-      \ 'd' : ['<C-W>c'        , 'delete-window']         ,
-      \ '2' : ['<C-W>v'        , 'layout-double-columns'] ,
-      \ 'h' : ['<C-W>h'        , 'window-left']           ,
-      \ 'j' : ['<C-W>j'        , 'window-below']          ,
-      \ 'l' : ['<C-W>l'        , 'window-right']          ,
-      \ 'k' : ['<C-W>k'        , 'window-up']             ,
-      \ 'o' : ['<C-W>o'        , 'window-only']             ,
-      \ 'H' : ['<C-W>5<'       , 'expand-window-left']    ,
-      \ 'J' : [':resize +5'    , 'expand-window-below']   ,
-      \ 'L' : ['<C-W>5>'       , 'expand-window-right']   ,
-      \ 'K' : [':resize -5'    , 'expand-window-up']      ,
-      \ '=' : ['<C-W>='        , 'balance-window']        ,
-      \ 's' : ['<C-W>s'        , 'split-window-below']    ,
-      \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
-      \ }
-
-"""""""""""""""""" easymotion
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `s{char}{label}`
-nmap s <Plug>(easymotion-overwin-f)
-" or
-" `s{char}{char}{label}`
-" Need one more keystroke, but on average, it may be more comfortable.
-nmap s <Plug>(easymotion-overwin-f2)
-" Turn on case-insensitive feature
-let g:EasyMotion_smartcase = 1
-" JK motions: Line motions
-map <localleader>j <Plug>(easymotion-j)
-map <localleader>k <Plug>(easymotion-k)
 
 """""""""""""""""" neoformat
 map <leader>bf :Neoformat<CR>
@@ -456,6 +414,14 @@ for _, server_name in pairs(servers) do
     end
 end
 
+-- hop.nvim config
+require'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
+-- place this in one of your configuration file(s)
+vim.api.nvim_set_keymap('n', 's', "<cmd>lua require'hop'.hint_char2()<cr>", {})
+vim.api.nvim_set_keymap('n', 'S', "<cmd>lua require'hop'.hint_char1()<cr>", {})
+vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+
 -- nvim-lspconfig
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -501,6 +467,35 @@ for _, lsp in pairs(servers) do
     capabilities = capabilities
   }
 end
+
+-- which-key setup
+  require("which-key").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+  local wk = require("which-key")
+
+  wk.register({
+    w = {
+      name = "window", -- optional group name
+      w = { "<C-w>w"       , "other-window"}          ,
+      d = {'<C-W>c'        , 'delete-window'}         ,
+      ["2"] = {'<C-W>v'    , 'layout-double-columns'} ,
+      h = {'<C-W>h'        , 'window-left'}           ,
+      j = {'<C-W>j'        , 'window-below'}          ,
+      l = {'<C-W>l'        , 'window-right'}          ,
+      k = {'<C-W>k'        , 'window-up'}             ,
+      o = {'<C-W>o'        , 'window-only'}           ,
+      H = {'<C-W>5<'       , 'expand-window-left'}    ,
+      J = {':resize +5'    , 'expand-window-below'}   ,
+      L = {'<C-W>5>'       , 'expand-window-right'}   ,
+      K = {':resize -5'    , 'expand-window-up'}      ,
+      ["="] = {'<C-W>='    , 'balance-window'}        ,
+      s = {'<C-W>s'        , 'split-window-below'}    ,
+      v = {'<C-W>v'        , 'split-window-right'}    ,
+    },
+  }, { prefix = "<leader>" })
 
 -- nvim-tree setup
 -- following options are the default
