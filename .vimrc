@@ -113,7 +113,7 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 function MyNerdToggle()
-    if &filetype == 'nerdtree'
+    if &filetype == 'nerdtree' || exists("g:NERDTree") && g:NERDTree.IsOpen()
         :NERDTreeToggle
     else
         :NERDTreeFind
@@ -431,14 +431,13 @@ if 0 && has("python3") || has("python")
     autocmd BufWritePost * call defx#redraw()
   endfunction
 else
-  "nnoremap <F3> :NERDTreeToggle<CR>
   nnoremap <F3> :call MyNerdToggle()<CR>
+  nnoremap <leader>ft :call MyNerdToggle()<CR>
   "nnoremap <F3> :CocCommand explorer<CR>
+  "map <leader>ft :CocCommand explorer<CR>
+  " Use coc-explorer as file tree
+  "nnoremap <leader>ft :NERDTreeFind<CR>
 endif
-" Use coc-explorer as file tree
-"map <leader>ft :CocCommand explorer<CR>
-"nnoremap <leader>ft :NERDTreeFind<CR>
-nnoremap <leader>ft :call MyNerdToggle()<CR>
 
 """""""""""""""""" fzf-vim
 function! s:find_git_root()
