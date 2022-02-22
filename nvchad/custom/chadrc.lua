@@ -19,8 +19,8 @@ M.plugins = {
        },
     },
     status = {
-       alpha = true,
-    },
+      alpha = true,
+   },
 }
 
 return M

@@ -28,6 +28,7 @@ set shiftwidth=4
 set shortmess+=c
 set showtabline=2
 set tabstop=4
+set pumheight=10 " popup menu height
 set termguicolors
 set noautochdir
 
