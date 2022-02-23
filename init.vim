@@ -267,7 +267,7 @@ nnoremap <leader>fh <cmd>Telescope oldfiles<cr>
 nmap  -  <Plug>(choosewin)
 
 """""""""""""""""" nvim-tree
-let g:nvim_tree_quit_on_open = 1 "0 by default, closes the tree when you open a file
+let g:nvim_tree_quit_on_open = 0 "0 by default, closes the tree when you open a file
 let g:nvim_tree_indent_markers = 1 "0 by default, this option shows indent markers when folders are open
 let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
 let g:nvim_tree_highlight_opened_files = 1 "0 by default, will enable folder and file icon highlight for opened files/directories.
@@ -339,9 +339,7 @@ let g:nvim_tree_icons = {
     \ }
 
 nnoremap <F3> :NvimTreeToggle<CR>
-nnoremap <leader>tn :NvimTreeFindFile<CR>
-nnoremap <leader>tr :NvimTreeRefresh<CR>
-nnoremap <leader>tt :NvimTreeToggle<CR>
+nnoremap <leader>ft :NvimTreeToggle<CR>
 " NvimTreeOpen, NvimTreeClose, NvimTreeFocus and NvimTreeResize are also available if you need them
 
 "autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line"})

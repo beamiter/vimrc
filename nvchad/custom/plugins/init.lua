@@ -1,5 +1,7 @@
 -- /lua/custom/plugins/init.lua
 return {
+   {'junegunn/fzf', dir = '~/.fzf', run = './install --all' },
+   {'junegunn/fzf.vim'},
    { "williamboman/nvim-lsp-installer" },
    {
       "folke/which-key.nvim",
