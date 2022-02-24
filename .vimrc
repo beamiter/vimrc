@@ -475,16 +475,16 @@ map <leader>bf :Neoformat<CR>
 nmap  -  <Plug>(choosewin)
 
 """""""""""""""""" wincmd
-noremap <silent> <leader>1 :<C-u>1 wincmd w<CR>
-noremap <silent> <leader>2 :<C-u>2 wincmd w<CR>
-noremap <silent> <leader>3 :<C-u>3 wincmd w<CR>
-noremap <silent> <leader>4 :<C-u>4 wincmd w<CR>
-noremap <silent> <leader>5 :<C-u>5 wincmd w<CR>
-noremap <silent> <leader>6 :<C-u>6 wincmd w<CR>
-noremap <silent> <leader>7 :<C-u>7 wincmd w<CR>
-noremap <silent> <leader>8 :<C-u>8 wincmd w<CR>
-noremap <silent> <leader>9 :<C-u>9 wincmd w<CR>
-noremap <silent> <leader>0 :<C-u>10 wincmd w<CR>
+noremap <silent> <localleader>1 :<C-u>1 wincmd w<CR>
+noremap <silent> <localleader>2 :<C-u>2 wincmd w<CR>
+noremap <silent> <localleader>3 :<C-u>3 wincmd w<CR>
+noremap <silent> <localleader>4 :<C-u>4 wincmd w<CR>
+noremap <silent> <localleader>5 :<C-u>5 wincmd w<CR>
+noremap <silent> <localleader>6 :<C-u>6 wincmd w<CR>
+noremap <silent> <localleader>7 :<C-u>7 wincmd w<CR>
+noremap <silent> <localleader>8 :<C-u>8 wincmd w<CR>
+noremap <silent> <localleader>9 :<C-u>9 wincmd w<CR>
+noremap <silent> <localleader>0 :<C-u>10 wincmd w<CR>
 
 """""""""""""""" lightline
 let g:lightline = {
@@ -515,16 +515,16 @@ let g:lightline = {
       \ }
 let g:lightline#bufferline#show_number = 2
 let g:lightline#bufferline#enable_nerdfont = 1
-nmap <localleader>1 <Plug>lightline#bufferline#go(1)
-nmap <localleader>2 <Plug>lightline#bufferline#go(2)
-nmap <localleader>3 <Plug>lightline#bufferline#go(3)
-nmap <localleader>4 <Plug>lightline#bufferline#go(4)
-nmap <localleader>5 <Plug>lightline#bufferline#go(5)
-nmap <localleader>6 <Plug>lightline#bufferline#go(6)
-nmap <localleader>7 <Plug>lightline#bufferline#go(7)
-nmap <localleader>8 <Plug>lightline#bufferline#go(8)
-nmap <localleader>9 <Plug>lightline#bufferline#go(9)
-nmap <localleader>0 <Plug>lightline#bufferline#go(10)
+nmap <leader>1 <Plug>lightline#bufferline#go(1)
+nmap <leader>2 <Plug>lightline#bufferline#go(2)
+nmap <leader>3 <Plug>lightline#bufferline#go(3)
+nmap <leader>4 <Plug>lightline#bufferline#go(4)
+nmap <leader>5 <Plug>lightline#bufferline#go(5)
+nmap <leader>6 <Plug>lightline#bufferline#go(6)
+nmap <leader>7 <Plug>lightline#bufferline#go(7)
+nmap <leader>8 <Plug>lightline#bufferline#go(8)
+nmap <leader>9 <Plug>lightline#bufferline#go(9)
+nmap <leader>0 <Plug>lightline#bufferline#go(10)
 
 """""""""""""""""" JuliaFormatter
 map <leader>bb :Buffers<CR>
