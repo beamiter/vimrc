@@ -6,6 +6,7 @@
 local map = require("core.utils").map
 
  vim.g.maplocalleader = ','
+ vim.g.pumheight = 10
 
 map("n", "<leader><leader>", ":Telescope <CR>")
 map("n", "<leader>q", ":q <CR>")
@@ -38,6 +39,11 @@ map("n", "<localleader>0", ":<C-u>10 wincmd w<CR>")
 
 map("n", "<F3>", ":NvimTreeToggle<CR>")
 map("n", "<leader>ft", ":NvimTreeToggle<CR>")
+
+map("n", "[g", ":Gitsigns prev_hunk<CR>")
+map("n", "]g", ":Gitsigns next_hunk<CR>")
+
+map("n", "<leader>bf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
 
 
 -- NOTE: the 4th argument in the map function is be a table i.e options but its most likely un-needed so dont worry about it

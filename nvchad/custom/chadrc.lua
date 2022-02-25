@@ -8,7 +8,7 @@ local M = {}
 -- example of changing theme:
 
 M.ui = {
-   --theme = "gruvchad",
+   theme = "monokai",
 }
 
 M.plugins = {
@@ -21,6 +21,10 @@ M.plugins = {
     status = {
       alpha = true,
    },
+}
+
+M.options = {
+  relativenumber = true,
 }
 
 return M
