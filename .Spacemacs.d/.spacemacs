@@ -45,7 +45,7 @@ This function should only modify configuration layer settings."
    ;;                  exwm-hide-tiling-modeline nil
    ;;                  exwm-workspace-switch-wrap t
    ;;                  exwm-randr-command nil)
-     gtags
+     ;; gtags
      lsp
      protobuf
      vimscript
