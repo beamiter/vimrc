@@ -27,6 +27,7 @@ set relativenumber
 set shiftwidth=4
 set shortmess+=c
 set showtabline=2
+set laststatus=2
 set tabstop=4
 set pumheight=10 " popup menu height
 set termguicolors
@@ -327,7 +328,7 @@ let g:lightline = {
       \ 'active': {
       \  'left': [ [ 'winnr', 'mode', 'paste' ],
       \            [ 'gitbranch', 'gitstatus', 'readonly',
-      \              'filename', 'modified' ] ],
+      \              'filename', 'modified', 'cocstatus' ] ],
       \  'right': [ [ 'lineinfo' ],
       \             [ 'percent' ],
       \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
@@ -339,6 +340,7 @@ let g:lightline = {
       \  'left': [ ['buffers'] ],
       \  'right': [ [ 'close' ] ] },
       \ 'component_function': {
+      \ 'cocstatus': 'coc#status',
       \  'gitbranch': 'FugitiveStatusline',
       \ },
       \ 'component_expand': {

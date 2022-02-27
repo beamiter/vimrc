@@ -572,7 +572,7 @@ before packages are loaded."
 (setq helm-enable-auto-resize t)
 (setq lsp-lens-enable t)
 (setq lsp-ui-sideline-enable nil)
-(spacemacs/set-leader-keys "bf" 'clang-format-buffer)
+(spacemacs/set-leader-keys "bf" 'lsp-format-buffer)
 (define-key evil-normal-state-map (kbd "]g") 'git-gutter:next-hunk)
 (define-key evil-normal-state-map (kbd "[g") 'git-gutter:previous-hunk)
 (setq lsp-eldoc-enable-hover nil)
