@@ -8,7 +8,7 @@ syntax on
 set autoindent
 "set clipboard+=unnamedplus
 set clipboard^=unnamed,unnamedplus
-set colorcolumn=80
+set colorcolumn=120
 set expandtab
 set nobackup
 set noswapfile
@@ -349,11 +349,7 @@ nnoremap <leader>ft :NvimTreeToggle<CR>
 highlight NvimTreeFolderIcon guibg=blue
 
 """""""""""""""""" nerdcommenter
-let g:NERDCreateDefaultMappings = 0
-nmap <leader>ct <plug>NERDCommenterToggle
-nmap <leader>cu <plug>NERDCommenterUncomment
-nmap <leader>cl <plug>NERDCommenterAlignLeft
-nmap <leader>cb <plug>NERDCommenterAlignBoth
+"let g:NERDCreateDefaultMappings = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 " USE LUA TO CONFIG NEOVIM

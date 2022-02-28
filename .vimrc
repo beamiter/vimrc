@@ -13,7 +13,7 @@ syntax on
 set autoindent
 set backspace=indent,eol,start
 set clipboard+=unnamedplus
-set colorcolumn=80
+set colorcolumn=120
 set encoding=utf-8
 set expandtab
 set guioptions=
@@ -162,11 +162,7 @@ nmap [g <Plug>(GitGutterPrevHunk)
 nmap ]g <Plug>(GitGutterNextHunk)
 
 """""""""""""""""" nerdcommenter
-let g:NERDCreateDefaultMappings = 0
-nmap <leader>ct <plug>NERDCommenterToggle
-nmap <leader>cu <plug>NERDCommenterUncomment
-nmap <leader>cl <plug>NERDCommenterAlignLeft
-nmap <leader>cb <plug>NERDCommenterAlignBoth
+"let g:NERDCreateDefaultMappings = 1
 
 """""""""""""""" vim-floaterm
 nnoremap   <silent>   <F5>    :FloatermNew<CR>
