@@ -2,10 +2,12 @@
 (require 'package)
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-			 ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")))
+                         ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")))
 (package-initialize)
 ;;(package-refresh-contents)
 
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 (unless (package-installed-p 'avy)
   (package-install 'avy))
 (unless (package-installed-p 'company)
@@ -38,15 +40,14 @@
   (package-install 'magit))
 (unless (package-installed-p 'rainbow-delimiters)
   (package-install 'rainbow-delimiters))
-;; Download use-package
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
 (unless (package-installed-p 'which-key)
   (package-install 'which-key))
 (unless (package-installed-p 'winum)
   (package-install 'winum))
 (unless (package-installed-p 'xclip)
   (package-install 'xclip))
+(unless (package-installed-p 'helm-themes)
+  (package-install 'helm-themes))
 
 (use-package evil
   :ensure t
@@ -252,12 +253,16 @@
   :config
   (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
 
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-set-navigator t))
+
 ;; -------- other config --------
 (setq lsp-ui-doc-enable nil)
 ;; set scroll style
 (setq scroll-conservatively 101)
-;; dashboard startup
-(dashboard-setup-startup-hook)
 (electric-pair-mode 1)
 (global-company-mode 1)
 (menu-bar-mode -1)
@@ -265,6 +270,10 @@
 (tool-bar-mode -1)
 (winum-mode 1)
 (xclip-mode 1)
+(load-theme 'tango-dark t)
+(set-terminal-coding-system 'utf-8)
+(modify-coding-system-alist 'process "*" 'utf-8)
+(setq default-process-coding-system '(utf-8 . utf-8))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -273,6 +282,7 @@
  ;; If there is more than one, they won't work right.
  '(display-line-numbers 'relative)
  '(helm-minibuffer-history-key "M-p")
+ '(inhibit-startup-screen t)
  '(package-selected-packages
    '(helm-ag helm-rg avy xclip winum which-key use-package rainbow-delimiters projectile magit lsp-ui helm format-all evil-surround evil-nerd-commenter evil-leader evil-collection dashboard company)))
 (custom-set-faces
