@@ -48,6 +48,10 @@
   (package-install 'xclip))
 (unless (package-installed-p 'helm-themes)
   (package-install 'helm-themes))
+(unless (package-installed-p 'helm-rg)
+  (package-install 'helm-rg))
+(unless (package-installed-p 'helm-ag)
+  (package-install 'helm-ag))
 
 (use-package evil
   :ensure t
@@ -75,6 +79,7 @@
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
         (c++-mode . lsp-deferred)
         (julia-mode . lsp-deferred)
+        (rust-mode . lsp-deferred)
         (prog-mode . rainbow-delimiters-mode)
          ;; if you want which-key integration
         (lsp-mode . lsp-enable-which-key-integration))
