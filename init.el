@@ -86,7 +86,22 @@
   :commands (lsp lsp-defered))
 
 ;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :init
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  :config
+  (setq lsp-ui-peek-enable t)
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-imenu-enable nil)
+  (setq lsp-ui-flycheck-enable nil)
+  (setq lsp-ui-sideline-enable t)
+  (setq lsp-ui-sideline-delay 0.5)
+  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-sideline-show-diagnostics t)
+  (setq lsp-ui-sideline-show-code-actions t)
+  (setq lsp-ui-sideline-ignore-duplicate t))
 ;; if you are helm user
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
@@ -126,6 +141,7 @@
     "cr" 'comment-or-uncomment-region
     "cv" 'evilnc-toggle-invert-comment-line-by-line
     "tt" 'treemacs
+    "ft" 'treemacs
     "td" 'treemacs-display-current-project-exclusively
     "0"  'winum-select-window-0-or-10
     "1"  'winum-select-window-1
@@ -265,7 +281,6 @@
   (setq dashboard-set-navigator t))
 
 ;; -------- other config --------
-(setq lsp-ui-doc-enable nil)
 ;; set scroll style
 (setq scroll-conservatively 101)
 (electric-pair-mode 1)
