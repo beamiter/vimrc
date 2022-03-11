@@ -52,6 +52,15 @@ Plug 'hrsh7th/nvim-cmp'
 " For vsnip users.
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+" For luasnip users.
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+" For ultisnips users.
+"Plug 'SirVer/ultisnips'
+"Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+" For snippy users.
+Plug 'dcampos/nvim-snippy'
+Plug 'dcampos/cmp-snippy'
 
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'simrat39/rust-tools.nvim'
@@ -347,113 +356,7 @@ highlight NvimTreeFolderIcon guibg=blue
 
 lua << EOF
 
--- telescope
-local actions = require('telescope.actions')
-require'telescope'.setup {
-defaults = {
-  mappings = {
-    i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-n>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-        ["<C-p>"] = actions.move_selection_previous,
-      },
-    },
-  }
-}
-
-
---- nvim-lsp-installer
-local lsp_installer_servers = require('nvim-lsp-installer.servers')
-
-local servers = {
-  "bashls",
-  "pylsp",
-  "clangd",
-  "julials",
-  "cmake",
-  "rust_analyzer",
-}
-
--- Loop through the servers listed above and set them up. If a server is
--- not already installed, install it.
-for _, server_name in pairs(servers) do
-    local server_available, server = lsp_installer_servers.get_server(server_name)
-    if server_available then
-        server:on_ready(function ()
-            -- When this particular server is ready (i.e. when installation is finished or the server is already installed),
-            -- this function will be invoked. Make sure not to also use the "catch-all" lsp_installer.on_server_ready()
-            -- function to set up your servers, because by doing so you'd be setting up the same server twice.
-            local opts = {}
-            -- (optional) Customize the options passed to the server
-            -- if server.name == "tsserver" then
-            --     opts.root_dir = function() ... end
-            -- end
-            --server:setup(opts)
-        end)
-        if not server:is_installed() then
-            -- Queue the server to be installed.
-            print("Installing " .. server_name)
-            server:install()
-        end
-    end
-end
-
--- hop.nvim config
-require'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
--- place this in one of your configuration file(s)
-vim.api.nvim_set_keymap('n', 's', "<cmd>lua require'hop'.hint_char2()<cr>", {})
-vim.api.nvim_set_keymap('n', 'S', "<cmd>lua require'hop'.hint_char1()<cr>", {})
-vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
-vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
-
--- nvim-lspconfig
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-
--- Use an on_attach function to only map the following keyS
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-end
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-for _, lsp in pairs(servers) do
-  require('lspconfig')[lsp].setup {
-    on_attach = on_attach,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    },
-    capabilities = capabilities
-  }
-end
-
--- which-key setup
+---------------------------------- which-key setup
   require("which-key").setup {
     -- your configuration comes here
     -- or leave it empty to use the default settings
@@ -482,7 +385,7 @@ end
     },
   }, { prefix = "<leader>" })
 
--- nvim-tree setup
+---------------------------------- nvim-tree setup
 -- following options are the default
 require'nvim-tree'.setup {
   -- disables netrw completely
@@ -546,31 +449,146 @@ require'nvim-tree'.setup {
   }
 }
 
--- Setup nvim-cmp.
-local cmp = require'cmp'
+---------------------------------- telescope
+local actions = require('telescope.actions')
+require'telescope'.setup {
+defaults = {
+  mappings = {
+    i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-n>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<C-p>"] = actions.move_selection_previous,
+      },
+    },
+  }
+}
 
+---------------------------------- hop.nvim config
+require'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
+-- place this in one of your configuration file(s)
+vim.api.nvim_set_keymap('n', 's', "<cmd>lua require'hop'.hint_char2()<cr>", {})
+vim.api.nvim_set_keymap('n', 'S', "<cmd>lua require'hop'.hint_char1()<cr>", {})
+vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+
+----------------------------------- nvim-lsp-installer
+local lsp_installer_servers = require('nvim-lsp-installer.servers')
+
+local servers = {
+  "bashls",
+  -- "pylsp",
+  "clangd",
+  "julials",
+  -- "cmake",
+  "rust_analyzer",
+}
+
+-- Loop through the servers listed above and set them up. If a server is
+-- not already installed, install it.
+for _, server_name in pairs(servers) do
+    local server_available, server = lsp_installer_servers.get_server(server_name)
+    if server_available then
+        server:on_ready(function ()
+            -- When this particular server is ready (i.e. when installation is finished or the server is already installed),
+            -- this function will be invoked. Make sure not to also use the "catch-all" lsp_installer.on_server_ready()
+            -- function to set up your servers, because by doing so you'd be setting up the same server twice.
+            local opts = {}
+            -- (optional) Customize the options passed to the server
+            -- if server.name == "tsserver" then
+            --     opts.root_dir = function() ... end
+            -- end
+            --server:setup(opts)
+        end)
+        if not server:is_installed() then
+            -- Queue the server to be installed.
+            print("Installing " .. server_name)
+            server:install()
+        end
+    end
+end
+
+---------------------------------- nvim-lspconfig
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+-- Use an on_attach function to only map the following keyS
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+--capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
+--capabilities.textDocument.completion.completionItem.snippetSupport = true
+--capabilities.textDocument.completion.completionItem.preselectSupport = true
+--capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+--capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+--capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+--capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+--capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+--capabilities.textDocument.completion.completionItem.resolveSupport = {
+--   properties = {
+--      "documentation",
+--      "detail",
+--      "additionalTextEdits",
+--   },
+--}
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+for _, lsp in pairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      -- This will be the default in neovim 0.7+
+      debounce_text_changes = 150,
+    },
+    capabilities = capabilities
+  }
+end
+
+---------------------------------- Setup nvim-cmp.
+local cmp = require'cmp'
 cmp.setup({
+  --snippet
   snippet = {
-    -- REQUIRED - you must specify a snippet engine
     expand = function(args)
       vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
+  -- mapping
   mapping = {
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    ['<C-y>'] = cmp.config.disable,
     ['<C-e>'] = cmp.mapping({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-  },
-    ["<Tab>"] = function(fallback)
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ["<Tab>"] = cmp.mapping(function(fallback)
        if cmp.visible() then
           cmp.select_next_item()
        elseif require("luasnip").expand_or_jumpable() then
@@ -578,8 +596,8 @@ cmp.setup({
        else
           fallback()
        end
-    end,
-    ["<S-Tab>"] = function(fallback)
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
        if cmp.visible() then
           cmp.select_prev_item()
        elseif require("luasnip").jumpable(-1) then
@@ -587,28 +605,24 @@ cmp.setup({
        else
           fallback()
        end
-    end,
-
-
+    end, { "i", "s" }),
+  },
+  -- sources
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'vsnip' }, -- For vsnip users.
-    -- { name = 'luasnip' }, -- For luasnip users.
-    -- { name = 'ultisnips' }, -- For ultisnips users.
-    -- { name = 'snippy' }, -- For snippy users.
-  }, {
+    { name = 'luasnip' },
+    { name = 'vsnip' },
+    { name = 'snippy' },
+    { name = 'nvim_lua' },
     { name = 'buffer' },
-  })
+    { name = 'path' },
+    })
 })
-
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
   sources = {
     { name = 'buffer' }
   }
 })
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
   sources = cmp.config.sources({
     { name = 'path' }
