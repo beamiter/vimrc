@@ -53,6 +53,10 @@
 (unless (package-installed-p 'helm-ag)
   (package-install 'helm-ag))
 
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
 (use-package evil
   :ensure t
   :init
@@ -98,7 +102,7 @@
   (setq lsp-ui-flycheck-enable nil)
   (setq lsp-ui-sideline-enable t)
   (setq lsp-ui-sideline-delay 0.5)
-  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-sideline-show-diagnostics t)
   (setq lsp-ui-sideline-show-code-actions t)
   (setq lsp-ui-sideline-ignore-duplicate t))
@@ -157,6 +161,11 @@
   :ensure t
   :hook (after-init . (lambda ()
 			(global-evil-leader-mode))))
+
+(use-package company
+  :ensure t
+  :hook (after-init . (lambda ()
+            (global-company-mode))))
 
 ;; -------- avy --------
 (use-package avy
@@ -284,7 +293,6 @@
 ;; set scroll style
 (setq scroll-conservatively 101)
 (electric-pair-mode 1)
-(global-company-mode 1)
 (menu-bar-mode -1)
 (show-paren-mode 1)
 (tool-bar-mode -1)
