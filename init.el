@@ -52,6 +52,8 @@
   (package-install 'helm-rg))
 (unless (package-installed-p 'helm-ag)
   (package-install 'helm-ag))
+(unless (package-installed-p 'undo-fu)
+  (package-install 'undo-fu))
 
 (use-package flycheck
   :ensure t
@@ -62,6 +64,7 @@
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
+  (setq evil-undo-system 'undo-fu)
   :config
   (evil-mode 1))
 
@@ -186,7 +189,22 @@
 (evilnc-default-hotkeys)
 
 ;; -------- git gutter --------
-(global-git-gutter-mode t)
+(use-package git-gutter
+  :ensure t
+  :hook (after-init . (lambda ()
+            (global-git-gutter-mode)))
+  :config
+  (global-set-key (kbd "C-x C-g") 'git-gutter)
+  (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+  ;; Jump to next/previous hunk
+  (global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
+  (global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+  ;; Stage current hunk
+  (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
+  ;; Revert current hunk
+  (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
+  ;; Mark current hunk
+  (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk))
 
 ;; -------- treemacs config --------
 (use-package treemacs
