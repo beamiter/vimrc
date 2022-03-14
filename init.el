@@ -146,6 +146,10 @@
     "cv" 'evilnc-toggle-invert-comment-line-by-line
     "tt" 'treemacs
     "ft" 'treemacs
+    "ff" 'projectile-find-file
+    "sg" 'projectile-grep
+    "sr" 'projectile-ripgrep
+    "ss" 'projectile-ag
     "td" 'treemacs-display-current-project-exclusively
     "0"  'winum-select-window-0-or-10
     "1"  'winum-select-window-1
