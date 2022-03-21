@@ -21,6 +21,9 @@ M.plugins = {
     status = {
       alpha = true,
    },
+   default_plugin_remove = {
+       "lewis6991/impatient.nvim",
+   },
 }
 
 M.options = {
