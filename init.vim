@@ -1,5 +1,11 @@
 lua << EOF
 
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+end
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
@@ -13,7 +19,6 @@ vim.opt.autoindent = true
 vim.opt.colorcolumn = '120'
 vim.opt.encoding= 'utf-8'
 vim.opt.expandtab = true
-vim.opt.guioptions=''
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.shiftwidth=4
@@ -29,18 +34,21 @@ vim.g.nobackup = true
 vim.g.noswapfile = true
 vim.g.nowritebackup = true
 
+-- Create autocmd
+vim.api.nvim_command('autocmd FileType c,cpp setlocal shiftwidth=2')
+vim.api.nvim_command('autocmd FileType c,cpp setlocal tabstop=2')
+
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim
-colorscheme material
-filetype off
-syntax on
 ]]
 
 vim.api.nvim_set_keymap('n', '<F3>', ':NvimTreeToggle<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '[g', ':Gitsigns prev_hunk<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', ']g', ':Gitsigns next_hunk<CR>', {noremap = true})
 
-return require('packer').startup(function()
+require('packer').startup(function()
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
@@ -222,15 +230,6 @@ vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_li
     })
   })
 
-  -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'clangd', 'rust_analyzer', 'julials' }
-  for _, lsp in pairs(servers) do
-    require('lspconfig')[lsp].setup {
-      capabilities = capabilities
-    }
-  end
   end}
 
   use {'neovim/nvim-lspconfig', config = function()
@@ -262,15 +261,18 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { 'clangd', 'rust_analyzer', 'julials' }
+-- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
+    capabilities = capabilities,
     flags = {
       -- This will be the default in neovim 0.7+
       debounce_text_changes = 150,
@@ -282,6 +284,18 @@ end
   -- You can alias plugin names
   use {'dracula/vim', as = 'dracula'}
 
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+    require('packer').sync()
+  end
+
 end)
+
+vim.cmd [[
+colorscheme material
+filetype off
+syntax on
+]]
 
 EOF
