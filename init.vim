@@ -1,19 +1,44 @@
-set completeopt=menu,menuone,noselect
-
 lua << EOF
 
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ','
+
+vim.opt.backspace={'indent','eol','start'}
+vim.opt.completeopt={'menu','menuone','noselect'}
+
+vim.opt.clipboard:append 'unnamedplus'
+vim.opt.shortmess:append 'csI'
+
+vim.opt.autoindent = true
+vim.opt.colorcolumn = '120'
+vim.opt.encoding= 'utf-8'
+vim.opt.expandtab = true
+vim.opt.guioptions=''
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.shiftwidth=4
+vim.opt.showtabline=2
+vim.opt.laststatus=2
+vim.opt.tabstop=4
+vim.opt.pumheight=10
+vim.opt.termguicolors = true
+vim.opt.signcolumn = 'yes'
+
+vim.g.noautochdir = true
+vim.g.nobackup = true
+vim.g.noswapfile = true
+vim.g.nowritebackup = true
 
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim
 colorscheme material
+filetype off
+syntax on
 ]]
 
 vim.api.nvim_set_keymap('n', '<F3>', ':NvimTreeToggle<CR>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>ft', ':NvimTreeToggle<CR>', {noremap = true})
-
 
 return require('packer').startup(function()
   -- Packer can manage itself
@@ -80,6 +105,14 @@ vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_li
       s = {'<C-W>s'        , 'split-window-below'}    ,
       v = {'<C-W>v'        , 'split-window-right'}    ,
     },
+   f = {
+      name = "files",
+      t = {":NvimTreeToggle", "tree toggle"},
+      f = {":Telescope find_files", "files"},
+      g = {":Telescope live_grep", "live_grep"},
+      b = {":Telescope buffers", "buffers"},
+      h = {":Telescope oldfiles", "oldfiles"},
+    },
   }, { prefix = "<leader>" })
 
   end}
@@ -115,6 +148,25 @@ vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_li
         c = cmp.mapping.close(),
       }),
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<Tab>"] = cmp.mapping(function(fallback)
+         if cmp.visible() then
+            cmp.select_next_item()
+         elseif require("luasnip").expand_or_jumpable() then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+         else
+            fallback()
+         end
+      end, { "i", "s" }),
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+         if cmp.visible() then
+            cmp.select_prev_item()
+         elseif require("luasnip").jumpable(-1) then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+         else
+            fallback()
+         end
+      end, { "i", "s" }),
+
     },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
