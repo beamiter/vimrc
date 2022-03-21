@@ -53,7 +53,21 @@ return require('packer').startup(function()
   use 'sbdchd/neoformat'
   use 'christianchiarulli/nvcode-color-schemes.vim'
   use 'marko-cerovac/material.nvim'
-  use 'nvim-telescope/telescope.nvim'
+  use {'nvim-telescope/telescope.nvim', config = function()
+local actions = require('telescope.actions')
+require'telescope'.setup {
+defaults = {
+  mappings = {
+    i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-n>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<C-p>"] = actions.move_selection_previous,
+      },
+    },
+  }
+}
+  end}
   use 'ntpeters/vim-better-whitespace'
   use 'mhinz/vim-grepper'
   use 'mhinz/vim-startify'
@@ -107,11 +121,15 @@ vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_li
     },
    f = {
       name = "files",
-      t = {":NvimTreeToggle", "tree toggle"},
-      f = {":Telescope find_files", "files"},
-      g = {":Telescope live_grep", "live_grep"},
-      b = {":Telescope buffers", "buffers"},
-      h = {":Telescope oldfiles", "oldfiles"},
+      t = {":NvimTreeFindFile<CR>", "tree toggle"},
+      f = {":Telescope find_files<CR>", "files"},
+      g = {":Telescope live_grep<CR>", "live_grep"},
+      b = {":Telescope buffers<CR>", "buffers"},
+      h = {":Telescope oldfiles<CR>", "oldfiles"},
+    },
+   b = {
+      name = "buffers",
+      f = {":Neoformat<CR>", "format"},
     },
   }, { prefix = "<leader>" })
 
