@@ -54,6 +54,23 @@
   (package-install 'helm-ag))
 (unless (package-installed-p 'undo-fu)
   (package-install 'undo-fu))
+(unless (package-installed-p 'centaur-tabs)
+  (package-install 'centaur-tabs))
+(unless (package-installed-p 'all-the-icons)
+  (package-install 'all-the-icons))
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package centaur-tabs
+  :demand
+  :init
+  (setq centaur-tabs-set-icons t)
+  :config
+  (centaur-tabs-mode t)
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward))
 
 (use-package flycheck
   :ensure t
