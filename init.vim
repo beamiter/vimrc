@@ -68,6 +68,7 @@ require('packer').startup(function()
   end}
   use 'dyng/ctrlsf.vim'
   use 'junegunn/fzf.vim'
+  use {'junegunn/fzf', dir = '~/.fzf', run = './install --all'}
   --use 'Yggdroot/indentLine'
   --use 'itchyny/lightline.vim'
   --use 'mengelbrecht/lightline-bufferline'
