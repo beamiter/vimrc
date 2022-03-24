@@ -176,5 +176,5 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 let g:coc_global_extensions = ['coc-cmake', 'coc-floaterm', 'coc-highlight',
             \'coc-julia', 'coc-rust-analyzer', 'coc-vimlsp', 'coc-yank',
-            \'coc-explorer', 'coc-pyright', 'coc-sh', 'coc-json', 'coc-clangd']
+            \'coc-json', 'coc-clangd']
 
