@@ -29,7 +29,7 @@ vim.opt.pumheight=10
 vim.opt.termguicolors = true
 vim.opt.signcolumn = 'yes'
 vim.opt.list = true
-vim.opt.listchars:append("eol:↴")
+--vim.opt.listchars:append("eol:↴")
 
 vim.g.noautochdir = true
 vim.g.nobackup = true

@@ -1,8 +1,20 @@
 #!/usr/bin/env bash
 
+quote() {
+	local q="$(printf '%q ' "$@")"
+	printf '%s' "${q% }"
+}
+
+if [[ -f /usr/lib/bash/sleep ]]; then
+    # load and enable 'sleep' builtin (does not support unit suffixes: h, m, s!)
+    # requires pkg 'bash-builtins' on debian; included in 'bash' on arch.
+    enable -f /usr/lib/bash/sleep sleep
+fi
+
+hc_quoted="$(quote "${herbstclient_command[@]:-herbstclient}")"
 hc() { "${herbstclient_command[@]:-herbstclient}" "$@" ;}
 monitor=${1:-0}
-geometry=( $(herbstclient monitor_rect "$monitor") )
+geometry=( $(hc monitor_rect "$monitor") )
 if [ -z "$geometry" ] ;then
     echo "Invalid monitor $monitor"
     exit 1
@@ -13,8 +25,9 @@ y=${geometry[1]}
 panel_width=${geometry[2]}
 panel_height=16
 font="-*-fixed-medium-*-*-*-12-*-*-*-*-*-*-*"
-bgcolor=$(hc get frame_border_normal_color)
-selbg=$(hc get window_border_active_color)
+# extract colors from hlwm and omit alpha-value
+bgcolor=$(hc get frame_border_normal_color|sed 's,^\(\#[0-9a-f]\{6\}\)[0-9a-f]\{2\}$,\1,')
+selbg=$(hc get window_border_active_color|sed 's,^\(\#[0-9a-f]\{6\}\)[0-9a-f]\{2\}$,\1,')
 selfg='#101010'
 
 ####
@@ -24,6 +37,8 @@ if which textwidth &> /dev/null ; then
     textwidth="textwidth";
 elif which dzen2-textwidth &> /dev/null ; then
     textwidth="dzen2-textwidth";
+elif which xftwidth &> /dev/null ; then # For guix
+    textwidth="xftwidth";
 else
     echo "This script requires the textwidth tool of the dzen2 project."
     exit 1
@@ -63,9 +78,9 @@ hc pad $monitor $panel_height
 
     #mpc idleloop player &
     while true ; do
-        # "date" output is checked once a second, but an event is only
+        # output is checked once a second, but a "date" event is only
         # generated if the output changed compared to the previous run.
-        date +$'date\t^fg(#efefef)%H:%M^fg(#909090), %Y-%m-^fg(#efefef)%d'
+        printf 'date\t^fg(#efefef)%(%H:%M)T^fg(#909090), %(%Y-%m)T-^fg(#efefef)%(%d)T\n'
         sleep 1 || break
     done > >(uniq_linebuffered) &
     childpid=$!
@@ -82,7 +97,6 @@ hc pad $monitor $panel_height
         # This part prints dzen data based on the _previous_ data handling run,
         # and then waits for the next event to happen.
 
-        bordercolor="#26221C"
         separator="^bg()^fg($selbg)|"
         # draw tags
         for i in "${tags[@]}" ; do
@@ -105,10 +119,8 @@ hc pad $monitor $panel_height
             esac
             if [ ! -z "$dzen2_svn" ] ; then
                 # clickable tags if using SVN dzen
-                echo -n "^ca(1,\"${herbstclient_command[@]:-herbstclient}\" "
-                echo -n "focus_monitor \"$monitor\" && "
-                echo -n "\"${herbstclient_command[@]:-herbstclient}\" "
-                echo -n "use \"${i:1}\") ${i:1} ^ca()"
+                echo -n "^ca(1,$hc_quoted focus_monitor \"$monitor\" && "
+                echo -n "$hc_quoted use \"${i:1}\") ${i:1} ^ca()"
             else
                 # non-clickable tags if using older dzen
                 echo -n " ${i:1} "
@@ -179,6 +191,6 @@ hc pad $monitor $panel_height
     # After the data is gathered and processed, the output of the previous block
     # gets piped to dzen2.
 
-} 2> /dev/null | dzen2 -w $panel_width -x $x -y $y -fn "$font" -h $panel_height \
-    -e 'button3=;button4=exec:herbstclient use_index -1;button5=exec:herbstclient use_index +1' \
+} | dzen2 -w $panel_width -x $x -y $y -fn "$font" -h $panel_height \
+    -e "button3=;button4=exec:$hc_quoted use_index -1;button5=exec:$hc_quoted use_index +1" \
     -ta l -bg "$bgcolor" -fg '#efefef'
