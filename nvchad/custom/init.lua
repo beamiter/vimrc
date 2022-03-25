@@ -43,7 +43,7 @@ map("n", "<leader>ft", ":NvimTreeToggle<CR>")
 map("n", "[g", ":Gitsigns prev_hunk<CR>")
 map("n", "]g", ":Gitsigns next_hunk<CR>")
 
-map("n", "<leader>bf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+map("n", "<leader>bf", ":Neoformat<CR>")
 
 
 -- NOTE: the 4th argument in the map function is be a table i.e options but its most likely un-needed so dont worry about it

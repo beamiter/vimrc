@@ -4,6 +4,7 @@ return {
    {'junegunn/fzf.vim'},
    { "williamboman/nvim-lsp-installer" },
    { "tpope/vim-fugitive"},
+   { 'sbdchd/neoformat' },
    {
       "folke/which-key.nvim",
       config = function()
