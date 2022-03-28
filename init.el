@@ -34,6 +34,10 @@
   (package-install 'lsp-julia))
 (unless (package-installed-p 'lsp-mode)
   (package-install 'lsp-mode))
+(unless (package-installed-p 'rust-mode)
+  (package-install 'rust-mode))
+(unless (package-installed-p 'julia-mode)
+  (package-install 'julia-mode))
 (unless (package-installed-p 'lsp-ui)
   (package-install 'lsp-ui))
 (unless (package-installed-p 'magit)
@@ -71,6 +75,11 @@
   :bind
   ("C-<prior>" . centaur-tabs-backward)
   ("C-<next>" . centaur-tabs-forward))
+
+(use-package rust-mode
+  :ensure t)
+(use-package julia-mode
+  :ensure t)
 
 (use-package flycheck
   :ensure t
