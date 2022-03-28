@@ -197,6 +197,12 @@
 
 (use-package company
   :ensure t
+  :bind (:map company-active-map
+         ([tab]     . #'company-complete-common-or-cycle)
+         ("TAB"     . #'company-complete-common-or-cycle)
+         ("S-TAB"   . #'company-select-previous-or-abort)
+         ([backtab] . #'company-select-previous-or-abort)
+         ([S-tab]   . #'company-select-previous-or-abort))
   :hook (after-init . (lambda ()
             (global-company-mode))))
 
@@ -280,7 +286,7 @@
           treemacs-tag-follow-delay              1.5
           treemacs-user-mode-line-format         nil
           treemacs-user-header-line-format       nil
-          treemacs-width                         45
+          treemacs-width                         35
           treemacs-workspace-switch-cleanup      nil)
 
     ;; The default width and height of the icons is 22 pixels. If you are
