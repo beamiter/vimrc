@@ -1,9 +1,11 @@
 Vapour.plugins.treesitter.ensure_installed = ""
+Vapour.settings.colorscheme = "dracula"
 
 vim.o.timeoutlen = 1000
 vim.o.updatetime = 300
 
 local opts = {noremap = true, silent = true}
+vim.api.nvim_set_keymap('n', 'bb', ':Telescope buffers<CR>', opts)
 vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
 vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
