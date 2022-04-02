@@ -43,6 +43,8 @@ M.plugins_add = {
 -- Add new whichkey bind
 M.whichkey_add = {
 	-- ["z"] = { "<cmd>ZenMode<cr>", "ZenMode" },
+	["bb"] = { ":Telescope buffers<cr>", "buffers" },
+	["sg"] = { ":Telescope live_grep<cr>", "live grep" },
 }
 
 return M
