@@ -50,12 +50,22 @@ additional_plugins = {
 -- For examples for disabling line number:
 -- vim.opt.number = false
 -- vim.opt.relativenumber = false
+vim.o.timeoutlen = 1000
+vim.o.updatetime = 300
 
 -- Or for changing terminal toggle mapping:
 -- first argument is mode of mapping. second argument is keymap.
 -- third argument is command. and last argument is optional argument like {expr = true}.
 -- map("n", "<C-t>", ":ToggleTerm<CR>")
 -- map("t", "<C-t>", ":ToggleTerm<CR>")
+
+map('n', 'bb', ':Telescope buffers<CR>')
+map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
+map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+map('n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 
 -- This is example of how to make keymap and add it to
 -- which_keys(that pop of window on bottom of NeoVim that help you to find keymaps)
