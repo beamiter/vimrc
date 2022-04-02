@@ -107,3 +107,5 @@ Type=XSession
 pip3 install -U pip
 pip3 install -U setuptools
 pip3 install --no-cache-dir cairocffi
+23. run appimage in docker: ~/.local/bin/nvim.appimage --appimage-extract-and-run
+    alias nvim="~/.local/bin/nvim.appimage --appimage-extract-and-run"
