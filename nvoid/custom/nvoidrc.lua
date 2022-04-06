@@ -1,3 +1,18 @@
+-- Key map
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+map("n", "<leader><leader>", ":Telescope <CR>", opts)
+map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>", opts)
+map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>", opts)
+map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>", opts)
+map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>", opts)
+
+map("n", "<F3>", ":NvimTreeToggle<CR>", opts)
+--map("n", "<leader>ft", ":NvimTreeToggle<CR>", opts)
+
+map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
+map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
+
 local M = {}
 
 -- UI
@@ -38,6 +53,14 @@ M.ts_add = {} -- "all", "fish"
 -- Add Plugins
 M.plugins_add = {
 	{ "folke/zen-mode.nvim" },
+    {
+       'phaazon/hop.nvim',
+       branch = 'v1', -- optional but strongly recommended
+       config = function()
+         -- you can configure Hop the way you like here; see :h hop-config
+         require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+       end
+    },
 }
 
 -- Add new whichkey bind
