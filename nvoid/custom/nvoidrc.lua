@@ -13,6 +13,8 @@ map("n", "<F3>", ":NvimTreeToggle<CR>", opts)
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
 map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
 
+vim.diagnostic.config({virtual_txt = false})
+
 local M = {}
 
 -- UI

@@ -20,8 +20,6 @@ Vapour.plugins.user = {
 vim.o.timeoutlen = 1000
 vim.o.updatetime = 300
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
-
 local opts = {noremap = true, silent = true}
 vim.api.nvim_set_keymap('n', '<space>bb', ':Telescope buffers<CR>', opts)
 vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
