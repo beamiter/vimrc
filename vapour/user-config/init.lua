@@ -12,10 +12,15 @@ Vapour.plugins.user = {
   {
       "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}
   },
+  {
+      "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim"
+  },
 }
 
 vim.o.timeoutlen = 1000
 vim.o.updatetime = 300
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 
 local opts = {noremap = true, silent = true}
 vim.api.nvim_set_keymap('n', '<space>bb', ':Telescope buffers<CR>', opts)
