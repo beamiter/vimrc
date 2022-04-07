@@ -2,12 +2,15 @@ Vapour.plugins.treesitter.ensure_installed = ""
 Vapour.settings.colorscheme = "dracula"
 Vapour.plugins.user = {
   {
-     'phaazon/hop.nvim',
-     branch = 'v1', -- optional but strongly recommended
-     config = function()
-       -- you can configure Hop the way you like here; see :h hop-config
-       require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-     end
+      'phaazon/hop.nvim',
+      branch = 'v1', -- optional but strongly recommended
+      config = function()
+        -- you can configure Hop the way you like here; see :h hop-config
+        require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+      end
+  },
+  {
+      "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}
   },
 }
 
