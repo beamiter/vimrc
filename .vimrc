@@ -32,6 +32,7 @@ set tabstop=4
 set pumheight=10 " popup menu height
 set termguicolors
 set noautochdir
+set scrolloff=18
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2

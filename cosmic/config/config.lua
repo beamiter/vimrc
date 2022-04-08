@@ -13,7 +13,9 @@ local config = {
   -- See https://github.com/CosmicNvim/cosmic-ui#%EF%B8%8F-configuration
   cosmic_ui = {},
   -- See :h vim.diagnostic.config for all diagnostic configuration options
-  diagnostic = {},
+  diagnostic = {
+      virtual_text = false,
+  },
   -- See :h gitsigns-usage
   gitsigns = {},
   -- LSP settings
@@ -100,6 +102,17 @@ local config = {
        config = function()
          -- you can configure Hop the way you like here; see :h hop-config
          require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+       end
+    },
+    {
+       "folke/trouble.nvim",
+       requires = "kyazdani42/nvim-web-devicons",
+       config = function()
+         require("trouble").setup {
+           -- your configuration comes here
+           -- or leave it empty to use the default settings
+           -- refer to the configuration section below
+         }
        end
     },
   },

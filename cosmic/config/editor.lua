@@ -20,6 +20,7 @@ local opt = vim.opt
 --map('i', 'jj', '<esc>', { noremap = true, silent = true })
 local opts = { noremap = true, silent = true }
 map("n", "<leader><leader>", ":Telescope <CR>", opts)
+map("n", "<leader>fh", ":Telescope oldfiles<CR>", opts)
 map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>", opts)
 map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>", opts)
 map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>", opts)
