@@ -15,11 +15,18 @@ Vapour.plugins.user = {
   {
       "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim"
   },
+  {
+      "LunarVim/onedarker.nvim"
+  },
+  {
+      "Mofiqul/vscode.nvim"
+  },
 }
 
 vim.opt.timeoutlen = 1000
 vim.opt.updatetime = 300
 vim.opt.relativenumber = true
+vim.g.vscode_style = "dark"
 
 local opts = {noremap = true, silent = true}
 vim.api.nvim_set_keymap('n', '<space>bb', ':Telescope buffers<CR>', opts)
@@ -29,6 +36,7 @@ vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
 vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
 vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>fc', ':Telescope colorscheme<CR>', opts)
 
 local map = vim.api.nvim_set_keymap
 map("n", "<leader><leader>", ":Telescope <CR>", opts)

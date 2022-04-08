@@ -583,7 +583,7 @@ before packages are loaded."
 (set-terminal-coding-system 'utf-8)
 (modify-coding-system-alist 'process "*" 'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
-(setq lsp-julia-default-environment "~/.julia/environments/v1.6")
+;; (setq lsp-julia-default-environment "~/.julia/environments/v1.7")
 
 
 ;; Do not write anything past this comment. This is where Emacs will
