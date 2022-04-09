@@ -21,6 +21,9 @@ Vapour.plugins.user = {
   {
       "Mofiqul/vscode.nvim"
   },
+  {
+      "andymass/vim-matchup"
+  },
 }
 
 vim.opt.timeoutlen = 1000
