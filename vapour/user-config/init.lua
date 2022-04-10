@@ -1,5 +1,5 @@
 Vapour.plugins.treesitter.ensure_installed = ""
-Vapour.settings.colorscheme = "dracula"
+-- Vapour.settings.colorscheme = "dracula"
 Vapour.plugins.user = {
   {
       'phaazon/hop.nvim',
@@ -40,6 +40,8 @@ vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', 
 vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>fc', ':Telescope colorscheme<CR>', opts)
+vim.api.nvim_set_keymap('v', '<space>cl', ':CommentToggle<cr>', opts)
+vim.api.nvim_set_keymap('n', '<space>cl', ':CommentToggle<cr>', opts)
 
 local map = vim.api.nvim_set_keymap
 map("n", "<leader><leader>", ":Telescope <CR>", opts)
