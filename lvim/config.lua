@@ -13,6 +13,10 @@ lvim.log.level = "warn"
 lvim.format_on_save = false
 lvim.colorscheme = "onedarker"
 
+vim.opt.relativenumber = true
+vim.opt.scrolloff = 18
+vim.opt.sidescrolloff = 3
+
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping

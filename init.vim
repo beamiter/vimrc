@@ -29,6 +29,8 @@ vim.opt.pumheight=10
 vim.opt.termguicolors = true
 vim.opt.signcolumn = 'yes'
 vim.opt.list = true
+vim.opt.scrolloff = 18
+vim.opt.sidescrolloff = 3
 --vim.opt.listchars:append("eol:↴")
 
 vim.g.noautochdir = true
