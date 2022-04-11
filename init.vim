@@ -35,6 +35,7 @@ vim.g.noautochdir = true
 vim.g.nobackup = true
 vim.g.noswapfile = true
 vim.g.nowritebackup = true
+vim.g.vscode_style = "dark"
 
 -- Create autocmd
 vim.api.nvim_command('autocmd FileType c,cpp setlocal shiftwidth=2')
@@ -46,7 +47,7 @@ vim.api.nvim_command('autocmd FileType c,cpp setlocal tabstop=2')
 vim.cmd [[packadd packer.nvim
 ]]
 
-vim.api.nvim_set_keymap('n', '<F3>', ':NvimTreeToggle<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<F3>', ':NvimTreeFindFileToggle<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '[g', ':Gitsigns prev_hunk<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', ']g', ':Gitsigns next_hunk<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', {noremap = true})
@@ -83,6 +84,8 @@ require('packer').startup(function()
   use 'sbdchd/neoformat'
   use 'christianchiarulli/nvcode-color-schemes.vim'
   use 'marko-cerovac/material.nvim'
+  use 'LunarVim/onedarker.nvim'
+  use {'Mofiqul/vscode.nvim'}
   use {'nvim-telescope/telescope.nvim', config = function()
     local actions = require('telescope.actions')
     require'telescope'.setup {
@@ -160,7 +163,7 @@ require('packer').startup(function()
       },
      f = {
         name = "files",
-        t = {":NvimTreeFindFile<CR>", "tree toggle"},
+        t = {":NvimTreeFindFileToggle<CR>", "tree toggle"},
         f = {":Telescope find_files<CR>", "files"},
         g = {":Telescope live_grep<CR>", "live_grep"},
         b = {":Telescope buffers<CR>", "buffers"},
@@ -320,7 +323,7 @@ require('packer').startup(function()
 end)
 
 vim.cmd [[
-colorscheme material
+colorscheme vscode
 filetype off
 syntax on
 ]]
