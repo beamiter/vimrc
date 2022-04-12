@@ -174,7 +174,7 @@ require('packer').startup(function()
      b = {
         name = "buffers",
         f = {":Neoformat<CR>", "format"},
-        b = {":Telescope buffers<CR>", "format"},
+        b = {":Telescope buffers<CR>", "buffers"},
       },
     }, { prefix = "<leader>" })
     end}

@@ -21,7 +21,6 @@ vim.opt.sidescrolloff = 3
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<leader><leader>"] = ":Telescope <CR>"
 lvim.keys.normal_mode['s'] = "<cmd>lua require'hop'.hint_char2()<CR>"
 lvim.keys.normal_mode['S'] = "<cmd>lua require'hop'.hint_char1()<CR>"
 lvim.keys.normal_mode['f'] = "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>"
@@ -53,6 +52,21 @@ lvim.keys.normal_mode["<F3>"] = ":NvimTreeToggle<CR>"
 
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["c"] = {
+  name = "+utils",
+  l = {"<cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>", "comment lines"},
+}
+lvim.builtin.which_key.mappings["b"] = {
+  name = "+buffers",
+  b = {"<cmd>Telescope buffers<CR>", "find buffers"},
+}
+lvim.builtin.which_key.mappings["f"] = {
+  name = "+files",
+  f = {"<cmd>Telescope find_files<CR>", "find files"},
+  t = {"<cmd>NvimTreeFindFileToggle<CR>", "tree toggle"},
+}
+lvim.keys.normal_mode["<leader><leader>"] = ":Telescope buffers<CR>"
+lvim.keys.visual_mode["<leader>cl"] = ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>"
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
