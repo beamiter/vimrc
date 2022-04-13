@@ -72,6 +72,8 @@ additional_plugins = {
 -- vim.opt.relativenumber = false
 vim.o.timeoutlen = 600
 vim.o.updatetime = 100
+vim.o.scrolloff = 18
+vim.o.sidescrolloff = 3
 
 -- Or for changing terminal toggle mapping:
 -- first argument is mode of mapping. second argument is keymap.
@@ -122,3 +124,4 @@ user_indent_blankline_style = 1 -- You can choose between 1, 2, 3, 4,5 and 6
 
 vim.cmd("autocmd FileType lua set tabstop=2")
 vim.cmd("autocmd Filetype lua set shiftwidth=2")
+vim.cmd("autocmd FileType qf nnoremap <buffer><silent> <CR> <CR> :cclose<CR>")
