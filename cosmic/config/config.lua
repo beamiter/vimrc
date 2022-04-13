@@ -55,6 +55,13 @@ local config = {
     },
     -- See Cosmic defaults lsp/providers/tsserver.lua
     ts_utils = {},
+    julials = {
+      root_dir = function(fname)
+        local util = require('lspconfig').util
+        return util.root_pattern('Project.toml')(fname)
+          or util.root_pattern('.git')(fname)
+      end
+    }
   },
   -- See https://github.com/ray-x/lsp_signature.nvim#full-configuration-with-default-values
   lsp_signature = {},
