@@ -19,7 +19,7 @@ additional_plugins = {
   -- If you need to set some settings for your plugins
   -- you must put configs in config = function() like below examples
 
-  -- { "famiu/feline.nvim", branch = "develop" },
+  { "famiu/feline.nvim", branch = "develop" },
 
   -- "mhartington/formatter.nvim",
 
@@ -44,14 +44,34 @@ additional_plugins = {
       })
     end
   } ]]
+
+  --{
+  --   'phaazon/hop.nvim',
+  --   branch = 'v1', -- optional but strongly recommended
+  --   config = function()
+  --     -- you can configure Hop the way you like here; see :h hop-config
+  --     require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+  --   end
+  --},
+  --{
+  --   "folke/trouble.nvim",
+  --   requires = "kyazdani42/nvim-web-devicons",
+  --   config = function()
+  --     require("trouble").setup {
+  --       -- your configuration comes here
+  --       -- or leave it empty to use the default settings
+  --       -- refer to the configuration section below
+  --     }
+  --   end
+  --},
 }
 
 -- Other settings here
 -- For examples for disabling line number:
 -- vim.opt.number = false
 -- vim.opt.relativenumber = false
-vim.o.timeoutlen = 1000
-vim.o.updatetime = 300
+vim.o.timeoutlen = 600
+vim.o.updatetime = 100
 
 -- Or for changing terminal toggle mapping:
 -- first argument is mode of mapping. second argument is keymap.
@@ -66,6 +86,15 @@ map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
 map('n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+map("n", "<F3>", ":NvimTreeFindFileToggle<CR>")
+map("n", "<leader>ft", ":NvimTreeFindFileToggle<CR>")
+map("n", "<leader>e", ":NvimTreeFindFileToggle<CR>")
+map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>")
+map("n", "<leader><leader>", ":Telescope buffers<CR>")
+map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>")
+map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>")
+map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>")
+map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>")
 
 -- This is example of how to make keymap and add it to
 -- which_keys(that pop of window on bottom of NeoVim that help you to find keymaps)

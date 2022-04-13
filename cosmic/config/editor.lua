@@ -26,8 +26,10 @@ map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>", opts)
 map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>", opts)
 map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>", opts)
 
-map("n", "<F3>", ":NvimTreeToggle<CR>", opts)
---map("n", "<leader>ft", ":NvimTreeToggle<CR>", opts)
+map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
+map("n", "<leader>ft", ":NvimTreeFindFileToggle<CR>", opts)
+map("n", "<leader>e", ":NvimTreeFindFileToggle<CR>", opts)
+map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", opts)
 
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
 map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
