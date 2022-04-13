@@ -96,6 +96,12 @@ map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>")
 map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>")
 map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>")
 
+local config = { -- your config
+  virtual_text = false,
+}
+vim.diagnostic.config(config)
+
+
 -- This is example of how to make keymap and add it to
 -- which_keys(that pop of window on bottom of NeoVim that help you to find keymaps)
 -- This will make new group of keymaps names Something with two commands and they're describtions.
