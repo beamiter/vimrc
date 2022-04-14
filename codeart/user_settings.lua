@@ -125,3 +125,4 @@ user_indent_blankline_style = 1 -- You can choose between 1, 2, 3, 4,5 and 6
 vim.cmd("autocmd FileType lua set tabstop=2")
 vim.cmd("autocmd Filetype lua set shiftwidth=2")
 -- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+vim.cmd("autocmd FileType qf nnoremap <buffer><silent> <CR> <CR> :cclose<CR>")
