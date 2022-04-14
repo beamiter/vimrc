@@ -81,7 +81,7 @@ vim.o.sidescrolloff = 3
 -- map("n", "<C-t>", ":ToggleTerm<CR>")
 -- map("t", "<C-t>", ":ToggleTerm<CR>")
 
-map('n', 'bb', ':Telescope buffers<CR>')
+map('n', '<leader>bb', ':Telescope buffers<CR>')
 map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
