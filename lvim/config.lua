@@ -54,7 +54,7 @@ lvim.keys.normal_mode["<F3>"] = ":NvimTreeToggle<CR>"
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["c"] = {
   name = "+utils",
-  l = {"<cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>", "comment lines"},
+   l = {"<cmd>lua require('Comment.api').toggle_current_linewise(vim.fn.visualmode())<CR>", "comment lines"},
 }
 lvim.builtin.which_key.mappings["b"] = {
   name = "+buffers",
