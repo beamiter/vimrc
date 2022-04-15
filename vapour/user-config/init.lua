@@ -2,27 +2,27 @@ Vapour.plugins.treesitter.ensure_installed = ""
 -- Vapour.settings.colorscheme = "dracula"
 Vapour.plugins.user = {
   {
-      'phaazon/hop.nvim',
-      branch = 'v1', -- optional but strongly recommended
-      config = function()
-        -- you can configure Hop the way you like here; see :h hop-config
-        require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-      end
+    'phaazon/hop.nvim',
+    branch = 'v1', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    end
   },
   {
-      "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"}
+    "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" }
   },
   {
-      "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim"
+    "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim"
   },
   {
-      "LunarVim/onedarker.nvim"
+    "LunarVim/onedarker.nvim"
   },
   {
-      "Mofiqul/vscode.nvim"
+    "Mofiqul/vscode.nvim"
   },
   {
-      "andymass/vim-matchup"
+    "andymass/vim-matchup"
   },
 }
 
@@ -31,7 +31,7 @@ vim.opt.updatetime = 300
 vim.opt.relativenumber = true
 vim.g.vscode_style = "dark"
 
-local opts = {noremap = true, silent = true}
+local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap('n', '<space>bb', ':Telescope buffers<CR>', opts)
 vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
