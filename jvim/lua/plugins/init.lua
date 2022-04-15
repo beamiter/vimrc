@@ -13,6 +13,9 @@ local plugins = {
     -- Packer can manage itself
     'wbthomason/packer.nvim',
 
+    'nvim-lua/plenary.nvim',
+    "lewis6991/impatient.nvim",
+
     { 'windwp/nvim-autopairs', config = function()
         require('nvim-autopairs').setup {}
     end },
