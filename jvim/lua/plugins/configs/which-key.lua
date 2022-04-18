@@ -30,9 +30,14 @@ plugin.register({
     name = "files",
     t = { ":NvimTreeFindFileToggle<CR>", "tree toggle" },
     f = { ":Telescope find_files<CR>", "files" },
-    g = { ":Telescope live_grep<CR>", "live_grep" },
     b = { ":Telescope buffers<CR>", "buffers" },
     h = { ":Telescope oldfiles<CR>", "oldfiles" },
+  },
+  s = {
+    name = "search",
+    g = { ":Telescope live_grep<CR>", "live_grep" },
+    a = { ":Ag <C-R><C-W><CR>", "ag current" },
+    r = { ":Rg <C-R><C-W><CR>", "rg current" },
   },
   b = {
     name = "buffers",

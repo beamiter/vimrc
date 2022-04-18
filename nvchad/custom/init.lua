@@ -9,7 +9,7 @@ local map = require("core.utils").map
  vim.g.pumheight = 10
 
 map("n", "<leader><leader>", ":Telescope <CR>")
-map("n", "<leader>q", ":q <CR>")
+map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', {})
 map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>", {})
 map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>", {})
 map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>", {})

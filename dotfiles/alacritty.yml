@@ -111,6 +111,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) saucecodepronerdfont
     #   - (Windows) Consolas
+    family: firacodenerdfontmono
     family: saucecodepronerdfont
     family: jetbrainsmononerdfont
 
@@ -123,6 +124,7 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
+    family: firacodenerdfontmono
     family: saucecodepronerdfont
     family: jetbrainsmononerdfont
 
@@ -135,6 +137,7 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
+    family: firacodenerdfontmono
     family: saucecodepronerdfont
     family: jetbrainsmononerdfont
 
@@ -147,6 +150,7 @@ font:
     #
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
+    family: firacodenerdfontmono
     family: saucecodepronerdfont
     family: jetbrainsmononerdfont
 
