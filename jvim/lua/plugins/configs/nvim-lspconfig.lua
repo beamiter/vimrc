@@ -74,7 +74,7 @@ lsp_installer.on_server_ready(function(server)
 
   -- basic example to edit lsp server's options, disabling tsserver's inbuilt formatter
   if server.name == 'tsserver' then
-    opts.on_attach = function(client, bufnr)
+    server_opts.on_attach = function(client, bufnr)
       client.resolved_capabilities.document_formatting = false
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
     end

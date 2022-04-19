@@ -63,3 +63,5 @@ local default = {
     { name = "path" },
   },
 }
+
+plugin.setup(default)
