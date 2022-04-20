@@ -14,7 +14,7 @@ lvim.format_on_save = false
 lvim.colorscheme = "onedarker"
 
 vim.opt.relativenumber = true
-vim.opt.scrolloff = 18
+vim.opt.scrolloff = 3
 vim.opt.sidescrolloff = 3
 
 -- keymappings [view all the defaults by pressing <leader>Lk]

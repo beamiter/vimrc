@@ -110,3 +110,4 @@ pip3 install --no-cache-dir cairocffi
 23. run appimage in docker: ~/.local/bin/nvim.appimage --appimage-extract-and-run
     alias nvim="~/.local/bin/nvim.appimage --appimage-extract-and-run"
 24. julia install: sudo ln -s /opt/julia-1.6.6/bin/julia /usr/local/bin/julia
+25. jill for julia version management

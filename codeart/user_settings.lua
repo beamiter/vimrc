@@ -72,7 +72,7 @@ additional_plugins = {
 -- vim.opt.relativenumber = false
 vim.o.timeoutlen = 600
 vim.o.updatetime = 100
-vim.o.scrolloff = 18
+vim.o.scrolloff = 3
 vim.o.sidescrolloff = 3
 
 -- Or for changing terminal toggle mapping:
