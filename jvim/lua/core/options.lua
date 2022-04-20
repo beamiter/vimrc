@@ -30,7 +30,7 @@ opt.pumheight=10
 opt.relativenumber = true
 opt.ruler = false
 opt.scrolloff = 3
-opt.shadafile = "NONE"
+-- opt.shadafile = "NONE"
 opt.shiftwidth=2
 opt.showtabline=2
 opt.shortmess:append "sI"
