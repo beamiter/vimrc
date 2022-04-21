@@ -1,12 +1,17 @@
-;; Set up package.el to work with MELPA
+;;; package --- summary:
+;;; Commentary:
 (require 'package)
+;;; Code:
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+
                          ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")))
 (package-initialize)
 ;;(package-refresh-contents)
 
+;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 (unless (package-installed-p 'avy)
   (package-install 'avy))
@@ -68,8 +73,7 @@
 
 (use-package centaur-tabs
   :demand
-  :init
-  (setq centaur-tabs-set-icons t)
+  :defer t
   :config
   (centaur-tabs-mode t)
   :bind
@@ -364,6 +368,7 @@
  ;; If there is more than one, they won't work right.
  '(display-line-numbers 'relative)
  '(helm-minibuffer-history-key "M-p")
+ '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
    '(helm-ag helm-rg avy xclip winum which-key use-package rainbow-delimiters projectile magit lsp-ui helm format-all evil-surround evil-nerd-commenter evil-leader evil-collection dashboard company)))
