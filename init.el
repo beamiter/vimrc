@@ -71,15 +71,6 @@
 (use-package all-the-icons
   :ensure t)
 
-(use-package centaur-tabs
-  :demand
-  :defer t
-  :config
-  (centaur-tabs-mode t)
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward))
-
 (use-package rust-mode
   :ensure t)
 (use-package julia-mode
