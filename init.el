@@ -67,6 +67,12 @@
   (package-install 'centaur-tabs))
 (unless (package-installed-p 'all-the-icons)
   (package-install 'all-the-icons))
+(unless (package-installed-p 'tree-sitter)
+  (package-install 'tree-sitter))
+
+(use-package tree-sitter
+  :ensure t
+  :init (global-tree-sitter-mode))
 
 (use-package all-the-icons
   :ensure t)
@@ -100,9 +106,11 @@
   (global-evil-surround-mode 1))
 
 (use-package lsp-mode
+  :ensure t
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-modeline-diagnostics-scope :workspace)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (c++-mode . lsp-deferred)
          (julia-mode . lsp-deferred)
@@ -160,20 +168,17 @@
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
     "bf" 'format-all-buffer
-    "bb" 'ibuffer
+    "bb" 'helm-buffers-list
     "ci" 'evilnc-comment-or-uncomment-lines
     "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
     "cc" 'evilnc-copy-and-comment-lines
     "cp" 'evilnc-comment-or-uncomment-paragraphs
     "cr" 'comment-or-uncomment-region
     "cv" 'evilnc-toggle-invert-comment-line-by-line
-    "tt" 'treemacs
     "ft" 'treemacs
-    "ff" 'projectile-find-file
     "sg" 'projectile-grep
     "sr" 'projectile-ripgrep
     "ss" 'projectile-ag
-    "td" 'treemacs-display-current-project-exclusively
     "0"  'winum-select-window-0-or-10
     "1"  'winum-select-window-1
     "2"  'winum-select-window-2
@@ -184,6 +189,7 @@
     "7"  'winum-select-window-7
     "8"  'winum-select-window-8
     "9"  'winum-select-window-9
+    "m"  'lsp-mode-map
     "p"  'projectile-command-map)
   :ensure t
   :hook (after-init . (lambda ()
@@ -191,6 +197,9 @@
 
 (use-package company
   :ensure t
+  :config
+  (setq company-minimum-prefix-length 1
+	company-idle-delay 0.1) ;; default is 0.2
   :bind (:map company-active-map
               ([tab]     . #'company-complete-common-or-cycle)
               ("TAB"     . #'company-complete-common-or-cycle)
@@ -212,7 +221,7 @@
 
 
 ;; -------- evil nerd commenter --------
-(evilnc-default-hotkeys)
+(evilnc-default-hotkeys t t)
 
 ;; -------- git gutter --------
 (use-package git-gutter
@@ -329,6 +338,7 @@
 
 (use-package lsp-julia
   :config
+  (setq lsp-julia-format-indent 2)
   ;; (setq lsp-julia-default-environment "~/.julia/environments/v1.6")
   )
 
@@ -337,6 +347,16 @@
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-set-navigator t))
+
+(use-package recentf
+  :config
+  (setq
+   recentf-max-saved-items 10000
+   recentf-max-menu-items 5000
+   )
+  (recentf-mode 1)
+  (run-at-time nil (* 5 60) 'recentf-save-list)
+  )
 
 ;; -------- other config --------
 ;; set scroll style
