@@ -92,7 +92,6 @@
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
   :config
@@ -114,12 +113,12 @@
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-        (c++-mode . lsp-deferred)
-        (julia-mode . lsp-deferred)
-        (rust-mode . lsp-deferred)
-        (prog-mode . rainbow-delimiters-mode)
+         (c++-mode . lsp-deferred)
+         (julia-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)
+         (prog-mode . rainbow-delimiters-mode)
          ;; if you want which-key integration
-        (lsp-mode . lsp-enable-which-key-integration))
+         (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-defered))
 
 ;; optionally
@@ -202,13 +201,13 @@
 (use-package company
   :ensure t
   :bind (:map company-active-map
-         ([tab]     . #'company-complete-common-or-cycle)
-         ("TAB"     . #'company-complete-common-or-cycle)
-         ("S-TAB"   . #'company-select-previous-or-abort)
-         ([backtab] . #'company-select-previous-or-abort)
-         ([S-tab]   . #'company-select-previous-or-abort))
+              ([tab]     . #'company-complete-common-or-cycle)
+              ("TAB"     . #'company-complete-common-or-cycle)
+              ("S-TAB"   . #'company-select-previous-or-abort)
+              ([backtab] . #'company-select-previous-or-abort)
+              ([S-tab]   . #'company-select-previous-or-abort))
   :hook (after-init . (lambda ()
-            (global-company-mode))))
+			(global-company-mode))))
 
 ;; -------- avy --------
 (use-package avy
@@ -228,7 +227,7 @@
 (use-package git-gutter
   :ensure t
   :hook (after-init . (lambda ()
-            (global-git-gutter-mode)))
+			(global-git-gutter-mode)))
   :config
   (global-set-key (kbd "C-x C-g") 'git-gutter)
   (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
@@ -339,7 +338,8 @@
 
 (use-package lsp-julia
   :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
+  ;; (setq lsp-julia-default-environment "~/.julia/environments/v1.6")
+  )
 
 (use-package dashboard
   :ensure t
