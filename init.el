@@ -1,3 +1,4 @@
+
 ;;; package --- summary:
 ;;; Commentary:
 (require 'package)
@@ -13,81 +14,37 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-(unless (package-installed-p 'avy)
-  (package-install 'avy))
-(unless (package-installed-p 'company)
-  (package-install 'company))
-(unless (package-installed-p 'dashboard)
-  (package-install 'dashboard))
-(unless (package-installed-p 'evil)
-  (package-install 'evil))
-(unless (package-installed-p 'evil-leader)
-  (package-install 'evil-leader))
-(unless (package-installed-p 'evil-nerd-commenter)
-  (package-install 'evil-nerd-commenter))
-(unless (package-installed-p 'format-all)
-  (package-install 'format-all))
-(unless (package-installed-p 'git-gutter)
-  (package-install 'git-gutter))
-(unless (package-installed-p 'helm)
-  (package-install 'helm))
-(unless (package-installed-p 'helm-projectile)
-  (package-install 'helm-projectile))
-(unless (package-installed-p 'lsp-treemacs)
-  (package-install 'lsp-treemacs))
-(unless (package-installed-p 'lsp-julia)
-  (package-install 'lsp-julia))
-(unless (package-installed-p 'lsp-mode)
-  (package-install 'lsp-mode))
-(unless (package-installed-p 'rust-mode)
-  (package-install 'rust-mode))
-(unless (package-installed-p 'julia-mode)
-  (package-install 'julia-mode))
-(unless (package-installed-p 'lsp-ui)
-  (package-install 'lsp-ui))
-(unless (package-installed-p 'magit)
-  (package-install 'magit))
-(unless (package-installed-p 'rainbow-delimiters)
-  (package-install 'rainbow-delimiters))
-(unless (package-installed-p 'which-key)
-  (package-install 'which-key))
-(unless (package-installed-p 'winum)
-  (package-install 'winum))
-(unless (package-installed-p 'xclip)
-  (package-install 'xclip))
-(unless (package-installed-p 'helm-themes)
-  (package-install 'helm-themes))
-(unless (package-installed-p 'helm-rg)
-  (package-install 'helm-rg))
-(unless (package-installed-p 'helm-ag)
-  (package-install 'helm-ag))
-(unless (package-installed-p 'undo-fu)
-  (package-install 'undo-fu))
-(unless (package-installed-p 'centaur-tabs)
-  (package-install 'centaur-tabs))
-(unless (package-installed-p 'all-the-icons)
-  (package-install 'all-the-icons))
-(unless (package-installed-p 'tree-sitter)
-  (package-install 'tree-sitter))
 
+;; Ensure install
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+;; Auto update
+;; (unless (package-installed-p 'auto-package-update)
+;;   (package-refresh-contents)
+;;   (package-install 'auto-package-update))
+
+(use-package evil-nerd-commenter)
+(use-package format-all)
+(use-package magit)
+(use-package rainbow-delimiters)
+(use-package winum)
+(use-package xclip)
+(use-package helm-themes)
+(use-package helm-rg)
+(use-package helm-ag)
+(use-package undo-fu)
+(use-package all-the-icons)
+(use-package general)
 (use-package tree-sitter
-  :ensure t
   :init (global-tree-sitter-mode))
-
-(use-package all-the-icons
-  :ensure t)
-
-(use-package rust-mode
-  :ensure t)
-(use-package julia-mode
-  :ensure t)
-
+(use-package rust-mode)
+(use-package lsp-julia)
+(use-package julia-mode)
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode))
 
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
@@ -96,33 +53,52 @@
 
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
   (evil-collection-init))
 
 (use-package evil-surround
-  :ensure t
   :config
   (global-evil-surround-mode 1))
 
+;; To be polished
+(defun lsp-bind-upstream-keys ()
+  "Bind upstream `lsp-command-map' behind \"SPC m\" and the likes."
+  (bind-map lsp-command-map
+    :minor-modes (lsp-mode)
+    :keys ((concat "SPC" " m") "SPC")
+    :evil-keys ((concat "SPC" " m") "SPC")
+    :evil-states (normal motion visual evilified))
+  (dolist (it '(("=" . "format")
+                ("F" . "folder")
+                ("T" . "toggle")
+                ("g" . "goto")
+                ("h" . "help")
+                ("r" . "refactor")
+                ("w" . "workspace")
+                ("a" . "actions")
+                ("G" . "peek")))
+    (which-key-add-keymap-based-replacements lsp-command-map (car it) (cdr it))))
+
 (use-package lsp-mode
-  :ensure t
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   (setq lsp-modeline-diagnostics-scope :workspace)
+  :config
+  (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
+  :bind-keymap
+  ;; ("C-l" . lsp-command-map)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (c++-mode . lsp-deferred)
-         (julia-mode . lsp-deferred)
-         (rust-mode . lsp-deferred)
-         (prog-mode . rainbow-delimiters-mode)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
+	 (c++-mode . lsp-deferred)
+	 (julia-mode . lsp-deferred)
+	 (rust-mode . lsp-deferred)
+	 (prog-mode . rainbow-delimiters-mode)
+	 ;; if you want which-key integration
+	 (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-defered))
 
 ;; optionally
 (use-package lsp-ui
-  :ensure t
   :commands lsp-ui-mode
   :init
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
@@ -141,62 +117,60 @@
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
 ;;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 ;; optionally if you want to use debugger
-					;(use-package dap-mode)
+;(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
 ;; optional if you want which-key integration
 (use-package which-key
+  :init
   :config
   (which-key-mode))
 
 (use-package helm
-  :ensure t
   :hook (after-init . (lambda() (helm-mode 1))))
 
 (use-package projectile
-  :ensure t
   :init
   (projectile-mode 1)
   :bind (:map projectile-mode-map
 	      ("C-c p" . projectile-command-map)))
 
-(use-package evil-leader
-  :config
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
-    "bf" 'format-all-buffer
-    "bb" 'helm-buffers-list
-    "ci" 'evilnc-comment-or-uncomment-lines
-    "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
-    "cc" 'evilnc-copy-and-comment-lines
-    "cp" 'evilnc-comment-or-uncomment-paragraphs
-    "cr" 'comment-or-uncomment-region
-    "cv" 'evilnc-toggle-invert-comment-line-by-line
-    "ft" 'treemacs
-    "sg" 'projectile-grep
-    "sr" 'projectile-ripgrep
-    "ss" 'projectile-ag
-    "0"  'winum-select-window-0-or-10
-    "1"  'winum-select-window-1
-    "2"  'winum-select-window-2
-    "3"  'winum-select-window-3
-    "4"  'winum-select-window-4
-    "5"  'winum-select-window-5
-    "6"  'winum-select-window-6
-    "7"  'winum-select-window-7
-    "8"  'winum-select-window-8
-    "9"  'winum-select-window-9
-    "m"  'lsp-mode-map
-    "p"  'projectile-command-map)
-  :ensure t
-  :hook (after-init . (lambda ()
-			(global-evil-leader-mode))))
+(general-define-key
+ :prefix "SPC"
+ :keymaps '(normal visual emacs)
+ "b" '(:ignore t :wk ("b" . "buffer"))
+ "bf" 'format-all-buffer
+ "bb" 'helm-buffers-list
+ "c" '(:ignore t :wk ("c" . "comment"))
+ "cl" 'evilnc-comment-or-uncomment-lines
+ "cp" 'evilnc-comment-or-uncomment-paragraphs
+ "cr" 'comment-or-uncomment-region
+ "f" '(:ignore t :which-key ("f" . "file"))
+ "ft" 'treemacs
+ "g" '(:ignore t :wk ("g" . "git"))
+ "gj" '(git-gutter:next-hunk :properties (:repeat t :jump t))
+ "gk" '(git-gutter:previous-hunk :repeat t :jump t)
+ "p" '(:keymap projectile-command-map :wk "projectile prefix")
+ "s" '(:ignore t :wk ("s" . "search"))
+ "sg" 'projectile-grep
+ "sr" 'projectile-ripgrep
+ "sa" 'projectile-ag
+ "0"  'winum-select-window-0-or-10
+ "1"  'winum-select-window-1
+ "2"  'winum-select-window-2
+ "3"  'winum-select-window-3
+ "4"  'winum-select-window-4
+ "5"  'winum-select-window-5
+ "6"  'winum-select-window-6
+ "7"  'winum-select-window-7
+ "8"  'winum-select-window-8
+ "9"  'winum-select-window-9
+ )
 
 (use-package company
-  :ensure t
   :config
   (setq company-minimum-prefix-length 1
 	company-idle-delay 0.1) ;; default is 0.2
@@ -225,7 +199,6 @@
 
 ;; -------- git gutter --------
 (use-package git-gutter
-  :ensure t
   :hook (after-init . (lambda ()
 			(global-git-gutter-mode)))
   :config
@@ -243,7 +216,6 @@
 
 ;; -------- treemacs config --------
 (use-package treemacs
-  :ensure t
   :defer t
   :init
   (defvar treemacs-no-load-time-warnings t)
@@ -308,6 +280,7 @@
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
+	([f3]        . treemacs)
         ("C-x t 1"   . treemacs-delete-other-windows)
         ("C-x t t"   . treemacs)
         ("C-x t B"   . treemacs-bookmark)
@@ -315,32 +288,22 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-evil
-  :after treemacs evil
-  :ensure t)
+  :after treemacs evil)
 
 (use-package treemacs-projectile
-  :after treemacs projectile
-  :ensure t)
+  :after treemacs projectile)
 
 ;;(use-package treemacs-icons-dired
 ;;  :after treemacs dired
-;;  :ensure t
 ;;  :config (treemacs-icons-dired-mode))
 
 (use-package treemacs-magit
-  :after treemacs magit
-  :ensure t)
+  :after treemacs magit)
 
 (use-package treemacs-persp ;;treemacs-persective if you use perspective.el vs. persp-mode
   :after treemacs persp-mode ;;or perspective vs. persp-mode
-  :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
 
-(use-package lsp-julia
-  :config
-  (setq lsp-julia-format-indent 2)
-  ;; (setq lsp-julia-default-environment "~/.julia/environments/v1.6")
-  )
 
 (use-package dashboard
   :ensure t
@@ -381,8 +344,7 @@
  '(helm-minibuffer-history-key "M-p")
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
- '(package-selected-packages
-   '(helm-ag helm-rg avy xclip winum which-key use-package rainbow-delimiters projectile magit lsp-ui helm format-all evil-surround evil-nerd-commenter evil-leader evil-collection dashboard company)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
