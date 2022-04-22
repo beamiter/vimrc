@@ -40,8 +40,12 @@
   :after treemacs evil
   :hook (after-init . (lambda() (global-tree-sitter-mode 1))))
 (use-package rust-mode)
-(use-package lsp-julia)
-(use-package julia-mode)
+(use-package lsp-julia
+  :init
+  (setq lsp-julia-format-indent 2))
+(use-package julia-mode
+  :init
+  (setq julia-indent-offset 2))
 (use-package flycheck
   :init (global-flycheck-mode))
 
@@ -50,6 +54,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
   :config
+  (evil-global-set-key 'normal (kbd "K") 'lsp-ui-peek-find-definitions)
   (evil-mode 1))
 
 (use-package evil-collection
