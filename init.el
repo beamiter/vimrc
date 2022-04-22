@@ -60,25 +60,6 @@
   :config
   (global-evil-surround-mode 1))
 
-;; To be polished
-(defun lsp-bind-upstream-keys ()
-  "Bind upstream `lsp-command-map' behind \"SPC m\" and the likes."
-  (bind-map lsp-command-map
-    :minor-modes (lsp-mode)
-    :keys ((concat "SPC" " m") "SPC")
-    :evil-keys ((concat "SPC" " m") "SPC")
-    :evil-states (normal motion visual evilified))
-  (dolist (it '(("=" . "format")
-                ("F" . "folder")
-                ("T" . "toggle")
-                ("g" . "goto")
-                ("h" . "help")
-                ("r" . "refactor")
-                ("w" . "workspace")
-                ("a" . "actions")
-                ("G" . "peek")))
-    (which-key-add-keymap-based-replacements lsp-command-map (car it) (cdr it))))
-
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
@@ -119,8 +100,7 @@
 ;;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-;; optionally if you want to use debugger
-;(use-package dap-mode)
+;;(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
 ;; optional if you want which-key integration
@@ -140,7 +120,7 @@
 
 (general-define-key
  :prefix "SPC"
- :keymaps '(normal visual emacs)
+ :states '(normal visual treemacs emacs)
  "b" '(:ignore t :wk ("b" . "buffer"))
  "bf" 'format-all-buffer
  "bb" 'helm-buffers-list
@@ -149,7 +129,8 @@
  "cp" 'evilnc-comment-or-uncomment-paragraphs
  "cr" 'comment-or-uncomment-region
  "f" '(:ignore t :which-key ("f" . "file"))
- "ft" 'treemacs
+ "ft" '(treemacs :which-key "treemacs")
+ "fm" 'lsp-format-buffer
  "g" '(:ignore t :wk ("g" . "git"))
  "gj" '(git-gutter:next-hunk :properties (:repeat t :jump t))
  "gk" '(git-gutter:previous-hunk :repeat t :jump t)
@@ -167,7 +148,16 @@
  "6"  'winum-select-window-6
  "7"  'winum-select-window-7
  "8"  'winum-select-window-8
- "9"  'winum-select-window-9
+ "9"  'winum-select-window-9)
+(general-define-key
+ :prefix "["
+ :states '(normal visual treemacs emacs)
+ "g"  'git-gutter:previous-hunk
+ )
+(general-define-key
+ :prefix "]"
+ :states '(normal visual treemacs emacs)
+ "g"  'git-gutter:next-hunk
  )
 
 (use-package company
@@ -207,6 +197,8 @@
   ;; Jump to next/previous hunk
   (global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
   (global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+  (global-set-key (kbd "C-x k") 'git-gutter:previous-hunk)
+  (global-set-key (kbd "C-x j") 'git-gutter:next-hunk)
   ;; Stage current hunk
   (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
   ;; Revert current hunk
@@ -277,6 +269,8 @@
        (treemacs-git-mode 'deferred))
       (`(t . _)
        (treemacs-git-mode 'simple))))
+  (global-set-key (kbd "C-n") 'treemacs)
+
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
@@ -293,9 +287,12 @@
 (use-package treemacs-projectile
   :after treemacs projectile)
 
-;;(use-package treemacs-icons-dired
-;;  :after treemacs dired
-;;  :config (treemacs-icons-dired-mode))
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :config (treemacs-icons-dired-mode))
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once))
 
 (use-package treemacs-magit
   :after treemacs magit)
@@ -306,7 +303,6 @@
 
 
 (use-package dashboard
-  :ensure t
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-set-navigator t))
@@ -334,6 +330,7 @@
 (set-terminal-coding-system 'utf-8)
 (modify-coding-system-alist 'process "*" 'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
+(global-set-key (kbd "<escape><escape><escape>") 'keyboard-escape-quit)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
