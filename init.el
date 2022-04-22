@@ -37,7 +37,8 @@
 (use-package all-the-icons)
 (use-package general)
 (use-package tree-sitter
-  :init (global-tree-sitter-mode))
+  :after treemacs evil
+  :hook (after-init . (lambda() (global-tree-sitter-mode 1))))
 (use-package rust-mode)
 (use-package lsp-julia)
 (use-package julia-mode)
@@ -66,7 +67,7 @@
   (setq lsp-keymap-prefix "C-c l")
   (setq lsp-modeline-diagnostics-scope :workspace)
   :config
-  (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   :bind-keymap
   ;; ("C-l" . lsp-command-map)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
@@ -103,7 +104,6 @@
 ;;(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
-;; optional if you want which-key integration
 (use-package which-key
   :init
   :config
