@@ -94,7 +94,7 @@
   (setq lsp-ui-doc-enable nil)
   (setq lsp-ui-imenu-enable nil)
   (setq lsp-ui-flycheck-enable nil)
-  (setq lsp-ui-sideline-enable t)
+  (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-sideline-delay 0.5)
   (setq lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-sideline-show-diagnostics t)
