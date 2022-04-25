@@ -23,7 +23,7 @@ local config = {
   enabled = {
     bufferline = true,
     neo_tree = true,
-    lualine = false,
+    lualine = true,
     gitsigns = true,
     colorizer = true,
     toggle_term = true,
@@ -201,6 +201,18 @@ local config = {
     map("n", "<C-n>", ":NeoTreeFocusToggle<CR>")
     map("n", "[g", ":Gitsigns prev_hunk<CR>")
     map("n", "]g", ":Gitsigns next_hunk<CR>")
+    map("n", "<leader>bb", ":Telescope buffers<CR>")
+    map("n", "<leader>bj", ":BufferLinePick<CR>")
+    map("n", "<leader>1", ":BufferLineGoToBuffer 1<CR>")
+    map("n", "<leader>2", ":BufferLineGoToBuffer 2<CR>")
+    map("n", "<leader>3", ":BufferLineGoToBuffer 3<CR>")
+    map("n", "<leader>4", ":BufferLineGoToBuffer 4<CR>")
+    map("n", "<leader>5", ":BufferLineGoToBuffer 5<CR>")
+    map("n", "<leader>6", ":BufferLineGoToBuffer 6<CR>")
+    map("n", "<leader>7", ":BufferLineGoToBuffer 7<CR>")
+    map("n", "<leader>8", ":BufferLineGoToBuffer 8<CR>")
+    map("n", "<leader>9", ":BufferLineGoToBuffer 9<CR>")
+    map("n", "<leader>0", ":BufferLineGoToBuffer 10<CR>")
 
     vim.g.vscode_style = "dark"
 
