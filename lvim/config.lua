@@ -54,18 +54,29 @@ lvim.keys.normal_mode["<F3>"] = ":NvimTreeToggle<CR>"
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["c"] = {
   name = "+utils",
-   l = {"<cmd>lua require('Comment.api').toggle_current_linewise(vim.fn.visualmode())<CR>", "comment lines"},
+  l = { "<cmd>lua require('Comment.api').toggle_current_linewise(vim.fn.visualmode())<CR>", "comment lines" },
 }
 lvim.builtin.which_key.mappings["b"] = {
   name = "+buffers",
-  b = {"<cmd>Telescope buffers<CR>", "find buffers"},
+  b = { "<cmd>Telescope buffers<CR>", "find buffers" },
+  j = { ":BufferLinePick<CR>", "pick buffer" },
 }
 lvim.builtin.which_key.mappings["f"] = {
   name = "+files",
-  f = {"<cmd>Telescope find_files<CR>", "find files"},
-  t = {"<cmd>NvimTreeFindFileToggle<CR>", "tree toggle"},
+  f = { "<cmd>Telescope find_files<CR>", "find files" },
+  t = { "<cmd>NvimTreeFindFileToggle<CR>", "tree toggle" },
 }
 lvim.keys.normal_mode["<leader><leader>"] = ":Telescope buffers<CR>"
+lvim.keys.normal_mode["<leader>1"] = ":BufferLineGoToBuffer 1<CR>"
+lvim.keys.normal_mode["<leader>2"] = ":BufferLineGoToBuffer 2<CR>"
+lvim.keys.normal_mode["<leader>3"] = ":BufferLineGoToBuffer 3<CR>"
+lvim.keys.normal_mode["<leader>4"] = ":BufferLineGoToBuffer 4<CR>"
+lvim.keys.normal_mode["<leader>5"] = ":BufferLineGoToBuffer 5<CR>"
+lvim.keys.normal_mode["<leader>6"] = ":BufferLineGoToBuffer 6<CR>"
+lvim.keys.normal_mode["<leader>7"] = ":BufferLineGoToBuffer 7<CR>"
+lvim.keys.normal_mode["<leader>8"] = ":BufferLineGoToBuffer 8<CR>"
+lvim.keys.normal_mode["<leader>9"] = ":BufferLineGoToBuffer 9<CR>"
+lvim.keys.normal_mode["<leader>0"] = ":BufferLineGoToBuffer 10<CR>"
 lvim.keys.visual_mode["<leader>cl"] = ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>"
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
@@ -164,20 +175,20 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- Additional Plugins
 lvim.plugins = {
-    {"folke/tokyonight.nvim"},
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
-    },
-    { "folke/zen-mode.nvim" },
-    {
-      'phaazon/hop.nvim',
-      branch = 'v1', -- optional but strongly recommended
-      config = function()
-       -- you can configure Hop the way you like here; see :h hop-config
-       require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-      end
-    },
+  { "folke/tokyonight.nvim" },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  { "folke/zen-mode.nvim" },
+  {
+    'phaazon/hop.nvim',
+    branch = 'v1', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    end
+  },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

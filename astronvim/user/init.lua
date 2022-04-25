@@ -213,6 +213,9 @@ local config = {
     map("n", "<leader>8", ":BufferLineGoToBuffer 8<CR>")
     map("n", "<leader>9", ":BufferLineGoToBuffer 9<CR>")
     map("n", "<leader>0", ":BufferLineGoToBuffer 10<CR>")
+    map("n", "<leader>cl", "<cmd>lua require('Comment.api').toggle_current_linewise(vim.fn.visualmode())<CR>")
+    map("v", "<leader>cl", "<cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+
 
     vim.g.vscode_style = "dark"
 
