@@ -23,7 +23,7 @@ local config = {
   enabled = {
     bufferline = true,
     neo_tree = true,
-    lualine = true,
+    lualine = false,
     gitsigns = true,
     colorizer = true,
     toggle_term = true,
@@ -32,7 +32,7 @@ local config = {
     indent_blankline = true,
     dashboard = true,
     which_key = true,
-    neoscroll = true,
+    neoscroll = false,
     ts_rainbow = true,
     ts_autotag = true,
   },
@@ -52,6 +52,14 @@ local config = {
       { 'LunarVim/onedarker.nvim' },
       { 'Mofiqul/vscode.nvim' },
       { 'dracula/vim' },
+      {
+        'phaazon/hop.nvim',
+        branch = 'v1', -- optional but strongly recommended
+        config = function()
+          -- you can configure Hop the way you like here; see :h hop-config
+          require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+        end
+      },
       -- { "andweeb/presence.nvim" },
       -- {
       --   "ray-x/lsp_signature.nvim",
@@ -68,6 +76,9 @@ local config = {
     packer = {
       compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
     },
+    ["which-key"] = {
+      ignore_missing = false,
+    },
   },
 
   -- Add paths for including more VS Code style snippets in luasnip
@@ -81,7 +92,6 @@ local config = {
     register_n_leader = {
       -- ["N"] = { "<cmd>tabnew<cr>", "New Buffer" },
     },
-    ignore_missing = false,
   },
 
   -- CMP Source Priorities
@@ -181,6 +191,16 @@ local config = {
 
     -- Set key bindings
     map("n", "<C-s>", ":w!<CR>")
+    map("n", "<leader><leader>", ":Telescope buffers<CR>")
+    map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>")
+    map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>")
+    map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>")
+    map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>")
+    map("n", "<F3>", ":NeoTreeFocusToggle<CR>")
+    map("n", "<leader>ft", ":NeoTreeFocusToggle<CR>")
+    map("n", "<C-n>", ":NeoTreeFocusToggle<CR>")
+    map("n", "[g", ":Gitsigns prev_hunk<CR>")
+    map("n", "]g", ":Gitsigns next_hunk<CR>")
 
     vim.g.vscode_style = "dark"
 
