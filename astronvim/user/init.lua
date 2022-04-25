@@ -1,7 +1,7 @@
 local config = {
 
   -- Set colorscheme
-  colorscheme = "default_theme",
+  colorscheme = "lunar",
 
   -- Default theme configuration
   default_theme = {
@@ -47,6 +47,11 @@ local config = {
   plugins = {
     -- Add plugins, the packer syntax without the "use"
     init = {
+      { 'christianchiarulli/nvcode-color-schemes.vim' },
+      { 'marko-cerovac/material.nvim' },
+      { 'LunarVim/onedarker.nvim' },
+      { 'Mofiqul/vscode.nvim' },
+      { 'dracula/vim' },
       -- { "andweeb/presence.nvim" },
       -- {
       --   "ray-x/lsp_signature.nvim",
@@ -124,7 +129,7 @@ local config = {
 
   -- Diagnostics configuration (for vim.diagnostics.config({}))
   diagnostics = {
-    virtual_text = true,
+    virtual_text = false,
     underline = true,
   },
 
@@ -176,6 +181,8 @@ local config = {
 
     -- Set key bindings
     map("n", "<C-s>", ":w!<CR>")
+
+    vim.g.vscode_style = "dark"
 
     -- Set autocommands
     vim.api.nvim_create_augroup("packer_conf", {})
