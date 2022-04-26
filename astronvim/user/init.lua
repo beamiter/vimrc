@@ -1,7 +1,7 @@
 local config = {
 
   -- Set colorscheme
-  colorscheme = "lunar",
+  colorscheme = "dracula",
 
   -- Default theme configuration
   default_theme = {
