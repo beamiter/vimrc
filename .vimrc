@@ -164,7 +164,10 @@ nmap [g <Plug>(GitGutterPrevHunk)
 nmap ]g <Plug>(GitGutterNextHunk)
 
 """""""""""""""""" nerdcommenter
-"let g:NERDCreateDefaultMappings = 1
+let g:NERDCreateDefaultMappings = 0
+map <silent><leader>ci <plug>NERDCommenterToggle
+xmap <silent><leader>fm <Plug>(coc-format-selected)
+nmap <silent><leader>fm :call CocActionAsync('format')<CR>
 
 """""""""""""""" vim-floaterm
 nnoremap   <silent>   <F5>    :FloatermNew<CR>
@@ -268,6 +271,7 @@ if 0 && has("python3") || has("python")
   endfunction
 else
   nnoremap <F3> :call MyNerdToggle()<CR>
+  nnoremap <C-n> :call MyNerdToggle()<CR>
   nnoremap <leader>ft :call MyNerdToggle()<CR>
   " Use coc-explorer as file tree
   "nnoremap <F3> :CocCommand explorer<CR>
