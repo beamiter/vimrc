@@ -47,6 +47,7 @@ local config = {
   plugins = {
     -- Add plugins, the packer syntax without the "use"
     init = {
+      {'srcery-colors/srcery-vim', as = 'srcery'},
       { 'christianchiarulli/nvcode-color-schemes.vim' },
       { 'marko-cerovac/material.nvim' },
       { 'LunarVim/onedarker.nvim' },
