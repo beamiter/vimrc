@@ -68,6 +68,7 @@ local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
 
 map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
+map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 map('n', '[g', ':Gitsigns prev_hunk<CR>', opts)
 map('n', ']g', ':Gitsigns next_hunk<CR>', opts)
 map('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
@@ -116,6 +117,7 @@ require('packer').startup(function()
   use 'marko-cerovac/material.nvim'
   use 'LunarVim/onedarker.nvim'
   use { 'Mofiqul/vscode.nvim' }
+  use 'srcery-colors/srcery-vim'
 
   use { 'nvim-telescope/telescope.nvim', config = function()
     local actions = require('telescope.actions')
@@ -297,9 +299,9 @@ require('packer').startup(function()
 
   use { 'neovim/nvim-lspconfig', config = function()
     -- Mappings.
-    local opts = { noremap = true, silent = true }
     local map = vim.api.nvim_set_keymap
     local buf_map = vim.api.nvim_buf_set_keymap
+    local opts = { noremap = true, silent = true }
     map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
     map('n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
     map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
@@ -397,7 +399,7 @@ require('packer').startup(function()
 end)
 
 vim.cmd [[
-colorscheme vscode
+colorscheme srcery
 filetype off
 syntax on
 ]]
