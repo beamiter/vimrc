@@ -1,7 +1,7 @@
 local fn = vim.fn
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
 end
 
 vim.g.mapleader = ' '
@@ -61,297 +61,297 @@ vim.api.nvim_set_keymap('n', '<leader>8', '<Cmd>BufferLineGoToBuffer 8<CR>', { n
 vim.api.nvim_set_keymap('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', { noremap = true })
 
 require('packer').startup(function()
-  -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
+    -- Packer can manage itself
+    use 'wbthomason/packer.nvim'
 
-  use { 'windwp/nvim-autopairs', config = function()
-    require('nvim-autopairs').setup {}
-  end }
-  use 'dyng/ctrlsf.vim'
-  use 'junegunn/fzf.vim'
-  use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
-  --use 'Yggdroot/indentLine'
-  --use 'itchyny/lightline.vim'
-  --use 'mengelbrecht/lightline-bufferline'
-  use { 'lukas-reineke/indent-blankline.nvim', config = function()
-    require("indent_blankline").setup {
-      -- for example, context is off by default, use this to turn it on
-      show_current_context = true,
-      show_current_context_start = true,
-    }
-  end }
-  use 'preservim/nerdcommenter'
-  use 'sbdchd/neoformat'
-  use 'christianchiarulli/nvcode-color-schemes.vim'
-  use 'marko-cerovac/material.nvim'
-  use 'LunarVim/onedarker.nvim'
-  use { 'Mofiqul/vscode.nvim' }
-  use { 'nvim-telescope/telescope.nvim', config = function()
-    local actions = require('telescope.actions')
-    require 'telescope'.setup {
-      defaults = {
-        mappings = {
-          i = {
-            ["<C-j>"] = actions.move_selection_next,
-            ["<C-n>"] = actions.move_selection_next,
-            ["<C-k>"] = actions.move_selection_previous,
-            ["<C-p>"] = actions.move_selection_previous,
-          },
-        },
-      }
-    }
-  end }
-  use 'ntpeters/vim-better-whitespace'
-  use 'mhinz/vim-grepper'
-  use 'mhinz/vim-startify'
-  use { 'phaazon/hop.nvim', config = function()
-    require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
-    -- place this in one of your configuration file(s)
-    vim.api.nvim_set_keymap('n', 's', "<cmd>lua require'hop'.hint_char2()<cr>", {})
-    vim.api.nvim_set_keymap('n', 'S', "<cmd>lua require'hop'.hint_char1()<cr>", {})
-    vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
-    vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
-  end }
-
-  use 'kyazdani42/nvim-web-devicons'
-  use { 'feline-nvim/feline.nvim', requires = 'kyazdani42/nvim-web-devicons',
-    config = function()
-      require('feline').setup()
-    end
-  }
-  use { 'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons',
-    config = function()
-      require("bufferline").setup {}
+    use { 'windwp/nvim-autopairs', config = function()
+        require('nvim-autopairs').setup {}
     end }
-  use { 'kyazdani42/nvim-tree.lua', config = function()
-    require('nvim-tree').setup()
-  end }
-  --use 'jiangmiao/auto-pairs'
-  --use '9mm/vim-closer'
-  use { 'andymass/vim-matchup', event = 'VimEnter' }
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use {
-    'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' },
-    config = function() require('gitsigns').setup() end
-  }
+    use 'dyng/ctrlsf.vim'
+    use 'junegunn/fzf.vim'
+    use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
+    --use 'Yggdroot/indentLine'
+    --use 'itchyny/lightline.vim'
+    --use 'mengelbrecht/lightline-bufferline'
+    use { 'lukas-reineke/indent-blankline.nvim', config = function()
+        require("indent_blankline").setup {
+            -- for example, context is off by default, use this to turn it on
+            show_current_context = true,
+            show_current_context_start = true,
+        }
+    end }
+    use 'preservim/nerdcommenter'
+    use 'sbdchd/neoformat'
+    use 'christianchiarulli/nvcode-color-schemes.vim'
+    use 'marko-cerovac/material.nvim'
+    use 'LunarVim/onedarker.nvim'
+    use { 'Mofiqul/vscode.nvim' }
+    use { 'nvim-telescope/telescope.nvim', config = function()
+        local actions = require('telescope.actions')
+        require 'telescope'.setup {
+            defaults = {
+                mappings = {
+                    i = {
+                        ["<C-j>"] = actions.move_selection_next,
+                        ["<C-n>"] = actions.move_selection_next,
+                        ["<C-k>"] = actions.move_selection_previous,
+                        ["<C-p>"] = actions.move_selection_previous,
+                    },
+                },
+            }
+        }
+    end }
+    use 'ntpeters/vim-better-whitespace'
+    use 'mhinz/vim-grepper'
+    use 'mhinz/vim-startify'
+    use { 'phaazon/hop.nvim', config = function()
+        require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
+        -- place this in one of your configuration file(s)
+        vim.api.nvim_set_keymap('n', 's', "<cmd>lua require'hop'.hint_char2()<cr>", {})
+        vim.api.nvim_set_keymap('n', 'S', "<cmd>lua require'hop'.hint_char1()<cr>", {})
+        vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
+        vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+    end }
 
-  use { 'folke/which-key.nvim', config = function()
-    require("which-key").setup {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
-    local wk = require("which-key")
-    wk.register({
-      w = {
-        name = "window", -- optional group name
-        w = { "<C-w>w", "other-window" },
-        d = { '<C-W>c', 'delete-window' },
-        ["2"] = { '<C-W>v', 'layout-double-columns' },
-        h = { '<C-W>h', 'window-left' },
-        j = { '<C-W>j', 'window-below' },
-        l = { '<C-W>l', 'window-right' },
-        k = { '<C-W>k', 'window-up' },
-        o = { '<C-W>o', 'window-only' },
-        H = { '<C-W>5<', 'expand-window-left' },
-        J = { ':resize +5', 'expand-window-below' },
-        L = { '<C-W>5>', 'expand-window-right' },
-        K = { ':resize -5', 'expand-window-up' },
-        ["="] = { '<C-W>=', 'balance-window' },
-        s = { '<C-W>s', 'split-window-below' },
-        v = { '<C-W>v', 'split-window-right' },
-      },
-      f = {
-        name = "files",
-        t = { ":NvimTreeFindFileToggle<CR>", "tree toggle" },
-        f = { ":Telescope find_files<CR>", "files" },
-        g = { ":Telescope live_grep<CR>", "live_grep" },
-        b = { ":Telescope buffers<CR>", "buffers" },
-        h = { ":Telescope oldfiles<CR>", "oldfiles" },
-      },
-      b = {
-        name = "buffers",
-        f = { ":Neoformat<CR>", "format" },
-        b = { ":Telescope buffers<CR>", "buffers" },
-      },
-    }, { prefix = "<leader>" })
-  end }
-
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/cmp-vsnip'
-  use 'hrsh7th/vim-vsnip'
-  use { 'rafamadriz/friendly-snippets' }
-  use { 'L3MON4D3/LuaSnip', config = function()
-    require("luasnip.loaders.from_vscode").lazy_load()
-  end }
-  use 'williamboman/nvim-lsp-installer'
-  use { 'hrsh7th/nvim-cmp', config = function()
-    -- Setup nvim-cmp.
-    local cmp = require 'cmp'
-    local default = {
-      snippet = {
-        expand = function(args)
-          require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        end,
-      },
-      formatting = {
-        format = function(entry, vim_item)
-          local icons = require "plugins.configs.lspkind_icons"
-          vim_item.kind = string.format("%s %s", icons[vim_item.kind], vim_item.kind)
-          vim_item.menu = ({
-            nvim_lsp = "[LSP]",
-            nvim_lua = "[Lua]",
-            buffer = "[BUF]",
-          })[entry.source.name]
-          return vim_item
-        end,
-      },
-      mapping = {
-        ["<C-p>"] = cmp.mapping.select_prev_item(),
-        ["<C-n>"] = cmp.mapping.select_next_item(),
-        ["<C-k>"] = cmp.mapping.select_prev_item(),
-        ["<C-j>"] = cmp.mapping.select_next_item(),
-        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-        ['<C-y>'] = cmp.config.disable,
-        ['<C-e>'] = cmp.mapping({
-          i = cmp.mapping.abort(),
-          c = cmp.mapping.close(),
-        }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          elseif require("luasnip").expand_or_jumpable() then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif require("luasnip").jumpable(-1) then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-      },
-      sources = {
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "buffer" },
-        { name = "nvim_lua" },
-        { name = "path" },
-      },
-    }
-
-    cmp.setup(default)
-  end }
-
-  use { 'neovim/nvim-lspconfig', config = function()
-    -- Mappings.
-    -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-    local opts = { noremap = true, silent = true }
-    vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-    vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-    vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-    vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-    -- Use an on_attach function to only map the following keys
-    -- after the language server attaches to the current buffer
-    local on_attach = function(_, bufnr)
-      -- Enable completion triggered by <c-x><c-o>
-      vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-      -- Mappings.
-      -- See `:help vim.lsp.*` for documentation on any of the below functions
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-    end
-
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.completion.completionItem.preselectSupport = true
-    capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-    capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-    capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-    capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-    capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-    capabilities.textDocument.completion.completionItem.resolveSupport = {
-      properties = {
-        "documentation",
-        "detail",
-        "additionalTextEdits",
-      },
-    }
-    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
-    local lsp_installer = require("nvim-lsp-installer")
-    lsp_installer.settings {
-      ui = {
-        icons = {
-          server_installed = "﫟",
-          server_pending = "",
-          server_uninstalled = "✗",
-        },
-      },
-    }
-
-    lsp_installer.on_server_ready(function(server)
-      local server_opts = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-        flags = {
-          debounce_text_changes = 150,
-        },
-        settings = {},
-      }
-
-      -- basic example to edit lsp server's options, disabling tsserver's inbuilt formatter
-      if server.name == 'tsserver' then
-        server_opts.on_attach = function(client, bufnr)
-          client.resolved_capabilities.document_formatting = false
-          vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
+    use 'kyazdani42/nvim-web-devicons'
+    use { 'feline-nvim/feline.nvim', requires = 'kyazdani42/nvim-web-devicons',
+        config = function()
+            require('feline').setup()
         end
-      end
-
-      server:setup(server_opts)
-
-      vim.cmd [[ do User LspAttachBuffers ]]
-    end)
-
-    -- diagnostic config
-    local config = {
-      virtual_text = false,
     }
-    vim.diagnostic.config(config)
+    use { 'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons',
+        config = function()
+            require("bufferline").setup {}
+        end }
+    use { 'kyazdani42/nvim-tree.lua', config = function()
+        require('nvim-tree').setup()
+    end }
+    --use 'jiangmiao/auto-pairs'
+    --use '9mm/vim-closer'
+    use { 'andymass/vim-matchup', event = 'VimEnter' }
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+    use {
+        'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' },
+        config = function() require('gitsigns').setup() end
+    }
 
-  end }
+    use { 'folke/which-key.nvim', config = function()
+        require("which-key").setup {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        }
+        local wk = require("which-key")
+        wk.register({
+            w = {
+                name = "window", -- optional group name
+                w = { "<C-w>w", "other-window" },
+                d = { '<C-W>c', 'delete-window' },
+                ["2"] = { '<C-W>v', 'layout-double-columns' },
+                h = { '<C-W>h', 'window-left' },
+                j = { '<C-W>j', 'window-below' },
+                l = { '<C-W>l', 'window-right' },
+                k = { '<C-W>k', 'window-up' },
+                o = { '<C-W>o', 'window-only' },
+                H = { '<C-W>5<', 'expand-window-left' },
+                J = { ':resize +5', 'expand-window-below' },
+                L = { '<C-W>5>', 'expand-window-right' },
+                K = { ':resize -5', 'expand-window-up' },
+                ["="] = { '<C-W>=', 'balance-window' },
+                s = { '<C-W>s', 'split-window-below' },
+                v = { '<C-W>v', 'split-window-right' },
+            },
+            f = {
+                name = "files",
+                t = { ":NvimTreeFindFileToggle<CR>", "tree toggle" },
+                f = { ":Telescope find_files<CR>", "files" },
+                g = { ":Telescope live_grep<CR>", "live_grep" },
+                b = { ":Telescope buffers<CR>", "buffers" },
+                h = { ":Telescope oldfiles<CR>", "oldfiles" },
+            },
+            b = {
+                name = "buffers",
+                f = { ":Neoformat<CR>", "format" },
+                b = { ":Telescope buffers<CR>", "buffers" },
+            },
+        }, { prefix = "<leader>" })
+    end }
 
-  -- You can alias plugin names
-  use { 'dracula/vim', as = 'dracula' }
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-cmdline'
+    use 'hrsh7th/cmp-vsnip'
+    use 'hrsh7th/vim-vsnip'
+    use { 'rafamadriz/friendly-snippets' }
+    use { 'L3MON4D3/LuaSnip', config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+    end }
+    use 'williamboman/nvim-lsp-installer'
+    use { 'hrsh7th/nvim-cmp', config = function()
+        -- Setup nvim-cmp.
+        local cmp = require 'cmp'
+        local default = {
+            snippet = {
+                expand = function(args)
+                    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                end,
+            },
+            formatting = {
+                format = function(entry, vim_item)
+                    local icons = require "plugins.configs.lspkind_icons"
+                    vim_item.kind = string.format("%s %s", icons[vim_item.kind], vim_item.kind)
+                    vim_item.menu = ({
+                        nvim_lsp = "[LSP]",
+                        nvim_lua = "[Lua]",
+                        buffer = "[BUF]",
+                    })[entry.source.name]
+                    return vim_item
+                end,
+            },
+            mapping = {
+                ["<C-p>"] = cmp.mapping.select_prev_item(),
+                ["<C-n>"] = cmp.mapping.select_next_item(),
+                ["<C-k>"] = cmp.mapping.select_prev_item(),
+                ["<C-j>"] = cmp.mapping.select_next_item(),
+                ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+                ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+                ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+                ['<C-y>'] = cmp.config.disable,
+                ['<C-e>'] = cmp.mapping({
+                    i = cmp.mapping.abort(),
+                    c = cmp.mapping.close(),
+                }),
+                ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                    elseif require("luasnip").expand_or_jumpable() then
+                        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+                ["<S-Tab>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_prev_item()
+                    elseif require("luasnip").jumpable(-1) then
+                        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+            },
+            sources = {
+                { name = "nvim_lsp" },
+                { name = "luasnip" },
+                { name = "buffer" },
+                { name = "nvim_lua" },
+                { name = "path" },
+            },
+        }
 
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    require('packer').sync()
-  end
+        cmp.setup(default)
+    end }
+
+    use { 'neovim/nvim-lspconfig', config = function()
+        -- Mappings.
+        -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+        local opts = { noremap = true, silent = true }
+        vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+        vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+        vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+        vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+        -- Use an on_attach function to only map the following keys
+        -- after the language server attaches to the current buffer
+        local on_attach = function(_, bufnr)
+            -- Enable completion triggered by <c-x><c-o>
+            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+            -- Mappings.
+            -- See `:help vim.lsp.*` for documentation on any of the below functions
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+        end
+
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
+        capabilities.textDocument.completion.completionItem.preselectSupport = true
+        capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+        capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+        capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+        capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+        capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+        capabilities.textDocument.completion.completionItem.resolveSupport = {
+            properties = {
+                "documentation",
+                "detail",
+                "additionalTextEdits",
+            },
+        }
+        capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+        local lsp_installer = require("nvim-lsp-installer")
+        lsp_installer.settings {
+            ui = {
+                icons = {
+                    server_installed = "﫟",
+                    server_pending = "",
+                    server_uninstalled = "✗",
+                },
+            },
+        }
+
+        lsp_installer.on_server_ready(function(server)
+            local server_opts = {
+                on_attach = on_attach,
+                capabilities = capabilities,
+                flags = {
+                    debounce_text_changes = 150,
+                },
+                settings = {},
+            }
+
+            -- basic example to edit lsp server's options, disabling tsserver's inbuilt formatter
+            if server.name == 'tsserver' then
+                server_opts.on_attach = function(client, bufnr)
+                    client.resolved_capabilities.document_formatting = false
+                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
+                end
+            end
+
+            server:setup(server_opts)
+
+            vim.cmd [[ do User LspAttachBuffers ]]
+        end)
+
+        -- diagnostic config
+        local config = {
+            virtual_text = false,
+        }
+        vim.diagnostic.config(config)
+
+    end }
+
+    -- You can alias plugin names
+    use { 'dracula/vim', as = 'dracula' }
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 
 end)
 
