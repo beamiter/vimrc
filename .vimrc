@@ -34,6 +34,7 @@ set termguicolors
 set noautochdir
 set scrolloff=3
 set sidescrolloff=3
+set timeoutlen=500
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
@@ -167,7 +168,7 @@ nmap ]g <Plug>(GitGutterNextHunk)
 
 """""""""""""""""" nerdcommenter
 let g:NERDCreateDefaultMappings = 0
-map <silent><leader>ci <plug>NERDCommenterToggle
+map <silent><leader>cl <plug>NERDCommenterToggle
 xmap <silent><leader>fm <Plug>(coc-format-selected)
 nmap <silent><leader>fm :call CocActionAsync('format')<CR>
 

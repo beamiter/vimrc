@@ -49,7 +49,7 @@ opt.splitright = true
 opt.tabstop = 4
 opt.termguicolors = true
 opt.title = true
-opt.timeoutlen = 800
+opt.timeoutlen = 500
 opt.updatetime = 250
 opt.undofile = true
 opt.whichwrap:append "<>[]hl"
