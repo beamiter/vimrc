@@ -15,6 +15,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(eval-when-compile (require 'use-package))
+
 ;; Ensure install
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
@@ -33,12 +35,11 @@
 (use-package moe-theme)
 (use-package monokai-pro-theme)
 (use-package monokai-theme)
-(use-package spacemacs-theme)
-(use-package spacemacs-theme)
+(use-package spacemacs-theme
+  :no-require t)
 (use-package srcery-theme)
-(use-package sublime-themes)
 ;;
-(load-theme 'spacemacs-dark t)
+(load-theme 'monokai-pro-classic t)
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode))
@@ -153,6 +154,7 @@
  "cr" 'comment-or-uncomment-region
  "f" '(:ignore t :which-key ("f" . "file"))
  "ft" '(treemacs :which-key "treemacs")
+ "ff" 'projectile-find-file
  "fm" 'lsp-format-buffer
  "g" '(:ignore t :wk ("g" . "git"))
  "gj" '(git-gutter:next-hunk :properties (:repeat t :jump t))
@@ -359,12 +361,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("4a201d19d8f7864e930fbb67e5c2029b558d26a658be1313b19b8958fe451b55" default))
  '(display-line-numbers 'relative)
  '(helm-minibuffer-history-key "M-p")
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
- '(package-selected-packages nil)
- '(warning-suppress-types '((use-package))))
+ '(package-selected-packages
+   '(subatomic256-theme xclip winum which-key use-package undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil tree-sitter sublime-themes srcery-theme spacemacs-theme rust-mode rainbow-delimiters monokai-theme monokai-pro-theme moe-theme lsp-ui lsp-treemacs lsp-julia leuven-theme helm-themes helm-rg helm-projectile helm-lsp helm-ag gruvbox-theme gruber-darker-theme git-gutter general format-all flycheck evil-surround evil-nerd-commenter evil-collection doom-themes doom-modeline dashboard company ample-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
