@@ -24,6 +24,24 @@
 ;;   (package-refresh-contents)
 ;;   (package-install 'auto-package-update))
 
+;; themes
+(use-package ample-theme)
+(use-package doom-themes)
+(use-package gruvbox-theme)
+(use-package gruber-darker-theme)
+(use-package leuven-theme)
+(use-package moe-theme)
+(use-package monokai-pro-theme)
+(use-package monokai-theme)
+(use-package spacemacs-theme)
+(use-package spacemacs-theme)
+(use-package srcery-theme)
+(use-package sublime-themes)
+;;
+(load-theme 'spacemacs-dark t)
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
 (use-package evil-nerd-commenter)
 (use-package format-all)
 (use-package magit)
@@ -331,7 +349,6 @@
 (tool-bar-mode -1)
 (winum-mode 1)
 (xclip-mode 1)
-(load-theme 'tango-dark t)
 (set-terminal-coding-system 'utf-8)
 (modify-coding-system-alist 'process "*" 'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
@@ -346,10 +363,11 @@
  '(helm-minibuffer-history-key "M-p")
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
- '(package-selected-packages nil))
+ '(package-selected-packages nil)
+ '(warning-suppress-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:background nil)))))
