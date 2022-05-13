@@ -80,6 +80,10 @@ map('n', '<leader>6', '<Cmd>BufferLineGoToBuffer 6<CR>', opts)
 map('n', '<leader>7', '<Cmd>BufferLineGoToBuffer 7<CR>', opts)
 map('n', '<leader>8', '<Cmd>BufferLineGoToBuffer 8<CR>', opts)
 map('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', opts)
+map('n', '<leader>So', "<cmd>lua require('spectre').open()<CR>", {})
+map('n', '<leader>Sw', "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", {})
+map('v', '<leader>S', "<cmd>lua require('spectre').open_visual()<CR>", {})
+map('n', '<leader>Sp', "<cmd>lua require('spectre').open_file_search()<CR>", {})
 
 require('packer').startup(function()
   -- Packer can manage itself
@@ -92,9 +96,6 @@ require('packer').startup(function()
   use 'dyng/ctrlsf.vim'
   use 'junegunn/fzf.vim'
   use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
-  --use 'Yggdroot/indentLine'
-  --use 'itchyny/lightline.vim'
-  --use 'mengelbrecht/lightline-bufferline'
 
   use { 'lukas-reineke/indent-blankline.nvim', config = function()
     require("indent_blankline").setup {
@@ -138,6 +139,9 @@ require('packer').startup(function()
   use 'ntpeters/vim-better-whitespace'
   use 'mhinz/vim-grepper'
   use 'mhinz/vim-startify'
+  use { 'windwp/nvim-spectre', config = function()
+    require('spectre').setup()
+  end }
 
   use { 'phaazon/hop.nvim', config = function()
     require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
