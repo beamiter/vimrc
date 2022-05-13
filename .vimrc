@@ -54,7 +54,6 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " According to plug name alphabetical order
-Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -66,6 +65,7 @@ endif
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'mattn/vim-lsp-settings'
 
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -76,6 +76,7 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'JuliaEditorSupport/julia-vim'
+Plug 'cohama/lexima.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'sbdchd/neoformat'
@@ -85,6 +86,7 @@ Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
+Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
 Plug 'felipec/vim-felipec'
 Plug 'voldikss/vim-floaterm'
@@ -95,8 +97,11 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'andymass/vim-matchup'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'rakr/vim-one'
+Plug 'sheerun/vim-polyglot'
 "Plug 'airblade/vim-rooter'
 Plug 'mhinz/vim-startify'
+Plug 'sheerun/vim-polyglot'
+Plug 'mg979/vim-visual-multi'
 Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
@@ -111,6 +116,11 @@ set background=dark
 
 """""""""""""""" vim-rooter
 "let g:rooter_manual_only = 1
+
+"""""""""""""""" vim-visual-multi
+let g:VM_maps = {}
+let g:VM_maps['Find Under']         = '<C-s>'           " replace C-n
+let g:VM_maps['Find Subword Under'] = '<C-s>'           " replace visual C-n
 
 """""""""""""""" nerdtree
 " Start NERDTree when Vim starts with a directory argument.
