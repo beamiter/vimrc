@@ -65,7 +65,6 @@ endif
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'mattn/vim-lsp-settings'
 
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
