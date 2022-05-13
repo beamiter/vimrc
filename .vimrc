@@ -117,9 +117,9 @@ set background=dark
 "let g:rooter_manual_only = 1
 
 """""""""""""""" vim-visual-multi
-let g:VM_maps = {}
-let g:VM_maps['Find Under']         = '<C-s>'           " replace C-n
-let g:VM_maps['Find Subword Under'] = '<C-s>'           " replace visual C-n
+"let g:VM_maps = {}
+"let g:VM_maps['Find Under']         = '<C-s>'           " replace C-n
+"let g:VM_maps['Find Subword Under'] = '<C-s>'           " replace visual C-n
 
 """""""""""""""" nerdtree
 " Start NERDTree when Vim starts with a directory argument.
@@ -283,7 +283,7 @@ if 0 && has("python3") || has("python")
   endfunction
 else
   nnoremap <F3> :call MyNerdToggle()<CR>
-  nnoremap <C-n> :call MyNerdToggle()<CR>
+  "nnoremap <C-n> :call MyNerdToggle()<CR>
   nnoremap <leader>ft :call MyNerdToggle()<CR>
   " Use coc-explorer as file tree
   "nnoremap <F3> :CocCommand explorer<CR>
