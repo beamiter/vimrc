@@ -71,6 +71,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
+Plug 'sainnhe/everforest'
+Plug 'sainnhe/edge'
+Plug 'sainnhe/sonokai'
 Plug 'srcery-colors/srcery-vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'Yggdroot/indentLine'
@@ -107,13 +110,24 @@ Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
+"""""""""""""""" sonokai themes
+let g:sonokai_style = 'andromeda'
+let g:sonokai_better_performance = 1
+let g:edge_style = 'aura'
+let g:edge_better_performance = 1
+let g:everforest_background = 'soft'
+let g:everforest_better_performance = 1
+let g:gruvbox_material_background = 'soft'
+let g:gruvbox_material_better_performance = 1
+
+"set background=light
+set background=dark
 "colorscheme xcodelight
 "colorscheme gruvbox-material
 "colorscheme felipec
 "colorscheme dracula
-colorscheme srcery
-"set background=light
-set background=dark
+" colorscheme srcery
+colorscheme edge
 
 """""""""""""""" vim-rooter
 "let g:rooter_manual_only = 1

@@ -104,6 +104,20 @@ require('packer').startup(function()
     }
   end }
 
+  use { 'numToStr/FTerm.nvim', config = function()
+    require 'FTerm'.setup({
+      -- border     = 'double',
+      -- dimensions = {
+      --   height = 0.9,
+      --   width = 0.9,
+      -- },
+    })
+    -- Example keybindings
+    vim.keymap.set('n', '<F5>', '<CMD>lua require("FTerm").toggle()<CR>')
+    vim.keymap.set('t', '<F5>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
+  end
+  }
+
   use { "numToStr/Comment.nvim", config = function()
     require('Comment').setup {}
     -- Toggle using count
@@ -117,8 +131,16 @@ require('packer').startup(function()
   use 'christianchiarulli/nvcode-color-schemes.vim'
   use 'marko-cerovac/material.nvim'
   use 'LunarVim/onedarker.nvim'
-  use { 'Mofiqul/vscode.nvim' }
+  use 'Mofiqul/vscode.nvim'
   use 'srcery-colors/srcery-vim'
+  use 'sainnhe/gruvbox-material'
+  use 'sainnhe/everforest'
+  use 'sainnhe/edge'
+  use { 'sainnhe/sonokai', config = function()
+    vim.g.sonokai_style = 'shusia'
+    vim.g.sonokai_better_performance = 1
+  end }
+
 
   use { 'nvim-telescope/telescope.nvim', config = function()
     local actions = require('telescope.actions')
@@ -403,7 +425,7 @@ require('packer').startup(function()
 end)
 
 vim.cmd [[
-colorscheme srcery
+colorscheme sonokai
 filetype off
 syntax on
 ]]
