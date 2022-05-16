@@ -104,6 +104,8 @@ require('packer').startup(function()
     }
   end }
 
+  use 'tpope/vim-fugitive'
+
   use { 'numToStr/FTerm.nvim', config = function()
     require 'FTerm'.setup({
       -- border     = 'double',
