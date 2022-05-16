@@ -81,6 +81,7 @@ Plug 'mengelbrecht/lightline-bufferline'
 Plug 'sbdchd/neoformat'
 Plug 'preservim/nerdcommenter'
 Plug 'preservim/nerdtree'
+Plug 'lambdalisue/fern.vim'
 Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
@@ -282,9 +283,11 @@ if 0 && has("python3") || has("python")
     autocmd BufWritePost * call defx#redraw()
   endfunction
 else
-  nnoremap <F3> :call MyNerdToggle()<CR>
+  "nnoremap <F3> :call MyNerdToggle()<CR>
+  nnoremap <F3> :Fern . -drawer -toggle<CR>
   "nnoremap <C-n> :call MyNerdToggle()<CR>
-  nnoremap <leader>ft :call MyNerdToggle()<CR>
+  "nnoremap <leader>ft :call MyNerdToggle()<CR>
+  nnoremap <leader>ft :Fern . -drawer -toggle<CR>
   " Use coc-explorer as file tree
   "nnoremap <F3> :CocCommand explorer<CR>
   "map <leader>ft :CocCommand explorer<CR>
