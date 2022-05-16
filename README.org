@@ -111,3 +111,5 @@ pip3 install --no-cache-dir cairocffi
     alias nvim="~/.local/bin/nvim.appimage --appimage-extract-and-run"
 24. julia install: sudo ln -s /opt/julia-1.6.6/bin/julia /usr/local/bin/julia
 25. jill for julia version management
+26. bob for neovim version management:
+    cargo install --git https://github.com/MordechaiHadad/bob.git
