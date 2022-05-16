@@ -38,8 +38,22 @@
 (use-package spacemacs-theme
   :no-require t)
 (use-package srcery-theme)
+(use-package modus-themes
+  :ensure
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs nil
+        modus-themes-region '(bg-only no-extend))
+
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes)
+  :config
+  ;; Load the theme of your choice:
+  (modus-themes-load-operandi) ;; OR (modus-themes-load-vivendi)
+  :bind ("<f5>" . modus-themes-toggle))
 ;;
-(load-theme 'monokai-pro-classic t)
+;; (load-theme 'monokai-pro-classic t)
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode))
