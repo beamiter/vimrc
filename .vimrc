@@ -68,6 +68,7 @@ endif
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
 Plug 'srcery-colors/srcery-vim'
@@ -153,6 +154,10 @@ vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 
 " Define prefix dictionary
 let g:which_key_map =  {}
+let g:which_key_map['c'] = {
+     \ 'name' : 'Clap' ,
+     \ 'c' : [':Clap'          , 'clap'],
+     \ }
 let g:which_key_map['w'] = {
       \ 'name' : '+windows' ,
       \ 'w' : ['<C-W>w'        , 'other-window']          ,
@@ -284,10 +289,10 @@ if 0 && has("python3") || has("python")
   endfunction
 else
   "nnoremap <F3> :call MyNerdToggle()<CR>
-  nnoremap <F3> :Fern . -drawer -toggle<CR>
+  nnoremap <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
   "nnoremap <C-n> :call MyNerdToggle()<CR>
   "nnoremap <leader>ft :call MyNerdToggle()<CR>
-  nnoremap <leader>ft :Fern . -drawer -toggle<CR>
+  nnoremap <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
   " Use coc-explorer as file tree
   "nnoremap <F3> :CocCommand explorer<CR>
   "map <leader>ft :CocCommand explorer<CR>
