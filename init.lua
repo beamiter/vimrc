@@ -106,6 +106,22 @@ require('packer').startup(function()
 
   use 'tpope/vim-fugitive'
 
+  use { "akinsho/toggleterm.nvim", tag = 'v1.*', config = function()
+    require("toggleterm").setup()
+    function _G.set_terminal_keymaps()
+      local opts = { noremap = true }
+      vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
+      vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
+      vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
+      vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
+      vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
+      vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
+    end
+
+    -- if you only want these mappings for toggle term use term://*toggleterm#* instead
+    vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+  end }
+
   use { 'numToStr/FTerm.nvim', config = function()
     require 'FTerm'.setup({
       -- border     = 'double',
@@ -130,7 +146,15 @@ require('packer').startup(function()
   end }
 
   use 'sbdchd/neoformat'
-  use 'christianchiarulli/nvcode-color-schemes.vim'
+  use { 'christianchiarulli/nvcode-color-schemes.vim',
+    require 'nvim-treesitter.configs'.setup {
+      ensure_installed = {"c", "rust", "julia", "python"}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+      highlight = {
+        enable = true, -- false will disable the whole extension
+        -- disable = { "c", "rust" }, -- list of language that will be disabled
+      },
+    }
+  }
   use 'marko-cerovac/material.nvim'
   use 'LunarVim/onedarker.nvim'
   use 'Mofiqul/vscode.nvim'
@@ -138,6 +162,7 @@ require('packer').startup(function()
   use 'sainnhe/gruvbox-material'
   use 'sainnhe/everforest'
   use 'sainnhe/edge'
+  use 'felipec/vim-felipec'
   use { 'sainnhe/sonokai', config = function()
     vim.g.sonokai_style = 'shusia'
     vim.g.sonokai_better_performance = 1
@@ -352,7 +377,7 @@ require('packer').startup(function()
       buf_map(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
       buf_map(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
       buf_map(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-      buf_map(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+      buf_map(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting(async = true)<CR>', opts)
     end
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()

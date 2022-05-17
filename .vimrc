@@ -69,11 +69,13 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/sonokai'
+Plug 'christianchiarulli/nvcode-color-schemes.vim'
 Plug 'srcery-colors/srcery-vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'Yggdroot/indentLine'
@@ -126,7 +128,8 @@ set background=dark
 "colorscheme gruvbox-material
 "colorscheme felipec
 "colorscheme dracula
-" colorscheme srcery
+"colorscheme srcery
+"colorscheme nvcode
 colorscheme edge
 
 """""""""""""""" vim-rooter

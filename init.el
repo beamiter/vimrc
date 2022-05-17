@@ -50,7 +50,8 @@
   (modus-themes-load-themes)
   :config
   ;; Load the theme of your choice:
-  (modus-themes-load-operandi) ;; OR (modus-themes-load-vivendi)
+  ;; (modus-themes-load-operandi)
+  (modus-themes-load-vivendi)
   :bind ("<f5>" . modus-themes-toggle))
 ;;
 ;; (load-theme 'monokai-pro-classic t)
