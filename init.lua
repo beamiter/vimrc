@@ -168,6 +168,8 @@ require('packer').startup(function()
     vim.g.sonokai_better_performance = 1
   end }
 
+  use 'bluz71/vim-moonfly-colors'
+  use 'bluz71/vim-nightfly-guicolors'
 
   use { 'nvim-telescope/telescope.nvim', config = function()
     local actions = require('telescope.actions')
