@@ -110,12 +110,12 @@
   :bind-keymap
   ;; ("C-l" . lsp-command-map)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	 (c++-mode . lsp-deferred)
-	 (julia-mode . lsp-deferred)
-	 (rust-mode . lsp-deferred)
-	 (prog-mode . rainbow-delimiters-mode)
-	 ;; if you want which-key integration
-	 (lsp-mode . lsp-enable-which-key-integration))
+	       (c++-mode . lsp-deferred)
+	       (julia-mode . lsp-deferred)
+	       (rust-mode . lsp-deferred)
+	       (prog-mode . rainbow-delimiters-mode)
+	       ;; if you want which-key integration
+	       (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-defered))
 
 ;; optionally
@@ -155,7 +155,7 @@
   :init
   (projectile-mode 1)
   :bind (:map projectile-mode-map
-	      ("C-c p" . projectile-command-map)))
+	            ("C-c p" . projectile-command-map)))
 
 (general-define-key
  :prefix "SPC"
@@ -203,7 +203,7 @@
 (use-package company
   :config
   (setq company-minimum-prefix-length 1
-	company-idle-delay 0.1) ;; default is 0.2
+	      company-idle-delay 0.1) ;; default is 0.2
   :bind (:map company-active-map
               ([tab]     . #'company-complete-common-or-cycle)
               ("TAB"     . #'company-complete-common-or-cycle)
@@ -211,7 +211,7 @@
               ([backtab] . #'company-select-previous-or-abort)
               ([S-tab]   . #'company-select-previous-or-abort))
   :hook (after-init . (lambda ()
-			(global-company-mode))))
+			                  (global-company-mode))))
 
 ;; -------- avy --------
 (use-package avy
@@ -230,7 +230,7 @@
 ;; -------- git gutter --------
 (use-package git-gutter
   :hook (after-init . (lambda ()
-			(global-git-gutter-mode)))
+			                  (global-git-gutter-mode)))
   :config
   (global-set-key (kbd "C-x C-g") 'git-gutter)
   (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
@@ -314,7 +314,7 @@
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
-	([f3]        . treemacs)
+	      ([f3]        . treemacs)
         ("C-x t 1"   . treemacs-delete-other-windows)
         ("C-x t t"   . treemacs)
         ("C-x t B"   . treemacs-bookmark)
