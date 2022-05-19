@@ -35,6 +35,7 @@ set noautochdir
 set scrolloff=3
 set sidescrolloff=3
 set timeoutlen=500
+set wildmenu
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
