@@ -132,7 +132,8 @@ set background=dark
 "colorscheme dracula
 "colorscheme srcery
 "colorscheme nvcode
-colorscheme edge
+"colorscheme edge
+colorscheme xoria
 
 """""""""""""""" vim-rooter
 "let g:rooter_manual_only = 1
