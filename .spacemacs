@@ -40,20 +40,26 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      auto-completion
      better-defaults
+     common-lisp
+     compleseus
+     docker
      emacs-lisp
      git
-     helm
+     julia
+     c-c++
      lsp
-     ;; markdown
+     themes-megapack
+     markdown
      multiple-cursors
      org
+     treemacs
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
-     ;; version-control
-     treemacs)
+     version-control
+     )
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -66,16 +72,9 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
                                       format-all
-                                      ample-theme
-                                      doom-themes
-                                      gruvbox-theme
-                                      gruber-darker-theme
-                                      leuven-theme
-                                      moe-theme
                                       monokai-pro-theme
-                                      monokai-theme
                                       srcery-theme
-                                      modus-themes)
+                                      )
 
 
    ;; A list of packages that cannot be updated.
@@ -242,7 +241,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(modus-vivendi
+   dotspacemacs-themes '(doom-dark+
+                         modus-vivendi
                          spacemacs-dark
                          spacemacs-light)
 
