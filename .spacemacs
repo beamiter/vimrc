@@ -42,6 +42,7 @@ This function should only modify configuration layer settings."
      better-defaults
      common-lisp
      compleseus
+     ivy
      docker
      emacs-lisp
      git
