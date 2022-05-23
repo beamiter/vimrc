@@ -171,12 +171,23 @@ nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
+" leaderf
+let g:Lf_ShortcutF = ''
+let g:Lf_ShortcutB = ''
 
 " Define prefix dictionary
 let g:which_key_map =  {}
 let g:which_key_map['c'] = {
      \ 'name' : 'Clap' ,
      \ 'c' : [':Clap'          , 'clap'],
+     \ }
+let g:which_key_map['s'] = {
+     \ 'name' : 'leaderf' ,
+     \ 'b' : [':LeaderfBuffer'                           , 'buffer'],
+     \ 'f' : [':LeaderfFile'                             , 'file'],
+     \ 'h' : [':LeaderfMru'                              , 'mru'],
+     \ 's' : [':LeaderfSelf'                             , 'self'],
+     \ 'w' : ['<Plug>LeaderfRgCwordLiteralBoundary'      , 'rg'],
      \ }
 let g:which_key_map['w'] = {
       \ 'name' : '+windows' ,

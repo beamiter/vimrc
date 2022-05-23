@@ -435,10 +435,10 @@ require('packer').startup(function()
     end)
 
     -- diagnostic config
-    local config = {
-      virtual_text = false,
-    }
-    vim.diagnostic.config(config)
+    -- local config = {
+    --   virtual_text = true,
+    -- }
+    -- vim.diagnostic.config(config)
 
   end }
 
