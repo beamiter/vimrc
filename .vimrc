@@ -174,6 +174,7 @@ vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 " leaderf
 let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
+let g:Lf_WindowHeight = 0.3
 
 " Define prefix dictionary
 let g:which_key_map =  {}
@@ -343,6 +344,7 @@ map <leader>fh :History<CR>
 map <leader>pf :ProjectFiles<CR>
 nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
+let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
