@@ -135,6 +135,9 @@ set background=dark
 "colorscheme edge
 colorscheme lunar
 
+" insert this line above imap
+call lexima#init()
+
 """""""""""""""" vim-rooter
 "let g:rooter_manual_only = 1
 
