@@ -324,12 +324,12 @@ if 0 && has("python3") || has("python")
   endfunction
 else
   "nnoremap <F3> :call MyNerdToggle()<CR>
-  "nnoremap <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
-  nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
+  nnoremap <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
+  "nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
   "nnoremap <C-n> :call MyNerdToggle()<CR>
   "nnoremap <leader>ft :call MyNerdToggle()<CR>
-  "nnoremap <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
-  nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
+  nnoremap <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
+  "nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
   " Use coc-explorer as file tree
   "nnoremap <F3> :CocCommand explorer<CR>
   "map <leader>ft :CocCommand explorer<CR>
