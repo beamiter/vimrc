@@ -133,7 +133,8 @@ set background=dark
 "colorscheme srcery
 "colorscheme nvcode
 "colorscheme edge
-colorscheme lunar
+"colorscheme lunar
+colorscheme sonokai
 
 " insert this line above imap
 call lexima#init()
