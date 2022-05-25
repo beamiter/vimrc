@@ -150,7 +150,7 @@ require('packer').startup(function()
 
   use { 'christianchiarulli/nvcode-color-schemes.vim',
     require 'nvim-treesitter.configs'.setup {
-      ensure_installed = {"c", "rust", "julia", "python"}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+      ensure_installed = { "c", "rust", "julia", "python" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
       highlight = {
         enable = true, -- false will disable the whole extension
         -- disable = { "c", "rust" }, -- list of language that will be disabled
@@ -215,7 +215,11 @@ require('packer').startup(function()
 
   use { 'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons',
     config = function()
-      require("bufferline").setup {}
+      require("bufferline").setup {
+        options = {
+          numbers = "both",
+        }
+      }
     end }
 
   use { 'kyazdani42/nvim-tree.lua', config = function()
