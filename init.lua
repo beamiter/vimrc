@@ -146,6 +146,8 @@ require('packer').startup(function()
   end }
 
   use 'sbdchd/neoformat'
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+
   use { 'christianchiarulli/nvcode-color-schemes.vim',
     require 'nvim-treesitter.configs'.setup {
       ensure_installed = {"c", "rust", "julia", "python"}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -223,7 +225,6 @@ require('packer').startup(function()
   --use 'jiangmiao/auto-pairs'
   --use '9mm/vim-closer'
   use { 'andymass/vim-matchup', event = 'VimEnter' }
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
   use {
     'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' },
