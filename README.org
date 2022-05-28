@@ -117,4 +117,5 @@ pip3 install --no-cache-dir cairocffi
 git config --global user.name "beamiter"
 git config --global user.email "beamiter@163.com"
 git config --global credential.helper store
-
+28.
+cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON ..
