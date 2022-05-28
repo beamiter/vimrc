@@ -113,3 +113,8 @@ pip3 install --no-cache-dir cairocffi
 25. jill for julia version management
 26. bob for neovim version management:
     cargo install --git https://github.com/MordechaiHadad/bob.git
+27. 
+git config --global user.name "beamiter"
+git config --global user.email "beamiter@163.com"
+git config --global credential.helper store
+
