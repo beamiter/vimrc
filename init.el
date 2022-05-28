@@ -58,6 +58,7 @@
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode))
+(setq evil-want-keybinding nil)
 (use-package evil-nerd-commenter)
 (use-package format-all)
 (use-package magit)
@@ -378,6 +379,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("4a201d19d8f7864e930fbb67e5c2029b558d26a658be1313b19b8958fe451b55" default))
+ '(delete-selection-mode nil)
  '(display-line-numbers 'relative)
  '(helm-minibuffer-history-key "M-p")
  '(inhibit-startup-buffer-menu t)
