@@ -36,6 +36,7 @@ set scrolloff=3
 set sidescrolloff=3
 set timeoutlen=500
 set wildmenu
+set mouse=a
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
@@ -107,6 +108,7 @@ Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
 "Plug 'airblade/vim-rooter'
+Plug 'puremourning/vimspector'
 Plug 'mhinz/vim-startify'
 Plug 'sheerun/vim-polyglot'
 Plug 'mg979/vim-visual-multi'
@@ -213,25 +215,33 @@ let g:which_key_map['w'] = {
       \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
       \ }
 
+"""""""""""""""" vimspector
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+" for normal mode - the word under the cursor
+nmap <Leader>di <Plug>VimspectorBalloonEval
+" for visual mode, the visually selected text
+xmap <Leader>di <Plug>VimspectorBalloonEval
+
 """""""""""""""" gitgutter
 nmap [g <Plug>(GitGutterPrevHunk)
 nmap ]g <Plug>(GitGutterNextHunk)
 
 """""""""""""""""" nerdcommenter
 let g:NERDCreateDefaultMappings = 0
+let g:vimspector_variables_display_mode = 'full'
 map <silent><leader>cl <plug>NERDCommenterToggle
 xmap <silent><leader>fm <Plug>(coc-format-selected)
 nmap <silent><leader>fm :call CocActionAsync('format')<CR>
 
 """""""""""""""" vim-floaterm
-nnoremap   <silent>   <F5>    :FloatermNew<CR>
-tnoremap   <silent>   <F5>    <C-\><C-n>:FloatermNew<CR>
-nnoremap   <silent>   <F6>    :FloatermPrev<CR>
-tnoremap   <silent>   <F6>    <C-\><C-n>:FloatermPrev<CR>
+nnoremap   <silent>   <S-F7>    :FloatermPrev<CR>
+tnoremap   <silent>   <S-F7>    <C-\><C-n>:FloatermPrev<CR>
 nnoremap   <silent>   <F7>    :FloatermNext<CR>
 tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNext<CR>
 nnoremap   <silent>   <F8>   :FloatermToggle<CR>
 tnoremap   <silent>   <F8>   <C-\><C-n>:FloatermToggle<CR>
+nnoremap   <silent>   <S-F8>    :FloatermNew<CR>
+tnoremap   <silent>   <S-F8>    <C-\><C-n>:FloatermNew<CR>
 
 """""""""""""""" coc
 source $HOME/vimrc/coc.vim
