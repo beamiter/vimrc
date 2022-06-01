@@ -211,7 +211,24 @@ require('packer').startup(function()
   end }
 
   use 'theHamsta/nvim-dap-virtual-text'
-  use 'rcarriga/nvim-dap-ui'
+  use { 'rcarriga/nvim-dap-ui', config = function()
+    require("dapui").setup()
+    local dap, dapui = require("dap"), require("dapui")
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+      dapui.close()
+    end
+    -- " for normal mode - the word under the cursor
+    -- nmap <Leader>di <Plug>VimspectorBalloonEval
+    vim.api.nvim_set_keymap('n', '<leader>di', "<cmd>lua require'dapui'.eval()<cr>", {})
+    -- " for visual mode, the visually selected text
+    vim.api.nvim_set_keymap('v', '<leader>di', "<cmd>lua require'dapui'.eval()<cr>", {})
+  end }
 
   use 'bluz71/vim-moonfly-colors'
   use 'bluz71/vim-nightfly-guicolors'
