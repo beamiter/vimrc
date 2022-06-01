@@ -131,8 +131,8 @@ require('packer').startup(function()
       -- },
     })
     -- Example keybindings
-    vim.keymap.set('n', '<F5>', '<CMD>lua require("FTerm").toggle()<CR>')
-    vim.keymap.set('t', '<F5>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
+    vim.keymap.set('n', '<F8>', '<CMD>lua require("FTerm").toggle()<CR>')
+    vim.keymap.set('t', '<F8>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
   end
   }
 
@@ -173,6 +173,45 @@ require('packer').startup(function()
     "catppuccin/nvim",
     as = "catppuccin"
   })
+
+  use { 'mfussenegger/nvim-dap', config = function()
+    vim.api.nvim_set_keymap('n', '<F5>', "<cmd>lua require'dap'.continue()<cr>", {})
+    vim.api.nvim_set_keymap('n', '<F9>', "<cmd>lua require'dap'.toggle_breakpoint()<cr>", {})
+    vim.api.nvim_set_keymap('n', '<F10>', "<cmd>lua require'dap'.step_over()<cr>", {})
+    vim.api.nvim_set_keymap('n', '<F11>', "<cmd>lua require'dap'.step_into()<cr>", {})
+    vim.api.nvim_set_keymap('n', '<S-F11>', "<cmd>lua require'dap'.step_out()<cr>", {})
+
+    local dap = require('dap')
+    dap.adapters.cppdbg = {
+      id = 'cppdbg',
+      type = 'executable',
+      -- must be absolute path
+      command = '/home/yinj3/.vscode/extensions/ms-vscode.cpptools-1.9.8-linux-x64/debugAdapters/bin/OpenDebugAD7',
+    }
+    dap.configurations.cpp = {
+      {
+        name = "Launch file",
+        type = "cppdbg",
+        request = "launch",
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = true,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false
+          },
+        }
+      },
+    }
+
+  end }
+
+  use 'theHamsta/nvim-dap-virtual-text'
+  use 'rcarriga/nvim-dap-ui'
 
   use 'bluz71/vim-moonfly-colors'
   use 'bluz71/vim-nightfly-guicolors'
