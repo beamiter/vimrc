@@ -221,7 +221,7 @@ require('packer').startup(function()
     config = function()
       require("bufferline").setup {
         options = {
-          numbers = "both",
+          -- numbers = "both",
         }
       }
     end }
