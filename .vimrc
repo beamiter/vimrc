@@ -73,6 +73,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'morhetz/gruvbox'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/edge'
@@ -136,7 +137,8 @@ set background=dark
 "colorscheme nvcode
 "colorscheme edge
 "colorscheme lunar
-colorscheme sonokai
+"colorscheme sonokai
+colorscheme catppuccin_macchiato
 
 " insert this line above imap
 call lexima#init()

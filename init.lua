@@ -169,6 +169,10 @@ require('packer').startup(function()
     vim.g.sonokai_style = 'shusia'
     vim.g.sonokai_better_performance = 1
   end }
+  use({
+    "catppuccin/nvim",
+    as = "catppuccin"
+  })
 
   use 'bluz71/vim-moonfly-colors'
   use 'bluz71/vim-nightfly-guicolors'
@@ -458,8 +462,9 @@ require('packer').startup(function()
 
 end)
 
+vim.g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
 vim.cmd [[
-colorscheme sonokai
+colorscheme catppuccin
 filetype off
 syntax on
 ]]
