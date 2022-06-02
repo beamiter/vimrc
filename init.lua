@@ -210,7 +210,9 @@ require('packer').startup(function()
 
   end }
 
-  use 'theHamsta/nvim-dap-virtual-text'
+  use { 'theHamsta/nvim-dap-virtual-text', config = function()
+    require("nvim-dap-virtual-text").setup()
+  end }
   use { 'rcarriga/nvim-dap-ui', config = function()
     require("dapui").setup()
     local dap, dapui = require("dap"), require("dapui")
