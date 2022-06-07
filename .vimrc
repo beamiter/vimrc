@@ -341,9 +341,13 @@ function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
-map <leader>bb :Buffers<CR>
-map <leader>ff :Files<CR>
-map <leader>fh :History<CR>
+map <leader><leader> :Clap files<CR>
+map <leader>bb :Clap buffers<CR>
+map <leader>ff :Clap files<CR>
+map <leader>fh :Clap history<CR>
+"map <leader>bb :Buffers<CR>
+"map <leader>ff :Files<CR>
+"map <leader>fh :History<CR>
 map <leader>pf :ProjectFiles<CR>
 nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
@@ -424,7 +428,6 @@ nmap <leader>9 <Plug>lightline#bufferline#go(9)
 nmap <leader>0 <Plug>lightline#bufferline#go(10)
 
 """""""""""""""""" JuliaFormatter
-map <leader>bb :Buffers<CR>
 " normal mode mapping
 nnoremap <localleader>jf :JuliaFormatterFormat<CR>
 " visual mode mapping
