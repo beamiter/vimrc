@@ -163,10 +163,14 @@ nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
-" leaderf
+
+"""""""""""""""" leaderf
 let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
 let g:Lf_WindowHeight = 0.3
+
+"""""""""""""""" clap
+let g:clap_open_preview = 'on_move'
 
 " Define prefix dictionary
 let g:which_key_map =  {}
@@ -234,7 +238,7 @@ source $HOME/vimrc/coc.vim
 
 """""""""""""""" vim-project
 let g:vim_project_config = {
-      \'auto_detect':                   'ask',
+      \'auto_detect':                   'no',
       \'auto_detect_file':              ['.git', '.svn'],
       \}
 map <leader>fl :ProjectList<CR>
