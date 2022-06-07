@@ -4,6 +4,9 @@ let &t_TE = ""
 " set Vim-specific sequences for RGB colors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"let g:loaded_netrw       = 1
+"let g:loaded_netrwPlugin = 1
+let g:netrw_fastbrowse = 0
 
 "imap jk <ESC>
 
@@ -89,7 +92,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'sbdchd/neoformat'
 Plug 'preservim/nerdcommenter'
-Plug 'preservim/nerdtree'
 Plug 'lambdalisue/fern.vim'
 Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
@@ -108,6 +110,7 @@ Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
+Plug 'leafOfTree/vim-project'
 "Plug 'airblade/vim-rooter'
 Plug 'puremourning/vimspector'
 Plug 'mhinz/vim-startify'
@@ -150,25 +153,6 @@ call lexima#init()
 "let g:VM_maps = {}
 "let g:VM_maps['Find Under']         = '<C-s>'           " replace C-n
 "let g:VM_maps['Find Subword Under'] = '<C-s>'           " replace visual C-n
-
-"""""""""""""""" nerdtree
-" Start NERDTree when Vim starts with a directory argument.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
-    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-function MyNerdToggle()
-    if &filetype == 'nerdtree' || exists("g:NERDTree") && g:NERDTree.IsOpen()
-        :NERDTreeToggle
-    else
-        :NERDTreeFind
-    endif
-endfunction
-
 
 """""""""""""""" which-key
 let g:mapleader = "\<Space>"
@@ -247,6 +231,13 @@ tnoremap   <silent>   <S-F8>    <C-\><C-n>:FloatermNew<CR>
 
 """""""""""""""" coc
 source $HOME/vimrc/coc.vim
+
+"""""""""""""""" vim-project
+let g:vim_project_config = {
+      \'auto_detect':                   'ask',
+      \'auto_detect_file':              ['.git', '.svn'],
+      \}
+map <leader>fl :ProjectList<CR>
 
 """""""""""""""" defx
 if 0 && has("python3") || has("python")
@@ -336,17 +327,13 @@ if 0 && has("python3") || has("python")
     autocmd BufWritePost * call defx#redraw()
   endfunction
 else
-  "nnoremap <F3> :call MyNerdToggle()<CR>
-  nnoremap <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
+  nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
   "nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
-  "nnoremap <C-n> :call MyNerdToggle()<CR>
-  "nnoremap <leader>ft :call MyNerdToggle()<CR>
-  nnoremap <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
+  nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
   "nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
   " Use coc-explorer as file tree
   "nnoremap <F3> :CocCommand explorer<CR>
   "map <leader>ft :CocCommand explorer<CR>
-  "nnoremap <leader>ft :NERDTreeFind<CR>
 endif
 
 """""""""""""""""" fzf-vim

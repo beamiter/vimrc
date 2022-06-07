@@ -235,6 +235,8 @@ require('packer').startup(function()
   use 'bluz71/vim-moonfly-colors'
   use 'bluz71/vim-nightfly-guicolors'
 
+  use 'cljoly/telescope-repo.nvim'
+  use { 'nvim-telescope/telescope-project.nvim' }
   use { 'nvim-telescope/telescope.nvim', config = function()
     local actions = require('telescope.actions')
     require 'telescope'.setup {
@@ -249,6 +251,7 @@ require('packer').startup(function()
         },
       }
     }
+    require('telescope').load_extension('projects')
   end }
 
   use 'ntpeters/vim-better-whitespace'
@@ -284,8 +287,23 @@ require('packer').startup(function()
       }
     end }
 
+  use {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup {
+      }
+    end
+  }
+
   use { 'kyazdani42/nvim-tree.lua', config = function()
-    require('nvim-tree').setup()
+    require("nvim-tree").setup({
+      respect_buf_cwd = true,
+      update_cwd = true,
+      update_focused_file = {
+        enable = true,
+        update_cwd = true
+      },
+    })
   end }
 
   --use 'jiangmiao/auto-pairs'
