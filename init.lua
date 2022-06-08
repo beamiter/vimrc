@@ -370,6 +370,7 @@ require('packer').startup(function()
   use 'hrsh7th/cmp-vsnip'
   use 'hrsh7th/vim-vsnip'
   use { 'rafamadriz/friendly-snippets' }
+  use 'RRethy/vim-illuminate'
 
   use { 'L3MON4D3/LuaSnip', config = function()
     require("luasnip.loaders.from_vscode").lazy_load()
@@ -451,7 +452,7 @@ require('packer').startup(function()
     map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
     map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
     map('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-    local on_attach = function(_, bufnr)
+    local on_attach = function(client, bufnr)
       -- Enable completion triggered by <c-x><c-o>
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
       -- Mappings.
@@ -469,6 +470,8 @@ require('packer').startup(function()
       buf_map(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
       buf_map(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
       buf_map(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+      require 'illuminate'.on_attach(client)
     end
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()

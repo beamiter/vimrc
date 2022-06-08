@@ -88,8 +88,10 @@ Plug 'Yggdroot/indentLine'
 Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'cohama/lexima.vim'
-Plug 'itchyny/lightline.vim'
-Plug 'mengelbrecht/lightline-bufferline'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'preservim/tagbar'
 Plug 'sbdchd/neoformat'
 Plug 'preservim/nerdcommenter'
 Plug 'lambdalisue/fern.vim'
@@ -204,6 +206,9 @@ let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 nmap <Leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <Leader>di <Plug>VimspectorBalloonEval
+
+"""""""""""""""" tagbar
+nmap <F4> :TagbarToggle<CR>
 
 """""""""""""""" gitgutter
 nmap [g <Plug>(GitGutterPrevHunk)
@@ -385,46 +390,10 @@ noremap <silent> <localleader>8 :<C-u>8 wincmd w<CR>
 noremap <silent> <localleader>9 :<C-u>9 wincmd w<CR>
 noremap <silent> <localleader>0 :<C-u>10 wincmd w<CR>
 
-"""""""""""""""" lightline
-let g:lightline = {
-      \ 'colorscheme': 'darcula',
-      \ 'active': {
-      \  'left': [ [ 'winnr', 'mode', 'paste' ],
-      \            [ 'gitbranch', 'gitstatus', 'readonly',
-      \              'filename', 'modified', 'cocstatus' ] ],
-      \  'right': [ [ 'lineinfo' ],
-      \             [ 'percent' ],
-      \             [ 'fileformat', 'fileencoding', 'filetype' ] ] },
-      \ 'inactive': {
-      \  'left': [ [ 'winnr', 'filename' ] ],
-      \  'right': [ [ 'lineinfo' ],
-      \             [ 'percent' ] ] },
-      \ 'tabline': {
-      \  'left': [ ['buffers'] ],
-      \  'right': [ [ 'close' ] ] },
-      \ 'component_function': {
-      \ 'cocstatus': 'coc#status',
-      \  'gitbranch': 'FugitiveStatusline',
-      \ },
-      \ 'component_expand': {
-      \ 'buffers': 'lightline#bufferline#buffers'
-      \ },
-      \ 'component_type': {
-      \ 'buffers': 'tabsel',
-      \ },
-      \ }
-let g:lightline#bufferline#show_number = 2
-let g:lightline#bufferline#enable_nerdfont = 1
-nmap <leader>1 <Plug>lightline#bufferline#go(1)
-nmap <leader>2 <Plug>lightline#bufferline#go(2)
-nmap <leader>3 <Plug>lightline#bufferline#go(3)
-nmap <leader>4 <Plug>lightline#bufferline#go(4)
-nmap <leader>5 <Plug>lightline#bufferline#go(5)
-nmap <leader>6 <Plug>lightline#bufferline#go(6)
-nmap <leader>7 <Plug>lightline#bufferline#go(7)
-nmap <leader>8 <Plug>lightline#bufferline#go(8)
-nmap <leader>9 <Plug>lightline#bufferline#go(9)
-nmap <leader>0 <Plug>lightline#bufferline#go(10)
+"""""""""""""""" airline
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='random'
 
 """""""""""""""""" JuliaFormatter
 " normal mode mapping
