@@ -73,7 +73,6 @@ endif
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'morhetz/gruvbox'
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
@@ -169,15 +168,8 @@ let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
 let g:Lf_WindowHeight = 0.3
 
-"""""""""""""""" clap
-let g:clap_open_preview = 'on_move'
-
 " Define prefix dictionary
 let g:which_key_map =  {}
-let g:which_key_map['c'] = {
-     \ 'name' : 'Clap' ,
-     \ 'c' : [':Clap'          , 'clap'],
-     \ }
 let g:which_key_map['s'] = {
      \ 'name' : 'leaderf' ,
      \ 'b' : [':LeaderfBuffer'                           , 'buffer'],
@@ -345,13 +337,15 @@ function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
-map <leader><leader> :Clap files<CR>
-map <leader>bb :Clap buffers<CR>
-map <leader>ff :Clap files<CR>
-map <leader>fh :Clap history<CR>
+map <leader><leader> :LeaderfSelf<CR>
+map <leader>bb :LeaderfBuffer<CR>
+map <leader>ff :LeaderfFile<CR>
+map <leader>fh :LeaderfMru<CR>
+map <leader>fr :LeaderfMru<CR>
 "map <leader>bb :Buffers<CR>
 "map <leader>ff :Files<CR>
 "map <leader>fh :History<CR>
+"map <leader>fr :History<CR>
 map <leader>pf :ProjectFiles<CR>
 nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
