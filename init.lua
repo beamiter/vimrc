@@ -272,18 +272,22 @@ require('packer').startup(function()
 
   use 'kyazdani42/nvim-web-devicons'
 
+  use { 'nvim-lualine/lualine.nvim', requires = 'kyazdani42/nvim-web-devicons',
+    config = function()
+      require('lualine').setup {
+        options = { theme = 'dracula' }
+      }
+    end
+  }
   use { 'feline-nvim/feline.nvim', requires = 'kyazdani42/nvim-web-devicons',
     config = function()
-      require('feline').setup()
+      -- require('feline').setup()
     end
   }
 
   use { 'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons',
     config = function()
       require("bufferline").setup {
-        options = {
-          -- numbers = "both",
-        }
       }
     end }
 
