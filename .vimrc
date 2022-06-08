@@ -176,10 +176,10 @@ let g:Lf_WindowHeight = 0.3
 let g:which_key_map =  {}
 let g:which_key_map['s'] = {
      \ 'name' : 'leaderf' ,
-     \ 'b' : [':LeaderfBuffer'                           , 'buffer'],
-     \ 'f' : [':LeaderfFile'                             , 'file'],
-     \ 'h' : [':LeaderfMru'                              , 'mru'],
-     \ 's' : [':LeaderfSelf'                             , 'self'],
+     \ 'b' : [':Leaderf! buffer'                           , 'buffer'],
+     \ 'f' : [':Leaderf! file'                             , 'file'],
+     \ 'h' : [':Leaderf! mru'                              , 'mru'],
+     \ 's' : [':Leaderf! self'                             , 'self'],
      \ 'w' : ['<Plug>LeaderfRgCwordLiteralBoundary'      , 'rg'],
      \ }
 let g:which_key_map['w'] = {
@@ -344,11 +344,11 @@ function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
-map <leader><leader> :LeaderfSelf<CR>
-map <leader>bb :LeaderfBuffer<CR>
-map <leader>ff :LeaderfFile<CR>
-map <leader>fh :LeaderfMru<CR>
-map <leader>fr :LeaderfMru<CR>
+map <leader><leader> :Leaderf! self<CR>
+map <leader>bb :Leaderf! buffer<CR>
+map <leader>ff :Leaderf! file<CR>
+map <leader>fh :Leaderf! mru<CR>
+map <leader>fr :Leaderf! mru<CR>
 "map <leader>bb :Buffers<CR>
 "map <leader>ff :Files<CR>
 "map <leader>fh :History<CR>
