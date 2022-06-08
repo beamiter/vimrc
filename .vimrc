@@ -92,6 +92,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/tagbar'
+Plug 'liuchengxu/vista.vim'
 Plug 'sbdchd/neoformat'
 Plug 'preservim/nerdcommenter'
 Plug 'lambdalisue/fern.vim'
@@ -208,7 +209,7 @@ nmap <Leader>di <Plug>VimspectorBalloonEval
 xmap <Leader>di <Plug>VimspectorBalloonEval
 
 """""""""""""""" tagbar
-nmap <F4> :TagbarToggle<CR>
+nmap <F4> :Vista!!<CR>
 
 """""""""""""""" gitgutter
 nmap [g <Plug>(GitGutterPrevHunk)

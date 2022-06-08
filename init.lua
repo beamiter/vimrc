@@ -68,9 +68,11 @@ local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
 
 map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
+map('n', '<F4>', ':Vista!!<CR>', opts)
 map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 map('n', '[g', ':Gitsigns prev_hunk<CR>', opts)
 map('n', ']g', ':Gitsigns next_hunk<CR>', opts)
+map('n', '<leader><leader>', ':Telescope<CR>', opts)
 map('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
 map('n', '<leader>2', '<Cmd>BufferLineGoToBuffer 2<CR>', opts)
 map('n', '<leader>3', '<Cmd>BufferLineGoToBuffer 3<CR>', opts)
@@ -96,6 +98,9 @@ require('packer').startup(function()
   use 'dyng/ctrlsf.vim'
   use 'junegunn/fzf.vim'
   use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
+  use 'preservim/tagbar'
+  use 'liuchengxu/vista.vim'
+
 
   use { 'lukas-reineke/indent-blankline.nvim', config = function()
     require("indent_blankline").setup {
