@@ -40,6 +40,7 @@ set sidescrolloff=3
 set timeoutlen=500
 set wildmenu
 set mouse=a
+set hlsearch
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
