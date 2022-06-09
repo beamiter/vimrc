@@ -379,6 +379,18 @@ map <leader>bf :Neoformat<CR>
 " invoke with '-'
 nmap  -  <Plug>(choosewin)
 
+"""""""""""""""""" buffercmd
+"noremap <silent> <leader>1 :<C-u>b1<CR>
+"noremap <silent> <leader>2 :<C-u>b2<CR>
+"noremap <silent> <leader>3 :<C-u>b3<CR>
+"noremap <silent> <leader>4 :<C-u>b4<CR>
+"noremap <silent> <leader>5 :<C-u>b5<CR>
+"noremap <silent> <leader>6 :<C-u>b6<CR>
+"noremap <silent> <leader>7 :<C-u>b7<CR>
+"noremap <silent> <leader>8 :<C-u>b8<CR>
+"noremap <silent> <leader>9 :<C-u>b9<CR>
+"noremap <silent> <leader>0 :<C-u>b10<CR>
+
 """""""""""""""""" wincmd
 noremap <silent> <localleader>1 :<C-u>1 wincmd w<CR>
 noremap <silent> <localleader>2 :<C-u>2 wincmd w<CR>
@@ -392,9 +404,23 @@ noremap <silent> <localleader>9 :<C-u>9 wincmd w<CR>
 noremap <silent> <localleader>0 :<C-u>10 wincmd w<CR>
 
 """""""""""""""" airline
-let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#bufferline#enabled = 1
 let g:airline_theme='random'
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>0 <Plug>AirlineSelectTab0
+nmap <leader>- <Plug>AirlineSelectPrevTab
+nmap <leader>= <Plug>AirlineSelectNextTab
 
 """""""""""""""""" JuliaFormatter
 " normal mode mapping
