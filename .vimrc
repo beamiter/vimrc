@@ -113,8 +113,7 @@ Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
-Plug 'leafOfTree/vim-project'
-"Plug 'airblade/vim-rooter'
+Plug 'airblade/vim-rooter'
 Plug 'puremourning/vimspector'
 Plug 'mhinz/vim-startify'
 Plug 'sheerun/vim-polyglot'
@@ -234,13 +233,6 @@ tnoremap   <silent>   <S-F8>    <C-\><C-n>:FloatermNew<CR>
 
 """""""""""""""" coc
 source $HOME/vimrc/coc.vim
-
-"""""""""""""""" vim-project
-let g:vim_project_config = {
-      \'auto_detect':                   'no',
-      \'auto_detect_file':              ['.git', '.svn'],
-      \}
-map <leader>fl :ProjectList<CR>
 
 """""""""""""""" defx
 if 0 && has("python3") || has("python")
@@ -405,7 +397,7 @@ noremap <silent> <localleader>0 :<C-u>10 wincmd w<CR>
 
 """""""""""""""" airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_nr_show = 0
 let g:airline#extensions#bufferline#enabled = 1
 let g:airline_theme='random'
 let g:airline#extensions#tabline#buffer_idx_mode = 1
