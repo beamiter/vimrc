@@ -15,6 +15,10 @@ g.noswapfile = true
 g.nowritebackup = true
 g.vscode_style = "dark"
 
+-- :h lua-vim-opt
+-- vim.opt.guifont = { "JetBrainsMono Nerd Font Regular", ":h11.5"}
+-- vim.opt.guifont = { "SauceCodePro Nerd Font Mono", ":h11.5"}
+
 opt.autoindent = true
 opt.backspace = { 'indent', 'eol', 'start' }
 opt.clipboard:append 'unnamedplus'
