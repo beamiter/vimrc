@@ -76,6 +76,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'morhetz/gruvbox'
+Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/everforest'

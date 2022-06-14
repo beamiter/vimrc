@@ -171,6 +171,7 @@ require('packer').startup(function()
   use 'Mofiqul/vscode.nvim'
   use 'srcery-colors/srcery-vim'
   use 'sainnhe/gruvbox-material'
+  use 'luisiacc/gruvbox-baby'
   use 'sainnhe/everforest'
   use 'sainnhe/edge'
   use 'felipec/vim-felipec'
@@ -357,6 +358,7 @@ require('packer').startup(function()
         g = { ":Telescope live_grep<CR>", "live_grep" },
         b = { ":Telescope buffers<CR>", "buffers" },
         h = { ":Telescope oldfiles<CR>", "oldfiles" },
+        r = { ":Telescope oldfiles<CR>", "oldfiles" },
       },
       s = {
         name = "search",
