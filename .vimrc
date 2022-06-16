@@ -61,20 +61,27 @@ call plug#begin('~/.vim/plugged')
 
 " According to plug name alphabetical order
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-if has('nvim')
-  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/defx.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'vim-denops/denops.vim'
+Plug 'Shougo/ddu.vim'
+Plug 'Shougo/ddu-ui-ff'
+Plug 'Shougo/ddu-ui-filer'
+
+" Install your UIs
+
+" Install your sources
+
+" Install your filters
+
+" Install your kinds
+
+" Install your columns
+
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'mattn/vim-lsp-settings'
 
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'morhetz/gruvbox'
 Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
@@ -114,7 +121,7 @@ Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
-Plug 'airblade/vim-rooter'
+"Plug 'airblade/vim-rooter'
 Plug 'puremourning/vimspector'
 Plug 'mhinz/vim-startify'
 Plug 'sheerun/vim-polyglot'
@@ -167,21 +174,75 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 
-"""""""""""""""" leaderf
-let g:Lf_ShortcutF = ''
-let g:Lf_ShortcutB = ''
-let g:Lf_WindowHeight = 0.3
+"""""""""""""""" ddu
+" You must set the default ui.
+" Note: ff ui
+" https://github.com/Shougo/ddu-ui-ff
+call ddu#custom#patch_global({
+    \ 'ui': 'ff',
+    \ })
+
+" You must set the default action.
+" Note: file kind
+" https://github.com/Shougo/ddu-kind-file
+call ddu#custom#patch_global({
+    \   'kindOptions': {
+    \     'file': {
+    \       'defaultAction': 'open',
+    \     },
+    \   }
+    \ })
+
+" Specify matcher.
+" Note: matcher_substring filter
+" https://github.com/Shougo/ddu-filter-matcher_substring
+call ddu#custom#patch_global({
+    \   'sourceOptions': {
+    \     '_': {
+    \       'matchers': ['matcher_substring'],
+    \     },
+    \   }
+    \ })
+
+call ddu#custom#patch_global({
+    \   'ui': 'filer',
+    \   'actionOptions': {
+    \     'narrow': {
+    \       'quit': v:false,
+    \     },
+    \   },
+    \ })
+
+" Set default sources
+" Note: file source
+" https://github.com/Shougo/ddu-source-file
+"call ddu#custom#patch_global({
+"    \ 'sources': [{'name': 'file', 'params': {}}],
+"    \ })
+
+" Call default sources
+"call ddu#start({})
+
+" Set name specific configuration
+"call ddu#custom#patch_local('files', {
+"    \ 'sources': [
+"    \   {'name': 'file', 'params': {}},
+"    \   {'name': 'file_old', 'params': {}},
+"    \ ],
+"    \ })
+
+" Specify name
+"call ddu#start({'name': 'files'})
+
+" Specify source with params
+" Note: file_rec source
+" https://github.com/Shougo/ddu-source-file_rec
+"call ddu#start({'sources': [
+"    \ {'name': 'file_rec', 'params': {'path': expand('~')}}
+"    \ ]})
 
 " Define prefix dictionary
 let g:which_key_map =  {}
-let g:which_key_map['s'] = {
-     \ 'name' : 'leaderf' ,
-     \ 'b' : [':Leaderf buffer'                           , 'buffer'],
-     \ 'f' : [':Leaderf file'                             , 'file'],
-     \ 'h' : [':Leaderf! mru'                              , 'mru'],
-     \ 's' : [':Leaderf self'                             , 'self'],
-     \ 'w' : ['<Plug>LeaderfRgCwordLiteralBoundary'      , 'rg'],
-     \ }
 let g:which_key_map['w'] = {
       \ 'name' : '+windows' ,
       \ 'w' : ['<C-W>w'        , 'other-window']          ,
@@ -235,117 +296,25 @@ tnoremap   <silent>   <S-F8>    <C-\><C-n>:FloatermNew<CR>
 """""""""""""""" coc
 source $HOME/vimrc/coc.vim
 
-"""""""""""""""" defx
-if 0 && has("python3") || has("python")
-  " direction = topleft or botright
-  nmap <silent> <F3> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')` <CR>
-  "nmap <silent> <F3> :Defx -split=vertical -winwidth=40 -direction=topleft <CR>
-  "nmap <silent> <F3> :Defx `expand('%:p:h')` -search=`expand('%:p')` -columns=mark:indent:icon:filename:type:size:time <CR>
-  call defx#custom#option('_', {
-        \ 'winwidth': 40,
-        \ 'split': 'vertical',
-        \ 'direction': 'botright',
-        \ 'show_ignored_files': 0,
-        \ 'buffer_name': '',
-        \ 'toggle': 1,
-        \ 'resume': 1
-        \ })
-  autocmd FileType defx call s:defx_my_settings()
-  function! s:defx_my_settings() abort
-    " Define mappings
-    nnoremap <silent><buffer><expr> <CR>
-    \ defx#do_action('open')
-    nnoremap <silent><buffer><expr> c
-    \ defx#do_action('copy')
-    nnoremap <silent><buffer><expr> m
-    \ defx#do_action('move')
-    nnoremap <silent><buffer><expr> p
-    \ defx#do_action('paste')
-    nnoremap <silent><buffer><expr> l
-    \ defx#do_action('drop')
-    nnoremap <silent><buffer><expr> e
-    \ defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> E
-    \ defx#do_action('open', 'split')
-    nnoremap <silent><buffer><expr> P
-    \ defx#do_action('preview')
-    nnoremap <silent><buffer><expr> o
-    \ defx#do_action('open_tree', 'toggle')
-    nnoremap <silent><buffer><expr> K
-    \ defx#do_action('new_directory')
-    nnoremap <silent><buffer><expr> N
-    \ defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> M
-    \ defx#do_action('new_multiple_files')
-    nnoremap <silent><buffer><expr> C
-    \ defx#do_action('toggle_columns',
-    \                'mark:indent:icon:filename:type:size:time')
-    nnoremap <silent><buffer><expr> S
-    \ defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr> d
-    \ defx#do_action('remove')
-    nnoremap <silent><buffer><expr> r
-    \ defx#do_action('rename')
-    nnoremap <silent><buffer><expr> !
-    \ defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr> x
-    \ defx#do_action('execute_system')
-    nnoremap <silent><buffer><expr> yy
-    \ defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr> .
-    \ defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> ;
-    \ defx#do_action('repeat')
-    nnoremap <silent><buffer><expr> h
-    \ defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> ~
-    \ defx#do_action('cd')
-    nnoremap <silent><buffer><expr> q
-    \ defx#do_action('quit')
-    nnoremap <silent><buffer><expr> <Space>
-    \ defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> *
-    \ defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> j
-    \ line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr> k
-    \ line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> <C-l>
-    \ defx#do_action('redraw')
-    nnoremap <silent><buffer><expr> <C-g>
-    \ defx#do_action('print')
-    nnoremap <silent><buffer><expr> cd
-    \ defx#do_action('change_vim_cwd')
-  	nnoremap <silent><buffer><expr> > defx#do_action('resize',
-  	\ defx#get_context().winwidth + 10)
-  	nnoremap <silent><buffer><expr> < defx#do_action('resize',
-  	\ defx#get_context().winwidth - 10)
-    autocmd BufWritePost * call defx#redraw()
-  endfunction
-else
-  nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
-  "nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
-  nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
-  "nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
-  " Use coc-explorer as file tree
-  "nnoremap <F3> :CocCommand explorer<CR>
-  "map <leader>ft :CocCommand explorer<CR>
-endif
+
+"""""""""""""""" filer
+nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
+"nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
+nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
+"nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
+" Use coc-explorer as file tree
+"nnoremap <F3> :CocCommand explorer<CR>
+"map <leader>ft :CocCommand explorer<CR>
 
 """""""""""""""""" fzf-vim
 function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
-map <leader><leader> :Leaderf self<CR>
-map <leader>bb :Leaderf buffer<CR>
-map <leader>ff :Leaderf file<CR>
-map <leader>fh :Leaderf! mru<CR>
-map <leader>fr :Leaderf! mru<CR>
-"map <leader>bb :Buffers<CR>
-"map <leader>ff :Files<CR>
-"map <leader>fh :History<CR>
-"map <leader>fr :History<CR>
+map <leader>bb :Buffers<CR>
+map <leader>ff :Files<CR>
+map <leader>fh :History<CR>
+map <leader>fr :History<CR>
 map <leader>pf :ProjectFiles<CR>
 nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
