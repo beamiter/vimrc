@@ -61,10 +61,10 @@ call plug#begin('~/.vim/plugged')
 
 " According to plug name alphabetical order
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-denops/denops.vim'
-Plug 'Shougo/ddu.vim'
-Plug 'Shougo/ddu-ui-ff'
-Plug 'Shougo/ddu-ui-filer'
+"Plug 'vim-denops/denops.vim'
+"Plug 'Shougo/ddu.vim'
+"Plug 'Shougo/ddu-ui-ff'
+"Plug 'Shougo/ddu-ui-filer'
 
 " Install your UIs
 
@@ -174,73 +174,6 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 
-"""""""""""""""" ddu
-" You must set the default ui.
-" Note: ff ui
-" https://github.com/Shougo/ddu-ui-ff
-call ddu#custom#patch_global({
-    \ 'ui': 'ff',
-    \ })
-
-" You must set the default action.
-" Note: file kind
-" https://github.com/Shougo/ddu-kind-file
-call ddu#custom#patch_global({
-    \   'kindOptions': {
-    \     'file': {
-    \       'defaultAction': 'open',
-    \     },
-    \   }
-    \ })
-
-" Specify matcher.
-" Note: matcher_substring filter
-" https://github.com/Shougo/ddu-filter-matcher_substring
-call ddu#custom#patch_global({
-    \   'sourceOptions': {
-    \     '_': {
-    \       'matchers': ['matcher_substring'],
-    \     },
-    \   }
-    \ })
-
-call ddu#custom#patch_global({
-    \   'ui': 'filer',
-    \   'actionOptions': {
-    \     'narrow': {
-    \       'quit': v:false,
-    \     },
-    \   },
-    \ })
-
-" Set default sources
-" Note: file source
-" https://github.com/Shougo/ddu-source-file
-"call ddu#custom#patch_global({
-"    \ 'sources': [{'name': 'file', 'params': {}}],
-"    \ })
-
-" Call default sources
-"call ddu#start({})
-
-" Set name specific configuration
-"call ddu#custom#patch_local('files', {
-"    \ 'sources': [
-"    \   {'name': 'file', 'params': {}},
-"    \   {'name': 'file_old', 'params': {}},
-"    \ ],
-"    \ })
-
-" Specify name
-"call ddu#start({'name': 'files'})
-
-" Specify source with params
-" Note: file_rec source
-" https://github.com/Shougo/ddu-source-file_rec
-"call ddu#start({'sources': [
-"    \ {'name': 'file_rec', 'params': {'path': expand('~')}}
-"    \ ]})
-
 " Define prefix dictionary
 let g:which_key_map =  {}
 let g:which_key_map['w'] = {
@@ -298,13 +231,17 @@ source $HOME/vimrc/coc.vim
 
 
 """""""""""""""" filer
-nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
-"nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
-nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
-"nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
+if 0
+" Use fern as file tree
+  nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
+  nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
+  "nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
+  "nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
+else
 " Use coc-explorer as file tree
-"nnoremap <F3> :CocCommand explorer<CR>
-"map <leader>ft :CocCommand explorer<CR>
+  nnoremap <silent> <F3> :CocCommand explorer<CR>
+  nnoremap <silent> <leader>ft :CocCommand explorer<CR>
+endif
 
 """""""""""""""""" fzf-vim
 function! s:find_git_root()
