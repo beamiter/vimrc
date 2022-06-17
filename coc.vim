@@ -175,5 +175,5 @@ nnoremap <silent><nowait> <space>Cp  :<C-u>CocListResume<CR>
 
 let g:coc_global_extensions = ['coc-cmake', 'coc-floaterm', 'coc-highlight',
             \'coc-julia', 'coc-rust-analyzer', 'coc-vimlsp', 'coc-yank',
-            \'coc-json', 'coc-clangd'] ", 'coc-pairs'
+            \'coc-json', 'coc-clangd', 'coc-explorer'] ", 'coc-pairs'
 
