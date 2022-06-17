@@ -183,6 +183,14 @@ require('packer').startup(function()
     "catppuccin/nvim",
     as = "catppuccin"
   })
+  use({
+    'rose-pine/neovim',
+    as = 'rose-pine',
+    -- tag = 'v1.*',
+    config = function()
+      -- vim.cmd('colorscheme rose-pine')
+    end
+  })
 
   use { 'mfussenegger/nvim-dap', config = function()
     vim.api.nvim_set_keymap('n', '<F5>', "<cmd>lua require'dap'.continue()<cr>", {})
@@ -558,7 +566,7 @@ end)
 
 vim.g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
 vim.cmd [[
-colorscheme catppuccin
+colorscheme onedarker
 filetype off
 syntax on
 ]]

@@ -119,6 +119,7 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'andymass/vim-matchup'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'iandwelker/rose-pine-vim'
 Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
 "Plug 'airblade/vim-rooter'
@@ -142,16 +143,7 @@ let g:gruvbox_material_better_performance = 1
 
 "set background=light
 set background=dark
-"colorscheme xcodelight
-"colorscheme gruvbox-material
-"colorscheme felipec
-"colorscheme dracula
-"colorscheme srcery
-"colorscheme nvcode
-"colorscheme edge
-"colorscheme lunar
-"colorscheme sonokai
-colorscheme catppuccin_macchiato
+colorscheme rose-pine-dark
 
 " insert this line above imap
 call lexima#init()
