@@ -148,8 +148,8 @@ colorscheme rose-pine-dark
 " insert this line above imap
 call lexima#init()
 
-"""""""""""""""" vim-rooter
-"let g:rooter_manual_only = 1
+"""""""""""""""" gutentags
+let g:gutentags_enabled = 0
 
 """""""""""""""" vim-visual-multi
 "let g:VM_maps = {}
