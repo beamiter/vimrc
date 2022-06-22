@@ -87,6 +87,7 @@ Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/everforest'
+Plug 'EdenEast/nightfox.nvim'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/sonokai'
 Plug 'christianchiarulli/nvcode-color-schemes.vim'

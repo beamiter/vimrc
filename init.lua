@@ -104,7 +104,7 @@ require('packer').startup(function()
   use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
   use 'preservim/tagbar'
   use 'liuchengxu/vista.vim'
-
+  use "EdenEast/nightfox.nvim"
 
   use { 'lukas-reineke/indent-blankline.nvim', config = function()
     require("indent_blankline").setup {
