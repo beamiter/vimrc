@@ -73,7 +73,7 @@ local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
 
 -- map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
-map('n', '<F3>', ':Neotree toggle current reveal_force_cwd left<CR>', opts)
+map('n', '<F3>', ':Neotree toggle left reveal_force_cwd<CR>', opts)
 map('n', '<F4>', ':Vista!!<CR>', opts)
 map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 map('n', '[g', ':Gitsigns prev_hunk<CR>', opts)
@@ -294,9 +294,9 @@ require('packer').startup(function()
 
   use { 'nvim-lualine/lualine.nvim', requires = 'kyazdani42/nvim-web-devicons',
     config = function()
-      require('lualine').setup {
-        options = { theme = 'dracula' }
-      }
+      -- require('lualine').setup {
+      --   options = { theme = 'dracula' }
+      -- }
     end
   }
   use { 'feline-nvim/feline.nvim', requires = 'kyazdani42/nvim-web-devicons',
@@ -304,6 +304,15 @@ require('packer').startup(function()
       -- require('feline').setup()
     end
   }
+  use({
+    "NTBBloodbath/galaxyline.nvim",
+    -- your statusline
+    config = function()
+      require("galaxyline.themes.eviline")
+    end,
+    -- some optional icons
+    requires = { "kyazdani42/nvim-web-devicons", opt = true }
+  })
 
   use { 'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons',
     config = function()
