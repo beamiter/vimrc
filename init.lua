@@ -78,7 +78,6 @@ map('n', '<F4>', ':Vista!!<CR>', opts)
 map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 map('n', '[g', ':Gitsigns prev_hunk<CR>', opts)
 map('n', ']g', ':Gitsigns next_hunk<CR>', opts)
-map('n', '<leader><leader>', ':Telescope<CR>', opts)
 map('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
 map('n', '<leader>2', '<Cmd>BufferLineGoToBuffer 2<CR>', opts)
 map('n', '<leader>3', '<Cmd>BufferLineGoToBuffer 3<CR>', opts)
@@ -599,7 +598,7 @@ require('packer').startup(function()
       },
       f = {
         name = "files",
-        t = { ":NvimTreeFindFileToggle<CR>", "tree toggle" },
+        t = { ":Neotree toggle left reveal_force_cwd<CR>", "tree toggle" },
         f = { ":Telescope find_files<CR>", "files" },
         g = { ":Telescope live_grep<CR>", "live_grep" },
         b = { ":Telescope buffers<CR>", "buffers" },
