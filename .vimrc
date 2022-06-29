@@ -144,7 +144,7 @@ let g:gruvbox_material_better_performance = 1
 
 "set background=light
 set background=dark
-colorscheme rose-pine-dark
+colorscheme catppuccin_macchiato
 
 " insert this line above imap
 call lexima#init()
