@@ -73,7 +73,7 @@ local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
 
 -- map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
-map('n', '<F3>', ':Neotree<CR>', opts)
+map('n', '<F3>', ':Neotree toggle current reveal_force_cwd left<CR>', opts)
 map('n', '<F4>', ':Vista!!<CR>', opts)
 map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 map('n', '[g', ':Gitsigns prev_hunk<CR>', opts)
