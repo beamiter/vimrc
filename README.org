@@ -27,6 +27,19 @@ sudo apt-get build-dep vim-gnome
             --enable-luainterp=yes \
             --enable-fail-if-missing \
 
+./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-gui=auto \
+            --with-x \
+            --enable-python3interp=yes \
+            --enable-fontset \
+            --enable-cscope \
+            --enable-gtk2-check \
+            --enable-gnome-check \
+            --prefix=/usr \
+            --enable-luainterp=yes \
+            --enable-fail-if-missing \
+
 make
 
 sudo make install
