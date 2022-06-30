@@ -27,6 +27,8 @@ sudo apt-get build-dep vim-gnome
             --enable-luainterp=yes \
             --enable-fail-if-missing \
 
+or
+
 ./configure --with-features=huge \
             --enable-multibyte \
             --enable-gui=auto \
