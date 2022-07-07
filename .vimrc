@@ -197,6 +197,8 @@ xmap <Leader>di <Plug>VimspectorBalloonEval
 
 """""""""""""""" tagbar
 nmap <F4> :Vista!!<CR>
+nmap - :vert res -5<CR>
+nmap = :vert res +5<CR>
 
 """""""""""""""" gitgutter
 nmap [g <Plug>(GitGutterPrevHunk)
@@ -269,7 +271,7 @@ map <leader>bf :Neoformat<CR>
 
 """""""""""""""""" vim-choosewin
 " invoke with '-'
-nmap  -  <Plug>(choosewin)
+nmap _ <Plug>(choosewin)
 
 """""""""""""""""" buffercmd
 "noremap <silent> <leader>1 :<C-u>b1<CR>

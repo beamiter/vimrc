@@ -76,6 +76,8 @@ local map = vim.api.nvim_set_keymap
 map('n', '<F3>', ':Neotree toggle left reveal_force_cwd<CR>', opts)
 map('n', '<F4>', ':Vista!!<CR>', opts)
 map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
+map('n', '=', ':vert res +5<CR>', opts)
+map('n', '-', ':vert res -5<CR>', opts)
 map('n', '[g', ':Gitsigns prev_hunk<CR>', opts)
 map('n', ']g', ':Gitsigns next_hunk<CR>', opts)
 map('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
