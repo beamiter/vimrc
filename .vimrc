@@ -126,7 +126,7 @@ Plug 'sheerun/vim-polyglot'
 "Plug 'airblade/vim-rooter'
 Plug 'puremourning/vimspector'
 Plug 'mhinz/vim-startify'
-Plug 'sheerun/vim-polyglot'
+"Plug 'sheerun/vim-polyglot'
 Plug 'mg979/vim-visual-multi'
 Plug 'liuchengxu/vim-which-key'
 
