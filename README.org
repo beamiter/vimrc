@@ -134,3 +134,4 @@ git config --global user.email "beamiter@163.com"
 git config --global credential.helper store
 28.
 cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON ..
+29. sudo update-alternatives --config python3
