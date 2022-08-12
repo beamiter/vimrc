@@ -23,7 +23,22 @@ M.plugins = {
           require "custom.plugins.lspconfig"
         end,
       },
+      ['junegunn/fzf'] = {
+        dir = '~/.fzf',
+        run = './install --all',
+      },
+      ['junegunn/fzf.vim'] = {},
+      ["tpope/vim-fugitive"] = {},
+      ['phaazon/hop.nvim'] = {
+        branch = 'v1', -- optional but strongly recommended
+        config = function()
+          -- you can configure Hop the way you like here; see :h hop-config
+          require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+        end
+      },
    },
 }
+
+M.mappings = require "custom.mappings"
 
 return M
