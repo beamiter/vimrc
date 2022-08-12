@@ -1,32 +1,29 @@
 -- Just an example, supposed to be placed in /lua/custom/
 
-local userPlugins = require "custom.plugins"
-
 local M = {}
 
 -- make sure you maintain the structure of `core/default_config.lua` here,
 -- example of changing theme:
 
 M.ui = {
-   theme = "monokai",
+  theme = "gruvchad",
 }
 
 M.plugins = {
-    install = userPlugins,
-    options = {
-       lspconfig = {
-          setup_lspconf = "custom.plugins.lspconfig",
-       },
-    },
-    status = {
-      alpha = true,
+   user = {
+      ["goolord/alpha-nvim"] = {
+         disable = false,
+      },
+      ["folke/which-key.nvim"] = {
+        disable = false,
+      },
+      ["neovim/nvim-lspconfig"] = {
+        config = function()
+          require "plugins.configs.lspconfig"
+          require "custom.plugins.lspconfig"
+        end,
+      },
    },
-   default_plugin_remove = {
-   },
-}
-
-M.options = {
-  relativenumber = true,
 }
 
 return M
