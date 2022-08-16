@@ -28,6 +28,9 @@ Vapour.plugins.user = {
   {
     "andymass/vim-matchup"
   },
+  {
+    "tpope/vim-fugitive"
+  },
 }
 
 vim.opt.timeoutlen = 1000
@@ -53,9 +56,11 @@ map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>", opts)
 map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>", opts)
 map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>", opts)
 map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>", opts)
-map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
+map("n", "<F3>", ":NvimTreeToggle<CR>", opts)
 map("n", "<space>ft", ":NvimTreeFindFileToggle<CR>", opts)
 map("n", "<space>e", ":NvimTreeFindFileToggle<CR>", opts)
+map("n", "<space>sa", ":Ag <C-R><C-W><CR>", opts)
+map("n", "<space>sr", ":Rg <C-R><C-W><CR>", opts)
 map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", opts)
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
 map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
