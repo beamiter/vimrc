@@ -1,4 +1,4 @@
-Vapour.plugins.treesitter.ensure_installed = ""
+Vapour.plugins.treesitter.ensure_installed = { "c", "cpp", "rust", "julia", "python" }
 Vapour.plugins.toggleterm.enabled = true
 Vapour.plugins.null_ls.enabled = false
 
