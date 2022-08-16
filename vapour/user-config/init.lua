@@ -2,7 +2,7 @@ Vapour.plugins.treesitter.ensure_installed = { "c", "cpp", "rust", "julia", "pyt
 Vapour.plugins.toggleterm.enabled = true
 Vapour.plugins.null_ls.enabled = false
 
-Vapour.settings.colorscheme = "onedark"
+Vapour.settings.colorscheme = "dracula"
 
 Vapour.plugins.user = {
   {
