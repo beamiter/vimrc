@@ -1,5 +1,9 @@
 Vapour.plugins.treesitter.ensure_installed = ""
+Vapour.plugins.toggleterm.enabled = true
+Vapour.plugins.null_ls.enabled = false
+
 Vapour.settings.colorscheme = "onedark"
+
 Vapour.plugins.user = {
   {
     'phaazon/hop.nvim',
