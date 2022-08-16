@@ -14,6 +14,13 @@ Vapour.plugins.user = {
     end
   },
   {
+    'junegunn/fzf.vim'
+  },
+  { 'junegunn/fzf',
+    dir = '~/.fzf',
+    run = './install --all'
+  },
+  {
     "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" }
   },
   {
