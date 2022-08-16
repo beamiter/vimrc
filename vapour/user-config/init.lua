@@ -1,5 +1,5 @@
 Vapour.plugins.treesitter.ensure_installed = ""
--- Vapour.settings.colorscheme = "dracula"
+Vapour.settings.colorscheme = "onedark"
 Vapour.plugins.user = {
   {
     'phaazon/hop.nvim',
