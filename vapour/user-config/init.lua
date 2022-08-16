@@ -31,27 +31,38 @@ vim.opt.updatetime = 300
 vim.opt.relativenumber = true
 vim.g.vscode_style = "dark"
 
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap('n', '<space>bb', ':Telescope buffers<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>fc', ':Telescope colorscheme<CR>', opts)
-vim.api.nvim_set_keymap('v', '<space>cl', ':CommentToggle<cr>', opts)
-vim.api.nvim_set_keymap('n', '<space>cl', ':CommentToggle<cr>', opts)
-
 local map = vim.api.nvim_set_keymap
-map("n", "<leader><leader>", ":Telescope buffers<CR>", opts)
+local opts = { noremap = true, silent = true }
+map('n', '<space>bb', ':Telescope buffers<CR>', opts)
+map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+map('n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+map('n', '<space>fc', ':Telescope colorscheme<CR>', opts)
+map('v', '<space>cl', ':CommentToggle<cr>', opts)
+map('n', '<space>cl', ':CommentToggle<cr>', opts)
+
+map("n", "<space><space>", ":Telescope buffers<CR>", opts)
 map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>", opts)
 map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>", opts)
 map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>", opts)
 map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>", opts)
 map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
-map("n", "<leader>ft", ":NvimTreeFindFileToggle<CR>", opts)
-map("n", "<leader>e", ":NvimTreeFindFileToggle<CR>", opts)
+map("n", "<space>ft", ":NvimTreeFindFileToggle<CR>", opts)
+map("n", "<space>e", ":NvimTreeFindFileToggle<CR>", opts)
 map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", opts)
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
 map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
+
+map('n', '<space>1', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
+map('n', '<space>2', '<Cmd>BufferLineGoToBuffer 2<CR>', opts)
+map('n', '<space>3', '<Cmd>BufferLineGoToBuffer 3<CR>', opts)
+map('n', '<space>4', '<Cmd>BufferLineGoToBuffer 4<CR>', opts)
+map('n', '<space>5', '<Cmd>BufferLineGoToBuffer 5<CR>', opts)
+map('n', '<space>6', '<Cmd>BufferLineGoToBuffer 6<CR>', opts)
+map('n', '<space>7', '<Cmd>BufferLineGoToBuffer 7<CR>', opts)
+map('n', '<space>8', '<Cmd>BufferLineGoToBuffer 8<CR>', opts)
+map('n', '<space>9', '<Cmd>BufferLineGoToBuffer 9<CR>', opts)
+map('n', '<space>0', '<Cmd>BufferLineGoToBuffer 10<CR>', opts)
