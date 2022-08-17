@@ -70,6 +70,7 @@ lvim.keys.normal_mode["<leader>7"] = ":BufferLineGoToBuffer 7<CR>"
 lvim.keys.normal_mode["<leader>8"] = ":BufferLineGoToBuffer 8<CR>"
 lvim.keys.normal_mode["<leader>9"] = ":BufferLineGoToBuffer 9<CR>"
 lvim.keys.normal_mode["<leader>0"] = ":BufferLineGoToBuffer 10<CR>"
+lvim.keys.normal_mode["<leader>sg"] = ":Telescope grep_string<CR>"
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
