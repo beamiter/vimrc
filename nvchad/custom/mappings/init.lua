@@ -7,6 +7,7 @@ M.abc = {
     ["s"] = {"<cmd>lua require'hop'.hint_char2()<CR>", ""},
     ["S"] = {"<cmd>lua require'hop'.hint_char1()<CR>", ""},
     ["[g"] = {":Gitsigns prev_hunk<CR>"},
+    ["sg"] = {":Telescope grep_string<CR>"},
     ["]g"] = {":Gitsigns next_hunk<CR>"},
     ["<leader>1"] = { "<cmd> BufferLineGoToBuffer 1 <CR>", "" },
     ["<leader>2"] = { "<cmd> BufferLineGoToBuffer 2 <CR>", "" },
