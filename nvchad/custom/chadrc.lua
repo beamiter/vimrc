@@ -27,12 +27,12 @@ M.plugins = {
         dir = '~/.fzf',
         run = './install --all',
       },
-      ['akinsho/bufferline.nvim'] = {
-        tag = "v2.*",
-        config = function()
-          require("bufferline").setup{}
-        end
-      },
+      -- ['akinsho/bufferline.nvim'] = {
+      --   tag = "v2.*",
+      --   config = function()
+      --     require("bufferline").setup{}
+      --   end
+      -- },
       ['junegunn/fzf.vim'] = {},
       ["tpope/vim-fugitive"] = {},
       ['phaazon/hop.nvim'] = {
