@@ -124,7 +124,7 @@ Plug 'iandwelker/rose-pine-vim'
 Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
 "Plug 'airblade/vim-rooter'
-Plug 'puremourning/vimspector'
+" Plug 'puremourning/vimspector'
 Plug 'mhinz/vim-startify'
 "Plug 'sheerun/vim-polyglot'
 Plug 'mg979/vim-visual-multi'
@@ -188,12 +188,13 @@ let g:which_key_map['w'] = {
       \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
       \ }
 
-"""""""""""""""" vimspector
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-" for normal mode - the word under the cursor
-nmap <Leader>di <Plug>VimspectorBalloonEval
-" for visual mode, the visually selected text
-xmap <Leader>di <Plug>VimspectorBalloonEval
+" """""""""""""""" vimspector
+" let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+" " for normal mode - the word under the cursor
+" nmap <Leader>di <Plug>VimspectorBalloonEval
+" " for visual mode, the visually selected text
+" xmap <Leader>di <Plug>VimspectorBalloonEval
+" let g:vimspector_variables_display_mode = 'full'
 
 """""""""""""""" tagbar
 nmap <F4> :Vista!!<CR>
@@ -206,7 +207,6 @@ nmap ]g <Plug>(GitGutterNextHunk)
 
 """""""""""""""""" nerdcommenter
 let g:NERDCreateDefaultMappings = 0
-let g:vimspector_variables_display_mode = 'full'
 map <silent><leader>cl <plug>NERDCommenterToggle
 xmap <silent><leader>fm <Plug>(coc-format-selected)
 nmap <silent><leader>fm :call CocActionAsync('format')<CR>
