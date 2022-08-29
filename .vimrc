@@ -187,6 +187,11 @@ let g:which_key_map['w'] = {
       \ 's' : ['<C-W>s'        , 'split-window-below']    ,
       \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
       \ }
+let g:which_key_map['g'] = {
+    \  'name' : '+git',
+    \  'n' : [':GitGutterNextHunk'],
+    \  'p' : [':GitGutterPrevHunk'],
+    \ }
 
 " """""""""""""""" vimspector
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
@@ -202,8 +207,9 @@ nmap - :vert res -5<CR>
 nmap = :vert res +5<CR>
 
 """""""""""""""" gitgutter
-nmap [g <Plug>(GitGutterPrevHunk)
-nmap ]g <Plug>(GitGutterNextHunk)
+let g:gitgutter_map_keys = 0
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
 
 """""""""""""""""" nerdcommenter
 let g:NERDCreateDefaultMappings = 0
