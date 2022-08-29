@@ -75,7 +75,8 @@ local map = vim.api.nvim_set_keymap
 -- map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
 map('n', '<F3>', ':Neotree toggle left reveal_force_cwd<CR>', opts)
 map('n', '<F4>', ':Vista!!<CR>', opts)
-map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
+map('n', '<C-n>', ':Neotree toggle left reveal_force_cwd<CR>', opts)
+-- map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 map('n', '=', ':vert res +5<CR>', opts)
 map('n', '-', ':vert res -5<CR>', opts)
 map('n', '[g', ':Gitsigns prev_hunk<CR>', opts)
@@ -708,7 +709,7 @@ require('packer').startup(function()
     local map = vim.api.nvim_set_keymap
     local buf_map = vim.api.nvim_buf_set_keymap
     local opts = { noremap = true, silent = true }
-    map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+    map('n', '<space>e', ':Neotree toggle left reveal_force_cwd<CR>', opts)
     map('n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
     map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
     map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
