@@ -236,12 +236,14 @@ if 0
 " Use fern as file tree
   nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
   nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
+  nnoremap <silent> <leader>e :Fern . -reveal=%:p -drawer -toggle<CR>
   "nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
   "nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
 else
 " Use coc-explorer as file tree
   nnoremap <silent> <F3> :CocCommand explorer<CR>
   nnoremap <silent> <leader>ft :CocCommand explorer<CR>
+  nnoremap <silent> <leader>e :CocCommand explorer<CR>
 endif
 
 """""""""""""""""" fzf-vim
