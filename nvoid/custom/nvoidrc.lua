@@ -1,75 +1,84 @@
--- Key map
-local map = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
-map("n", "<leader><leader>", ":Telescope <CR>", opts)
-map('n', 's', "<cmd>lua require'hop'.hint_char2()<CR>", opts)
-map('n', 'S', "<cmd>lua require'hop'.hint_char1()<CR>", opts)
-map('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>", opts)
-map('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>", opts)
-
-map("n", "<F3>", ":NvimTreeToggle<CR>", opts)
---map("n", "<leader>ft", ":NvimTreeToggle<CR>", opts)
-
-map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
-map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
-
-vim.diagnostic.config({virtual_txt = false})
-
 local M = {}
 
 -- UI
 M.ui = {
-	theme = "catppuccin", -- "catppuccin" "classic-dark" "nord" "onedark" "solarized" "tokyodark" "uwu"
-	transparency = false,
-	statusline = "nvoid", -- "lunarvim" "nvchad" "nvoid" "minimal"
+  theme = "onedark", -- aquarium | catppuccin | classic-dark | dracula | gruvbox | nightfox | nord | onedark | radium | solarized | tokyodark | uwu
+  transparency = false,
+  statusline = {
+    style = "nvoid", -- evil | minimal | nvoid
+    enabled = true,
+  },
+  bufferline = {
+    enabled = true,
+    lazyload = true,
+  }
 }
-
--- Options
+-- OPT
 M.options = {
-	clipboard = "unnamedplus",
-	cmdheight = 1,
-	mouse = "a",
-	mapleader = " ",
-	wrap = false,
-	number = true,
-	relative_number = true,
-	number_width = 6,
-	cursor_line = true,
-	hidden = true,
-	expand_tab = true,
-	ignore_case = true,
-	smart_case = true,
-	smart_indent = true,
-	swap_file = false,
-	backup = false,
-	show_mode = false,
-    --timeoutlen = 800,
+  clipboard = "unnamedplus",
+  cmdheight = 1,
+  mouse = "a",
+  mapleader = " ",
+  wrap = false,
+  number = true,
+  relative_number = false,
+  number_width = 6,
+  cursor_line = true,
+  expand_tab = true,
+  ignore_case = true,
+  smart_case = true,
+  smart_indent = true,
+  swap_file = false,
+  backup = false,
+  show_mode = false,
 }
 
--- Add lsp
-M.lsp_add = {} -- "bashls",
+-- Add Treesitter langs
+M.ts_add = {} -- fish
 
--- Add treesitter language
-M.ts_add = {} -- "all", "fish"
+-- Lsp
+M.lsp = {
+  add = {},
+  virtual_text = true,
+  document_highlight = true,
+  autoforamt = false,
+}
 
--- Add Plugins
-M.plugins_add = {
-	{ "folke/zen-mode.nvim" },
-    {
-       'phaazon/hop.nvim',
-       branch = 'v1', -- optional but strongly recommended
-       config = function()
-         -- you can configure Hop the way you like here; see :h hop-config
-         require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-       end
-    },
+-- Plugins
+M.plugins = {
+  add = {
+    { 'phaazon/hop.nvim', config = function()
+      require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
+      -- place this in one of your configuration file(s)
+      vim.api.nvim_set_keymap('n', 's', "<cmd>lua require'hop'.hint_char2()<cr>", {})
+      vim.api.nvim_set_keymap('n', 'S', "<cmd>lua require'hop'.hint_char1()<cr>", {})
+      vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
+      vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+    end },
+  },
+  remove = {
+    alpha = false,
+    blankline = false,
+    colorizer = false,
+    gitsigns = false,
+    nvimtree = false,
+  },
+  nvimtree = {
+    git = true,
+    indent_markers = true,
+  },
 }
 
 -- Add new whichkey bind
 M.whichkey_add = {
-	-- ["z"] = { "<cmd>ZenMode<cr>", "ZenMode" },
-	["bb"] = { ":Telescope buffers<cr>", "buffers" },
-	["sg"] = { ":Telescope live_grep<cr>", "live grep" },
+  b = {
+    b = { ":Telescope buffers<CR>", "buffers" },
+  },
+  s = {
+    g = { ":Telescope grep_string<CR>", "live grep" },
+  },
 }
+
+-- Note: Visit "https://github.com/ysfgrgO7/nvoid-custom-config" For more info how the file works
 
 return M
