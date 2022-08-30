@@ -74,6 +74,9 @@ M.whichkey_add = {
   b = {
     b = { ":Telescope buffers<CR>", "buffers" },
   },
+  l = {
+    a = { ":lua vim.lsp.buf.code_action()<CR>", "code action" },
+  },
   s = {
     g = { ":Telescope grep_string<CR>", "live grep" },
   },
