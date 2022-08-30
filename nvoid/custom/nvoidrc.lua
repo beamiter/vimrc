@@ -11,7 +11,7 @@ M.ui = {
   bufferline = {
     enabled = true,
     lazyload = true,
-  }
+  },
 }
 -- OPT
 M.options = {
@@ -47,14 +47,34 @@ M.lsp = {
 -- Plugins
 M.plugins = {
   add = {
-    { 'phaazon/hop.nvim', config = function()
-      require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
-      -- place this in one of your configuration file(s)
-      vim.api.nvim_set_keymap('n', 's', "<cmd>lua require'hop'.hint_char2()<cr>", {})
-      vim.api.nvim_set_keymap('n', 'S', "<cmd>lua require'hop'.hint_char1()<cr>", {})
-      vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
-      vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
-    end },
+    {
+      "phaazon/hop.nvim",
+      config = function()
+        require("hop").setup({ keys = "etovxqpdygfblzhckisuran", jump_on_sole_occurrence = false })
+        -- place this in one of your configuration file(s)
+        vim.api.nvim_set_keymap("n", "s", "<cmd>lua require'hop'.hint_char2()<cr>", {})
+        vim.api.nvim_set_keymap("n", "S", "<cmd>lua require'hop'.hint_char1()<cr>", {})
+        vim.api.nvim_set_keymap(
+          "n",
+          "f",
+          "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>",
+          {}
+        )
+        vim.api.nvim_set_keymap(
+          "n",
+          "F",
+          "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>",
+          {}
+        )
+      end,
+    },
+    {
+      "akinsho/bufferline.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("bufferline").setup({})
+      end,
+    },
   },
   remove = {
     alpha = false,
@@ -81,6 +101,18 @@ M.whichkey_add = {
     g = { ":Telescope grep_string<CR>", "live grep" },
   },
 }
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+map('n', '<Space>1', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
+map('n', '<Space>2', '<Cmd>BufferLineGoToBuffer 2<CR>', opts)
+map('n', '<Space>3', '<Cmd>BufferLineGoToBuffer 3<CR>', opts)
+map('n', '<Space>4', '<Cmd>BufferLineGoToBuffer 4<CR>', opts)
+map('n', '<Space>5', '<Cmd>BufferLineGoToBuffer 5<CR>', opts)
+map('n', '<Space>6', '<Cmd>BufferLineGoToBuffer 6<CR>', opts)
+map('n', '<Space>7', '<Cmd>BufferLineGoToBuffer 7<CR>', opts)
+map('n', '<Space>8', '<Cmd>BufferLineGoToBuffer 8<CR>', opts)
+map('n', '<Space>9', '<Cmd>BufferLineGoToBuffer 9<CR>', opts)
+map('n', '<Space>0', '<Cmd>BufferLineGoToBuffer 10<CR>', opts)
 
 -- Note: Visit "https://github.com/ysfgrgO7/nvoid-custom-config" For more info how the file works
 
