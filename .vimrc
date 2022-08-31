@@ -189,8 +189,8 @@ let g:which_key_map['w'] = {
       \ }
 let g:which_key_map['g'] = {
     \  'name' : '+git',
-    \  'n' : [':GitGutterNextHunk'],
-    \  'p' : [':GitGutterPrevHunk'],
+    \  'j' : [':GitGutterNextHunk'],
+    \  'k' : [':GitGutterPrevHunk'],
     \ }
 
 " """""""""""""""" vimspector
@@ -208,8 +208,8 @@ nmap = :vert res +5<CR>
 
 """""""""""""""" gitgutter
 let g:gitgutter_map_keys = 0
-nmap ]h <Plug>(GitGutterNextHunk)
-nmap [h <Plug>(GitGutterPrevHunk)
+nmap ]g <Plug>(GitGutterNextHunk)
+nmap [g <Plug>(GitGutterPrevHunk)
 
 """""""""""""""""" nerdcommenter
 let g:NERDCreateDefaultMappings = 0
