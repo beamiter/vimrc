@@ -133,7 +133,7 @@ Plug 'liuchengxu/vim-which-key'
 call plug#end()
 
 """""""""""""""" sonokai themes
-let g:sonokai_style = 'andromeda'
+let g:sonokai_style = 'onedark'
 let g:sonokai_better_performance = 1
 let g:edge_style = 'aura'
 let g:edge_better_performance = 1
