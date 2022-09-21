@@ -7,6 +7,14 @@ M.disabled = {
       ["<leader>b"] = "",
   }
 }
+M.tabufline = {
+  n = {
+    ["b"] = {"<cmd> TbufPick <CR>", "Pick buffer"},
+  },
+  i = {
+
+  }
+}
 
 M.abc = {
   n = {
