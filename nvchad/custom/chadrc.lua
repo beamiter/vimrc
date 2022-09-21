@@ -10,38 +10,36 @@ M.ui = {
 }
 
 M.plugins = {
-   user = {
-      ["goolord/alpha-nvim"] = {
-         disable = false,
-      },
-      ["folke/which-key.nvim"] = {
-        disable = false,
-      },
-      ["neovim/nvim-lspconfig"] = {
-        config = function()
-          require "plugins.configs.lspconfig"
-          require "custom.plugins.lspconfig"
-        end,
-      },
-      ['junegunn/fzf'] = {
-        dir = '~/.fzf',
-        run = './install --all',
-      },
-      -- ['akinsho/bufferline.nvim'] = {
-      --   tag = "v2.*",
-      --   config = function()
-      --     require("bufferline").setup{}
-      --   end
-      -- },
-      ['junegunn/fzf.vim'] = {},
-      ["tpope/vim-fugitive"] = {},
-      ['phaazon/hop.nvim'] = {
-        branch = 'v1', -- optional but strongly recommended
-        config = function()
-          -- you can configure Hop the way you like here; see :h hop-config
-          require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-        end
-      },
+   ["goolord/alpha-nvim"] = {
+      disable = false,
+   },
+   ["folke/which-key.nvim"] = {
+     disable = false,
+   },
+   ["neovim/nvim-lspconfig"] = {
+     config = function()
+       require "plugins.configs.lspconfig"
+       require "custom.plugins.lspconfig"
+     end,
+   },
+   ['junegunn/fzf'] = {
+     dir = '~/.fzf',
+     run = './install --all',
+   },
+   -- ['akinsho/bufferline.nvim'] = {
+   --   tag = "v2.*",
+   --   config = function()
+   --     require("bufferline").setup{}
+   --   end
+   -- },
+   ['junegunn/fzf.vim'] = {},
+   ["tpope/vim-fugitive"] = {},
+   ['phaazon/hop.nvim'] = {
+     branch = 'v1', -- optional but strongly recommended
+     config = function()
+       -- you can configure Hop the way you like here; see :h hop-config
+       require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+     end
    },
 }
 
