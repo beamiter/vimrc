@@ -176,6 +176,7 @@ require('packer').startup(function()
   use 'marko-cerovac/material.nvim'
   -- use 'LunarVim/onedarker.nvim'
   use 'AlphaTechnolog/onedarker.nvim'
+  use "rebelot/kanagawa.nvim"
   use 'tomasiser/vim-code-dark'
   use 'Mofiqul/vscode.nvim'
   use 'srcery-colors/srcery-vim'
