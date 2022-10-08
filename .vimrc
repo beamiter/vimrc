@@ -309,7 +309,7 @@ noremap <silent> <localleader>0 :<C-u>10 wincmd w<CR>
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 0
 let g:airline#extensions#bufferline#enabled = 1
-let g:airline_theme='ayu_dark'
+let g:airline_theme='one_dark'
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
