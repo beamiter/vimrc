@@ -734,7 +734,7 @@ require('packer').startup(function()
       buf_map(bufnr, 'n', '<space>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
       buf_map(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
       buf_map(bufnr, 'n', '<space>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-      buf_map(bufnr, 'v', '<space>fm', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
+      buf_map(bufnr, 'v', '<space>f', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
       buf_map(bufnr, 'v', '<space>bf', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
 
       require 'illuminate'.on_attach(client)
