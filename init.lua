@@ -756,7 +756,7 @@ require('packer').startup(function()
         "additionalTextEdits",
       },
     }
-    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
     local lsp_installer = require("nvim-lsp-installer")
     lsp_installer.settings {
