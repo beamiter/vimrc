@@ -120,6 +120,8 @@ require('packer').startup(function()
 
   use 'tpope/vim-fugitive'
 
+  use { "mangeshrex/everblush.vim" }
+
   use { "akinsho/toggleterm.nvim", tag = 'v1.*', config = function()
     require("toggleterm").setup()
     function _G.set_terminal_keymaps()
@@ -813,7 +815,7 @@ end)
 
 vim.g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
 vim.cmd [[
-colorscheme onedarker
+colorscheme everblush
 filetype off
 syntax on
 ]]

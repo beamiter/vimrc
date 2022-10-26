@@ -86,6 +86,7 @@ Plug 'morhetz/gruvbox'
 Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'sainnhe/gruvbox-material'
+Plug 'mangeshrex/everblush.vim'
 Plug 'sainnhe/everforest'
 Plug 'EdenEast/nightfox.nvim'
 Plug 'sainnhe/edge'
@@ -144,7 +145,7 @@ let g:gruvbox_material_better_performance = 1
 
 "set background=light
 set background=dark
-colorscheme catppuccin_macchiato
+colorscheme everblush
 
 " insert this line above imap
 call lexima#init()
