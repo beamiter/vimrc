@@ -122,7 +122,7 @@ require('packer').startup(function()
 
   use { "mangeshrex/everblush.vim" }
 
-  use { "akinsho/toggleterm.nvim", tag = 'v1.*', config = function()
+  use { "akinsho/toggleterm.nvim", config = function()
     require("toggleterm").setup()
     function _G.set_terminal_keymaps()
       local opts = { noremap = true }
