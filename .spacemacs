@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(rust
+   '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -48,7 +48,8 @@ This function should only modify configuration layer settings."
      git
      julia
      c-c++
-     lsp
+     (lsp :variables lsp-rust-server 'rust-analyzer)
+     rust
      themes-megapack
      markdown
      multiple-cursors
