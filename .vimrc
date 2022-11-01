@@ -130,6 +130,7 @@ Plug 'mhinz/vim-startify'
 "Plug 'sheerun/vim-polyglot'
 Plug 'mg979/vim-visual-multi'
 Plug 'liuchengxu/vim-which-key'
+Plug 'jdhao/better-escape.vim'
 
 call plug#end()
 

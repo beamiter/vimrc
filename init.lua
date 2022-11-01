@@ -122,6 +122,8 @@ require('packer').startup(function()
 
   use { "mangeshrex/everblush.vim" }
 
+  use {'jdhao/better-escape.vim', event = 'InsertEnter'}
+
   use { "akinsho/toggleterm.nvim", config = function()
     require("toggleterm").setup()
     function _G.set_terminal_keymaps()
