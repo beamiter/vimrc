@@ -178,6 +178,7 @@ require('packer').startup(function()
     }
   }
   use 'marko-cerovac/material.nvim'
+  use 'folke/tokyonight.nvim'
   -- use 'LunarVim/onedarker.nvim'
   use 'AlphaTechnolog/onedarker.nvim'
   use "rebelot/kanagawa.nvim"
@@ -817,7 +818,7 @@ end)
 
 vim.g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
 vim.cmd [[
-colorscheme everblush
+colorscheme tokyonight
 filetype off
 syntax on
 ]]
