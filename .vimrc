@@ -189,11 +189,8 @@ let g:which_key_map['w'] = {
       \ 's' : ['<C-W>s'        , 'split-window-below']    ,
       \ 'v' : ['<C-W>v'        , 'split-window-right']    ,
       \ }
-let g:which_key_map['g'] = {
-    \  'name' : '+git',
-    \  'j' : [':GitGutterNextHunk'],
-    \  'k' : [':GitGutterPrevHunk'],
-    \ }
+map <silent><leader>gj :GitGutterNextHunk<CR>
+map <silent><leader>gk :GitGutterPrevHunk<CR>
 
 " """""""""""""""" vimspector
 " let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
@@ -257,7 +254,8 @@ map <leader>bb :Buffers<CR>
 map <leader>ff :Files<CR>
 map <leader>fh :History<CR>
 map <leader>fr :History<CR>
-map <leader>pf :ProjectFiles<CR>
+map <leader>pf :GFiles<CR>
+map <leader>gf :GFiles<CR>
 nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
