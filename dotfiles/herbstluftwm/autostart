@@ -23,7 +23,7 @@ Mod=Mod1    # Use alt as the main modifier
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn "${TERMINAL:-terminator}" # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-Return spawn "${TERMINAL:-gnome-terminal}" # use your $TERMINAL with xterm as fallback
 
 # move dmenu_run_hlwm to .local/bin
 hc keybind $Mod-d spawn dmenu_run_hlwm
