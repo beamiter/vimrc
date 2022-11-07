@@ -147,6 +147,8 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "" Resume latest coc list.
 "nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+let g:coc_disable_startup_warning = 1
+
 " Extensions.
 let g:coc_global_extensions = ['coc-cmake', 'coc-floaterm', 'coc-highlight',
             \'coc-julia', 'coc-rust-analyzer', 'coc-vimlsp', 'coc-yank',
