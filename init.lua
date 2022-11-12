@@ -818,7 +818,7 @@ end)
 
 vim.g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
 vim.cmd [[
-colorscheme tokyonight
+colorscheme nvcode
 filetype off
 syntax on
 ]]
