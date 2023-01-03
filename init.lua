@@ -122,6 +122,8 @@ require('packer').startup(function()
 
   use { "mangeshrex/everblush.vim" }
 
+  use {'nyoom-engineering/oxocarbon.nvim'}
+
   use {'jdhao/better-escape.vim', event = 'InsertEnter'}
 
   use { "akinsho/toggleterm.nvim", config = function()
@@ -818,7 +820,7 @@ end)
 
 vim.g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
 vim.cmd [[
-colorscheme codedark
+colorscheme oxocarbon
 filetype off
 syntax on
 ]]
