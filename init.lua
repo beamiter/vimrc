@@ -110,6 +110,7 @@ require('packer').startup(function()
   use 'preservim/tagbar'
   use 'liuchengxu/vista.vim'
   use "EdenEast/nightfox.nvim"
+  use "lunarvim/horizon.nvim"
 
   use { 'lukas-reineke/indent-blankline.nvim', config = function()
     require("indent_blankline").setup {
