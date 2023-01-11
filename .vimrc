@@ -104,13 +104,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/tagbar'
 Plug 'liuchengxu/vista.vim'
 Plug 'sbdchd/neoformat'
-Plug 'preservim/nerdcommenter'
 Plug 'lambdalisue/fern.vim'
 Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
 Plug 'arzg/vim-colors-xcode'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
+Plug 'tomtom/tcomment_vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'felipec/vim-felipec'
 Plug 'voldikss/vim-floaterm'
@@ -210,9 +210,9 @@ let g:gitgutter_map_keys = 0
 nmap ]g <Plug>(GitGutterNextHunk)
 nmap [g <Plug>(GitGutterPrevHunk)
 
-"""""""""""""""""" nerdcommenter
-let g:NERDCreateDefaultMappings = 0
-map <silent><leader>cl <plug>NERDCommenterToggle
+"""""""""""""""""" tcomment_vim
+map <silent><leader>cl :TComment<CR>
+
 xmap <silent><leader>fm <Plug>(coc-format-selected)
 nmap <silent><leader>fm :call CocActionAsync('format')<CR>
 
