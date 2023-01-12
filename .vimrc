@@ -103,7 +103,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/tagbar'
 Plug 'liuchengxu/vista.vim'
-Plug 'sbdchd/neoformat'
+" Plug 'sbdchd/neoformat'
 Plug 'lambdalisue/fern.vim'
 Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
@@ -275,9 +275,6 @@ let g:EasyMotion_smartcase = 1
 " JK motions: Line motions
 map <localleader>j <Plug>(easymotion-j)
 map <localleader>k <Plug>(easymotion-k)
-
-"""""""""""""""""" neoformat
-map <leader>bf :Neoformat<CR>
 
 """""""""""""""""" vim-choosewin
 " invoke with '-'
