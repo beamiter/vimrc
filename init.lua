@@ -662,7 +662,6 @@ require("lazy").setup({
               },
               b = {
                   name = "buffers",
-                  f = { ":Neoformat<CR>", "format" },
                   b = { ":Telescope buffers<CR>", "buffers" },
               },
           }, { prefix = "<leader>" })
@@ -798,6 +797,7 @@ require("lazy").setup({
             buf_map(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
             buf_map(bufnr, "n", "<space>fm", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
             buf_map(bufnr, "x", "<space>fm", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+            buf_map(bufnr, "n", "<space>bf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
             buf_map(bufnr, "x", "<space>bf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
 
             require("illuminate").on_attach(client)
