@@ -262,6 +262,13 @@ require("lazy").setup({
     end,
   },
   {
+    "stevearc/dressing.nvim",
+    config = function()
+      require("dressing").setup()
+    end,
+  },
+
+  {
     "rcarriga/nvim-dap-ui",
     config = function()
       require("dapui").setup()
@@ -308,7 +315,13 @@ require("lazy").setup({
 
   "ntpeters/vim-better-whitespace",
   "mhinz/vim-grepper",
-  "mhinz/vim-startify",
+  {
+    'goolord/alpha-nvim',
+    requires = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
+    end
+  },
   {
     "windwp/nvim-spectre",
     config = function()
@@ -414,6 +427,7 @@ require("lazy").setup({
       "rcarriga/nvim-notify",
     }
   },
+  { 'echasnovski/mini.nvim',           version = false },
   {
     "nvim-neo-tree/neo-tree.nvim",
     dependencies = {
@@ -461,7 +475,7 @@ require("lazy").setup({
     end,
   },
 
-  { "andymass/vim-matchup",            event = "VimEnter" },
+  { "andymass/vim-matchup",        event = "VimEnter" },
 
   {
     "lewis6991/gitsigns.nvim",
@@ -698,7 +712,7 @@ require("lazy").setup({
     end,
   },
 
-  { "dracula/vim",                 as = "dracula" },
+  { "dracula/vim", as = "dracula" },
 
 })
 
