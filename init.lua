@@ -211,7 +211,6 @@ require("lazy").setup({
   {
     "rose-pine/neovim",
     as = "rose-pine",
-    -- tag = 'v1.*',
     config = function()
       -- vim.cmd('colorscheme rose-pine')
     end,
@@ -379,7 +378,7 @@ require("lazy").setup({
   {
     "karb94/neoscroll.nvim",
     config = function()
-      require("neoscroll").setup({})
+      -- require("neoscroll").setup({})
     end,
   },
   {
