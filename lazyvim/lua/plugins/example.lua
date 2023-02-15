@@ -143,17 +143,12 @@ return {
       ensure_installed = {
         "bash",
         "help",
-        "html",
         "javascript",
         "json",
         "lua",
         "markdown",
         "markdown_inline",
         "python",
-        "query",
-        "regex",
-        "tsx",
-        "typescript",
         "vim",
         "yaml",
       },
@@ -168,8 +163,6 @@ return {
     opts = function(_, opts)
       -- add tsx and treesitter
       vim.list_extend(opts.ensure_installed, {
-          "tsx",
-          "typescript",
       })
     end,
   },
@@ -267,7 +260,6 @@ return {
 
   {
     's1n7ax/nvim-window-picker',
-    tag = 'v1.*',
     config = function()
         require'window-picker'.setup()
     end,
