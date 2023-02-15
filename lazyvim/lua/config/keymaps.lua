@@ -16,6 +16,7 @@ vim.keymap.set("n", "<leader>9", "<Cmd>BufferLineGoToBuffer 9<CR>", { noremap = 
 vim.keymap.set("n", "<leader>0", "<Cmd>BufferLineGoToBuffer 10<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>fr", ":Telescope oldfiles<CR>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "x", "v" }, "<leader>fm", ":lua vim.lsp.buf.format()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>bf", ":Telescope buffers<CR>", { noremap = true, silent = true })
