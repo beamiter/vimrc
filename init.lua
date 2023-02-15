@@ -361,17 +361,31 @@ require("lazy").setup({
     end,
   },
 
+  -- Use this instead of hop
   {
-    "phaazon/hop.nvim",
+    "ggandor/flit.nvim",
+    dependencies = { "ggandor/leap.nvim" },
     config = function()
-      require("hop").setup({ keys = "etovxqpdygfblzhckisuran", jump_on_sole_occurrence = false })
-      -- place this in one of your configuration file(s)
-      vim.api.nvim_set_keymap("n", "s", "<cmd>lua require'hop'.hint_char2()<cr>", {})
-      vim.api.nvim_set_keymap("n", "S", "<cmd>lua require'hop'.hint_char1()<cr>", {})
-      vim.api.nvim_set_keymap("n", "f", "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
-      vim.api.nvim_set_keymap("n", "F", "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+      require("flit").setup()
     end,
   },
+  { "ggandor/leap.nvim",
+    config = function()
+      require('leap').add_default_mappings()
+    end,
+  },
+
+  -- {
+  --   "phaazon/hop.nvim",
+  --   config = function()
+  --     require("hop").setup({ keys = "etovxqpdygfblzhckisuran", jump_on_sole_occurrence = false })
+  --     -- place this in one of your configuration file(s)
+  --     vim.api.nvim_set_keymap("n", "s", "<cmd>lua require'hop'.hint_char2()<cr>", {})
+  --     vim.api.nvim_set_keymap("n", "S", "<cmd>lua require'hop'.hint_char1()<cr>", {})
+  --     vim.api.nvim_set_keymap("n", "f", "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
+  --     vim.api.nvim_set_keymap("n", "F", "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+  --   end,
+  -- },
 
   {
     "nvim-lualine/lualine.nvim",
@@ -551,6 +565,7 @@ require("lazy").setup({
         },
         s = {
           name = "search",
+          t = { ":Telescope live_grep<CR>", "live_grep" },
           g = { ":Telescope grep_string<CR>", "grep_string" },
           a = { ":Ag <C-R><C-W><CR>", "ag current" },
           r = { ":Rg <C-R><C-W><CR>", "rg current" },
@@ -559,6 +574,7 @@ require("lazy").setup({
           name = "buffers",
           b = { ":Telescope buffers<CR>", "buffers" },
         },
+        L = { ":Lazy<CR>", "lazy"},
       }, { prefix = "<leader>" })
     end,
   },
