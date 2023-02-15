@@ -22,3 +22,6 @@ vim.keymap.set("n", "<leader>bf", ":Telescope buffers<CR>", { noremap = true, si
 
 vim.keymap.set("n", "<leader>sg", ":Telescope grep_string<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>sw", ":Telescope live_grep<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>gj", ":Gitsigns next_hunk<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>gk", ":Gitsigns prev_hunk<CR>", { noremap = true, silent = true })
