@@ -49,6 +49,11 @@ This function should only modify configuration layer settings."
      julia
      c-c++
      (lsp :variables lsp-rust-server 'rust-analyzer)
+     (tree-sitter :variables
+                  spacemacs-tree-sitter-hl-black-list '(js2-mode rjsx-mode)
+                  tree-sitter-syntax-highlight-enable t
+                  tree-sitter-fold-enable t
+                  tree-sitter-fold-indicators-enable nil)
      rust
      themes-megapack
      markdown
