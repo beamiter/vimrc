@@ -20,6 +20,7 @@ vim.keymap.set({ "n", "x", "v" }, "<leader>fm", ":lua vim.lsp.buf.format()<CR>",
 vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>bf", ":Telescope buffers<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>bj", ":BufferLinePick<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>sg", ":Telescope grep_string<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>sw", ":Telescope live_grep<CR>", { noremap = true, silent = true })
