@@ -79,6 +79,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'mattn/vim-lsp-settings'
 
+Plug 'ryanoasis/vim-devicons'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
