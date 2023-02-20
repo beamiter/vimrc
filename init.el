@@ -39,21 +39,21 @@
   :no-require t)
 (use-package srcery-theme)
 (use-package modus-themes
-  :ensure
-  :init
+  :ensure t
+  :config
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
-        modus-themes-bold-constructs nil
-        modus-themes-region '(bg-only no-extend))
+        modus-themes-bold-constructs nil)
 
-  ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
-  :config
-  ;; Load the theme of your choice:
-  ;; (modus-themes-load-operandi)
-  (modus-themes-load-vivendi)
-  :bind ("<f5>" . modus-themes-toggle))
-;;
+  ;; Maybe define some palette overrides, such as by using our presets
+  (setq modus-themes-common-palette-overrides
+        modus-themes-preset-overrides-intense)
+
+  ;; Load the theme of your choice.
+  ;; (load-theme 'modus-vivendi)
+
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+
 ;; (load-theme 'monokai-pro-classic t)
 (use-package doom-modeline
   :ensure t
@@ -378,7 +378,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("4a201d19d8f7864e930fbb67e5c2029b558d26a658be1313b19b8958fe451b55" default))
+   '("dde643b0efb339c0de5645a2bc2e8b4176976d5298065b8e6ca45bc4ddf188b7" "bfc0b9c3de0382e452a878a1fb4726e1302bf9da20e69d6ec1cd1d5d82f61e3d" "4a201d19d8f7864e930fbb67e5c2029b558d26a658be1313b19b8958fe451b55" default))
  '(delete-selection-mode nil)
  '(display-line-numbers 'relative)
  '(helm-minibuffer-history-key "M-p")
