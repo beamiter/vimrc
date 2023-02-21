@@ -89,6 +89,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
   :config
+  (evil-global-set-key 'normal (kbd "gd") 'lsp-ui-peek-find-definitions)
   (evil-global-set-key 'normal (kbd "K") 'lsp-ui-peek-find-definitions)
   (evil-mode 1))
 
