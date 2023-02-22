@@ -74,6 +74,7 @@
 (use-package tree-sitter
   :after treemacs evil
   :hook (after-init . (lambda() (global-tree-sitter-mode 1))))
+(use-package tree-sitter-langs)
 (use-package rust-mode)
 (use-package lsp-julia
   :init
@@ -172,6 +173,7 @@
  "f" '(:ignore t :which-key ("f" . "file"))
  "ft" '(treemacs :which-key "treemacs")
  "ff" 'projectile-find-file
+ "fr" 'projectile-recentf
  "fm" 'lsp-format-buffer
  "g" '(:ignore t :wk ("g" . "git"))
  "gj" '(git-gutter:next-hunk :properties (:repeat t :jump t))
