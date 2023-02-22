@@ -20,6 +20,8 @@
 ;; Ensure install
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq make-backup-files nil)
 
 ;; Auto update
 ;; (unless (package-installed-p 'auto-package-update)
