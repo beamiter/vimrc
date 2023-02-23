@@ -214,6 +214,7 @@
 (use-package company
   :config
   (setq company-minimum-prefix-length 1
+	company-dabbrev-minimum-length 2
 	      company-idle-delay 0.1) ;; default is 0.2
   :bind (:map company-active-map
               ([tab]     . #'company-complete-common-or-cycle)
