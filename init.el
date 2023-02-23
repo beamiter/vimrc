@@ -30,7 +30,10 @@
 
 ;; themes
 (use-package ample-theme)
-(use-package doom-themes)
+(use-package doom-themes
+  :ensure t
+  :config
+ (load-theme 'doom-molokai t))
 (use-package gruvbox-theme)
 (use-package gruber-darker-theme)
 (use-package leuven-theme)
@@ -75,7 +78,8 @@
 (use-package tree-sitter
   :after treemacs evil
   :hook (after-init . (lambda() (global-tree-sitter-mode 1))))
-(use-package tree-sitter-langs)
+(use-package tree-sitter-langs
+  :ensure t)
 (use-package rust-mode)
 (use-package lsp-julia
   :init
