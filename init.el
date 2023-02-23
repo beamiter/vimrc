@@ -70,7 +70,6 @@
 (use-package helm-themes)
 (use-package helm-rg)
 (use-package helm-ag)
-(use-package undo-fu)
 (use-package all-the-icons)
 (use-package general)
 (use-package tree-sitter
@@ -90,9 +89,10 @@
 (use-package evil
   :init
   (setq evil-want-keybinding nil)
-  (setq evil-undo-system 'undo-fu)
+  (evil-set-undo-system 'undo-redo)
   :config
   (evil-global-set-key 'normal (kbd "gd") 'lsp-ui-peek-find-definitions)
+  (evil-global-set-key 'normal (kbd "gc") 'comment-line)
   (evil-global-set-key 'normal (kbd "K") 'lsp-ui-peek-find-definitions)
   (evil-mode 1))
 
@@ -391,7 +391,7 @@
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(subatomic256-theme xclip winum which-key use-package undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil tree-sitter sublime-themes srcery-theme spacemacs-theme rust-mode rainbow-delimiters monokai-theme monokai-pro-theme moe-theme lsp-ui lsp-treemacs lsp-julia leuven-theme helm-themes helm-rg helm-projectile helm-lsp helm-ag gruvbox-theme gruber-darker-theme git-gutter general format-all flycheck evil-surround evil-nerd-commenter evil-collection doom-themes doom-modeline dashboard company ample-theme)))
+   '(subatomic256-theme xclip winum which-key use-package treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil tree-sitter sublime-themes srcery-theme spacemacs-theme rust-mode rainbow-delimiters monokai-theme monokai-pro-theme moe-theme lsp-ui lsp-treemacs lsp-julia leuven-theme helm-themes helm-rg helm-projectile helm-lsp helm-ag gruvbox-theme gruber-darker-theme git-gutter general format-all flycheck evil-surround evil-nerd-commenter evil-collection doom-themes doom-modeline dashboard company ample-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
