@@ -176,6 +176,7 @@
  "ft" '(treemacs :which-key "treemacs")
  "ff" 'projectile-find-file
  "fr" 'projectile-recentf
+ "fh" 'projectile-recentf
  "fm" 'lsp-format-buffer
  "g" '(:ignore t :wk ("g" . "git"))
  "gj" '(git-gutter:next-hunk :properties (:repeat t :jump t))
