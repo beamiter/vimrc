@@ -768,7 +768,7 @@ require("lazy").setup({
 })
 
 vim.cmd([[
-colorscheme tokyonight
+colorscheme dracula
 filetype off
 syntax on
 ]])
