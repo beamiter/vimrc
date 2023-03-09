@@ -83,6 +83,8 @@ map("n", "=", ":vert res +5<CR>", opts)
 map("n", "-", ":vert res -5<CR>", opts)
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
 map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
+map("n", "<leader>gj", ":Gitsigns prev_hunk<CR>", opts)
+map("n", "<leader>gk", ":Gitsigns next_hunk<CR>", opts)
 map("n", "<leader>1", "<Cmd>BufferLineGoToBuffer 1<CR>", opts)
 map("n", "<leader>2", "<Cmd>BufferLineGoToBuffer 2<CR>", opts)
 map("n", "<leader>3", "<Cmd>BufferLineGoToBuffer 3<CR>", opts)
@@ -768,7 +770,7 @@ require("lazy").setup({
 })
 
 vim.cmd([[
-colorscheme dracula
+colorscheme catppuccin
 filetype off
 syntax on
 ]])
