@@ -52,6 +52,7 @@ vim.api.nvim_set_keymap('x', '<space>bf', '<cmd>lua vim.lsp.buf.format()<CR>', {
 --     ["<C-k>"] = actions.move_selection_previous,
 --   },
 -- }
+lvim.builtin.telescope.defaults.path_display = { "absolute" }
 
 -- Change theme settings
 
