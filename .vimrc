@@ -257,7 +257,8 @@ map <leader>ff :Files<CR>
 map <leader>fh :History<CR>
 map <leader>fr :History<CR>
 map <leader>pf :GFiles<CR>
-map <leader>gf :GFiles<CR>
+map <leader>sf :GFiles<CR>
+map <leader>gf :<Esc>gf<CR>
 nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
