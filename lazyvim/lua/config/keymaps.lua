@@ -27,3 +27,6 @@ vim.keymap.set("n", "<leader>sw", ":Telescope live_grep<CR>", { noremap = true, 
 
 vim.keymap.set("n", "<leader>gj", ":Gitsigns next_hunk<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>gk", ":Gitsigns prev_hunk<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "]g", ":Gitsigns next_hunk<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "[g", ":Gitsigns prev_hunk<CR>", { noremap = true, silent = true })
