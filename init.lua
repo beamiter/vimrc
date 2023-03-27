@@ -811,7 +811,7 @@ require("lazy").setup({
 })
 
 vim.cmd([[
-colorscheme catppuccin
+colorscheme vscode
 filetype off
 syntax on
 ]])
