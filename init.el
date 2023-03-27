@@ -109,6 +109,8 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package rustic)
+
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
@@ -116,6 +118,7 @@
   (setq lsp-modeline-diagnostics-scope :workspace)
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+  (setq lsp-rust-analyzer-server-display-inlay-hints t)
   :bind-keymap
   ;; ("C-l" . lsp-command-map)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)

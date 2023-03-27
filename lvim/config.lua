@@ -199,6 +199,12 @@ lvim.plugins = {
     end
   },
   "dracula/vim",
+	{
+		"simrat39/rust-tools.nvim",
+		config = function()
+			require("rust-tools").setup()
+		end,
+	},
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

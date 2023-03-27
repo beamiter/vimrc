@@ -251,12 +251,12 @@ require("lazy").setup({
 			-- vim.cmd('colorscheme rose-pine')
 		end,
 	},
-    {
-        "simrat39/rust-tools.nvim",
+	{
+		"simrat39/rust-tools.nvim",
 		config = function()
 			require("rust-tools").setup()
 		end,
-    },
+	},
 
 	{
 		"mfussenegger/nvim-dap",
