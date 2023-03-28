@@ -430,6 +430,12 @@ require("lazy").setup({
 			require("bufferline").setup()
 		end,
 	},
+    {
+        "rcarriga/nvim-notify",
+		config = function()
+			require("notify").setup()
+		end,
+    },
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
