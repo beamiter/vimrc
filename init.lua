@@ -16,6 +16,8 @@ local g = vim.g
 g.mapleader = " "
 g.maplocalleader = ","
 
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
 g.noautochdir = true
 g.nobackup = true
 g.noswapfile = true
@@ -73,11 +75,11 @@ vim.api.nvim_command("autocmd FileType c,cpp setlocal tabstop=2")
 local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
 
--- map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
-map("n", "<F3>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
+map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
+-- map("n", "<F3>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
 map("n", "<F4>", ":Vista!!<CR>", opts)
-map("n", "<C-n>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
--- map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
+-- map("n", "<C-n>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
+map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
 map("n", "=", ":vert res +5<CR>", opts)
 map("n", "-", ":vert res -5<CR>", opts)
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
@@ -444,51 +446,25 @@ require("lazy").setup({
 	},
 	"SmiteshP/nvim-navic",
 	{ "echasnovski/mini.nvim", version = false },
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-			"MunifTanjim/nui.nvim",
-			{
-				-- only needed if you want to use the commands with "_with_window_picker" suffix
-				"s1n7ax/nvim-window-picker",
-				config = function()
-					require("window-picker").setup({
-						autoselect_one = true,
-						include_current = false,
-						filter_rules = {
-							-- filter using buffer options
-							bo = {
-								-- if the file type is one of following, the window will be ignored
-								filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix" },
-								-- if the buffer type is one of following, the window will be ignored
-								buftype = { "terminal" },
-							},
-						},
-						other_win_hl_color = "#e35e4f",
-					})
-				end,
-			},
-		},
-		config = function()
-			require("neo-tree").setup({})
-		end,
-	},
-
-	{
-		"kyazdani42/nvim-tree.lua",
-		config = function()
-			-- require("nvim-tree").setup({
-			--   respect_buf_cwd = true,
-			--   update_cwd = true,
-			--   update_focused_file = {
-			--     enable = true,
-			--     update_cwd = true
-			--   },
-			-- })
-		end,
-	},
+    {
+      "nvim-tree/nvim-tree.lua",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+		"MunifTanjim/nui.nvim",
+      },
+      config = function()
+        require("nvim-tree").setup({
+          sort_by = "case_sensitive",
+          renderer = {
+            group_empty = true,
+          },
+          filters = {
+            dotfiles = true,
+          },
+        })
+      end,
+    },
 
 	{ "andymass/vim-matchup", event = "VimEnter" },
 
@@ -526,7 +502,7 @@ require("lazy").setup({
 				},
 				f = {
 					name = "files",
-					t = { ":Neotree toggle left reveal_force_cwd<CR>", "tree toggle" },
+					t = { ":NvimTreeFindFileToggle<CR>", "tree toggle" },
 					f = { ":Telescope find_files<CR>", "files" },
 					w = { ":Telescope live_grep<CR>", "live_grep" },
 					b = { ":Telescope buffers<CR>", "buffers" },
