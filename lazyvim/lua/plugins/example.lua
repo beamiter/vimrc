@@ -158,7 +158,6 @@ return {
     opts = {
       ensure_installed = {
         "bash",
-        "help",
         "javascript",
         "json",
         "lua",
