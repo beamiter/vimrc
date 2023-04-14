@@ -151,8 +151,6 @@ require("lazy").setup({
 
 	{ "nyoom-engineering/oxocarbon.nvim" },
 
-	{ "jdhao/better-escape.vim", event = "InsertEnter" },
-
 	{
 		"akinsho/toggleterm.nvim",
 		config = function()
