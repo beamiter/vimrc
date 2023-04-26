@@ -101,7 +101,6 @@ lvim.builtin.treesitter.ensure_installed = {
   "css",
   "rust",
   "java",
-  "yaml",
 }
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }

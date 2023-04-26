@@ -165,7 +165,6 @@ return {
         "markdown_inline",
         "python",
         "vim",
-        "yaml",
       },
     },
   },
