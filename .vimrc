@@ -92,6 +92,7 @@ Plug 'EdenEast/nightfox.nvim'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/sonokai'
 Plug 'christianchiarulli/nvcode-color-schemes.vim'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'srcery-colors/srcery-vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'Yggdroot/indentLine'
@@ -144,9 +145,10 @@ let g:everforest_better_performance = 1
 let g:gruvbox_material_background = 'soft'
 let g:gruvbox_material_better_performance = 1
 
-"set background=light
-set background=dark
-colorscheme dracula
+" set background=dark
+" colorscheme dracula
+set background=light
+colorscheme PaperColor
 
 " insert this line above imap
 call lexima#init()

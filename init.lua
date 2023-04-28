@@ -24,6 +24,7 @@ g.noswapfile = true
 g.nowritebackup = true
 g.vscode_style = "dark"
 g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
+g.background = 'light'
 
 -- :h lua-vim-opt
 -- vim.opt.guifont = { "JetBrainsMono Nerd Font Regular", ":h11.5"}
@@ -221,6 +222,7 @@ require("lazy").setup({
 	},
 
 	"marko-cerovac/material.nvim",
+  'NLKNguyen/papercolor-theme',
 	"luisiacc/gruvbox-baby",
 	"folke/tokyonight.nvim",
 	"AlphaTechnolog/onedarker.nvim",
@@ -753,7 +755,7 @@ require("lazy").setup({
 })
 
 vim.cmd([[
-colorscheme vscode
+colorscheme PaperColor
 filetype off
 syntax on
 ]])

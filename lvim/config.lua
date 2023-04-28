@@ -11,11 +11,12 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = false
-lvim.colorscheme = "onedarker"
+lvim.colorscheme = "PaperColor"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
 vim.opt.relativenumber = true
+vim.go.background = "light"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -198,6 +199,7 @@ lvim.plugins = {
     end
   },
   "dracula/vim",
+  'NLKNguyen/papercolor-theme',
 	{
 		-- "simrat39/rust-tools.nvim",
 		-- config = function()
