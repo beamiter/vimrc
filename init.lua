@@ -24,7 +24,7 @@ g.noswapfile = true
 g.nowritebackup = true
 g.vscode_style = "dark"
 g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
-g.background = 'light'
+vim.go.background = "light"
 
 -- :h lua-vim-opt
 -- vim.opt.guifont = { "JetBrainsMono Nerd Font Regular", ":h11.5"}
@@ -208,7 +208,7 @@ require("lazy").setup({
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				-- A list of parser names, or "all" (the four listed parsers should always be installed)
-				ensure_installed = { "c", "lua", "vim", "help", "rust", "cpp", "julia" },
+				ensure_installed = { "c", "lua", "vim", "rust", "cpp", "julia" },
 				sync_install = false,
 				auto_install = true,
 				highlight = {

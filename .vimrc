@@ -123,6 +123,7 @@ Plug 'andymass/vim-matchup'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'iandwelker/rose-pine-vim'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-rooter'
