@@ -146,10 +146,10 @@ let g:everforest_better_performance = 1
 let g:gruvbox_material_background = 'soft'
 let g:gruvbox_material_better_performance = 1
 
-" set background=dark
-" colorscheme dracula
-set background=light
-colorscheme PaperColor
+set background=dark
+" set background=light
+colorscheme edge
+" colorscheme PaperColor
 
 " insert this line above imap
 call lexima#init()
