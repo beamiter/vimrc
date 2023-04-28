@@ -88,9 +88,7 @@ Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/everforest'
-Plug 'EdenEast/nightfox.nvim'
 Plug 'sainnhe/edge'
-Plug 'sainnhe/sonokai'
 Plug 'christianchiarulli/nvcode-color-schemes.vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'srcery-colors/srcery-vim'
@@ -136,19 +134,9 @@ Plug 'jdhao/better-escape.vim'
 
 call plug#end()
 
-"""""""""""""""" sonokai themes
-let g:sonokai_style = 'onedark'
-let g:sonokai_better_performance = 1
-let g:edge_style = 'aura'
-let g:edge_better_performance = 1
-let g:everforest_background = 'soft'
-let g:everforest_better_performance = 1
-let g:gruvbox_material_background = 'soft'
-let g:gruvbox_material_better_performance = 1
-
 set background=dark
 " set background=light
-colorscheme edge
+colorscheme everforest
 " colorscheme PaperColor
 
 " insert this line above imap
