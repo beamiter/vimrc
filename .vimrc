@@ -136,7 +136,7 @@ call plug#end()
 
 set background=dark
 " set background=light
-colorscheme everforest
+colorscheme xcode
 " colorscheme PaperColor
 
 " insert this line above imap
