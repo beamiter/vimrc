@@ -252,6 +252,8 @@ map <leader>sf :GFiles<CR>
 map <leader>gf :<Esc>gf<CR>
 nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
+nnoremap <silent> <Leader>st :Ag <CR>
+nnoremap <silent> <Leader>sg :Rg <CR>
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
