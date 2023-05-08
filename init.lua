@@ -77,11 +77,11 @@ vim.api.nvim_command("autocmd FileType c,cpp setlocal tabstop=2")
 local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
 
-map('n', '<F3>', ':NvimTreeFindFileToggle<CR>', opts)
+map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
 -- map("n", "<F3>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
 map("n", "<F4>", ":Vista!!<CR>", opts)
 -- map("n", "<C-n>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
-map('n', '<C-n>', ':NvimTreeFindFileToggle<CR>', opts)
+map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", opts)
 map("n", "=", ":vert res +5<CR>", opts)
 map("n", "-", ":vert res -5<CR>", opts)
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
@@ -223,7 +223,7 @@ require("lazy").setup({
 	},
 
 	"marko-cerovac/material.nvim",
-  'NLKNguyen/papercolor-theme',
+	"NLKNguyen/papercolor-theme",
 	"luisiacc/gruvbox-baby",
 	"folke/tokyonight.nvim",
 	"AlphaTechnolog/onedarker.nvim",
@@ -385,11 +385,11 @@ require("lazy").setup({
 		"ggandor/leap.nvim",
 		config = function()
 			require("leap").add_default_mappings()
-            vim.keymap.del({'x', 'o'}, 'x')
-            vim.keymap.del({'x', 'o'}, 'X')
-            -- To set alternative keys for "exclusive" selection:
-            -- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-forward-till)')
-            -- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-backward-till)')
+			vim.keymap.del({ "x", "o" }, "x")
+			vim.keymap.del({ "x", "o" }, "X")
+			-- To set alternative keys for "exclusive" selection:
+			-- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-forward-till)')
+			-- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-backward-till)')
 		end,
 	},
 
@@ -438,12 +438,12 @@ require("lazy").setup({
 			require("bufferline").setup()
 		end,
 	},
-    {
-        "rcarriga/nvim-notify",
+	{
+		"rcarriga/nvim-notify",
 		config = function()
 			require("notify").setup()
 		end,
-    },
+	},
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
@@ -452,25 +452,25 @@ require("lazy").setup({
 	},
 	"SmiteshP/nvim-navic",
 	{ "echasnovski/mini.nvim", version = false },
-    {
-      "nvim-tree/nvim-tree.lua",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-		"MunifTanjim/nui.nvim",
-      },
-      config = function()
-        require("nvim-tree").setup({
-          sort_by = "case_sensitive",
-          renderer = {
-            group_empty = true,
-          },
-          filters = {
-            dotfiles = true,
-          },
-        })
-      end,
-    },
+	{
+		"nvim-tree/nvim-tree.lua",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+		},
+		config = function()
+			require("nvim-tree").setup({
+				sort_by = "case_sensitive",
+				renderer = {
+					group_empty = true,
+				},
+				filters = {
+					dotfiles = true,
+				},
+			})
+		end,
+	},
 
 	{ "andymass/vim-matchup", event = "VimEnter" },
 
