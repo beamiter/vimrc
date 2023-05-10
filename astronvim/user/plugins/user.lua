@@ -17,11 +17,18 @@ return {
       require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
     end,
   },
-	{
-		"akinsho/bufferline.nvim",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		config = function()
-			require("bufferline").setup()
-		end,
-	},
+  {
+    "akinsho/bufferline.nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function() require("bufferline").setup() end,
+  },
+  {
+    "navarasu/onedark.nvim",
+    config = function()
+      require("onedark").setup {
+        style = "darker",
+      }
+      require("onedark").load()
+    end,
+  },
 }
