@@ -28,7 +28,12 @@ return {
       require("onedark").setup {
         style = "deep",
       }
-      require("onedark").load()
     end,
   },
+  {
+    'Mofiqul/dracula.nvim',
+  },
+  {
+    'Mofiqul/vscode.nvim',
+  }
 }
