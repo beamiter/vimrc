@@ -24,8 +24,8 @@ g.noswapfile = true
 g.nowritebackup = true
 g.vscode_style = "dark"
 g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
-vim.go.background = "light"
--- vim.go.background = "dark"
+-- vim.go.background = "light"
+vim.go.background = "dark"
 
 -- :h lua-vim-opt
 -- vim.opt.guifont = { "JetBrainsMono Nerd Font Regular", ":h11.5"}
