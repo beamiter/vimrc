@@ -376,36 +376,36 @@ require("lazy").setup({
   },
 
   -- Use this instead of hop
-  {
-    "ggandor/flit.nvim",
-    dependencies = { "ggandor/leap.nvim" },
-    config = function()
-      require("flit").setup()
-    end,
-  },
-  {
-    "ggandor/leap.nvim",
-    config = function()
-      require("leap").add_default_mappings()
-      vim.keymap.del({ "x", "o" }, "x")
-      vim.keymap.del({ "x", "o" }, "X")
-      -- To set alternative keys for "exclusive" selection:
-      -- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-forward-till)')
-      -- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-backward-till)')
-    end,
-  },
-
   -- {
-  --   "phaazon/hop.nvim",
+  --   "ggandor/flit.nvim",
+  --   dependencies = { "ggandor/leap.nvim" },
   --   config = function()
-  --     require("hop").setup({ keys = "etovxqpdygfblzhckisuran", jump_on_sole_occurrence = false })
-  --     -- place this in one of your configuration file(s)
-  --     vim.api.nvim_set_keymap("n", "s", "<cmd>lua require'hop'.hint_char2()<cr>", {})
-  --     vim.api.nvim_set_keymap("n", "S", "<cmd>lua require'hop'.hint_char1()<cr>", {})
-  --     vim.api.nvim_set_keymap("n", "f", "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
-  --     vim.api.nvim_set_keymap("n", "F", "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+  --     require("flit").setup()
   --   end,
   -- },
+  -- {
+  --   "ggandor/leap.nvim",
+  --   config = function()
+  --     require("leap").add_default_mappings()
+  --     vim.keymap.del({ "x", "o" }, "x")
+  --     vim.keymap.del({ "x", "o" }, "X")
+  --     -- To set alternative keys for "exclusive" selection:
+  --     -- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-forward-till)')
+  --     -- vim.keymap.set({'x', 'o'}, <some-other-key>, '<Plug>(leap-backward-till)')
+  --   end,
+  -- },
+
+  {
+    "phaazon/hop.nvim",
+    config = function()
+      require("hop").setup({ keys = "etovxqpdygfblzhckisuran", jump_on_sole_occurrence = false })
+      -- place this in one of your configuration file(s)
+      vim.api.nvim_set_keymap("n", "s", "<cmd>lua require'hop'.hint_char2()<cr>", {})
+      vim.api.nvim_set_keymap("n", "S", "<cmd>lua require'hop'.hint_char1()<cr>", {})
+      vim.api.nvim_set_keymap("n", "f", "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<cr>", {})
+      vim.api.nvim_set_keymap("n", "F", "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<cr>", {})
+    end,
+  },
 
   {
     "nvim-lualine/lualine.nvim",
