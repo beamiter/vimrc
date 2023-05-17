@@ -752,7 +752,9 @@ require("lazy").setup({
         end
       end
 
-      require'lspconfig'.ocamllsp.setup{}
+      require 'lspconfig'.ocamllsp.setup {
+        on_attach = on_attach,
+      }
 
       require("mason-lspconfig").setup_handlers({
         -- The first entry (without a key) will be the default handler
