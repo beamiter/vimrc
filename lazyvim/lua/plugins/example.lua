@@ -34,7 +34,7 @@ return {
   -- disable trouble
   { "folke/trouble.nvim",                          enabled = false },
   { "folke/noice.nvim",                            enabled = false },
-  { "MunifTanjim/nui.nvim",                        enabled = false },
+  -- { "MunifTanjim/nui.nvim",                        enabled = false },
   { "JoosepAlviste/nvim-ts-context-commentstring", enabled = false },
   { "echasnovski/mini.comment",                    enabled = false },
   {
