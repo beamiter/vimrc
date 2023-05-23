@@ -137,3 +137,4 @@ cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON .
 29. sudo update-alternatives --config python3
 30. https://www.lazyvim.org/installation
 31. docker run --rm -ti --net=host -e DISPLAY=$DISPLAY
+32. for ocaml developing, use "opam user-setup install" frequently

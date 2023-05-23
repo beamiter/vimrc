@@ -34,7 +34,7 @@ return {
   -- disable trouble
   { "folke/trouble.nvim",                          enabled = false },
   { "JoosepAlviste/nvim-ts-context-commentstring", enabled = false },
-  { "echasnovski/mini.comment", enabled = false },
+  { "echasnovski/mini.comment",                    enabled = false },
   {
     'numToStr/Comment.nvim',
     config = function()
@@ -111,6 +111,7 @@ return {
       servers = {
         -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
+        ocamllsp = { mason = false, },
       },
     },
   },
