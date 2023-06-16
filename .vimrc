@@ -131,12 +131,14 @@ Plug 'mhinz/vim-startify'
 Plug 'mg979/vim-visual-multi'
 Plug 'liuchengxu/vim-which-key'
 Plug 'jdhao/better-escape.vim'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 
 call plug#end()
 
 set background=dark
 " set background=light
-colorscheme xcode
+colorscheme nvcode
 " colorscheme PaperColor
 
 " insert this line above imap
@@ -227,35 +229,37 @@ source $HOME/vimrc/coc.vim
 if 0
 " Use fern as file tree
   nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
-  nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle<CR>
   nnoremap <silent> <leader>e :Fern . -reveal=%:p -drawer -toggle<CR>
   "nnoremap <silent> <F3> :Fern %:h -reveal=%:p -drawer -toggle<CR>
-  "nnoremap <silent> <leader>ft :Fern %:h -reveal=%:p -drawer -toggle<CR>
+  "nnoremap <silent> <leader>e :Fern %:h -reveal=%:p -drawer -toggle<CR>
 else
 " Use coc-explorer as file tree
-  nnoremap <silent> <F3> :CocCommand explorer<CR>
-  nnoremap <silent> <leader>ft :CocCommand explorer<CR>
-  nnoremap <silent> <leader>e :CocCommand explorer<CR>
+  " nnoremap <silent> <F3> :CocCommand explorer<CR>
+  " nnoremap <silent> <leader>e :CocCommand explorer<CR>
+  nnoremap <silent> <F3> :Clap filer<CR>
+  nnoremap <silent> <leader>e :Clap filer<CR>
 endif
 
-"""""""""""""""""" fzf-vim
-function! s:find_git_root()
-  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
-endfunction
-command! ProjectFiles execute 'Files' s:find_git_root()
-map <leader>bb :Buffers<CR>
-map <leader>ff :Files<CR>
-map <leader>fh :History<CR>
-map <leader>fr :History<CR>
-map <leader>pf :GFiles<CR>
-map <leader>sf :GFiles<CR>
-map <leader>gf :<Esc>gf<CR>
-nnoremap <silent> <Leader>sa :Ag <C-R><C-W><CR>
-nnoremap <silent> <Leader>sr :Rg <C-R><C-W><CR>
-nnoremap <silent> <Leader>st :Ag <CR>
-nnoremap <silent> <Leader>sg :Rg <CR>
-let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
+"""""""""""""""""" LeaderF
+let g:Lf_WindowPosition = 'bottom'
+let g:Lf_PreviewInPopup = 1
 
+let g:Lf_ShortcutB = "<leader>bb"
+let g:Lf_ShortcutF = "<leader>ff"
+let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
+noremap <leader>sg :Leaderf rg<CR>
+noremap <leader>fr :Leaderf mru<CR>
+noremap <leader>st :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR><CR>
+" search visually selected text literally
+xnoremap <leader>sg :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR><CR>
+
+"""""""""""""""""" fzf-vim
+map <leader>gf :<Esc>gf<CR>
+" nnoremap <silent> <Leader>st :Ag <C-R><C-W><CR>
+" nnoremap <silent> <Leader>sg :Rg <CR>
+" let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
+
+"""""""""""""""""" easymotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
