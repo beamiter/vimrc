@@ -154,4 +154,4 @@ let g:coc_disable_startup_warning = 1
 " Extensions.
 let g:coc_global_extensions = ['coc-cmake', 'coc-floaterm', 'coc-highlight',
             \'coc-julia', 'coc-rust-analyzer', 'coc-vimlsp', 'coc-yank',
-            \'coc-json', 'coc-clangd', 'coc-pyright'] ", 'coc-pairs', 'coc-explorer'
+            \'coc-json', 'coc-clangd', 'coc-pyright', 'coc-explorer'] ", 'coc-pairs'
