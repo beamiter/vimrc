@@ -142,3 +142,6 @@ cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON .
     https://stackoverflow.com/questions/53165474/ncurses-library-is-unusable-during-a-vim-build
 34. use PackageCompiler.jl to compile a sysimage of LanguageServer.jl.
     :CocCommand julia.CompileLanguageServerSysimg
+35. open notebook in remote machine and open browser in host:
+    jupyter notebook --no-browser --port=8889
+    jupyter lab --no-browser --port=8889
