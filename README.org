@@ -145,3 +145,6 @@ cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON .
 35. open notebook in remote machine and open browser in host:
     jupyter notebook --no-browser --port=8889
     jupyter lab --no-browser --port=8889
+36. how to run pluto in docker:
+    docker run -it -p 8090:8090 julia /bin/bash
+    using Pluto; Pluto.run(host="0.0.0.0", port=8090)
