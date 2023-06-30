@@ -131,7 +131,7 @@ Plug 'mhinz/vim-startify'
 Plug 'mg979/vim-visual-multi'
 Plug 'liuchengxu/vim-which-key'
 Plug 'jdhao/better-escape.vim'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+" Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 
 call plug#end()
