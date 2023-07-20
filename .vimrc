@@ -83,15 +83,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'morhetz/gruvbox'
-Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-Plug 'sainnhe/gruvbox-material'
-Plug 'sainnhe/everforest'
-Plug 'sainnhe/edge'
-Plug 'christianchiarulli/nvcode-color-schemes.vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'srcery-colors/srcery-vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'kdheepak/JuliaFormatter.vim'
@@ -104,10 +95,8 @@ Plug 'preservim/tagbar'
 Plug 'liuchengxu/vista.vim'
 " Plug 'sbdchd/neoformat'
 Plug 'lambdalisue/fern.vim'
-Plug 'dracula/vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 't9md/vim-choosewin'
-Plug 'arzg/vim-colors-xcode'
 " Plug 'tpope/vim-commentary'
 Plug 'tomtom/tcomment_vim'
 Plug 'easymotion/vim-easymotion'
@@ -118,11 +107,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-grepper'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'andymass/vim-matchup'
-Plug 'bluz71/vim-moonfly-colors'
-Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'iandwelker/rose-pine-vim'
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-Plug 'rakr/vim-one'
 Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-rooter'
 " Plug 'puremourning/vimspector'
@@ -133,6 +117,26 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'jdhao/better-escape.vim'
 " Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+
+"""""""""""""""" colorscheme
+Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'bluz71/vim-moonfly-colors'
+Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'iandwelker/rose-pine-vim'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'dracula/vim'
+Plug 'srcery-colors/srcery-vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'morhetz/gruvbox'
+Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'sainnhe/gruvbox-material'
+Plug 'sainnhe/everforest'
+Plug 'sainnhe/edge'
+Plug 'christianchiarulli/nvcode-color-schemes.vim'
+Plug 'arzg/vim-colors-xcode'
+Plug 'rakr/vim-one'
 
 call plug#end()
 
@@ -337,3 +341,40 @@ let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+" ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
+let s:opam_share_dir = system("opam config var share")
+let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
+
+let s:opam_configuration = {}
+
+function! OpamConfOcpIndent()
+  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
+endfunction
+let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
+
+function! OpamConfOcpIndex()
+  execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
+endfunction
+let s:opam_configuration['ocp-index'] = function('OpamConfOcpIndex')
+
+function! OpamConfMerlin()
+  let l:dir = s:opam_share_dir . "/merlin/vim"
+  execute "set rtp+=" . l:dir
+endfunction
+let s:opam_configuration['merlin'] = function('OpamConfMerlin')
+
+let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
+let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
+let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
+for tool in s:opam_packages
+  " Respect package order (merlin should be after ocp-index)
+  if count(s:opam_available_tools, tool) > 0
+    call s:opam_configuration[tool]()
+  endif
+endfor
+" ## end of OPAM user-setup addition for vim / base ## keep this line
+" ## added by OPAM user-setup for vim / ocp-indent ## b3783a309ca0f8a4d1fd6a8a3ccaf0d7 ## you can edit, but keep this line
+if count(s:opam_available_tools,"ocp-indent") == 0
+  source "/mnt/data/.opam/default/share/ocp-indent/vim/indent/ocaml.vim"
+endif
+" ## end of OPAM user-setup addition for vim / ocp-indent ## keep this line
