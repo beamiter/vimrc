@@ -148,3 +148,13 @@ cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON .
 36. how to run pluto in docker:
     docker run -it -p 8090:8090 julia /bin/bash
     using Pluto; Pluto.run(host="0.0.0.0", port=8090)
+37. Use juliaup to manage julia versions
+#+BEGIN_SRC shell
+cargo install juliaup
+#+END_SRC
+38. Edit julia startup.jl, default in ~/.julia/config/startup.jl
+#+BEGIN_SRC julia
+cargo install juliaup
+ENV["JULIA_PKG_SERVER"] = "https://mirrors.ustc.edu.cn/julia"
+ENV["JULIA_DEPOT_PATH"] = "~/.julia"
+#+END_SRC
