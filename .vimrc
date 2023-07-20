@@ -142,8 +142,9 @@ call plug#end()
 
 set background=dark
 " set background=light
-colorscheme nvcode
+" colorscheme nvcode
 " colorscheme PaperColor
+colorscheme one
 
 " insert this line above imap
 call lexima#init()
