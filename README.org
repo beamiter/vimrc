@@ -136,42 +136,64 @@ rustup component add rls rust-analysis rust-src
  #+END_SRC
 7. npm: mkdir ~/.npm-global, npm config set prefix '~/.npm-global', export PATH=~/.npm-global/bin:$PATH
 8. 
-pip3 install -U pip
-pip3 install -U setuptools
-pip3 install --no-cache-dir cairocffi
-23. run appimage in docker: ~/.local/bin/nvim.appimage --appimage-extract-and-run
-    alias nvim="~/.local/bin/nvim.appimage --appimage-extract-and-run"
-24. julia install: sudo ln -s /opt/julia-1.6.6/bin/julia /usr/local/bin/julia
-25. jill for julia version management
-26. bob for neovim version management:
-    cargo install --git https://github.com/MordechaiHadad/bob.git
-27. 
-git config --global user.name "beamiter"
-git config --global user.email "beamiter@163.com"
-git config --global credential.helper store
-28.
-cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON ..
-29. sudo update-alternatives --config python3
-30. https://www.lazyvim.org/installation
-31. docker run --rm -ti --net=host -e DISPLAY=$DISPLAY
-32. for ocaml developing, use "opam user-setup install" frequently
-33. fix vim compile error: CC=clang CXX=clang++ LD=clang LDFLAGS=-fno-lto ./configure ....
-    https://stackoverflow.com/questions/53165474/ncurses-library-is-unusable-during-a-vim-build
-34. use PackageCompiler.jl to compile a sysimage of LanguageServer.jl.
-    :CocCommand julia.CompileLanguageServerSysimg
-35. open notebook in remote machine and open browser in host:
-    jupyter notebook --no-browser --port=8889
-    jupyter lab --no-browser --port=8889
-36. how to run pluto in docker:
-    docker run -it -p 8090:8090 julia /bin/bash
-    using Pluto; Pluto.run(host="0.0.0.0", port=8090)
-37. Use juliaup to manage julia versions
-,#+BEGIN_SRC shell
-cargo install juliaup
+ #+BEGIN_SRC shell
+   pip3 install -U pip
+   pip3 install -U setuptools
+   pip3 install --no-cache-dir cairocffi
+ #+END_SRC
+9. run appimage in docker:
+ #+BEGIN_SRC shell
+   ~/.local/bin/nvim.appimage --appimage-extract-and-run
+   alias nvim="~/.local/bin/nvim.appimage --appimage-extract-and-run"
+ #+END_SRC
+10. julia install: 
+ #+BEGIN_SRC shell
+   sudo ln -s /opt/julia-1.6.6/bin/julia /usr/local/bin/julia
+ #+END_SRC
+11. jill for julia version management
+12. bob for neovim version management:
+ #+BEGIN_SRC shell
+   cargo install bob-nvim
+ #+END_SRC
+13. 
+ #+BEGIN_SRC shell
+   git config --global user.name "beamiter"
+   git config --global user.email "beamiter@163.com"
+   git config --global credential.helper store
+
+   cmake -DGFLAGS_NAMESPACE=google -DCMAKE_CXX_FLAGS=-fPIC -DBUILD_SHARED_LIBS=ON ..
+   sudo update-alternatives --config python3
+   docker run --rm -ti --net=host -e DISPLAY=$DISPLAY
+ #+END_SRC
+14. https://www.lazyvim.org/installation
+15. for ocaml developing, use "opam user-setup install" frequently
+16. fix vim compile error:
+ #+BEGIN_SRC shell
+   CC=clang CXX=clang++ LD=clang LDFLAGS=-fno-lto ./configure ....
+ #+END_SRC
+ https://stackoverflow.com/questions/53165474/ncurses-library-is-unusable-during-a-vim-build
+17. use PackageCompiler.jl to compile a sysimage of LanguageServer.jl.
+ #+BEGIN_SRC shell
+   :CocCommand julia.CompileLanguageServerSysimg
+ #+END_SRC
+18. open notebook in remote machine and open browser in host:
+ #+BEGIN_SRC shell
+   jupyter notebook --no-browser --port=8889
+   jupyter lab --no-browser --port=8889
+ #+END_SRC
+19. how to run pluto in docker:
+ #+BEGIN_SRC shell
+   docker run -it -p 8090:8090 julia /bin/bash
+   using Pluto; Pluto.run(host="0.0.0.0", port=8090)
+ #+END_SRC
+20. Use juliaup to manage julia versions
+ #+BEGIN_SRC shell
+   cargo install juliaup
 #+END_SRC
 38. Edit julia startup.jl, default in ~/.julia/config/startup.jl
 #+BEGIN_SRC julia
-cargo install juliaup
-ENV["JULIA_PKG_SERVER"] = "https://mirrors.ustc.edu.cn/julia"
-ENV["JULIA_DEPOT_PATH"] = "~/.julia"
+  cargo install juliaup
+  ENV["JULIA_PKG_SERVER"] = "https://mirrors.ustc.edu.cn/julia"
+  ENV["JULIA_PKG_SERVER"] = "https://mirrors.cernet.edu.cn/julia"
+  ENV["JULIA_DEPOT_PATH"] = "~/.julia"
 #+END_SRC
