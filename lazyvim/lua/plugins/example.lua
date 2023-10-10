@@ -88,13 +88,9 @@ return {
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
         winblend = 0,
+        previewer = false,
       },
     },
-  },
-
-  -- add telescope-fzf-native
-  {
-    "telescope.nvim",
     dependencies = {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
