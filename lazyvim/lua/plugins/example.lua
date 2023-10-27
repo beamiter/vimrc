@@ -88,7 +88,9 @@ return {
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
         winblend = 0,
-        previewer = false,
+        file_previewer = function() return end,
+        grep_previewer = function() return end,
+        qflist_previewer = function() return end,
       },
     },
     dependencies = {
