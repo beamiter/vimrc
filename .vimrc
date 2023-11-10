@@ -115,8 +115,8 @@ Plug 'mhinz/vim-startify'
 Plug 'mg979/vim-visual-multi'
 Plug 'liuchengxu/vim-which-key'
 Plug 'jdhao/better-escape.vim'
-" Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
-Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+" Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 
 """""""""""""""" colorscheme
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
@@ -245,21 +245,29 @@ else
   " nnoremap <silent> <leader>e :Clap filer<CR>
 endif
 
-"""""""""""""""""" LeaderF
-let g:Lf_WindowPosition = 'bottom'
-let g:Lf_PreviewInPopup = 1
+"""""""""""""""""" Clap
+nnoremap <leader>sg :Clap live_grep<CR>
+nnoremap <leader>st :Clap grep<CR>
+nnoremap <leader>fr :Clap recent_files<CR>
+nnoremap <leader>bb :Clap buffers<CR>
+nnoremap <leader>ff :Clap files<CR>
+nnoremap <leader><Space> :Clap files<CR>
 
-let g:Lf_ShortcutB = "<leader>bb"
-let g:Lf_ShortcutF = "<leader>ff"
-let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
-noremap <leader>sg :Leaderf rg<CR>
-noremap <leader>fr :Leaderf mru<CR>
-noremap <leader>st :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR><CR>
+"""""""""""""""""" LeaderF
+" let g:Lf_WindowPosition = 'bottom'
+" let g:Lf_PreviewInPopup = 1
+
+" let g:Lf_ShortcutB = "<leader>bb"
+" let g:Lf_ShortcutF = "<leader>ff"
+" let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
+" noremap <leader>sg :Leaderf rg<CR>
+" noremap <leader>fr :Leaderf mru<CR>
+" noremap <leader>st :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR><CR>
 " search visually selected text literally
-xnoremap <leader>sg :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR><CR>
+" xnoremap <leader>sg :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR><CR>
 
 """""""""""""""""" fzf-vim
-map <leader>gf :<Esc>gf<CR>
+" map <leader>gf :<Esc>gf<CR>
 " nnoremap <silent> <Leader>st :Ag <C-R><C-W><CR>
 " nnoremap <silent> <Leader>sg :Rg <CR>
 " let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-/']
