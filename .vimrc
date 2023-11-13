@@ -41,6 +41,8 @@ set timeoutlen=500
 set wildmenu
 set mouse=a
 set hlsearch
+set ignorecase
+set smartcase
 
 autocmd FileType c,cpp setlocal shiftwidth=2
 autocmd FileType c,cpp setlocal tabstop=2
