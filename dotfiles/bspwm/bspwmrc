@@ -4,8 +4,8 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 ~/.fehbg &
 
 xsetroot -cursor_name left_ptr &
-bspc monitor HDMI-1 -d I II III IV V
-bspc monitor eDP-1 -d VI VII VIII IX X
+bspc monitor HDMI-1 -d I II III IV V VI VII
+bspc monitor eDP-1 -d VIII IX X
 
 bspc config border_width         2
 bspc config window_gap          6
