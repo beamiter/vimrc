@@ -54,6 +54,11 @@ vim.api.nvim_set_keymap('x', '<space>bf', '<cmd>lua vim.lsp.buf.format()<CR>', {
 --   },
 -- }
 lvim.builtin.telescope.defaults.path_display = { "absolute" }
+lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
+lvim.builtin.telescope.defaults.layout_config.prompt_position = "bottom"
+lvim.builtin.telescope.defaults.layout_config.width = 0.75
+lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
+lvim.builtin.telescope.defaults.initial_mode = "normal"
 
 -- Change theme settings
 
