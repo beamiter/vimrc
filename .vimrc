@@ -217,6 +217,8 @@ xmap <silent><leader>fm <Plug>(coc-format-selected)
 nmap <silent><leader>fm :call CocActionAsync('format')<CR>
 xmap <silent><leader>lf <Plug>(coc-format-selected)
 nmap <silent><leader>lf :call CocActionAsync('format')<CR>
+xmap <silent><leader>cf <Plug>(coc-format-selected)
+nmap <silent><leader>cf :call CocActionAsync('format')<CR>
 
 """""""""""""""" vim-floaterm
 nnoremap   <silent>   <S-F7>    :FloatermPrev<CR>
