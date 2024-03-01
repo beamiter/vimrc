@@ -254,6 +254,7 @@ nnoremap <leader>sg :Clap live_grep<CR>
 nnoremap <leader>st :Clap grep<CR>
 nnoremap <leader>fr :Clap recent_files<CR>
 nnoremap <leader>bb :Clap buffers<CR>
+nnoremap <leader>bf :Clap buffers<CR>
 nnoremap <leader>ff :Clap files<CR>
 nnoremap <leader><Space> :Clap files<CR>
 
