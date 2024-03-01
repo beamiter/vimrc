@@ -22,10 +22,14 @@
       "args": ["config", "exec", "--", "ocamllsp"],
       "filetypes": ["ocaml", "reason"]
     },
+    "rust": {
+      "command": "rust-analyzer",
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml"]
+    },
   },
   "rust-analyzer.inlayHints.typeHints.enable": false,
   "inlayHint.enable": false,
   "pyright.inlayHints.variableTypes": false,
-  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/16.0.2/clangd_16.0.2/bin/clangd"
 }
 
