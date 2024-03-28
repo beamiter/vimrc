@@ -133,21 +133,14 @@ require("lazy").setup({
   },
   "dyng/ctrlsf.vim",
   "junegunn/fzf.vim",
-  { "junegunn/fzf",                    dir = "~/.fzf", run = "./install --all" },
+  { "junegunn/fzf",                        dir = "~/.fzf", run = "./install --all" },
   "preservim/tagbar",
   "liuchengxu/vista.vim",
   "EdenEast/nightfox.nvim",
   "lunarvim/horizon.nvim",
 
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    config = function()
-      require("indent_blankline").setup({
-        show_current_context = true,
-        show_current_context_start = true,
-      })
-    end,
-  },
+  { "lukas-reineke/indent-blankline.nvim", main = "ibl",   opts = {} },
+  { "nvim-neotest/nvim-nio" },
 
   "tpope/vim-fugitive",
 
