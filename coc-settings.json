@@ -31,5 +31,6 @@
   "rust-analyzer.inlayHints.typeHints.enable": false,
   "inlayHint.enable": false,
   "pyright.inlayHints.variableTypes": false,
+  "zig.zls.path": "/home/mm/.config/coc/extensions/coc-zls-data/zls_install/zls",
 }
 
