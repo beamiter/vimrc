@@ -79,7 +79,6 @@ local map = vim.api.nvim_set_keymap
 
 map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
 -- map("n", "<F3>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
-map("n", "<F4>", ":Vista!!<CR>", opts)
 -- map("n", "<C-n>", ":Neotree toggle left reveal_force_cwd<CR>", opts)
 map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", opts)
 map("n", "=", ":vert res +5<CR>", opts)
@@ -135,7 +134,6 @@ require("lazy").setup({
   "junegunn/fzf.vim",
   { "junegunn/fzf",                        dir = "~/.fzf", run = "./install --all" },
   "preservim/tagbar",
-  "liuchengxu/vista.vim",
   "EdenEast/nightfox.nvim",
   "lunarvim/horizon.nvim",
 
@@ -455,31 +453,64 @@ require("lazy").setup({
       "MunifTanjim/nui.nvim",
     },
     config = function()
-      local function on_attach(bufnr)
-        local api = require('nvim-tree.api')
+      local function my_on_attach(bufnr)
+        local api = require "nvim-tree.api"
         local function opts(desc)
-          return {
-            desc = 'nvim-tree: ' .. desc,
-            buffer = bufnr,
-            noremap = true,
-            silent = true,
-            nowait = true
-          }
+          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
         end
-        vim.keymap.set('n', 'w', api.node.open.edit, opts('Open'))
+        local function edit_or_open()
+          local node = api.tree.get_node_under_cursor()
+          if node.nodes ~= nil then
+            -- expand or collapse folder
+            api.node.open.edit()
+          else
+            -- open file
+            api.node.open.edit()
+            -- Close the tree if file was opened
+            api.tree.close()
+          end
+        end
+        -- open as vsplit on current node
+        local function vsplit_preview()
+          local node = api.tree.get_node_under_cursor()
+          if node.nodes ~= nil then
+            -- expand or collapse folder
+            api.node.open.edit()
+          else
+            -- open file as vsplit
+            api.node.open.vertical()
+          end
+          -- Finally refocus on tree if it was lost
+          api.tree.focus()
+        end
+        -- default mappings
+        api.config.mappings.default_on_attach(bufnr)
+        -- custom mappings
+        vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, opts('Up'))
+        vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+        -- global
+        vim.api.nvim_set_keymap("n", "<C-h>", ":NvimTreeToggle<cr>", { silent = true, noremap = true })
+        -- on_attach
+        vim.keymap.set("n", "l", edit_or_open, opts("Edit Or Open"))
+        vim.keymap.set("n", "h", api.node.navigate.parent_close, opts "Close Directory")
+        vim.keymap.set("n", "o", api.node.open.edit, opts "Open")
+        vim.keymap.set("n", "w", api.node.open.edit, opts "Open")
+        vim.keymap.set("n", "H", api.tree.collapse_all, opts("Collapse All"))
       end
       require("nvim-tree").setup({
-        sort_by = "case_sensitive",
-        renderer = {
-          group_empty = true,
+        sort = {
+          sorter = "case_sensitive",
         },
         view = {
           width = 30,
         },
+        renderer = {
+          group_empty = true,
+        },
         filters = {
           dotfiles = true,
         },
-        -- on_attach = on_attach,
+        on_attach = my_on_attach,
       })
     end,
   },
