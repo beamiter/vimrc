@@ -87,6 +87,7 @@ map("n", "<C-Right>", ":vert res +5<CR>", opts)
 map("n", "<C-Left>", ":vert res -5<CR>", opts)
 map("n", "[g", ":Gitsigns prev_hunk<CR>", opts)
 map("n", "]g", ":Gitsigns next_hunk<CR>", opts)
+map("n", "<leader><leader>", ":Telescope find_files<CR>", opts)
 map("n", "<leader>gj", ":Gitsigns next_hunk<CR>", opts)
 map("n", "<leader>gk", ":Gitsigns prev_hunk<CR>", opts)
 map("n", "<leader>1", "<Cmd>BufferLineGoToBuffer 1<CR>", opts)
@@ -99,6 +100,16 @@ map("n", "<leader>7", "<Cmd>BufferLineGoToBuffer 7<CR>", opts)
 map("n", "<leader>8", "<Cmd>BufferLineGoToBuffer 8<CR>", opts)
 map("n", "<leader>9", "<Cmd>BufferLineGoToBuffer 9<CR>", opts)
 map("n", "<leader>0", "<Cmd>BufferLineGoToBuffer 10<CR>", opts)
+map("n", "<localleader>1", ":<C-u>1 wincmd w<CR>", opts)
+map("n", "<localleader>2", ":<C-u>2 wincmd w<CR>", opts)
+map("n", "<localleader>3", ":<C-u>3 wincmd w<CR>", opts)
+map("n", "<localleader>4", ":<C-u>4 wincmd w<CR>", opts)
+map("n", "<localleader>5", ":<C-u>5 wincmd w<CR>", opts)
+map("n", "<localleader>6", ":<C-u>6 wincmd w<CR>", opts)
+map("n", "<localleader>7", ":<C-u>7 wincmd w<CR>", opts)
+map("n", "<localleader>8", ":<C-u>8 wincmd w<CR>", opts)
+map("n", "<localleader>9", ":<C-u>9 wincmd w<CR>", opts)
+map("n", "<localleader>0", ":<C-u>10 wincmd w<CR>", opts)
 map("n", "<leader>bd", ":bd<CR>", opts)
 map("n", "<leader>bj", "<Cmd>BufferLinePick<CR>", opts)
 map("n", "<leader>So", "<cmd>lua require('spectre').open()<CR>", {})
@@ -345,6 +356,9 @@ require("lazy").setup({
               ["<C-p>"] = actions.move_selection_previous,
             },
           },
+          file_previewer = function() return end,
+          grep_previewer = function() return end,
+          qflist_previewer = function() return end,
         },
       })
     end,
@@ -508,7 +522,7 @@ require("lazy").setup({
           group_empty = true,
         },
         filters = {
-          dotfiles = true,
+          dotfiles = false,
         },
         on_attach = my_on_attach,
       })
@@ -684,11 +698,6 @@ require("lazy").setup({
     "neovim/nvim-lspconfig",
     dependencies = { "SmiteshP/nvim-navic" },
     config = function()
-      vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
-      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-      vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-      vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
-
       -- Use an on_attach function to only map the following keys
       -- after the language server attaches to the current buffer
       local on_attach = function(client, bufnr)
@@ -698,6 +707,14 @@ require("lazy").setup({
         -- Mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         -- local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        vim.keymap.set("n", "<space>e", vim.diagnostic.open_float,
+          { noremap = true, silent = true, buffer = bufnr, desc = "diagnostic open" })
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,
+          { noremap = true, silent = true, buffer = bufnr, desc = "prev diagnostic" })
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_next,
+          { noremap = true, silent = true, buffer = bufnr, desc = "next diagnostic" })
+        vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist,
+          { noremap = true, silent = true, buffer = bufnr, desc = "diagnostic list" })
         vim.keymap.set(
           "n",
           "gD",
