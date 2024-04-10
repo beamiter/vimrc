@@ -1,2 +1,2 @@
-rm ~/.config/nvim/lua/custom
-ln -s ~/vimrc/nvchad/custom ~/.config/nvim/lua/custom
+rm ~/.config/nvim/ -rf
+ln -s ~/vimrc/nvchad/starter ~/.config/nvim
