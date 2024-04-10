@@ -787,6 +787,12 @@ require("lazy").setup({
         vim.keymap.set({ "n", "x", "v" }, "<space>fm", function()
           vim.lsp.buf.format({ async = true })
         end, { noremap = true, silent = true, buffer = bufnr, desc = "format" })
+        vim.keymap.set({ "n", "x", "v" }, "<space>bf", function()
+          vim.lsp.buf.format({ async = true })
+        end, { noremap = true, silent = true, buffer = bufnr, desc = "buffer format" })
+        vim.keymap.set({ "n", "x", "v" }, "<space>cf", function()
+          vim.lsp.buf.format({ async = true })
+        end, { noremap = true, silent = true, buffer = bufnr, desc = "code format" })
         local navic = require("nvim-navic")
         if client.server_capabilities.documentSymbolProvider then
           navic.attach(client, bufnr)
