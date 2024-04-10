@@ -243,8 +243,8 @@ if 0
   "nnoremap <silent> <leader>e :Fern %:h -reveal=%:p -drawer -toggle<CR>
 else
 " Use coc-explorer as file tree
-  nnoremap <silent> <F3> :CocCommand explorer<CR>
-  nnoremap <silent> <leader>e :CocCommand explorer<CR>
+  nnoremap <silent> <F3> :CocCommand explorer --width 60<CR>
+  nnoremap <silent> <leader>e :CocCommand explorer --width 60<CR>
   " nnoremap <silent> <F3> :Clap filer<CR>
   " nnoremap <silent> <leader>e :Clap filer<CR>
 endif
