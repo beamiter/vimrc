@@ -505,7 +505,7 @@ require("lazy").setup({
         -- global
         vim.api.nvim_set_keymap("n", "<C-h>", ":NvimTreeToggle<cr>", { silent = true, noremap = true })
         -- on_attach
-        vim.keymap.set("n", "l", edit_or_open, opts("Edit Or Open"))
+        vim.keymap.set("n", "l", api.node.open.edit, opts("Edit Or Open"))
         vim.keymap.set("n", "h", api.node.navigate.parent_close, opts "Close Directory")
         vim.keymap.set("n", "o", api.node.open.edit, opts "Open")
         vim.keymap.set("n", "w", api.node.open.edit, opts "Open")
@@ -594,14 +594,28 @@ require("lazy").setup({
   "hrsh7th/cmp-cmdline",
   "hrsh7th/cmp-vsnip",
   "hrsh7th/vim-vsnip",
-  { "rafamadriz/friendly-snippets" },
   "RRethy/vim-illuminate",
 
   {
     "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
     end,
+    keys = {
+      {
+        "<tab>",
+        function()
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+        end,
+        expr = true,
+        silent = true,
+        mode = "i",
+      },
+      { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
+      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+    },
+
   },
 
   {
@@ -621,6 +635,7 @@ require("lazy").setup({
 
   {
     "hrsh7th/nvim-cmp",
+    dependencies = { 'saadparwaiz1/cmp_luasnip' },
     config = function()
       -- Setup nvim-cmp.
       local cmp = require("cmp")
@@ -822,7 +837,7 @@ require("lazy").setup({
     end,
   },
 
-  { "dracula/vim",                 as = "dracula" },
+  { "dracula/vim", as = "dracula" },
 })
 
 vim.cmd([[
