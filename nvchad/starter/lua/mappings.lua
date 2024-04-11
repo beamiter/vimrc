@@ -31,5 +31,11 @@ map("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<CR>", { desc = "buffer 7" })
 map("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<CR>", { desc = "buffer 8" })
 map("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<CR>", { desc = "buffer 9" })
 map("n", "<leader>0", "<cmd>BufferLineGoToBuffer 10<CR>", { desc = "buffer 10" })
+map("n", "<leader>cf", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "Format Files" })
+map("n", "<leader>bf", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "Format Files" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
