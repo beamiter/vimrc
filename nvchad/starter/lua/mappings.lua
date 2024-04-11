@@ -11,7 +11,7 @@ nomap("n", "<S-tab>")
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 -- map("i", "jk", "<ESC>")
-map("n", "<F3>", "<cmd>NvimTreeToggle<CR>", { desc = "NvimTree Toggle window" })
+map("n", "<F3>", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "NvimTree Toggle window" })
 map("n", "s", "<cmd>lua require'hop'.hint_char2()<CR>", { desc = "" })
 map("n", "S", "<cmd>lua require'hop'.hint_char1()<CR>", { desc = "" })
 map("n", "[g", ":Gitsigns prev_hunk<CR>", { desc = "prev hunk" })

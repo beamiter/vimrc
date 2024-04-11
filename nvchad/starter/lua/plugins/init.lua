@@ -54,6 +54,7 @@ return {
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
     },
+    lazy = false,
     config = function()
       local function my_on_attach(bufnr)
         local api = require "nvim-tree.api"
