@@ -33,8 +33,8 @@ lvim.keys.normal_mode['s'] = "<cmd>lua require'hop'.hint_char2()<CR>"
 lvim.keys.normal_mode['S'] = "<cmd>lua require'hop'.hint_char1()<CR>"
 lvim.keys.normal_mode['f'] = "<cmd>lua require'hop'.hint_char2({ current_line_only = true })<CR>"
 lvim.keys.normal_mode['F'] = "<cmd>lua require'hop'.hint_char1({ current_line_only = true })<CR>"
-vim.api.nvim_set_keymap('x', '<space>fm', '<cmd>lua vim.lsp.buf.format()<CR>', {})
-vim.api.nvim_set_keymap('x', '<space>bf', '<cmd>lua vim.lsp.buf.format()<CR>', {})
+-- vim.api.nvim_set_keymap('x', '<space>fm', '<cmd>lua vim.lsp.buf.format()<CR>', {})
+-- vim.api.nvim_set_keymap('x', '<space>bf', '<cmd>lua vim.lsp.buf.format()<CR>', {})
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
