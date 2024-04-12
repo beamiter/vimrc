@@ -211,6 +211,20 @@ lvim.plugins = {
 		-- 	require("rust-tools").setup()
 		-- end,
 	},
+  {
+    "junegunn/fzf",
+    build = "./install --bin",
+  },
+  {
+    "ibhagwan/fzf-lua",
+    lazy = false,
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup {}
+    end,
+  },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
