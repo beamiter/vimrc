@@ -58,7 +58,7 @@ lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
 lvim.builtin.telescope.defaults.layout_config.prompt_position = "bottom"
 lvim.builtin.telescope.defaults.layout_config.width = 0.75
 lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
-lvim.builtin.telescope.defaults.initial_mode = "normal"
+lvim.builtin.telescope.defaults.initial_mode = "insert"
 
 -- Change theme settings
 
@@ -73,7 +73,7 @@ lvim.builtin.telescope.defaults.initial_mode = "normal"
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
-lvim.keys.normal_mode["<leader><leader>"] = ":Telescope buffers<CR>"
+lvim.keys.normal_mode["<leader><leader>"] = ":Telescope find_files<CR>"
 lvim.keys.normal_mode["<leader>1"] = ":BufferLineGoToBuffer 1<CR>"
 lvim.keys.normal_mode["<leader>2"] = ":BufferLineGoToBuffer 2<CR>"
 lvim.keys.normal_mode["<leader>3"] = ":BufferLineGoToBuffer 3<CR>"
