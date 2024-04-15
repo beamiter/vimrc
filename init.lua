@@ -133,7 +133,7 @@ require("lazy").setup({
       -- })
     end,
   },
-  "nvim-lua/plenary.nvim",
+  { "nvim-lua/plenary.nvim", cmd = { "PlenaryBustedFile", "PlenaryBustedDirectory" }, lazy = true },
   "lewis6991/impatient.nvim",
   {
     "windwp/nvim-autopairs",
@@ -143,12 +143,20 @@ require("lazy").setup({
   },
   "dyng/ctrlsf.vim",
   "junegunn/fzf.vim",
-  { "junegunn/fzf",                        dir = "~/.fzf", run = "./install --all" },
+  { "junegunn/fzf",          dir = "~/.fzf",                                          run = "./install --all" },
   "preservim/tagbar",
   "EdenEast/nightfox.nvim",
   "lunarvim/horizon.nvim",
 
-  { "lukas-reineke/indent-blankline.nvim", main = "ibl",   opts = {} },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
+    config = function()
+      require("ibl").setup(
+      )
+    end,
+  },
   { "nvim-neotest/nvim-nio" },
 
   "tpope/vim-fugitive",
@@ -210,6 +218,15 @@ require("lazy").setup({
   "nvim-treesitter/nvim-treesitter-textobjects",
   {
     "nvim-treesitter/nvim-treesitter",
+    cmd = {
+      "TSInstall",
+      "TSUninstall",
+      "TSUpdate",
+      "TSUpdateSync",
+      "TSInstallInfo",
+      "TSInstallSync",
+      "TSInstallFromGrammar",
+    },
     config = function()
       require("nvim-treesitter.configs").setup({
         -- A list of parser names, or "all" (the four listed parsers should always be installed)
@@ -225,11 +242,17 @@ require("lazy").setup({
       })
     end,
   },
+  {
+    -- Lazy loaded by Comment.nvim pre_hook
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    lazy = true,
+  },
 
   "marko-cerovac/material.nvim",
   "NLKNguyen/papercolor-theme",
   "luisiacc/gruvbox-baby",
   "folke/tokyonight.nvim",
+  "lunarvim/lunar.nvim",
   "AlphaTechnolog/onedarker.nvim",
   "rebelot/kanagawa.nvim",
   "tomasiser/vim-code-dark",
@@ -344,6 +367,7 @@ require("lazy").setup({
   "cljoly/telescope-repo.nvim",
   {
     "nvim-telescope/telescope.nvim",
+    dependencies = { "telescope-fzf-native.nvim" },
     config = function()
       local actions = require("telescope.actions")
       require("telescope").setup({
@@ -363,6 +387,7 @@ require("lazy").setup({
       })
     end,
   },
+  { "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true },
 
   "ntpeters/vim-better-whitespace",
   "mhinz/vim-grepper",
@@ -458,7 +483,99 @@ require("lazy").setup({
     end,
   },
   "SmiteshP/nvim-navic",
-  { "echasnovski/mini.nvim", version = false },
+  { "echasnovski/mini.nvim",                    version = false },
+  {
+    "tamago324/lir.nvim",
+    config = function()
+      local actions = require 'lir.actions'
+      local mark_actions = require 'lir.mark.actions'
+      local clipboard_actions = require 'lir.clipboard.actions'
+
+      require 'lir'.setup {
+        show_hidden_files = false,
+        ignore = {}, -- { ".DS_Store", "node_modules" } etc.
+        devicons = {
+          enable = false,
+          highlight_dirname = false
+        },
+        mappings = {
+          ['l']     = actions.edit,
+          ['<C-s>'] = actions.split,
+          ['<C-v>'] = actions.vsplit,
+          ['<C-t>'] = actions.tabedit,
+
+          ['h']     = actions.up,
+          ['q']     = actions.quit,
+
+          ['K']     = actions.mkdir,
+          ['N']     = actions.newfile,
+          ['R']     = actions.rename,
+          ['@']     = actions.cd,
+          ['Y']     = actions.yank_path,
+          ['.']     = actions.toggle_show_hidden,
+          ['D']     = actions.delete,
+
+          ['J']     = function()
+            mark_actions.toggle_mark()
+            vim.cmd('normal! j')
+          end,
+          ['C']     = clipboard_actions.copy,
+          ['X']     = clipboard_actions.cut,
+          ['P']     = clipboard_actions.paste,
+        },
+        float = {
+          winblend = 0,
+          curdir_window = {
+            enable = false,
+            highlight_dirname = false
+          },
+
+          -- -- You can define a function that returns a table to be passed as the third
+          -- -- argument of nvim_open_win().
+          -- win_opts = function()
+          --   local width = math.floor(vim.o.columns * 0.8)
+          --   local height = math.floor(vim.o.lines * 0.8)
+          --   return {
+          --     border = {
+          --       "+", "─", "+", "│", "+", "─", "+", "│",
+          --     },
+          --     width = width,
+          --     height = height,
+          --     row = 1,
+          --     col = math.floor((vim.o.columns - width) / 2),
+          --   }
+          -- end,
+        },
+        hide_cursor = true
+      }
+
+      vim.api.nvim_create_autocmd({ 'FileType' }, {
+        pattern = { "lir" },
+        callback = function()
+          -- use visual mode
+          vim.api.nvim_buf_set_keymap(
+            0,
+            "x",
+            "J",
+            ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
+            { noremap = true, silent = true }
+          )
+
+          -- echo cwd
+          vim.api.nvim_echo({ { vim.fn.expand("%:p"), "Normal" } }, false, {})
+        end
+      })
+
+      -- custom folder icon
+      require 'nvim-web-devicons'.set_icon({
+        lir_folder_icon = {
+          icon = "",
+          color = "#7ebae4",
+          name = "LirFolderNode"
+        }
+      })
+    end,
+  },
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = {
@@ -529,7 +646,7 @@ require("lazy").setup({
     end,
   },
 
-  { "andymass/vim-matchup",  event = "VimEnter" },
+  { "andymass/vim-matchup",         event = "VimEnter" },
 
   {
     "lewis6991/gitsigns.nvim",
@@ -537,6 +654,17 @@ require("lazy").setup({
     config = function()
       require("gitsigns").setup()
     end,
+  },
+
+  {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
   },
 
   {
@@ -563,6 +691,21 @@ require("lazy").setup({
           s = { "<C-W>s", "split-window-below" },
           v = { "<C-W>v", "split-window-right" },
         },
+        g = {
+          name = "git",
+        },
+        r = {
+          name = "aux",
+        },
+        c = {
+          name = "code",
+        },
+        d = {
+          name = "debug",
+        },
+        S = {
+          name = "spectre",
+        },
         f = {
           name = "files",
           t = { ":NvimTreeFindFileToggle<CR>", "tree toggle" },
@@ -574,14 +717,55 @@ require("lazy").setup({
         },
         s = {
           name = "search",
-          t = { ":Telescope live_grep<CR>", "live_grep" },
           g = { ":Telescope grep_string<CR>", "grep_string" },
           a = { ":Ag <C-R><C-W><CR>", "ag current" },
           r = { ":Rg <C-R><C-W><CR>", "rg current" },
+          b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
+          c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
+          f = { "<cmd>Telescope find_files<cr>", "Find File" },
+          h = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+          H = { "<cmd>Telescope highlights<cr>", "Find highlight groups" },
+          M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
+          o = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+          R = { "<cmd>Telescope registers<cr>", "Registers" },
+          t = { "<cmd>Telescope live_grep<cr>", "Text" },
+          k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+          C = { "<cmd>Telescope commands<cr>", "Commands" },
+          l = { "<cmd>Telescope resume<cr>", "Resume last search" },
+          p = {
+            "<cmd>lua require('telescope.builtin').colorscheme({enable_preview = true})<cr>",
+            "Colorscheme with Preview",
+          },
         },
         b = {
           name = "buffers",
           b = { ":Telescope buffers<CR>", "buffers" },
+        },
+        l = {
+          name = "LSP",
+          a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
+          d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<cr>", "Buffer Diagnostics" },
+          w = { "<cmd>Telescope diagnostics<cr>", "Diagnostics" },
+          f = { "<cmd>lua require('lvim.lsp.utils').format()<cr>", "Format" },
+          i = { "<cmd>LspInfo<cr>", "Info" },
+          I = { "<cmd>Mason<cr>", "Mason Info" },
+          j = {
+            "<cmd>lua vim.diagnostic.goto_next()<cr>",
+            "Next Diagnostic",
+          },
+          k = {
+            "<cmd>lua vim.diagnostic.goto_prev()<cr>",
+            "Prev Diagnostic",
+          },
+          l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
+          q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
+          r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
+          s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
+          S = {
+            "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+            "Workspace Symbols",
+          },
+          e = { "<cmd>Telescope quickfix<cr>", "Telescope Quickfix" },
         },
         L = { ":Lazy<CR>", "lazy" },
       }, { prefix = "<leader>" })
@@ -601,17 +785,28 @@ require("lazy").setup({
     dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
+      require("luasnip.loaders.from_lua").lazy_load()
+      require("luasnip.loaders.from_snipmate").lazy_load()
     end,
   },
 
   {
     "williamboman/mason.nvim",
+    cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
     config = function()
       require("mason").setup({})
     end,
+    build = function()
+      pcall(function()
+        require("mason-registry").refresh()
+      end)
+    end,
   },
+  { "tamago324/nlsp-settings.nvim", cmd = "LspSettings", lazy = true },
+  { "nvimtools/none-ls.nvim",       lazy = true },
   {
     "williamboman/mason-lspconfig.nvim",
+    cmd = { "LspInstall", "LspUninstall" },
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "rust_analyzer" },
@@ -619,17 +814,39 @@ require("lazy").setup({
     end,
   },
 
+  { "hrsh7th/cmp-nvim-lsp",     lazy = true },
+  { "saadparwaiz1/cmp_luasnip", lazy = true },
+  { "hrsh7th/cmp-buffer",       lazy = true },
+  { "hrsh7th/cmp-path",         lazy = true },
+  {
+    "hrsh7th/cmp-cmdline",
+    lazy = true,
+  },
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { 'saadparwaiz1/cmp_luasnip' },
+    dependencies = { 'saadparwaiz1/cmp_luasnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
     config = function()
       -- Setup nvim-cmp.
+      local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
+      if not status_cmp_ok then
+        return
+      end
+      local ConfirmBehavior = cmp_types.ConfirmBehavior
+      local SelectBehavior = cmp_types.SelectBehavior
       local cmp = require("cmp")
       local default = {
         snippet = {
           expand = function(args)
             require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
           end,
+        },
+        confirm_opts = {
+          behavior = ConfirmBehavior.Replace,
+          select = true,
+        },
+        completion = {
+          ---@usage The minimum length of a word to complete on.
+          keyword_length = 1,
         },
         formatting = {
           format = function(entry, vim_item)
@@ -660,11 +877,13 @@ require("lazy").setup({
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-            elseif require("luasnip").expand_or_jumpable() then
-              vim.fn.feedkeys(
-                vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true),
-                ""
-              )
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            elseif jumpable(1) then
+              luasnip.jump(1)
+            elseif has_words_before() then
+              -- cmp.complete()
+              fallback()
             else
               fallback()
             end
@@ -672,11 +891,8 @@ require("lazy").setup({
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif require("luasnip").jumpable(-1) then
-              vim.fn.feedkeys(
-                vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true),
-                ""
-              )
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
             else
               fallback()
             end
@@ -688,6 +904,13 @@ require("lazy").setup({
           { name = "buffer" },
           { name = "nvim_lua" },
           { name = "path" },
+          { name = "nvim_lua" },
+          { name = "buffer" },
+          { name = "calc" },
+          { name = "emoji" },
+          { name = "treesitter" },
+          { name = "crates" },
+          { name = "tmux" },
         },
       }
 
@@ -697,7 +920,7 @@ require("lazy").setup({
 
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "SmiteshP/nvim-navic" },
+    dependencies = { "SmiteshP/nvim-navic", "mason-lspconfig.nvim", "nlsp-settings.nvim" },
     config = function()
       -- Use an on_attach function to only map the following keys
       -- after the language server attaches to the current buffer
