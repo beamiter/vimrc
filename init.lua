@@ -798,25 +798,11 @@ require("lazy").setup({
     end,
   },
 
-  { "hrsh7th/cmp-nvim-lsp",     lazy = true },
-  { "saadparwaiz1/cmp_luasnip", lazy = true },
-  { "hrsh7th/cmp-buffer",       lazy = true },
-  { "hrsh7th/cmp-path",         lazy = true },
-  {
-    "hrsh7th/cmp-cmdline",
-    lazy = true,
-  },
   {
     "hrsh7th/nvim-cmp",
     dependencies = { 'saadparwaiz1/cmp_luasnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
     config = function()
       -- Setup nvim-cmp.
-      local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
-      if not status_cmp_ok then
-        return
-      end
-      local ConfirmBehavior = cmp_types.ConfirmBehavior
-      local SelectBehavior = cmp_types.SelectBehavior
       local cmp = require("cmp")
       local default = {
         snippet = {
@@ -825,7 +811,6 @@ require("lazy").setup({
           end,
         },
         confirm_opts = {
-          behavior = ConfirmBehavior.Replace,
           select = true,
         },
         completion = {
