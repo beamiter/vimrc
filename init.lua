@@ -760,12 +760,6 @@ require("lazy").setup({
     end,
   },
 
-  "hrsh7th/cmp-nvim-lsp",
-  "hrsh7th/cmp-buffer",
-  "hrsh7th/cmp-path",
-  "hrsh7th/cmp-cmdline",
-  "hrsh7th/cmp-vsnip",
-  "hrsh7th/vim-vsnip",
   "RRethy/vim-illuminate",
 
   {
@@ -798,6 +792,9 @@ require("lazy").setup({
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-vsnip",
+      "hrsh7th/vim-vsnip",
     },
 
     opts = function()
@@ -845,8 +842,8 @@ require("lazy").setup({
         }),
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
-          { name = 'vsnip' }, -- For vsnip users.
-          -- { name = 'luasnip' }, -- For luasnip users.
+          -- { name = 'vsnip' }, -- For vsnip users.
+          { name = 'luasnip' }, -- For luasnip users.
           -- { name = 'ultisnips' }, -- For ultisnips users.
           -- { name = 'snippy' }, -- For snippy users.
         }, {
@@ -856,9 +853,9 @@ require("lazy").setup({
           fields = { "kind", "abbr", "menu" },
           max_width = 0,
           source_names = {
+            buffer = "(Buffer)",
             nvim_lsp = "(LSP)",
             luasnip = "(Snippet)",
-            buffer = "(Buffer)",
             path = "(Path)",
             calc = "(Calc)",
             vsnip = "(Snippet)",
@@ -869,7 +866,7 @@ require("lazy").setup({
           duplicates = {
             buffer = 1,
             path = 1,
-            nvim_lsp = 0,
+            nvim_lsp = 1,
             luasnip = 1,
           },
           duplicates_default = 0,
@@ -892,55 +889,27 @@ require("lazy").setup({
         sorting = defaults.sorting,
       }
     end,
-    config = function(_, opts)
+    config = function(_, opts0)
       local cmp = require("cmp")
-      cmp.setup(opts)
+      cmp.setup(opts0)
     end,
   },
 
-  -- snippets
   {
     "L3MON4D3/LuaSnip",
     build = "make install_jsregexp",
     dependencies = {
+      "saadparwaiz1/cmp_luasnip",
       {
         "rafamadriz/friendly-snippets",
         config = function()
           require("luasnip.loaders.from_vscode").lazy_load()
         end,
       },
-      {
-        "nvim-cmp",
-        dependencies = {
-          "saadparwaiz1/cmp_luasnip",
-        },
-        opts = function(_, opts)
-          opts.snippet = {
-            expand = function(args)
-              require("luasnip").lsp_expand(args.body)
-            end,
-          }
-          table.insert(opts.sources, { name = "luasnip" })
-        end,
-      },
     },
     opts = {
       history = true,
       delete_check_events = "TextChanged",
-    },
-    -- stylua: ignore
-    keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true,
-        silent = true,
-        mode = "i",
-      },
-      { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
   },
 
