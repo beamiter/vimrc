@@ -794,31 +794,21 @@ require("lazy").setup({
 
   {
     "hrsh7th/nvim-cmp",
-    version = false, -- last release is way too old
-    event = "InsertEnter",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
     },
-    -- Not all LSP servers add brackets when completing a function.
-    -- To better deal with this, LazyVim adds a custom option to cmp,
-    -- that you can configure. For example:
-    --
-    -- ```lua
-    -- opts = {
-    --   auto_brackets = { "python" }
-    -- }
-    -- ```
 
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
+      local luasnip = require("luasnip")
       local defaults = require("cmp.config.default")()
       return {
-        auto_brackets = {}, -- configure any filetype to auto add brackets
-        completion = {
-          completeopt = "menu,menuone,noinsert",
+        confirm_opts = {
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = false,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -827,60 +817,91 @@ require("lazy").setup({
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            elseif luasnip.jumpable(1) then
+              luasnip.jump(1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
           ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<S-CR>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
           }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<C-CR>"] = function(fallback)
-            cmp.abort()
-            fallback()
-          end,
         }),
         sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "path" },
+          { name = 'nvim_lsp' },
+          { name = 'vsnip' }, -- For vsnip users.
+          -- { name = 'luasnip' }, -- For luasnip users.
+          -- { name = 'ultisnips' }, -- For ultisnips users.
+          -- { name = 'snippy' }, -- For snippy users.
         }, {
-          { name = "buffer" },
+          { name = 'buffer' },
         }),
         formatting = {
-          format = function(_, item)
-            return item
-          end,
+          fields = { "kind", "abbr", "menu" },
+          max_width = 0,
+          source_names = {
+            nvim_lsp = "(LSP)",
+            luasnip = "(Snippet)",
+            buffer = "(Buffer)",
+            path = "(Path)",
+            calc = "(Calc)",
+            vsnip = "(Snippet)",
+            tmux = "(TMUX)",
+            emoji = "(Emoji)",
+            treesitter = "(TreeSitter)",
+          },
+          duplicates = {
+            buffer = 1,
+            path = 1,
+            nvim_lsp = 0,
+            luasnip = 1,
+          },
+          duplicates_default = 0,
         },
         experimental = {
           ghost_text = {
             hl_group = "CmpGhostText",
           },
+          native_menu = false,
+        },
+        completion = {
+          ---@usage The minimum length of a word to complete on.
+          keyword_length = 1,
+        },
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
         },
         sorting = defaults.sorting,
       }
     end,
-    ---@param opts cmp.ConfigSchema | {auto_brackets?: string[]}
     config = function(_, opts)
-      for _, source in ipairs(opts.sources) do
-        source.group_index = source.group_index or 1
-      end
       local cmp = require("cmp")
-      local Kind = cmp.lsp.CompletionItemKind
       cmp.setup(opts)
-      cmp.event:on("confirm_done", function(event)
-        if not vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
-          return
-        end
-        local entry = event.entry
-        local item = entry:get_completion_item()
-        if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) then
-          local keys = vim.api.nvim_replace_termcodes("()<left>", false, false, true)
-          vim.api.nvim_feedkeys(keys, "i", true)
-        end
-      end)
     end,
   },
 
   -- snippets
   {
     "L3MON4D3/LuaSnip",
+    build = "make install_jsregexp",
     dependencies = {
       {
         "rafamadriz/friendly-snippets",
@@ -920,30 +941,6 @@ require("lazy").setup({
       },
       { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
       { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
-  },
-
-  {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    opts = {
-      mappings = {
-        ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\`].", register = { cr = false } },
-      },
-    },
-    keys = {
-      {
-        "<leader>up",
-        function()
-          vim.g.minipairs_disable = not vim.g.minipairs_disable
-          if vim.g.minipairs_disable then
-            LazyVim.warn("Disabled auto pairs", { title = "Option" })
-          else
-            LazyVim.info("Enabled auto pairs", { title = "Option" })
-          end
-        end,
-        desc = "Toggle Auto Pairs",
-      },
     },
   },
 
@@ -1059,9 +1056,12 @@ require("lazy").setup({
         -- The first entry (without a key) will be the default handler
         -- and will be called for each installed server that doesn't have
         -- a dedicated handler.
+
         function(server_name) -- default handler (optional)
+          local capabilities = require('cmp_nvim_lsp').default_capabilities()
           require("lspconfig")[server_name].setup({
             on_attach = on_attach,
+            capabilities = capabilities,
           })
         end,
       })
