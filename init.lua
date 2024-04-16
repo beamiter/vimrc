@@ -858,7 +858,6 @@ require("lazy").setup({
     config = function()
       -- Set up nvim-cmp.
       local cmp = require 'cmp'
-      local luasnip = require("luasnip")
       cmp.setup({
         snippet = {
           -- REQUIRED - you must specify a snippet engine
@@ -962,12 +961,6 @@ require("lazy").setup({
         matching = { disallow_symbol_nonprefix_matching = false }
       })
 
-      -- -- Set up lspconfig.
-      -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-      -- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
-      --   capabilities = capabilities
-      -- }
     end,
   },
 
