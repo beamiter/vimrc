@@ -149,10 +149,10 @@ require("lazy").setup({
   "lunarvim/horizon.nvim",
 
   {
-    "linrongbin16/lsp-progress.nvim",
-    config = function()
-      require("lsp-progress").setup()
-    end
+    "j-hui/fidget.nvim",
+    opts = {
+      -- options
+    },
   },
 
   {
@@ -452,12 +452,11 @@ require("lazy").setup({
 
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "linrongbin16/lsp-progress.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require('lualine').setup {
         options = { theme = 'dracula' }
       }
-      return require('lsp-progress').progress()
     end,
   },
 
