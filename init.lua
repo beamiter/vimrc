@@ -149,16 +149,23 @@ require("lazy").setup({
   "lunarvim/horizon.nvim",
 
   {
+    "linrongbin16/lsp-progress.nvim",
+    config = function()
+      require("lsp-progress").setup()
+    end
+  },
+
+  {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = {
       indent = { char = "│" },
       scope = { char = "│" },
     },
-    config = function(_, opts)
+    config = function(_, opts0)
       local hooks = require "ibl.hooks"
       hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
-      require("ibl").setup(opts)
+      require("ibl").setup(opts0)
     end,
   },
   { "nvim-neotest/nvim-nio" },
