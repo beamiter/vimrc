@@ -169,6 +169,8 @@ require("lazy").setup({
 
   { "nyoom-engineering/oxocarbon.nvim" },
 
+  { "RRethy/base16-nvim" },
+
   {
     "akinsho/toggleterm.nvim",
     config = function()
