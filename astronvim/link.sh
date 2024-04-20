@@ -1,2 +1,2 @@
-rm ~/.config/nvim/lua/user
-ln -s ~/vimrc/astronvim/user ~/.config/nvim/lua/user
+rm ~/.config/nvim/ -rf
+ln -s ~/vimrc/astronvim/template ~/.config/nvim
