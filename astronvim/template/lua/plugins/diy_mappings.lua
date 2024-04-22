@@ -6,8 +6,9 @@ return {
       mappings = {
         -- first key is the mode
         n = {
+          ["<Leader>b"] = { name = "Buffers" },
+          ["<Leader>c"] = { name = "Code" },
           ["<Leader>bc"] = false,
-          ["<Leader>c"] = false,
           ["<Leader>b|"] = false,
           ["<Leader>b\\"] = false,
           ["<Leader>bC"] = false,
@@ -18,7 +19,10 @@ return {
           -- mappings seen under group name "Buffer"
           ["<Leader>bb"] = { ":Telescope buffers<CR>", desc = "buffers" },
           ["<Leader>fr"] = { ":Telescope oldfiles<CR>", desc = "recent files" },
+          ["<Leader><leader>"] = { ":Telescope find_files<CR>", desc = "files" },
           ["<Leader>fh"] = { ":Telescope oldfiles<CR>", desc = "history files" },
+          ["<Leader>gj"] = { ":Gitsigns next_hunk<CR>", desc = "next hunk" },
+          ["<Leader>gk"] = { ":Gitsigns prev_hunk<CR>", desc = "prev hunk" },
           ["<Leader>bf"] = { function() vim.lsp.buf.format { async = true } end, desc = "format" },
           ["<Leader>cf"] = { function() vim.lsp.buf.format { async = true } end, desc = "format" },
           ["<Leader>fm"] = { function() vim.lsp.buf.format { async = true } end, desc = "format" },
@@ -26,8 +30,6 @@ return {
           ["<Leader>bp"] = { ":BufferLineCyclePrev<CR>", desc = "buffer prev" },
           -- tables with the `name` key will be registered with which-key if it's installed
           -- this is useful for naming menus
-          ["<Leader>b"] = { name = "Buffers" },
-          ["<Leader>c"] = { name = "Code" },
           -- quick save
           -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
           ["<F3>"] = { ":Neotree toggle<CR>", desc = "tree toggle" },
