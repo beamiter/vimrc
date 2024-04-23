@@ -219,6 +219,8 @@ xmap <silent><leader>lf <Plug>(coc-format-selected)
 nmap <silent><leader>lf :call CocActionAsync('format')<CR>
 xmap <silent><leader>cf <Plug>(coc-format-selected)
 nmap <silent><leader>cf :call CocActionAsync('format')<CR>
+xmap <silent><leader>cf <Plug>(coc-format-selected)
+nmap <silent><leader>cf :call CocActionAsync('format')<CR>
 
 """""""""""""""" vim-floaterm
 nnoremap   <silent>   <S-F7>    :FloatermPrev<CR>
@@ -260,7 +262,6 @@ nnoremap <leader>sr :Clap recent_files<CR>
 nnoremap <leader>so :Clap recent_files<CR>
 nnoremap <leader>sh :Clap recent_files<CR>
 nnoremap <leader>bb :Clap buffers<CR>
-nnoremap <leader>bf :Clap buffers<CR>
 nnoremap <leader>ff :Clap files<CR>
 nnoremap <leader><Space> :Clap files<CR>
 
