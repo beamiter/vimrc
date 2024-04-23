@@ -252,7 +252,12 @@ endif
 """""""""""""""""" Clap
 nnoremap <leader>sg :Clap live_grep<CR>
 nnoremap <leader>st :Clap grep<CR>
+nnoremap <leader>sw :Clap grep<CR>
 nnoremap <leader>fr :Clap recent_files<CR>
+nnoremap <leader>fo :Clap recent_files<CR>
+nnoremap <leader>fh :Clap recent_files<CR>
+nnoremap <leader>so :Clap recent_files<CR>
+nnoremap <leader>sh :Clap recent_files<CR>
 nnoremap <leader>bb :Clap buffers<CR>
 nnoremap <leader>bf :Clap buffers<CR>
 nnoremap <leader>ff :Clap files<CR>
