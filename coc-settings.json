@@ -28,6 +28,9 @@
       "rootPatterns": ["Cargo.toml"]
     },
   },
+  "explorer.keyMappings.global": {
+    "w": ["wait", "expanded?", "collapse", "expand"],
+  },
   "rust-analyzer.inlayHints.typeHints.enable": false,
   "inlayHint.enable": false,
   "pyright.inlayHints.variableTypes": false,
