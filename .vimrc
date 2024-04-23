@@ -256,6 +256,7 @@ nnoremap <leader>sw :Clap grep<CR>
 nnoremap <leader>fr :Clap recent_files<CR>
 nnoremap <leader>fo :Clap recent_files<CR>
 nnoremap <leader>fh :Clap recent_files<CR>
+nnoremap <leader>sr :Clap recent_files<CR>
 nnoremap <leader>so :Clap recent_files<CR>
 nnoremap <leader>sh :Clap recent_files<CR>
 nnoremap <leader>bb :Clap buffers<CR>
