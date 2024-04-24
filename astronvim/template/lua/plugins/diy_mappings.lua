@@ -3,6 +3,9 @@ return {
     "AstroNvim/astrocore",
     ---@type AstroCoreOpts
     opts = {
+      formatting = {
+        format_on_save = false,
+      },
       mappings = {
         -- first key is the mode
         n = {
@@ -44,6 +47,17 @@ return {
         },
       },
     },
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    -- override the options table that is used in the `require("cmp").setup()` call
+    opts = function(_, opts)
+      -- opts parameter is the default options table
+      -- the function is lazy loaded so cmp is able to be required
+      local cmp = require("cmp")
+      -- modify the mapping part of the table
+      opts.mapping["<CR>"] = cmp.mapping.confirm({ select = true }) -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    end,
   },
   {
     -- "AstroNvim/astrolsp",
