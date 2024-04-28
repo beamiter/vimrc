@@ -15,6 +15,12 @@ return {
     end,
   },
   {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = function(_, opts)
+      opts.window.width = 60
+    end,
+  },
+  {
     "akinsho/bufferline.nvim",
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
