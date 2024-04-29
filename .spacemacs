@@ -605,6 +605,13 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (global-set-key [f3] 'treemacs)
+  (evil-define-key 'normal global-map (kbd "s") 'evil-avy-goto-char-2)
+  (spacemacs/set-leader-keys "gj" 'git-gutter:next-hunk)
+  (spacemacs/set-leader-keys "gk" 'git-gutter:previous-hunk)
+  (spacemacs/set-leader-keys "bf" 'lsp-format-buffer)
+  (spacemacs/set-leader-keys "cf" 'lsp-format-buffer)
+  (spacemacs/set-leader-keys "fm" 'lsp-format-buffer)
   )
 
 
