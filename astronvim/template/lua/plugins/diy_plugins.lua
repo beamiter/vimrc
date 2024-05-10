@@ -9,6 +9,14 @@ return {
     end,
   },
   {
+    "AstroNvim/astrolsp",
+    opts = {
+      features = {
+        autoformat = false,
+      }
+    }
+  },
+  {
     "rebelot/heirline.nvim",
     opts = function(_, opts)
       opts.tabline = nil -- remove tabline
