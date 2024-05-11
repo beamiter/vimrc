@@ -16,7 +16,7 @@ syntax on
 set autoindent
 set backspace=indent,eol,start
 set clipboard+=unnamedplus
-set colorcolumn=120
+" set colorcolumn=120
 set encoding=utf-8
 set expandtab
 set guioptions=
