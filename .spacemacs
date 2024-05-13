@@ -612,6 +612,8 @@ before packages are loaded."
   (spacemacs/set-leader-keys "bf" 'lsp-format-buffer)
   (spacemacs/set-leader-keys "cf" 'lsp-format-buffer)
   (spacemacs/set-leader-keys "fm" 'lsp-format-buffer)
+  (define-key evil-normal-state-map (kbd "C-o") 'evil-jump-backward)
+  (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
   )
 
 
