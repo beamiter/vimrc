@@ -64,15 +64,20 @@ lvim.builtin.telescope.defaults.initial_mode = "insert"
 
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
--- lvim.builtin.which_key.mappings["t"] = {
---   name = "+Trouble",
---   r = { "<cmd>Trouble lsp_references<cr>", "References" },
---   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
---   d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
---   q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
---   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
---   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
--- }
+lvim.builtin.which_key.mappings["c"] = {
+  name = "+code",
+  f = { "<cmd>lua vim.lsp.buf.format()<CR>", "format" },
+}
+lvim.builtin.which_key.mappings["f"] = {
+  name = "+file",
+  f = {
+    function()
+      require("lvim.core.telescope.custom-finders").find_project_files { previewer = false }
+    end,
+    "Find File",
+  },
+  m = { "<cmd>lua vim.lsp.buf.format()<CR>", "format" },
+}
 lvim.keys.normal_mode["<leader><leader>"] = ":Telescope find_files<CR>"
 lvim.keys.normal_mode["<leader>1"] = ":BufferLineGoToBuffer 1<CR>"
 lvim.keys.normal_mode["<leader>2"] = ":BufferLineGoToBuffer 2<CR>"
@@ -91,7 +96,7 @@ lvim.keys.normal_mode["<leader>sg"] = ":Telescope grep_string<CR>"
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
-lvim.builtin.nvimtree.setup.view.width= 60
+lvim.builtin.nvimtree.setup.view.width = 60
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
@@ -206,12 +211,12 @@ lvim.plugins = {
   },
   "dracula/vim",
   'NLKNguyen/papercolor-theme',
-	{
-		-- "simrat39/rust-tools.nvim",
-		-- config = function()
-		-- 	require("rust-tools").setup()
-		-- end,
-	},
+  {
+    -- "simrat39/rust-tools.nvim",
+    -- config = function()
+    -- 	require("rust-tools").setup()
+    -- end,
+  },
   {
     "junegunn/fzf",
     build = "./install --bin",
