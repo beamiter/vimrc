@@ -37,5 +37,8 @@ end, { desc = "Format Files" })
 map("n", "<leader>bf", function()
   require("conform").format { lsp_fallback = true }
 end, { desc = "Format Files" })
+map("n", "<leader>lf", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "Format Files" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
