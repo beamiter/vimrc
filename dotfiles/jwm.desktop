@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=jwm
+Comment=Dynamic window manager
+Exec=jwm
+Icon=jwm
+Type=XSession
