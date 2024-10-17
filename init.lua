@@ -826,7 +826,19 @@ require("lazy").setup({
               fallback()
             end
           end, { "i", "s" }),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ['<CR>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              if luasnip.expandable() then
+                luasnip.expand()
+              else
+                cmp.confirm({
+                  select = true,
+                })
+              end
+            else
+              fallback()
+            end
+          end),
           ["<S-CR>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
@@ -845,8 +857,8 @@ require("lazy").setup({
           fields = { "kind", "abbr", "menu" },
           max_width = 0,
           source_names = {
-            buffer = "(Buffer)",
             nvim_lsp = "(LSP)",
+            buffer = "(Buffer)",
             luasnip = "(Snippet)",
             path = "(Path)",
             calc = "(Calc)",
@@ -856,10 +868,10 @@ require("lazy").setup({
             treesitter = "(TreeSitter)",
           },
           duplicates = {
-            buffer = 1,
-            path = 1,
             nvim_lsp = 1,
+            buffer = 1,
             luasnip = 1,
+            path = 1,
           },
           duplicates_default = 0,
         },
