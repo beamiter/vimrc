@@ -1,6 +1,6 @@
 -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
-if true then return {} end
+-- if true then return {} end
 
 -- every spec file under the "plugins" directory will be loaded automatically by lazy.nvim
 --
@@ -20,7 +20,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      -- colorscheme = "gruvbox",
     },
   },
 
@@ -30,9 +30,17 @@ return {
     -- opts will be merged with the parent spec
     opts = { use_diagnostic_signs = true },
   },
+  {
+    "rcarriga/nvim-notify", enabled = false
+  },
 
   -- disable trouble
-  { "folke/trouble.nvim",                             enabled = false },
+  {
+    "folke/trouble.nvim", enabled = false
+  },
+  -- {
+  --   "folke/noice.nvim", enabled = false
+  -- },
 
   -- override nvim-cmp and add cmp-emoji
   {
