@@ -32,9 +32,12 @@ return {
   {
     "folke/trouble.nvim", enabled = false
   },
-  -- {
-  --   "folke/noice.nvim", enabled = false
-  -- },
+  {
+    "folke/noice.nvim", enabled = false
+  },
+  {
+    "MunifTanjim/nui.nvim", enabled = false
+  },
 
   -- override nvim-cmp and add cmp-emoji
   {
