@@ -1041,7 +1041,7 @@ require("lazy").setup({
 })
 
 vim.cmd([[
-colorscheme PaperColor
+colorscheme lunar
 filetype off
 syntax on
 ]])
