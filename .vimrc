@@ -63,23 +63,6 @@ call plug#begin('~/.vim/plugged')
 
 " According to plug name alphabetical order
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'vim-denops/denops.vim'
-"Plug 'Shougo/ddu.vim'
-"Plug 'Shougo/ddu-ui-ff'
-"Plug 'Shougo/ddu-ui-filer'
-
-" Install your UIs
-
-" Install your sources
-
-" Install your filters
-
-" Install your kinds
-
-" Install your columns
-
-"Plug 'prabirshrestha/vim-lsp'
-"Plug 'mattn/vim-lsp-settings'
 
 Plug 'ryanoasis/vim-devicons'
 Plug 'dyng/ctrlsf.vim'

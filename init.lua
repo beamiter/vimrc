@@ -454,7 +454,11 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require('lualine').setup {
-        options = { theme = 'dracula' }
+        options = { theme = 'dracula',
+          refresh = {
+            statusline = 1000000,
+          },
+        }
       }
     end,
   },
@@ -642,7 +646,13 @@ require("lazy").setup({
     end,
   },
 
-  { "andymass/vim-matchup",         event = "VimEnter" },
+  {
+    'andymass/vim-matchup',
+    config = function()
+      -- may set any options here
+      g.matchup_matchparen_offscreen = { method = "status" }
+    end,
+  },
 
   {
     "lewis6991/gitsigns.nvim",
