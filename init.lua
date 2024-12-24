@@ -134,6 +134,7 @@ require("lazy").setup({
     end,
   },
   { "nvim-lua/plenary.nvim", cmd = { "PlenaryBustedFile", "PlenaryBustedDirectory" }, lazy = true },
+  "mg979/vim-visual-multi",
   "lewis6991/impatient.nvim",
   {
     "windwp/nvim-autopairs",
@@ -379,7 +380,7 @@ require("lazy").setup({
   "cljoly/telescope-repo.nvim",
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "telescope-fzf-native.nvim" },
+    dependencies = { "telescope-fzf-native.nvim", 'nvim-telescope/telescope-symbols.nvim' },
     config = function()
       local actions = require("telescope.actions")
       require("telescope").setup({
