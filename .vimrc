@@ -325,15 +325,14 @@ nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
 nnoremap <silent> <leader>e :Fern . -reveal=%:p -drawer -toggle<CR>
 
 " --- vim-clap 搜索工具
-nnoremap <leader>sg :Clap live_grep<CR>
-nnoremap <leader>st :Clap grep<CR>
-nnoremap <leader>sw :Clap grep<CR>
+nnoremap <leader>st :Clap igrep<CR>
+nnoremap <leader>sg :Clap grep<CR>
+xnoremap <leader>sg :Clap grep --query=@visual<CR>
+nnoremap <leader>sw :Clap grep --query=<cword><CR>
+xnoremap <leader>sw :Clap grep --query=@visual<CR>
 nnoremap <leader>fr :Clap recent_files<CR>
 nnoremap <leader>fo :Clap recent_files<CR>
 nnoremap <leader>fh :Clap recent_files<CR>
-nnoremap <leader>sr :Clap recent_files<CR>
-nnoremap <leader>so :Clap recent_files<CR>
-nnoremap <leader>sh :Clap recent_files<CR>
 nnoremap <leader>bb :Clap buffers<CR>
 nnoremap <leader>ff :Clap files<CR>
 nnoremap <leader><Space> :Clap files<CR>
