@@ -220,7 +220,7 @@ source $HOME/vimrc/coc.vim
 
 
 """""""""""""""" filer
-if 0
+if 1
 " Use fern as file tree
   nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle<CR>
   nnoremap <silent> <leader>e :Fern . -reveal=%:p -drawer -toggle<CR>
