@@ -326,10 +326,12 @@ let g:fern#default_hidden = 1  " 显示隐藏文件
 " 为 Fern 缓冲区配置按键映射
 function! s:fern_settings() abort
   " 基本文件操作
-  nmap <buffer> d <Plug>(fern-action-remove)  " 也可以用小写 d
-  nmap <buffer> dd <Plug>(fern-action-remove) " 或者双击 dd
+  nmap <buffer> d <Plug>(fern-action-remove)
+  nmap <buffer> dd <Plug>(fern-action-remove)
   " 其他常用按键
   nmap <buffer> h <Plug>(fern-action-collapse)
+  nmap <buffer> B <Plug>(fern-action-mark)
+  nmap <buffer> b <Plug>(fern-action-mark:toggle)
   nmap <buffer> n <Plug>(fern-action-new-path)
 endfunction
 " 使用自动命令应用设置
