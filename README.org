@@ -10,43 +10,49 @@ Vimrc README -*- mode: org -*-
 * *Install vim to support python2/3*
 Install vim-gtk or vim-gnome first to support compiling with gui.
 #+BEGIN_SRC shell
-sudo apt-get build-dep vim-gnome
+  sudo apt-get build-dep vim-gnome
 
-./configure --with-features=huge \
-            --enable-multibyte \
-            --enable-gui=auto \
-            --with-x \
-            --enable-rubyinterp=yes \
-            --enable-python3interp=yes \
-            --enable-perlinterp=yes \
-            --enable-fontset \
-            --enable-cscope \
-            --enable-gtk2-check \
-            --enable-gnome-check \
-            --prefix=/usr \
-            --enable-luainterp=yes \
-            --enable-fail-if-missing \
+  ./configure --with-features=huge \
+              --enable-multibyte \
+              --enable-gui=auto \
+              --with-x \
+              --enable-rubyinterp=yes \
+              --enable-python3interp=yes \
+              --enable-perlinterp=yes \
+              --enable-fontset \
+              --enable-cscope \
+              --enable-gtk2-check \
+              --enable-gnome-check \
+              --prefix=/usr \
+              --enable-luainterp=yes \
+              --enable-fail-if-missing \
 
-or
+  or
 
-./configure --with-features=huge \
-            --enable-multibyte \
-            --enable-gui=auto \
-            --with-x \
-            --enable-python3interp=yes \
-            --enable-fontset \
-            --enable-cscope \
-            --enable-gtk2-check \
-            --enable-gnome-check \
-            --prefix=/usr \
-            --enable-luainterp=yes \
-            --enable-fail-if-missing \
+  ./configure --with-features=huge \
+              --enable-multibyte \
+              --enable-gui=auto \
+              --with-x \
+              --enable-python3interp=yes \
+              --enable-fontset \
+              --enable-cscope \
+              --enable-gtk2-check \
+              --enable-gnome-check \
+              --prefix=/usr \
+              --enable-luainterp=yes \
+              --enable-fail-if-missing \
 
-make
+  make
 
-sudo make install
-#with-python3-config-dir is deprecated
-            #--with-python3-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
+  sudo make install
+
+  or
+
+  sudo add-apt-repository ppa:jonathonf/vim
+  sudo apt install software-properties-common
+  sudo apt update
+  #with-python3-config-dir is deprecated
+              #--with-python3-config-dir=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu \
 #+END_SRC
 
 * *Install python related package*
