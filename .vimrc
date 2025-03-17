@@ -83,7 +83,6 @@ Plug 'mhinz/vim-startify'
 " 导航和搜索插件
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'dyng/ctrlsf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'lambdalisue/fern.vim'
 Plug 'easymotion/vim-easymotion'
