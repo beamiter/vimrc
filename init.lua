@@ -128,6 +128,7 @@ for i = 1, 9 do
 end
 map("n", "<leader>0", "<Cmd>BufferLineGoToBuffer 10<CR>", opts)
 map("n", "<leader>bd", ":bd<CR>", opts)
+map("n", "<leader>bb", ":Telescope buffers<CR>", opts)
 map("n", "<leader>bj", "<Cmd>BufferLinePick<CR>", opts)
 
 -- 窗口导航
