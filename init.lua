@@ -108,8 +108,8 @@ map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
 map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", opts)
 
 -- 窗口调整
-map("n", "=", ":vert res +5<CR>", opts)
-map("n", "-", ":vert res -5<CR>", opts)
+map("n", ")", ":vert res +5<CR>", opts)
+map("n", "(", ":vert res -5<CR>", opts)
 map("n", "<C-Right>", ":vert res +5<CR>", opts)
 map("n", "<C-Left>", ":vert res -5<CR>", opts)
 

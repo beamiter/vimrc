@@ -188,6 +188,8 @@ nmap <F4> :Vista!!<CR>
 " --- 窗口调整快捷键
 nmap ( :vert res -5<CR>
 nmap ) :vert res +5<CR>
+nmap <C-Left> :vert res -5<CR>
+nmap <C-Right> :vert res +5<CR>
 
 " --- tcomment_vim 代码注释
 map <silent><leader>cl :TComment<CR>
