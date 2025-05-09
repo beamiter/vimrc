@@ -13,6 +13,7 @@ map("n", ")", ":vert res +5<CR>")
 map("n", "(", ":vert res -5<CR>")
 map("n", "<C-Right>", ":vert res +5<CR>")
 map("n", "<C-Left>", ":vert res -5<CR>")
+map("n", "<F3>", function() Snacks.explorer() end, { desc = "File Explorer" })
 
 -- 复制文件路径相关快捷键
 -- 首先为 <leader>y 创建一个组
