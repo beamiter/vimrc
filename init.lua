@@ -105,7 +105,6 @@ local opts = { noremap = true, silent = true }
 
 -- 文件浏览器
 map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
-map("n", "<C-n>", ":NvimTreeFindFileToggle<CR>", opts)
 
 -- 窗口调整
 map("n", ")", ":vert res +5<CR>", opts)
