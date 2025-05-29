@@ -318,7 +318,6 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-clangd',
       \ 'coc-pyright',
-      " \ 'coc-explorer'
       \ ]
 
 " --- 文件浏览器
