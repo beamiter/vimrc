@@ -262,6 +262,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " 重命名符号
 nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>ln <Plug>(coc-rename)
 
 " 代码操作
 xmap <leader>a <Plug>(coc-codeaction-selected)
