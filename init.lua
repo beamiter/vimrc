@@ -105,7 +105,7 @@ local opts = { noremap = true, silent = true }
 
 -- 文件浏览器
 map("n", "<F3>", ":NvimTreeFindFileToggle<CR>", opts)
-map("n", "<leader>e", ":NvimTreeFindFileToggle<CR>", opts)
+-- map("n", "<leader>e", ":NvimTreeFindFileToggle<CR>", opts)
 
 -- 窗口调整
 map("n", ")", ":vert res +5<CR>", opts)
@@ -416,10 +416,12 @@ require("lazy").setup({
         end
 
         -- 诊断相关
-        buf_map("n", "<space>qo", vim.diagnostic.open_float, "diagnostic open")
+        buf_map("n", "<space>eo", vim.diagnostic.open_float, "diagnostic open")
+        buf_map("n", "<space>ej", vim.diagnostic.goto_prev, "prev diagnostic")
         buf_map("n", "[d", vim.diagnostic.goto_prev, "prev diagnostic")
         buf_map("n", "]d", vim.diagnostic.goto_next, "next diagnostic")
-        buf_map("n", "<space>ql", vim.diagnostic.setloclist, "diagnostic list")
+        buf_map("n", "<space>ek", vim.diagnostic.goto_next, "prev diagnostic")
+        buf_map("n", "<space>el", vim.diagnostic.setloclist, "diagnostic list")
 
         -- LSP 导航
         buf_map("n", "gD", vim.lsp.buf.declaration, "declaration")

@@ -318,7 +318,7 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-clangd',
       \ 'coc-pyright',
-      \ 'coc-explorer'
+      " \ 'coc-explorer'
       \ ]
 
 " --- 文件浏览器
@@ -342,7 +342,7 @@ augroup fern-custom
 augroup END
 " 定义打开 Fern 的按键映射
 nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
-nnoremap <silent> <leader>e :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
+nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
 
 " --- vim-clap 搜索工具
 nnoremap <leader>st :Clap igrep<CR>
