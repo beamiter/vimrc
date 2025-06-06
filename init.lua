@@ -11,7 +11,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
+      { out,                            "WarningMsg" },
       { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
@@ -408,59 +408,50 @@ require("lazy").setup({
     dependencies = { "SmiteshP/nvim-navic", "mason-lspconfig.nvim", "nlsp-settings.nvim" },
     config = function()
       -- 定义 LSP 附加函数
-      local on_attach = function(client, bufnr)
-        local function buf_map(mode, lhs, rhs, desc)
-          vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr, desc = desc })
-        end
-
-        -- 诊断相关
-        buf_map("n", "<space>eo", vim.diagnostic.open_float, "diagnostic open")
-        buf_map("n", "<space>ej", vim.diagnostic.goto_prev, "prev diagnostic")
-        buf_map("n", "[d", vim.diagnostic.goto_prev, "prev diagnostic")
-        buf_map("n", "]d", vim.diagnostic.goto_next, "next diagnostic")
-        buf_map("n", "<space>ek", vim.diagnostic.goto_next, "prev diagnostic")
-        buf_map("n", "<space>el", vim.diagnostic.setloclist, "diagnostic list")
-
-        -- LSP 导航
-        buf_map("n", "gD", vim.lsp.buf.declaration, "declaration")
-        buf_map("n", "gd", vim.lsp.buf.definition, "definition")
-        buf_map("n", "K", vim.lsp.buf.hover, "hover")
-        buf_map("n", "gi", vim.lsp.buf.implementation, "implementation")
-        buf_map("n", "<C-k>", vim.lsp.buf.signature_help, "signature_help")
-        buf_map("n", "gr", vim.lsp.buf.references, "references")
-
-        -- 工作区相关
-        buf_map("n", "<space>wa", vim.lsp.buf.add_workspace_folder, "add_workspace_folder")
-        buf_map("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, "remove_workspace_folder")
-        buf_map("n", "<space>wl", function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, "list_workspace_folders")
-
-        -- 代码操作
-        buf_map("n", "<space>D", vim.lsp.buf.type_definition, "type_definition")
-        buf_map("n", "<space>rn", vim.lsp.buf.rename, "rename")
-        buf_map("n", "<space>ca", vim.lsp.buf.code_action, "code_action")
-
-        -- 格式化
-        buf_map({ "n", "x", "v" }, "<space>fm", function()
-          vim.lsp.buf.format({ async = true })
-        end, "format")
-        buf_map({ "n", "x", "v" }, "<space>cf", function()
-          vim.lsp.buf.format({ async = true })
-        end, "code format")
-
-        -- 导航集成
-        local navic = require("nvim-navic")
-        if client.server_capabilities.documentSymbolProvider then
-          navic.attach(client, bufnr)
-        end
+      local function buf_map(mode, lhs, rhs, desc)
+        vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr, desc = desc })
       end
 
-      -- 设置 OCaml LSP
-      require('lspconfig').ocamllsp.setup {
-        on_attach = on_attach,
+      -- LSP 导航
+      buf_map("n", "gD", vim.lsp.buf.declaration, "declaration")
+      buf_map("n", "gd", vim.lsp.buf.definition, "definition")
+      buf_map("n", "K", vim.lsp.buf.hover, "hover")
+      buf_map("n", "gi", vim.lsp.buf.implementation, "implementation")
+      buf_map("n", "<C-k>", vim.lsp.buf.signature_help, "signature_help")
+      buf_map("n", "gr", vim.lsp.buf.references, "references")
+
+      -- 工作区相关
+      buf_map("n", "<space>wa", vim.lsp.buf.add_workspace_folder, "add_workspace_folder")
+      buf_map("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, "remove_workspace_folder")
+      buf_map("n", "<space>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+      end, "list_workspace_folders")
+
+      -- 代码操作
+      buf_map("n", "<space>D", vim.lsp.buf.type_definition, "type_definition")
+      buf_map("n", "<space>rn", vim.lsp.buf.rename, "rename")
+      buf_map("n", "<space>ca", vim.lsp.buf.code_action, "code_action")
+
+      -- 格式化
+      buf_map({ "n", "x", "v" }, "<space>fm", function()
+        vim.lsp.buf.format({ async = true })
+      end, "format")
+      buf_map({ "n", "x", "v" }, "<space>cf", function()
+        vim.lsp.buf.format({ async = true })
+      end, "code format")
+
+      -- 批量启用 LSP 服务器
+      local lsp_servers = {
+        'pyright',
+        'clangd',
+        'rust_analyzer',
+        'lua_ls',
+        'ocamllsp'
       }
 
+      for _, server in ipairs(lsp_servers) do
+        vim.lsp.enable(server)
+      end
     end,
   },
   {
@@ -703,7 +694,7 @@ require("lazy").setup({
       { "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",                               desc = "Workspace Symbols" },
       { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",                                         desc = "Code Action" },
       { "<leader>ld", "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<cr>",                           desc = "Buffer Diagnostics" },
-      { "<leader>le", "<cmd>Telescope quickfix<cr>",                                                    desc = "Telescope Quickfix" },
+      { "<leader>le", "<cmd>lua vim.diagnostic.open_float()<cr>",                                       desc = "Open diagnostic" },
       { "<leader>lf", function() vim.lsp.buf.format({ async = true }) end,                              desc = "Format" },
       { "<leader>li", "<cmd>LspInfo<cr>",                                                               desc = "Info" },
       { "<leader>lj", "<cmd>lua vim.diagnostic.goto_next()<cr>",                                        desc = "Next Diagnostic" },
