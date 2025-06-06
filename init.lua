@@ -382,7 +382,6 @@ require("lazy").setup({
   -- ========== LSP 和自动补全 ==========
   {
     "williamboman/mason.nvim",
-    version = "^1.0.0", -- 指定兼容 1.0.0 及以上但小于 2.0.0 的版本
     cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
     config = function()
       require("mason").setup({})
@@ -397,7 +396,6 @@ require("lazy").setup({
   { "nvimtools/none-ls.nvim",                   lazy = true },
   {
     "williamboman/mason-lspconfig.nvim",
-    version = "^1.0.0", -- 指定兼容 1.0.0 及以上但小于 2.0.0 的版本
     cmd = { "LspInstall", "LspUninstall" },
     config = function()
       require("mason-lspconfig").setup({
@@ -463,16 +461,6 @@ require("lazy").setup({
         on_attach = on_attach,
       }
 
-      -- 设置 Mason LSP 处理程序
-      require("mason-lspconfig").setup_handlers({
-        function(server_name)
-          local capabilities = require('cmp_nvim_lsp').default_capabilities()
-          require("lspconfig")[server_name].setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-          })
-        end,
-      })
     end,
   },
   {
