@@ -404,6 +404,42 @@ require("lazy").setup({
     end,
   },
   {
+    "stevearc/conform.nvim",
+    config = function()
+      local conform = require("conform")
+      conform.setup({
+        -- 定义格式化器，prettier 是我们将使用的
+        formatters_by_ft = {
+          -- 对以下文件类型使用 prettier
+          css = { "prettier" },
+          scss = { "prettier" },
+          html = { "prettier" },
+          javascript = { "prettier" },
+          typescript = { "prettier" },
+          json = { "prettier" },
+          yaml = { "prettier" },
+          markdown = { "prettier" },
+          -- lua = { "stylua" }, -- 示例：Lua 可以用 stylua
+          -- rust = { "rustfmt" }, -- 示例：Rust 用 rustfmt
+        },
+
+        -- 开启保存时自动格式化 (最常用的功能)
+        -- format_on_save = {
+        --   timeout_ms = 500,
+        --   lsp_fallback = true, -- 如果没有设置格式化器，则回退到使用 LSP 的格式化功能
+        -- },
+        vim.keymap.set({ "n", "v" }, "<leader>mf", function()
+          conform.format({
+            lsp_fallback = true,
+            async = false,
+            timeout_ms = 500,
+          })
+        end, { desc = "Format current buffer" })
+      })
+    end,
+  },
+
+  {
     "neovim/nvim-lspconfig",
     dependencies = { "SmiteshP/nvim-navic", "mason-lspconfig.nvim", "nlsp-settings.nvim" },
     config = function()
@@ -438,7 +474,7 @@ require("lazy").setup({
       end, "format")
       buf_map({ "n", "x", "v" }, "<space>cf", function()
         vim.lsp.buf.format({ async = true })
-      end, "code format")
+      end, "format")
 
       -- 批量启用 LSP 服务器
       local lsp_servers = {
