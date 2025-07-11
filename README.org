@@ -203,3 +203,8 @@ rustup component add rls rust-analysis rust-src
   ENV["JULIA_PKG_SERVER"] = "https://mirrors.cernet.edu.cn/julia"
   ENV["JULIA_DEPOT_PATH"] = "~/.julia"
 #+END_SRC
+
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixos-unstable
+nix-channel --update
+
+nix-env -iA nixos-unstable.vimHugeX
