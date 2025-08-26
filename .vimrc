@@ -127,7 +127,7 @@ Plug 'arzg/vim-colors-xcode'
 Plug 'rakr/vim-one'
 Plug 'felipec/vim-felipec'
 
-Plug 'beamiter/simple-vim9-plugin', { 'do': 'cargo build --release' }
+" Plug 'beamiter/simple-vim9-plugin', { 'do': 'cargo build --release' }
 
 call plug#end()
 
