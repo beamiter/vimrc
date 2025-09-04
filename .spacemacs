@@ -57,10 +57,12 @@ This function should only modify configuration layer settings."
      ;; --- MODIFIED FOR LSP ---
      ;; Configure LSP layer for Rust and enable UI features like lenses.
      (lsp :variables
-          lsp-rust-server 'rust-analyzer
-          lsp-ui-sideline-enable t
-          lsp-ui-doc-enable t
-          lsp-enable-lens t)
+          lsp-rust-server 'rust-analyzer)
+     ;; (lsp :variables
+     ;;      lsp-rust-server 'rust-analyzer
+     ;;      lsp-ui-sideline-enable t
+     ;;      lsp-ui-doc-enable t
+     ;;      lsp-enable-lens t)
 
      (tree-sitter :variables
                   spacemacs-tree-sitter-hl-black-list '(js2-mode rjsx-mode)
