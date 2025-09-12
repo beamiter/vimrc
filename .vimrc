@@ -127,7 +127,7 @@ Plug 'arzg/vim-colors-xcode'
 Plug 'rakr/vim-one'
 Plug 'felipec/vim-felipec'
 
-" Plug 'beamiter/simple-vim9-plugin', { 'do': 'cargo build --release' }
+Plug 'beamiter/simpleclipboard', { 'do': './install.sh' }
 
 call plug#end()
 
@@ -143,11 +143,6 @@ colorscheme nvcode
 
 " --- lexima 自动补全括号等
 call lexima#init()
-
-" --- simple-vim9-plugin
-" let g:simpleplugin_no_default_mappings = 1
-" let g:simpleplugin_enable_auto_init = 0
-" let g:simpleplugin_verbose_errors = 1
 
 " --- gutentags 代码标签
 let g:gutentags_enabled = 0
