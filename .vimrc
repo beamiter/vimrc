@@ -147,6 +147,10 @@ call lexima#init()
 " --- gutentags 代码标签
 let g:gutentags_enabled = 0
 
+let g:simpletree_debug = 0
+nnoremap <silent> <F3> :SimpleTree<CR>
+nnoremap <silent> <leader>ft :SimpleTree<CR>
+
 " --- vim-which-key 快捷键提示
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
@@ -343,8 +347,8 @@ augroup fern-custom
   autocmd FileType fern call s:fern_settings()
 augroup END
 " 定义打开 Fern 的按键映射
-nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
-nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
+" nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
+" nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
 
 " --- vim-clap 搜索工具
 nnoremap <leader>st :Clap igrep<CR>
