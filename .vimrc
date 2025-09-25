@@ -84,7 +84,6 @@ Plug 'mhinz/vim-startify'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
-Plug 'lambdalisue/fern.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 't9md/vim-choosewin'
 Plug 'airblade/vim-rooter'
@@ -326,29 +325,6 @@ let g:coc_global_extensions = [
       \ 'coc-clangd',
       \ 'coc-pyright',
       \ ]
-
-" --- 文件浏览器
-" Fern 的基本设置
-let g:fern#default_hidden = 1  " 显示隐藏文件
-" 为 Fern 缓冲区配置按键映射
-function! s:fern_settings() abort
-  " 基本文件操作
-  nmap <buffer> d <Plug>(fern-action-remove)
-  nmap <buffer> dd <Plug>(fern-action-remove)
-  " 其他常用按键
-  nmap <buffer> h <Plug>(fern-action-collapse)
-  nmap <buffer> B <Plug>(fern-action-mark)
-  nmap <buffer> b <Plug>(fern-action-mark:toggle)
-  nmap <buffer> n <Plug>(fern-action-new-path)
-endfunction
-" 使用自动命令应用设置
-augroup fern-custom
-  autocmd!
-  autocmd FileType fern call s:fern_settings()
-augroup END
-" 定义打开 Fern 的按键映射
-" nnoremap <silent> <F3> :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
-" nnoremap <silent> <leader>ft :Fern . -reveal=%:p -drawer -toggle -width=45<CR>
 
 " --- vim-clap 搜索工具
 nnoremap <leader>st :Clap igrep<CR>
