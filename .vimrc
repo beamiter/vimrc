@@ -36,6 +36,9 @@ set hlsearch
 set ignorecase smartcase
 set updatetime=300
 set signcolumn=yes
+" for copy by mouse
+" set nonu
+" set mouse-=a
 
 " ======================================================================
 " 自动命令
