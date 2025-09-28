@@ -150,6 +150,7 @@ call lexima#init()
 let g:gutentags_enabled = 0
 
 let g:simpletree_debug = 0
+let g:simpleclipboard_debug = 1
 let g:simpletree_dir_guifg = '#61afef'   " 例如蓝色
 let g:simpletree_dir_ctermfg = 75        " 终端蓝
 nnoremap <silent> <F3> :SimpleTree<CR>
