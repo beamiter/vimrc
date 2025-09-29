@@ -149,6 +149,8 @@ call lexima#init()
 " --- gutentags 代码标签
 let g:gutentags_enabled = 0
 
+" 将远程主机的 12345 端口转发到您本地机器的 12344 端口
+" ssh -R localhost:12345:localhost:12344 user@remote-host
 let g:simpletree_debug = 0
 let g:simpleclipboard_debug = 1
 let g:simpletree_dir_guifg = '#61afef'   " 例如蓝色
