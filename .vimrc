@@ -78,8 +78,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Yggdroot/indentLine'
-Plug 'liuchengxu/vista.vim'
-Plug 'preservim/tagbar'
 Plug 'mhinz/vim-startify'
 
 " 导航和搜索插件
@@ -87,9 +85,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'easymotion/vim-easymotion'
-Plug 't9md/vim-choosewin'
-Plug 'airblade/vim-rooter'
-Plug 'mhinz/vim-grepper'
 
 " 编辑增强插件
 Plug 'cohama/lexima.vim'
@@ -97,7 +92,6 @@ Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'andymass/vim-matchup'
 Plug 'mg979/vim-visual-multi'
-Plug 'jdhao/better-escape.vim'
 Plug 'sheerun/vim-polyglot'
 
 " Git 相关插件
@@ -108,26 +102,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'voldikss/vim-floaterm'
 Plug 'liuchengxu/vim-which-key'
 
-" 颜色主题
-Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'bluz71/vim-moonfly-colors'
-Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'iandwelker/rose-pine-vim'
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-Plug 'dracula/vim'
-Plug 'srcery-colors/srcery-vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'morhetz/gruvbox'
-Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
-Plug 'sainnhe/gruvbox-material'
-Plug 'sainnhe/everforest'
-Plug 'sainnhe/edge'
-Plug 'christianchiarulli/nvcode-color-schemes.vim'
-Plug 'arzg/vim-colors-xcode'
-Plug 'rakr/vim-one'
-Plug 'felipec/vim-felipec'
-
+" all in one plug
 Plug 'beamiter/simpleclipboard', { 'do': './install.sh' }
 
 call plug#end()
@@ -136,7 +111,7 @@ call plug#end()
 " 颜色主题设置
 " ======================================================================
 set background=dark
-colorscheme nvcode
+colorscheme spacemacs
 
 " ======================================================================
 " 插件配置
@@ -193,9 +168,6 @@ nmap ]g <Plug>(GitGutterNextHunk)
 nmap [g <Plug>(GitGutterPrevHunk)
 map <silent><leader>gj :GitGutterNextHunk<CR>
 map <silent><leader>gk :GitGutterPrevHunk<CR>
-
-" --- Vista/Tagbar 代码大纲
-nmap <F4> :Vista!!<CR>
 
 " --- 窗口调整快捷键
 nmap ( :vert res -5<CR>
@@ -348,9 +320,6 @@ nmap s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_smartcase = 1
 map <localleader>j <Plug>(easymotion-j)
 map <localleader>k <Plug>(easymotion-k)
-
-" --- vim-choosewin 窗口选择
-nmap _ <Plug>(choosewin)
 
 " --- 窗口快速切换
 noremap <silent> <localleader>1 :<C-u>1 wincmd w<CR>
