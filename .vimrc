@@ -321,8 +321,6 @@ let g:coc_disable_startup_warning = 1
 
 " 扩展
 let g:coc_global_extensions = [
-      \ 'coc-cmake',
-      \ 'coc-floaterm',
       \ 'coc-rust-analyzer',
       \ 'coc-yank',
       \ 'coc-snippets',
