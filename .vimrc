@@ -69,7 +69,6 @@ call plug#begin('~/.vim/plugged')
 " 编程增强插件
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'neovimhaskell/haskell-vim'
@@ -324,9 +323,7 @@ let g:coc_disable_startup_warning = 1
 let g:coc_global_extensions = [
       \ 'coc-cmake',
       \ 'coc-floaterm',
-      \ 'coc-highlight',
       \ 'coc-rust-analyzer',
-      \ 'coc-vimlsp',
       \ 'coc-yank',
       \ 'coc-snippets',
       \ 'coc-json',
