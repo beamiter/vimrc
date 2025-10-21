@@ -103,7 +103,7 @@ Plug 'liuchengxu/vim-which-key'
 
 Plug 'beamiter/simpleclipboard', {'do': './install.sh'}
 Plug 'beamiter/simpletree', {'do': './install.sh'}
-Plug 'beamiter/simpletreesitter', {'do': './install.sh'}
+# Plug 'beamiter/simpletreesitter', {'do': './install.sh'}
 
 plug#end()
 
