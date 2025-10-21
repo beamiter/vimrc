@@ -101,8 +101,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'voldikss/vim-floaterm'
 Plug 'liuchengxu/vim-which-key'
 
-# all in one plug
 Plug 'beamiter/simpleclipboard', {'do': './install.sh'}
+Plug 'beamiter/simpletree', {'do': './install.sh'}
+Plug 'beamiter/simpletreesitter', {'do': './install.sh'}
 
 plug#end()
 
@@ -122,14 +123,6 @@ lexima#init()
 # --- gutentags 代码标签
 g:gutentags_enabled = 0
 
-# simpleclipboard 和 simpletree 配置
-g:simpletree_debug = 0
-g:simpleclipboard_debug = 1
-g:simpletree_dir_guifg = '#61afef'
-g:simpletree_dir_ctermfg = 75
-nnoremap <silent> <F3> :SimpleTree<CR>
-nnoremap <silent> <leader>ft :SimpleTree<CR>
-
 # --- vim-which-key 快捷键提示
 g:mapleader = "\<Space>"
 g:maplocalleader = ','
@@ -139,26 +132,29 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 
+nnoremap <silent> <F3> :SimpleTree<CR>
+nnoremap <silent> <leader>ft :SimpleTree<CR>
+
 # 定义前缀字典
 g:which_key_map = {}
 g:which_key_map['w'] = {
-      name: '+windows',
-      w: ['<C-W>w', 'other-window'],
-      d: ['<C-W>c', 'delete-window'],
-      '2': ['<C-W>v', 'layout-double-columns'],
-      h: ['<C-W>h', 'window-left'],
-      j: ['<C-W>j', 'window-below'],
-      l: ['<C-W>l', 'window-right'],
-      k: ['<C-W>k', 'window-up'],
-      o: ['<C-W>o', 'window-only'],
-      H: ['<C-W>5<', 'expand-window-left'],
-      J: [':resize +5', 'expand-window-below'],
-      L: ['<C-W>5>', 'expand-window-right'],
-      K: [':resize -5', 'expand-window-up'],
-      '=': ['<C-W>=', 'balance-window'],
-      s: ['<C-W>s', 'split-window-below'],
-      v: ['<C-W>v', 'split-window-right'],
-      }
+  name: '+windows',
+  w: ['<C-W>w', 'other-window'],
+  d: ['<C-W>c', 'delete-window'],
+  '2': ['<C-W>v', 'layout-double-columns'],
+  h: ['<C-W>h', 'window-left'],
+  j: ['<C-W>j', 'window-below'],
+  l: ['<C-W>l', 'window-right'],
+  k: ['<C-W>k', 'window-up'],
+  o: ['<C-W>o', 'window-only'],
+  H: ['<C-W>5<', 'expand-window-left'],
+  J: [':resize +5', 'expand-window-below'],
+  L: ['<C-W>5>', 'expand-window-right'],
+  K: [':resize -5', 'expand-window-up'],
+  '=': ['<C-W>=', 'balance-window'],
+  s: ['<C-W>s', 'split-window-below'],
+  v: ['<C-W>v', 'split-window-right'],
+}
 
 # --- gitgutter 代码变更提示
 g:gitgutter_map_keys = 0
@@ -291,13 +287,13 @@ g:coc_disable_startup_warning = 1
 
 # 扩展
 g:coc_global_extensions = [
-      'coc-rust-analyzer',
-      'coc-yank',
-      'coc-snippets',
-      'coc-json',
-      'coc-clangd',
-      'coc-pyright',
-      ]
+  'coc-rust-analyzer',
+  'coc-yank',
+  'coc-snippets',
+  'coc-json',
+  'coc-clangd',
+  'coc-pyright',
+]
 
 # --- vim-clap 搜索工具
 nnoremap <leader>st :Clap igrep<CR>
