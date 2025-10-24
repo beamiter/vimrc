@@ -190,16 +190,19 @@ tnoremap <silent> <F8> <C-\><C-n>:FloatermToggle<CR>
 nnoremap <silent> <S-F8> :FloatermNew<CR>
 tnoremap <silent> <S-F8> <C-\><C-n>:FloatermNew<CR>
 
-# --- coc.nvim 智能补全
+# ======================================================================
+# coc.nvim 配置 - 使用传统 function! 定义
+# ======================================================================
+
 # 使用 Tab 触发补全并导航
-def CheckBackspace(): bool
-  var col = col('.') - 1
-  return !col || getline('.')[col - 1] =~# '\s'
-enddef
+function! g:CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
+      \ g:CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
 
 g:coc_snippet_next = '<tab>'
@@ -225,15 +228,15 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 # 显示文档
-def ShowDocumentation()
+function! g:ShowDocumentation() abort
   if CocAction('hasProvider', 'hover')
-    CocActionAsync('doHover')
+    call CocActionAsync('doHover')
   else
-    feedkeys('K', 'in')
+    call feedkeys('K', 'in')
   endif
-enddef
+endfunction
 
-nnoremap <silent> K :call ShowDocumentation()<CR>
+nnoremap <silent> K :call g:ShowDocumentation()<CR>
 
 # 高亮光标下的符号及其引用
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -345,43 +348,3 @@ g:haskell_enable_pattern_synonyms = 1
 g:haskell_enable_typeroles = 1
 g:haskell_enable_static_pointers = 1
 g:haskell_backpack = 1
-
-# ======================================================================
-# OPAM 设置 (OCaml)
-# ======================================================================
-var opam_share_dir = system("opam config var share")
-opam_share_dir = substitute(opam_share_dir, '[\r\n]*$', '', '')
-
-var opam_configuration = {}
-
-def OpamConfOcpIndent()
-  execute "set rtp^=" .. opam_share_dir .. "/ocp-indent/vim"
-enddef
-opam_configuration['ocp-indent'] = OpamConfOcpIndent
-
-def OpamConfOcpIndex()
-  execute "set rtp+=" .. opam_share_dir .. "/ocp-index/vim"
-enddef
-opam_configuration['ocp-index'] = OpamConfOcpIndex
-
-def OpamConfMerlin()
-  var dir = opam_share_dir .. "/merlin/vim"
-  execute "set rtp+=" .. dir
-enddef
-opam_configuration['merlin'] = OpamConfMerlin
-
-var opam_packages = ["ocp-indent", "ocp-index", "merlin"]
-var opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + opam_packages
-var opam_available_tools = split(system(join(opam_check_cmdline)))
-
-for tool in opam_packages
-  # Respect package order (merlin should be after ocp-index)
-  if count(opam_available_tools, tool) > 0
-    opam_configuration[tool]()
-  endif
-endfor
-
-# ocp-indent
-if count(opam_available_tools, "ocp-indent") == 0
-  # source ~/.opam/default/share/ocp-indent/vim/indent/ocaml.vim
-endif
