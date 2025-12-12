@@ -201,6 +201,7 @@ rustup component add rls rust-analysis rust-src
   cargo install juliaup
   ENV["JULIA_PKG_SERVER"] = "https://mirrors.ustc.edu.cn/julia"
   ENV["JULIA_PKG_SERVER"] = "https://mirrors.cernet.edu.cn/julia"
+  ENV["JULIA_PKG_SERVER"] = "https://mirrors.tuna.tsinghua.edu.cn/julia"
   ENV["JULIA_DEPOT_PATH"] = "~/.julia"
 #+END_SRC
 
