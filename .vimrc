@@ -55,8 +55,19 @@ augroup END
 # ======================================================================
 # 插件管理 (SimplePlug — Vim9 + Rust 后端)
 # ======================================================================
-# 引导：确保 simpleplug 自身在 runtimepath 中
+# 自举：自动安装 simpleplug 本身
 var simpleplug_home = expand('~/.vim/plugged/simpleplug')
+var simpleplug_bootstrapping = false
+if !isdirectory(simpleplug_home)
+  simpleplug_bootstrapping = true
+  echom '正在安装 SimplePlug...'
+  silent !mkdir -p ~/.vim/plugged
+  silent !git clone --depth 1 https://github.com/beamiter/simpleplug.git ~/.vim/plugged/simpleplug
+  if isdirectory(simpleplug_home)
+    echom '正在编译 SimplePlug daemon...'
+    silent execute '!cd ' .. simpleplug_home .. ' && ./install.sh'
+  endif
+endif
 if isdirectory(simpleplug_home) && stridx(&runtimepath, simpleplug_home) < 0
   &runtimepath = simpleplug_home .. ',' .. &runtimepath
 endif
@@ -106,18 +117,27 @@ simpleplug#Plug('beamiter/simpleplug', {do: './install.sh'})
 
 simpleplug#End()
 
+# 首次自举后自动安装所有插件
+if simpleplug_bootstrapping
+  autocmd VimEnter * ++once PlugInstall
+endif
+
 # ======================================================================
 # 颜色主题设置
 # ======================================================================
 set background=dark
-colorscheme spacemacs
+try
+  colorscheme spacemacs
+catch
+  # 插件未安装时静默跳过
+endtry
 
 # ======================================================================
 # 插件配置
 # ======================================================================
 
 # --- lexima 自动补全括号等
-lexima#init()
+try | lexima#init() | catch | endtry
 
 # --- gutentags 代码标签
 g:gutentags_enabled = 0
@@ -125,7 +145,10 @@ g:gutentags_enabled = 0
 # --- vim-which-key 快捷键提示
 g:mapleader = "\<Space>"
 g:maplocalleader = ','
-which_key#register('<Space>', "g:which_key_map")
+try
+  which_key#register('<Space>', "g:which_key_map")
+catch
+endtry
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
@@ -190,8 +213,9 @@ nnoremap <silent> <S-F8> :FloatermNew<CR>
 tnoremap <silent> <S-F8> <C-\><C-n>:FloatermNew<CR>
 
 # ======================================================================
-# coc.nvim 配置 - 使用传统 function! 定义
+# coc.nvim 配置 - 使用传统 function! 定义 (仅在 coc 加载后生效)
 # ======================================================================
+if get(g:, 'did_coc_loaded', 0)
 
 # 使用 Tab 触发补全并导航
 function! g:CheckBackspace() abort
@@ -274,7 +298,9 @@ command! -nargs=0 OR call CocActionAsync('runCommand', 'editor.action.organizeIm
 # 状态栏支持
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-# 禁用启动警告
+endif  # coc.nvim guard
+
+# 禁用启动警告 (这些 g: 变量设在 guard 外面，coc 加载时会读取)
 g:coc_disable_startup_warning = 1
 
 # 扩展
