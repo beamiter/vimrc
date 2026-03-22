@@ -53,59 +53,58 @@ augroup vimrc_settings
 augroup END
 
 # ======================================================================
-# 插件管理
+# 插件管理 (SimplePlug — Vim9 + Rust 后端)
 # ======================================================================
-# 自动安装 vim-plug
-var data_dir = has('nvim') ? stdpath('data') .. '/site' : '~/.vim'
-if empty(glob(data_dir .. '/autoload/plug.vim'))
-  silent execute '!curl -fLo ' .. data_dir .. '/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+# 引导：确保 simpleplug 自身在 runtimepath 中
+var simpleplug_home = expand('~/.vim/plugged/simpleplug')
+if isdirectory(simpleplug_home) && stridx(&runtimepath, simpleplug_home) < 0
+  &runtimepath = simpleplug_home .. ',' .. &runtimepath
 endif
 
-# 指定插件目录
-plug#begin('~/.vim/plugged')
+simpleplug#Begin('~/.vim/plugged')
 
 # 编程增强插件
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'JuliaEditorSupport/julia-vim'
-Plug 'kdheepak/JuliaFormatter.vim'
-Plug 'neovimhaskell/haskell-vim'
+simpleplug#Plug('neoclide/coc.nvim', {branch: 'release'})
+simpleplug#Plug('ludovicchabant/vim-gutentags')
+simpleplug#Plug('JuliaEditorSupport/julia-vim')
+simpleplug#Plug('kdheepak/JuliaFormatter.vim')
+simpleplug#Plug('neovimhaskell/haskell-vim')
 
 # UI 增强插件
-Plug 'ryanoasis/vim-devicons'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'Yggdroot/indentLine'
-Plug 'mhinz/vim-startify'
+simpleplug#Plug('ryanoasis/vim-devicons')
+simpleplug#Plug('vim-airline/vim-airline')
+simpleplug#Plug('vim-airline/vim-airline-themes')
+simpleplug#Plug('Yggdroot/indentLine')
+simpleplug#Plug('mhinz/vim-startify')
 
 # 导航和搜索插件
-Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
-Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vim-clap', {'do': ':Clap install-binary!'}
-Plug 'easymotion/vim-easymotion'
+simpleplug#Plug('junegunn/fzf', {dir: '~/.fzf', do: './install --all'})
+simpleplug#Plug('junegunn/fzf.vim')
+simpleplug#Plug('liuchengxu/vim-clap', {do: 'make install'})
+simpleplug#Plug('easymotion/vim-easymotion')
 
 # 编辑增强插件
-Plug 'cohama/lexima.vim'
-Plug 'tomtom/tcomment_vim'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'andymass/vim-matchup'
-Plug 'mg979/vim-visual-multi'
-Plug 'sheerun/vim-polyglot'
+simpleplug#Plug('cohama/lexima.vim')
+simpleplug#Plug('tomtom/tcomment_vim')
+simpleplug#Plug('ntpeters/vim-better-whitespace')
+simpleplug#Plug('andymass/vim-matchup')
+simpleplug#Plug('mg979/vim-visual-multi')
+simpleplug#Plug('sheerun/vim-polyglot')
 
 # Git 相关插件
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+simpleplug#Plug('tpope/vim-fugitive')
+simpleplug#Plug('airblade/vim-gitgutter')
 
 # 终端和工具插件
-Plug 'voldikss/vim-floaterm'
-Plug 'liuchengxu/vim-which-key'
+simpleplug#Plug('voldikss/vim-floaterm')
+simpleplug#Plug('liuchengxu/vim-which-key')
 
-Plug 'beamiter/simpleclipboard', {'do': './install.sh'}
-Plug 'beamiter/simpletree', {'do': './install.sh'}
-Plug 'beamiter/simpletreesitter', {'do': './install.sh'}
+simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
+simpleplug#Plug('beamiter/simpletree', {do: './install.sh'})
+simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
+simpleplug#Plug('beamiter/simpleplug', {do: './install.sh'})
 
-plug#end()
+simpleplug#End()
 
 # ======================================================================
 # 颜色主题设置
