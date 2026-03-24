@@ -256,6 +256,36 @@ nmap <leader>0 :BufferJump0<CR>
 nnoremap <localleader>jf :JuliaFormatterFormat<CR>
 vnoremap <localleader>jf :JuliaFormatterFormat<CR>
 
+# --- simplecc LSP 客户端
+g:simplecc_auto_start = 1
+g:simplecc_auto_complete = 1
+g:simplecc_complete_delay = 100
+g:simplecc_config_path = expand('~/.vim/simplecc.json')
+g:simplecc_sign_error = 'E>'
+g:simplecc_sign_warn = 'W>'
+g:simplecc_sign_info = 'I>'
+g:simplecc_sign_hint = 'H>'
+g:simplecc_auto_install = 1
+
+# simplecc 快捷键（默认已有 gd/gr/K 等，这里补充 which-key 集成）
+g:which_key_map['l'] = {
+  name: '+lsp',
+  d: [':SimpleCCDefinition', 'definition'],
+  r: [':SimpleCCReferences', 'references'],
+  n: [':SimpleCCRename', 'rename'],
+  a: [':SimpleCCAction', 'code-action'],
+  f: [':SimpleCCFormat', 'format'],
+  h: [':SimpleCCHover', 'hover'],
+  s: [':SimpleCCSignatureHelp', 'signature-help'],
+  e: [':SimpleCCDiagnostics', 'diagnostics-list'],
+  i: [':SimpleCC', 'status'],
+  R: [':SimpleCCRestart', 'restart'],
+  l: [':SimpleCCLog', 'show-log'],
+  c: [':SimpleCCConfig', 'open-config'],
+  I: [':SimpleCCInstall', 'install-server'],
+  S: [':SimpleCCServers', 'list-servers'],
+}
+
 # --- haskell
 g:haskell_enable_quantification = 1
 g:haskell_enable_recursivedo = 1
