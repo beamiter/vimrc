@@ -284,6 +284,17 @@ g:which_key_map['l'] = {
   c: [':SimpleCCConfig', 'open-config'],
   I: [':SimpleCCInstall', 'install-server'],
   S: [':SimpleCCServers', 'list-servers'],
+  o: [':SimpleCCOutline', 'outline'],
+  w: [':SimpleCCWorkspaceSymbol', 'workspace-symbol'],
+  t: [':SimpleCCTypeDef', 'type-definition'],
+  m: [':SimpleCCImplementation', 'implementation'],
+  H: [':SimpleCCHighlight', 'highlight-symbol'],
+  p: [':SimpleCCInlayHints', 'toggle-inlay-hints'],
+  k: [':SimpleCCIncomingCalls', 'incoming-calls'],
+  K: [':SimpleCCOutgoingCalls', 'outgoing-calls'],
+  T: [':SimpleCCSemanticTokens', 'semantic-tokens'],
+  L: [':SimpleCCCodeLens', 'code-lens'],
+  F: [':SimpleCCFold', 'folding-range'],
 }
 
 # --- haskell
