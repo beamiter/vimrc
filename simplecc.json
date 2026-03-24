@@ -1,0 +1,41 @@
+{
+  "languageServers": {
+    "clangd": {
+      "command": "clangd",
+      "args": [],
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": ["compile_commands.json", ".clangd", "CMakeLists.txt"]
+    },
+    "rust-analyzer": {
+      "command": "rust-analyzer",
+      "args": [],
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml"],
+      "initializationOptions": {}
+    },
+    "pyright": {
+      "command": "pyright-langserver",
+      "args": ["--stdio"],
+      "filetypes": ["python"],
+      "rootPatterns": ["pyproject.toml", "setup.py", "pyrightconfig.json"]
+    },
+    "gopls": {
+      "command": "gopls",
+      "args": [],
+      "filetypes": ["go", "gomod"],
+      "rootPatterns": ["go.mod"]
+    },
+    "typescript-language-server": {
+      "command": "typescript-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["typescript", "javascript", "typescriptreact", "javascriptreact"],
+      "rootPatterns": ["package.json", "tsconfig.json"]
+    },
+    "lua-language-server": {
+      "command": "lua-language-server",
+      "args": [],
+      "filetypes": ["lua"],
+      "rootPatterns": [".luarc.json"]
+    }
+  }
+}
