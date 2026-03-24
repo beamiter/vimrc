@@ -75,7 +75,6 @@ endif
 simpleplug#Begin('~/.vim/plugged')
 
 # 编程增强插件
-simpleplug#Plug('neoclide/coc.nvim', {branch: 'release'})
 simpleplug#Plug('ludovicchabant/vim-gutentags')
 simpleplug#Plug('JuliaEditorSupport/julia-vim')
 simpleplug#Plug('kdheepak/JuliaFormatter.vim')
@@ -114,6 +113,7 @@ simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpletree', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpleplug', {do: './install.sh'})
+simpleplug#Plug('beamiter/simplecc', {do: './install.sh'})
 
 simpleplug#End()
 
@@ -194,14 +194,6 @@ nmap <C-Right> :vert res +5<CR>
 # --- tcomment_vim 代码注释
 map <silent><leader>cl :TComment<CR>
 
-# --- 代码格式化
-xmap <silent><leader>fm <Plug>(coc-format-selected)
-nmap <silent><leader>fm :call CocActionAsync('format')<CR>
-xmap <silent><leader>lf <Plug>(coc-format-selected)
-nmap <silent><leader>lf :call CocActionAsync('format')<CR>
-xmap <silent><leader>cf <Plug>(coc-format-selected)
-nmap <silent><leader>cf :call CocActionAsync('format')<CR>
-
 # --- vim-floaterm 浮动终端
 nnoremap <silent> <S-F7> :FloatermPrev<CR>
 tnoremap <silent> <S-F7> <C-\><C-n>:FloatermPrev<CR>
@@ -211,107 +203,6 @@ nnoremap <silent> <F8> :FloatermToggle<CR>
 tnoremap <silent> <F8> <C-\><C-n>:FloatermToggle<CR>
 nnoremap <silent> <S-F8> :FloatermNew<CR>
 tnoremap <silent> <S-F8> <C-\><C-n>:FloatermNew<CR>
-
-# ======================================================================
-# coc.nvim 配置 - 使用传统 function! 定义 (仅在 coc 加载后生效)
-# ======================================================================
-if get(g:, 'did_coc_loaded', 0)
-
-# 使用 Tab 触发补全并导航
-function! g:CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ g:CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-
-g:coc_snippet_next = '<tab>'
-g:coc_snippet_prev = '<c-k>'
-
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-# 使用回车确认选中的补全项
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-      \ : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-# 使用 <c-space> 触发补全
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-# 代码导航
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-# 显示文档
-function! g:ShowDocumentation() abort
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-
-nnoremap <silent> K :call g:ShowDocumentation()<CR>
-
-# 高亮光标下的符号及其引用
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-# 重命名符号
-nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>ln <Plug>(coc-rename)
-
-# 代码操作
-xmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>ac <Plug>(coc-codeaction)
-nmap <leader>ca <Plug>(coc-codeaction)
-nmap <leader>la <Plug>(coc-codeaction)
-nmap <leader>qf <Plug>(coc-fix-current)
-
-# 函数和类的文本对象
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-# 使用 CTRL-S 进行选择范围
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
-# 添加命令
-command! -nargs=0 Format call CocActionAsync('format')
-command! -nargs=? Fold call CocAction('fold', <f-args>)
-command! -nargs=0 OR call CocActionAsync('runCommand', 'editor.action.organizeImport')
-
-# 状态栏支持
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-endif  # coc.nvim guard
-
-# 禁用启动警告 (这些 g: 变量设在 guard 外面，coc 加载时会读取)
-g:coc_disable_startup_warning = 1
-
-# 扩展
-g:coc_global_extensions = [
-  'coc-rust-analyzer',
-  'coc-yank',
-  'coc-snippets',
-  'coc-json',
-  'coc-clangd',
-  'coc-pyright',
-]
 
 # --- vim-clap 搜索工具
 nnoremap <leader>st :Clap igrep<CR>
