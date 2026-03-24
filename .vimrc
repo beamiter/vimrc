@@ -82,8 +82,7 @@ simpleplug#Plug('neovimhaskell/haskell-vim')
 
 # UI 增强插件
 simpleplug#Plug('ryanoasis/vim-devicons')
-simpleplug#Plug('vim-airline/vim-airline')
-simpleplug#Plug('vim-airline/vim-airline-themes')
+simpleplug#Plug('beamiter/simpleline', {do: './install.sh'})
 simpleplug#Plug('Yggdroot/indentLine')
 simpleplug#Plug('mhinz/vim-startify')
 
@@ -236,9 +235,10 @@ noremap <silent> <localleader>8 :<C-u>8 wincmd w<CR>
 noremap <silent> <localleader>9 :<C-u>9 wincmd w<CR>
 noremap <silent> <localleader>0 :<C-u>10 wincmd w<CR>
 
-# --- airline 状态栏
-g:airline_theme = 'onedark'
-g:airline_powerline_fonts = 1
+# --- simpleline 状态栏
+g:simpleline_separator = 'arrow'
+g:simpleline_nerdfont = 1
+g:simpleline_git_interval = 2000
 
 # 标签页快速切换
 nmap <leader>1 :BufferJump1<CR>
