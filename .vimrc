@@ -203,7 +203,18 @@ tnoremap <silent> <F8> <C-\><C-n>:FloatermToggle<CR>
 nnoremap <silent> <S-F8> :FloatermNew<CR>
 tnoremap <silent> <S-F8> <C-\><C-n>:FloatermNew<CR>
 
-# --- simplefinder 搜索工具 (keybindings defined in plugin/simplefinder.vim)
+# --- simplefinder 搜索工具
+nnoremap <silent> <leader>st <Cmd>SimpleFinderIGrep<CR>
+nnoremap <silent> <leader>sg <Cmd>SimpleFinderGrep<CR>
+xnoremap <silent> <leader>sg :<C-U>call simplefinder#GrepVisual()<CR>
+nnoremap <silent> <leader>sw <Cmd>call simplefinder#GrepWord()<CR>
+xnoremap <silent> <leader>sw :<C-U>call simplefinder#GrepVisual()<CR>
+nnoremap <silent> <leader>fr <Cmd>SimpleFinderRecent<CR>
+nnoremap <silent> <leader>fo <Cmd>SimpleFinderRecent<CR>
+nnoremap <silent> <leader>fh <Cmd>SimpleFinderRecent<CR>
+nnoremap <silent> <leader>bb <Cmd>SimpleFinderBuffers<CR>
+nnoremap <silent> <leader>ff <Cmd>SimpleFinderFiles<CR>
+nnoremap <silent> <leader><Space> <Cmd>SimpleFinderFiles<CR>
 
 # --- easymotion 快速移动
 g:EasyMotion_do_mapping = 0
