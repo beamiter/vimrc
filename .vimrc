@@ -87,8 +87,6 @@ simpleplug#Plug('Yggdroot/indentLine')
 simpleplug#Plug('mhinz/vim-startify')
 
 # 导航和搜索插件
-simpleplug#Plug('junegunn/fzf', {dir: '~/.fzf', do: './install --all'})
-simpleplug#Plug('junegunn/fzf.vim')
 simpleplug#Plug('beamiter/simplefinder', {do: './install.sh'})
 simpleplug#Plug('easymotion/vim-easymotion')
 
