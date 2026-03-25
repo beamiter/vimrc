@@ -89,7 +89,7 @@ simpleplug#Plug('mhinz/vim-startify')
 # 导航和搜索插件
 simpleplug#Plug('junegunn/fzf', {dir: '~/.fzf', do: './install --all'})
 simpleplug#Plug('junegunn/fzf.vim')
-simpleplug#Plug('liuchengxu/vim-clap', {do: 'make install'})
+simpleplug#Plug('beamiter/simplefinder', {do: './install.sh'})
 simpleplug#Plug('easymotion/vim-easymotion')
 
 # 编辑增强插件
@@ -203,18 +203,7 @@ tnoremap <silent> <F8> <C-\><C-n>:FloatermToggle<CR>
 nnoremap <silent> <S-F8> :FloatermNew<CR>
 tnoremap <silent> <S-F8> <C-\><C-n>:FloatermNew<CR>
 
-# --- vim-clap 搜索工具
-nnoremap <leader>st :Clap igrep<CR>
-nnoremap <leader>sg :Clap grep<CR>
-xnoremap <leader>sg :Clap grep --query=@visual<CR>
-nnoremap <leader>sw :Clap grep --query=<cword><CR>
-xnoremap <leader>sw :Clap grep --query=@visual<CR>
-nnoremap <leader>fr :Clap recent_files<CR>
-nnoremap <leader>fo :Clap recent_files<CR>
-nnoremap <leader>fh :Clap recent_files<CR>
-nnoremap <leader>bb :Clap buffers<CR>
-nnoremap <leader>ff :Clap files<CR>
-nnoremap <leader><Space> :Clap files<CR>
+# --- simplefinder 搜索工具 (keybindings defined in plugin/simplefinder.vim)
 
 # --- easymotion 快速移动
 g:EasyMotion_do_mapping = 0
