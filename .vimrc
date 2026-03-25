@@ -266,6 +266,8 @@ g:simplecc_sign_warn = 'W>'
 g:simplecc_sign_info = 'I>'
 g:simplecc_sign_hint = 'H>'
 g:simplecc_auto_install = 1
+# 取消 simplecc 默认的 <leader>f，避免与 simplefinder <leader>ff 冲突，改用 <leader>lf
+autocmd VimEnter * ++once silent! nunmap <leader>f
 
 # simplecc 快捷键（默认已有 gd/gr/K 等，这里补充 which-key 集成）
 g:which_key_map['l'] = {
