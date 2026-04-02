@@ -264,6 +264,8 @@ g:simplecc_sign_warn = 'W>'
 g:simplecc_sign_info = 'I>'
 g:simplecc_sign_hint = 'H>'
 g:simplecc_auto_install = 1
+g:simplecc_inlay_hints = 0
+g:simplecc_virtual_diag = 0
 g:simplecc_semantic_tokens = 0
 # 取消 simplecc 默认的 <leader>f，避免与 simplefinder <leader>ff 冲突，改用 <leader>lf
 autocmd VimEnter * ++once silent! nunmap <leader>f
