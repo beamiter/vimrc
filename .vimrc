@@ -11,6 +11,10 @@ set nocompatible
 &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 g:netrw_fastbrowse = 0
 
+# Nerd Font 字符宽度识别
+set ambiwidth=double
+set nolangremap
+
 # 基本编辑器设置
 syntax on
 filetype off
