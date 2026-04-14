@@ -275,6 +275,8 @@ g:simplecc_semantic_tokens = 0
 autocmd VimEnter * ++once silent! nunmap <leader>f
 
 # simplecc 快捷键（默认已有 gd/gr/K 等，这里补充 which-key 集成）
+nnoremap <silent> <leader>cf :SimpleCCFormat<CR>
+nnoremap <silent> <leader>fm :SimpleCCFormat<CR>
 g:which_key_map['l'] = {
   name: '+lsp',
   d: [':SimpleCCDefinition', 'definition'],
