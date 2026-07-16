@@ -87,6 +87,7 @@ simpleplug#Plug('neovimhaskell/haskell-vim')
 # UI 增强插件
 simpleplug#Plug('ryanoasis/vim-devicons')
 simpleplug#Plug('beamiter/simpleline', {do: './install.sh'})
+simpleplug#Plug('beamiter/simpleminimap', {do: './install.sh'})
 simpleplug#Plug('Yggdroot/indentLine')
 simpleplug#Plug('mhinz/vim-startify')
 
