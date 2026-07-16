@@ -259,24 +259,12 @@ nnoremap <localleader>jf :JuliaFormatterFormat<CR>
 vnoremap <localleader>jf :JuliaFormatterFormat<CR>
 
 # --- simplecc LSP 客户端
-g:simplecc_auto_start = 1
-g:simplecc_auto_complete = 1
-g:simplecc_complete_delay = 100
-g:simplecc_config_path = expand('~/.vim/simplecc.json')
-g:simplecc_sign_error = 'E>'
-g:simplecc_sign_warn = 'W>'
-g:simplecc_sign_info = 'I>'
-g:simplecc_sign_hint = 'H>'
 g:simplecc_auto_install = 1
 g:simplecc_inlay_hints = 0
 g:simplecc_virtual_diag = 0
-g:simplecc_semantic_tokens = 0
-# 取消 simplecc 默认的 <leader>f，避免与 simplefinder <leader>ff 冲突，改用 <leader>lf
-autocmd VimEnter * ++once silent! nunmap <leader>f
 
 # simplecc 快捷键（默认已有 gd/gr/K 等，这里补充 which-key 集成）
 nnoremap <silent> <leader>cf :SimpleCCFormat<CR>
-nnoremap <silent> <leader>fm :SimpleCCFormat<CR>
 g:which_key_map['l'] = {
   name: '+lsp',
   d: [':SimpleCCDefinition', 'definition'],
