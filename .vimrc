@@ -110,7 +110,7 @@ simpleplug#Plug('airblade/vim-gitgutter')
 simpleplug#Plug('voldikss/vim-floaterm')
 simpleplug#Plug('liuchengxu/vim-which-key')
 
-simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
+# simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpletree', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpleplug', {do: './install.sh'})
@@ -265,6 +265,7 @@ g:simplecc_virtual_diag = 0
 
 # simplecc 快捷键（默认已有 gd/gr/K 等，这里补充 which-key 集成）
 nnoremap <silent> <leader>cf :SimpleCCFormat<CR>
+nnoremap <silent> <leader>fm :SimpleCCFormat<CR>
 g:which_key_map['l'] = {
   name: '+lsp',
   d: [':SimpleCCDefinition', 'definition'],
