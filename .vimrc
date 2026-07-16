@@ -110,7 +110,7 @@ simpleplug#Plug('airblade/vim-gitgutter')
 simpleplug#Plug('voldikss/vim-floaterm')
 simpleplug#Plug('liuchengxu/vim-which-key')
 
-# simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
+simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpletree', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
 simpleplug#Plug('beamiter/simpleplug', {do: './install.sh'})
