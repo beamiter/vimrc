@@ -27,9 +27,6 @@
 - 单一键位来源：插件默认映射尽量关闭，真实 mapping 与 WhichKey 描述放在一起。
 - 可验证：同时提供空 HOME 核心测试和本机完整插件栈测试。
 
-旧的编译、桌面环境和个人备忘已保留在
-[[file:archive/README-legacy.org][archive/README-legacy.org]]。
-
 * 要求
 
 ** 运行时
