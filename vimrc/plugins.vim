@@ -100,15 +100,6 @@ g:simpleclipboard_auto_copy = has('unnamedplus') ? 0 : 1
 g:simpleclipboard_daemon_autostart = has('unnamedplus') ? 0 : 1
 
 # 其他插件
-g:indentLine_setConceal = 0
-g:indentLine_fileTypeExclude = [
-  'help',
-  'qf',
-  'startify',
-  'simpletree',
-  'simpleminimap',
-  'terminal',
-]
 g:gitgutter_map_keys = 0
 g:gitgutter_async = 1
 g:EasyMotion_do_mapping = 0
@@ -158,7 +149,6 @@ if plugins_enabled && isdirectory(simpleplug_home)
     simpleplug#Plug('ryanoasis/vim-devicons')
     simpleplug#Plug('beamiter/simpleline', {do: './install.sh'})
     simpleplug#Plug('beamiter/simpleminimap', {do: './install.sh'})
-    simpleplug#Plug('Yggdroot/indentLine')
     simpleplug#Plug('mhinz/vim-startify')
 
     # 导航和搜索
