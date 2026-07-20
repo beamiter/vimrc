@@ -1,41 +1,136 @@
 {
   "languageServers": {
-    "clangd": {
-      "command": "clangd",
-      "args": [],
-      "filetypes": ["c", "cpp", "objc", "objcpp"],
-      "rootPatterns": ["compile_commands.json", ".clangd", "CMakeLists.txt"]
-    },
     "rust-analyzer": {
       "command": "rust-analyzer",
       "args": [],
       "filetypes": ["rust"],
-      "rootPatterns": ["Cargo.toml"],
-      "initializationOptions": {}
+      "rootPatterns": ["Cargo.toml", "rust-project.json", ".git"],
+      "priority": 100,
+      "initializationOptions": {},
+      "settings": {
+        "rust-analyzer": {
+          "check": {
+            "command": "check"
+          },
+          "diagnostics": {
+            "experimental": {
+              "enable": false
+            }
+          }
+        }
+      }
+    },
+    "clangd": {
+      "command": "clangd",
+      "args": [],
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [
+        "compile_commands.json",
+        "compile_flags.txt",
+        ".clangd",
+        "CMakeLists.txt",
+        ".git"
+      ],
+      "priority": 100,
+      "initializationOptions": {},
+      "settings": {}
     },
     "pyright": {
       "command": "pyright-langserver",
       "args": ["--stdio"],
       "filetypes": ["python"],
-      "rootPatterns": ["pyproject.toml", "setup.py", "pyrightconfig.json"]
+      "rootPatterns": [
+        "pyrightconfig.json",
+        "pyproject.toml",
+        "setup.cfg",
+        "setup.py",
+        ".git"
+      ],
+      "priority": 100,
+      "initializationOptions": {},
+      "settings": {
+        "python": {
+          "analysis": {
+            "typeCheckingMode": "standard",
+            "diagnosticMode": "openFilesOnly",
+            "autoSearchPaths": true,
+            "useLibraryCodeForTypes": true
+          }
+        }
+      }
     },
     "gopls": {
       "command": "gopls",
       "args": [],
-      "filetypes": ["go", "gomod"],
-      "rootPatterns": ["go.mod"]
+      "filetypes": ["go", "gomod", "gowork"],
+      "rootPatterns": ["go.work", "go.mod", ".git"],
+      "priority": 100,
+      "initializationOptions": {},
+      "settings": {}
     },
     "typescript-language-server": {
       "command": "typescript-language-server",
       "args": ["--stdio"],
-      "filetypes": ["typescript", "javascript", "typescriptreact", "javascriptreact"],
-      "rootPatterns": ["package.json", "tsconfig.json"]
+      "filetypes": [
+        "typescript",
+        "javascript",
+        "typescriptreact",
+        "javascriptreact"
+      ],
+      "rootPatterns": [
+        "tsconfig.json",
+        "jsconfig.json",
+        "package.json",
+        ".git"
+      ],
+      "priority": 100,
+      "initializationOptions": {},
+      "settings": {}
     },
     "lua-language-server": {
       "command": "lua-language-server",
       "args": [],
       "filetypes": ["lua"],
-      "rootPatterns": [".luarc.json"]
+      "rootPatterns": [".luarc.json", ".luarc.jsonc", ".git"],
+      "priority": 100,
+      "initializationOptions": {},
+      "settings": {}
+    },
+    "julia-lsp": {
+      "command": "julia",
+      "args": [
+        "--startup-file=no",
+        "--history-file=no",
+        "-e",
+        "ls_env = joinpath(get(DEPOT_PATH, 1, joinpath(homedir(), \".julia\")), \"environments\", \"simplecc\"); pushfirst!(LOAD_PATH, ls_env); using LanguageServer; popfirst!(LOAD_PATH); depot = get(ENV, \"JULIA_DEPOT_PATH\", \"\"); project = dirname(something(Base.current_project(pwd()), get(Base.load_path(), 1, nothing), Base.active_project())); server = LanguageServer.LanguageServerInstance(stdin, stdout, project, depot); run(server)"
+      ],
+      "filetypes": ["julia"],
+      "rootPatterns": ["JuliaProject.toml", "Project.toml", ".git"],
+      "priority": 100,
+      "initializationOptions": {
+        "useFormatterConfigDefaults": true
+      },
+      "settings": {
+        "julia": {
+          "lint": {
+            "run": true,
+            "missingrefs": "none",
+            "disabledDirs": ["docs", "test"]
+          },
+          "completionmode": "qualify",
+          "inlayHints": {
+            "static": {
+              "enabled": true,
+              "variableTypes": {
+                "enabled": true
+              },
+              "parameterNames": {
+                "enabled": "literals"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
