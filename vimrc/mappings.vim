@@ -120,6 +120,7 @@ if get(C, 'plugins_ready', false)
   nmap <silent> <leader>rn <Plug>(simplecc-rename)
   nmap <silent> <leader>ca <Plug>(simplecc-code-action)
   nmap <silent> <leader>fm <Plug>(simplecc-format)
+  nmap <silent> <leader>cf <Plug>(simplecc-format)
   nmap <silent> <leader>lo <Plug>(simplecc-outline)
   nmap <silent> <leader>ih <Plug>(simplecc-inlay-hints)
 
