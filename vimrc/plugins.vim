@@ -142,7 +142,6 @@ if plugins_enabled && isdirectory(simpleplug_home)
 
     # 语言支持；重型语言插件按 filetype 延迟。
     simpleplug#Plug('JuliaEditorSupport/julia-vim', {for: 'julia'})
-    simpleplug#Plug('kdheepak/JuliaFormatter.vim', {for: 'julia'})
     simpleplug#Plug('neovimhaskell/haskell-vim', {for: 'haskell'})
 
     # UI
@@ -173,7 +172,6 @@ if plugins_enabled && isdirectory(simpleplug_home)
     simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
     simpleplug#Plug('beamiter/simpletree', {do: './install.sh'})
     simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
-    simpleplug#Plug('beamiter/simpleplug', {do: './install.sh'})
     simpleplug#Plug('beamiter/simplecc', {do: './install.sh'})
 
     simpleplug#End()

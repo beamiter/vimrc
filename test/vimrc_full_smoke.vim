@@ -39,15 +39,6 @@ assert_equal('', maparg('gr', 'n'))
 assert_equal('', maparg('gi', 'n'))
 assert_notequal('<Plug>(simplecc-select-tab)', maparg('<Tab>', 'i'))
 
-&l:filetype = 'julia'
-g:VimrcConfigureFiletype()
-assert_equal('<Cmd>JuliaFormatterFormat<CR>', maparg(',jf', 'n'))
-assert_equal(':JuliaFormatterFormat<CR>', maparg(',jf', 'x'))
-&l:filetype = 'vim'
-g:VimrcConfigureFiletype()
-assert_equal('', maparg(',jf', 'n'))
-assert_equal('', maparg(',jf', 'x'))
-
 # LSP-like native overrides are buffer-local and disappear with the filetype.
 &l:filetype = 'rust'
 g:VimrcConfigureFiletype()

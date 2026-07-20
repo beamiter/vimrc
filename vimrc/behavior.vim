@@ -63,19 +63,6 @@ def g:VimrcConfigureFiletype()
         \ && enter_rhs =~# 'lexima#expand'
     silent! iunmap <buffer> <CR>
   endif
-  for mode_and_rhs in [
-        ['n', '<Cmd>JuliaFormatterFormat<CR>'],
-        ['x', ':JuliaFormatterFormat<CR>'],
-      ]
-    var existing = maparg(g:maplocalleader .. 'jf', mode_and_rhs[0], false, true)
-    if get(existing, 'buffer', 0) == 1
-          \ && get(existing, 'rhs', '') ==# mode_and_rhs[1]
-      execute mode_and_rhs[0] ==# 'n'
-            \ ? 'silent! nunmap <buffer> <localleader>jf'
-            \ : 'silent! xunmap <buffer> <localleader>jf'
-    endif
-  endfor
-
   # 先恢复稳定基线，避免同一 buffer 改 filetype 后局部设置泄漏。
   setlocal expandtab
   setlocal shiftwidth=4
@@ -132,11 +119,6 @@ def g:VimrcConfigureFiletype()
   if &filetype ==# 'gitcommit'
     setlocal textwidth=72
     setlocal colorcolumn=73
-  endif
-
-  if C.plugins_ready && &filetype ==# 'julia'
-    nnoremap <buffer> <silent> <localleader>jf <Cmd>JuliaFormatterFormat<CR>
-    xnoremap <buffer> <silent> <localleader>jf :JuliaFormatterFormat<CR>
   endif
 
   # Keep Vim's native gd/gr/gi/K motions everywhere except buffers covered by
