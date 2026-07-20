@@ -120,7 +120,7 @@
           "completionmode": "qualify",
           "inlayHints": {
             "static": {
-              "enabled": true,
+              "enabled": false,
               "variableTypes": {
                 "enabled": true
               },
