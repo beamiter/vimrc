@@ -99,9 +99,10 @@ g:simpleclipboard_no_default_mappings = 1
 g:simpleclipboard_auto_copy = has('unnamedplus') ? 0 : 1
 g:simpleclipboard_daemon_autostart = has('unnamedplus') ? 0 : 1
 
+# SimpleGit：键位统一由 mappings.vim 管理。
+g:simplegit_enable_default_mappings = 0
+
 # 其他插件
-g:gitgutter_map_keys = 0
-g:gitgutter_async = 1
 g:EasyMotion_do_mapping = 0
 g:EasyMotion_smartcase = 1
 g:matchup_matchparen_offscreen = {method: 'popup'}
@@ -161,8 +162,7 @@ if plugins_enabled && isdirectory(simpleplug_home)
     simpleplug#Plug('mg979/vim-visual-multi')
 
     # Git
-    simpleplug#Plug('tpope/vim-fugitive')
-    simpleplug#Plug('airblade/vim-gitgutter')
+    simpleplug#Plug('beamiter/simplegit', {do: './install.sh'})
 
     # 终端和键位提示
     simpleplug#Plug('voldikss/vim-floaterm')

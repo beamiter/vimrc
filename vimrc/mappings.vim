@@ -151,16 +151,13 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>lF <Cmd>SimpleCCFold<CR>
 
   # Git
-  nmap <silent> ]g <Plug>(GitGutterNextHunk)
-  nmap <silent> [g <Plug>(GitGutterPrevHunk)
-  nnoremap <silent> <leader>gj <Cmd>GitGutterNextHunk<CR>
-  nnoremap <silent> <leader>gk <Cmd>GitGutterPrevHunk<CR>
-  nnoremap <silent> <leader>gh <Cmd>GitGutterPreviewHunk<CR>
-  nnoremap <silent> <leader>ga <Cmd>GitGutterStageHunk<CR>
-  nnoremap <silent> <leader>gu <Cmd>GitGutterUndoHunk<CR>
-  nnoremap <silent> <leader>gs <Cmd>Git<CR>
-  nnoremap <silent> <leader>gb <Cmd>Git blame<CR>
-  nnoremap <silent> <leader>gd <Cmd>Gdiffsplit<CR>
+  nnoremap <silent> <leader>gb <Cmd>SimpleGitBlame<CR>
+  nnoremap <silent> <leader>gm <Cmd>SimpleGitBlameLine<CR>
+  nnoremap <silent> <leader>gh <Cmd>SimpleGitHistory<CR>
+  nnoremap <silent> <leader>gd <Cmd>SimpleGitDiff<CR>
+  nnoremap <silent> <leader>gs <Cmd>SimpleGitStatus<CR>
+  nnoremap <silent> <leader>gt <Cmd>SimpleGitToggleLineBlame<CR>
+  nnoremap <silent> <leader>gH <Cmd>SimpleGitHealth<CR>
 
   # 注释
   nnoremap <silent> <leader>cc <Cmd>TComment<CR>
@@ -239,14 +236,13 @@ if get(C, 'plugins_ready', false)
     },
     g: {
       name: '+git',
-      a: 'stage-hunk',
-      b: 'blame',
-      d: 'diff',
-      h: 'preview-hunk',
-      j: 'next-hunk',
-      k: 'previous-hunk',
+      b: 'blame-sidebar',
+      d: 'diff-head',
+      h: 'file-history',
+      H: 'health',
+      m: 'line-blame',
       s: 'status',
-      u: 'undo-hunk',
+      t: 'toggle-line-blame',
     },
     j: {
       name: '+jump',
