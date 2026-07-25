@@ -151,6 +151,13 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>lF <Cmd>SimpleCCFold<CR>
 
   # Git
+  nnoremap <silent> ]g <Cmd>SimpleGitHunkNext<CR>
+  nnoremap <silent> [g <Cmd>SimpleGitHunkPrev<CR>
+  nnoremap <silent> <leader>gj <Cmd>SimpleGitHunkNext<CR>
+  nnoremap <silent> <leader>gk <Cmd>SimpleGitHunkPrev<CR>
+  nnoremap <silent> <leader>gp <Cmd>SimpleGitHunkPreview<CR>
+  nnoremap <silent> <leader>ga <Cmd>SimpleGitHunkStage<CR>
+  nnoremap <silent> <leader>gu <Cmd>SimpleGitHunkUndo<CR>
   nnoremap <silent> <leader>gb <Cmd>SimpleGitBlame<CR>
   nnoremap <silent> <leader>gm <Cmd>SimpleGitBlameLine<CR>
   nnoremap <silent> <leader>gh <Cmd>SimpleGitHistory<CR>
@@ -236,13 +243,18 @@ if get(C, 'plugins_ready', false)
     },
     g: {
       name: '+git',
+      a: 'stage-hunk',
       b: 'blame-sidebar',
       d: 'diff-head',
       h: 'file-history',
       H: 'health',
+      j: 'next-hunk',
+      k: 'previous-hunk',
       m: 'line-blame',
+      p: 'preview-hunk',
       s: 'status',
       t: 'toggle-line-blame',
+      u: 'undo-hunk',
     },
     j: {
       name: '+jump',

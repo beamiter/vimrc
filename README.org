@@ -176,7 +176,7 @@ g:simplecc_config_path = ''
 | SimpleTreeSitter | Tree-sitter 高亮与 outline |
 | SimpleCC | LSP、补全、诊断、格式化和代码导航 |
 | SimpleClipboard | =-clipboard=、SSH、容器和 OSC52 剪贴板降级 |
-| SimpleGit | 行内 blame、文件历史、diff 与仓库状态 |
+| SimpleGit | 行内 blame、文件历史、diff、仓库状态与 hunk 操作 |
 | lexima + tcomment + matchup | 配对输入、注释和括号匹配 |
 
 已移除两个会在空 buffer 触发错误且与现有能力重叠的插件：
@@ -241,8 +241,10 @@ buffer 保留 Vim/lexima 的原行为。Enter 补全确认与 lexima 的括号�
 
 | 键位 | 功能 |
 |-
+| =[g= / =]g= | 上一个 / 下一个 Git hunk |
 | =<leader>gs/gb/gd= | Git 状态 / blame 侧栏 / diff |
 | =<leader>gh/gm/gt= | 文件历史 / 行 blame / 行内注解开关 |
+| =<leader>gp/ga/gu= | 预览 / stage / undo hunk |
 | =<leader>cc= | 注释当前行或可视范围 |
 | =<leader>jj= | EasyMotion 跨窗口跳转 |
 | =<leader>th/to/ts= | Tree-sitter 开关 / outline / 状态 |
