@@ -58,17 +58,10 @@ nnoremap <silent> [q <Cmd>cprevious<CR>
 nnoremap <silent> ]l <Cmd>lnext<CR>
 nnoremap <silent> [l <Cmd>lprevious<CR>
 
-# 仅 Normal 模式：按窗口编号跳转。
-nnoremap <silent> <localleader>1 <Cmd>1wincmd w<CR>
-nnoremap <silent> <localleader>2 <Cmd>2wincmd w<CR>
-nnoremap <silent> <localleader>3 <Cmd>3wincmd w<CR>
-nnoremap <silent> <localleader>4 <Cmd>4wincmd w<CR>
-nnoremap <silent> <localleader>5 <Cmd>5wincmd w<CR>
-nnoremap <silent> <localleader>6 <Cmd>6wincmd w<CR>
-nnoremap <silent> <localleader>7 <Cmd>7wincmd w<CR>
-nnoremap <silent> <localleader>8 <Cmd>8wincmd w<CR>
-nnoremap <silent> <localleader>9 <Cmd>9wincmd w<CR>
-nnoremap <silent> <localleader>0 <Cmd>10wincmd w<CR>
+# 仅 Normal 模式：按窗口编号跳转，0 表示第 10 个窗口。
+for window_nr in range(1, 10)
+  execute $'nnoremap <silent> <localleader>{window_nr % 10} <Cmd>{window_nr}wincmd w<CR>'
+endfor
 
 # 尾随空白
 nnoremap <silent> <leader>cw <Cmd>StripWhitespace<CR>
@@ -105,16 +98,9 @@ if get(C, 'plugins_ready', false)
 
   # Buffer tabline：数字表示可见 buffer 索引，不是 Vim tabpage。
   nmap <silent> <leader>bp <Plug>(simpleline-buffer-pick)
-  nmap <silent> <leader>1 <Plug>(simpleline-buffer-jump-1)
-  nmap <silent> <leader>2 <Plug>(simpleline-buffer-jump-2)
-  nmap <silent> <leader>3 <Plug>(simpleline-buffer-jump-3)
-  nmap <silent> <leader>4 <Plug>(simpleline-buffer-jump-4)
-  nmap <silent> <leader>5 <Plug>(simpleline-buffer-jump-5)
-  nmap <silent> <leader>6 <Plug>(simpleline-buffer-jump-6)
-  nmap <silent> <leader>7 <Plug>(simpleline-buffer-jump-7)
-  nmap <silent> <leader>8 <Plug>(simpleline-buffer-jump-8)
-  nmap <silent> <leader>9 <Plug>(simpleline-buffer-jump-9)
-  nmap <silent> <leader>0 <Plug>(simpleline-buffer-jump-0)
+  for buffer_nr in range(0, 9)
+    execute $'nmap <silent> <leader>{buffer_nr} <Plug>(simpleline-buffer-jump-{buffer_nr})'
+  endfor
 
   # LSP；显式映射规避 SimpleCC 旧版默认 RHS 尾随空格。
   nmap <silent> <leader>rn <Plug>(simplecc-rename)

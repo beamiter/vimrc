@@ -7,17 +7,21 @@ if v:version < 901
   finish
 endif
 
-if empty($HOME) || $HOME !~# '^/' || $HOME ==# '/'
-  echoerr '[vimrc] HOME must be an absolute, non-root directory'
-  finish
-endif
+# Resolve an absolute path to its canonical form without a trailing slash.
+# Relative, empty, and root paths all collapse to '' so callers can fall back.
+def NormalizePath(path: string): string
+  if empty(path) || path !~# '^/'
+    return ''
+  endif
+  return substitute(
+    resolve(fnamemodify(path, ':p')),
+    '[\/\\]\+$',
+    '',
+    '')
+enddef
 
-const HOME_DIR = substitute(
-      resolve(fnamemodify($HOME, ':p')),
-      '[\/\\]\+$',
-      '',
-      '')
-if empty(HOME_DIR) || HOME_DIR ==# '/' || !isdirectory(HOME_DIR)
+const HOME_DIR = NormalizePath($HOME)
+if empty(HOME_DIR) || !isdirectory(HOME_DIR)
   echoerr '[vimrc] HOME must resolve to an existing, non-root directory'
   finish
 endif
@@ -26,42 +30,20 @@ g:mapleader = ' '
 g:maplocalleader = ','
 
 const ROOT = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-const DEFAULT_STATE_HOME = HOME_DIR .. '/.local/state'
-const DEFAULT_CONFIG_HOME = HOME_DIR .. '/.config'
-const STATE_CANDIDATE = empty($XDG_STATE_HOME) || $XDG_STATE_HOME !~# '^/'
-      \ ? ''
-      \ : substitute(
-        resolve(fnamemodify($XDG_STATE_HOME, ':p')),
-        '[\/\\]\+$',
-        '',
-        '')
-const CONFIG_CANDIDATE = empty($XDG_CONFIG_HOME) || $XDG_CONFIG_HOME !~# '^/'
-      \ ? ''
-      \ : substitute(
-        resolve(fnamemodify($XDG_CONFIG_HOME, ':p')),
-        '[\/\\]\+$',
-        '',
-        '')
-const PLUGIN_CANDIDATE = get(
-      g:,
-      'vimrc_plugin_home',
-      HOME_DIR .. '/.vim/plugged')
-const PLUGIN_RESOLVED = PLUGIN_CANDIDATE !~# '^/'
-      \ ? ''
-      \ : substitute(
-        resolve(fnamemodify(PLUGIN_CANDIDATE, ':p')),
-        '[\/\\]\+$',
-        '',
-        '')
+const DEFAULT_PLUGIN_HOME = HOME_DIR .. '/.vim/plugged'
+const STATE_CANDIDATE = NormalizePath($XDG_STATE_HOME)
+const CONFIG_CANDIDATE = NormalizePath($XDG_CONFIG_HOME)
+const PLUGIN_CANDIDATE = NormalizePath(
+      get(g:, 'vimrc_plugin_home', DEFAULT_PLUGIN_HOME))
 const STATE_HOME = empty(STATE_CANDIDATE)
-      \ ? DEFAULT_STATE_HOME
+      \ ? HOME_DIR .. '/.local/state'
       \ : STATE_CANDIDATE
 const CONFIG_HOME = empty(CONFIG_CANDIDATE)
-      \ ? DEFAULT_CONFIG_HOME
+      \ ? HOME_DIR .. '/.config'
       \ : CONFIG_CANDIDATE
-const PLUGIN_HOME = empty(PLUGIN_RESOLVED)
-      \ ? HOME_DIR .. '/.vim/plugged'
-      \ : PLUGIN_RESOLVED
+const PLUGIN_HOME = empty(PLUGIN_CANDIDATE)
+      \ ? DEFAULT_PLUGIN_HOME
+      \ : PLUGIN_CANDIDATE
 const VIM_STATE = STATE_HOME .. '/vim'
 
 g:vimrc_root = ROOT
