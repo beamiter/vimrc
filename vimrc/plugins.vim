@@ -101,6 +101,8 @@ g:simpleclipboard_daemon_autostart = has('unnamedplus') ? 0 : 1
 
 # SimpleGit：键位统一由 mappings.vim 管理。
 g:simplegit_enable_default_mappings = 0
+# 默认关闭当前行 inlay blame，需要时用 <leader>gt 开启。
+g:simplegit_line_blame = 0
 
 # 其他插件
 g:EasyMotion_do_mapping = 0
