@@ -141,8 +141,13 @@ if plugins_enabled && isdirectory(simpleplug_home)
   try
     simpleplug#Begin(plugin_home)
 
+    # 管理器自身也注册为插件，:PlugUpdate 才能更新 SimplePlug 并重建 daemon。
+    simpleplug#Plug('beamiter/simpleplug', {do: './install.sh'})
+
     # 语言支持；重型语言插件按 filetype 延迟。
-    simpleplug#Plug('JuliaEditorSupport/julia-vim', {for: 'julia'})
+    # julia-vim 不能懒加载：其 ftdetect 对所有 filetype 注册了
+    # LaTeXtoUnicode#Refresh 的全局 autocmd，插件不在 rtp 时会报 E117。
+    simpleplug#Plug('JuliaEditorSupport/julia-vim')
     simpleplug#Plug('neovimhaskell/haskell-vim', {for: 'haskell'})
 
     # UI
