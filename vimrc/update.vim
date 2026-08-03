@@ -113,6 +113,11 @@ def ReportStatus(forced: bool)
     behind: behind,
   }
 
+  # statusline 段位读 g:vimrc_update_status，结果变了就重画一次。
+  if exists(':redrawstatus') == 2
+    silent! redrawstatus!
+  endif
+
   if behind > 0
     Warn(printf(
       '配置落后 %s %d 个提交%s，运行 :VimrcUpdate 拉取',
@@ -244,6 +249,38 @@ enddef
 def g:VimrcUpdateCheck()
   Check(true)
 enddef
+
+# ----------------------------------------------------------------------------
+# statusline 段位
+# ----------------------------------------------------------------------------
+# 每次重画都会调用，因此只读 g:vimrc_update_status，绝不在这里跑 git。
+def g:VimrcUpdateStatusline(): string
+  var status = get(g:, 'vimrc_update_status', {})
+  if type(status) != v:t_dict
+    return ''
+  endif
+  var behind = get(status, 'behind', 0)
+  if type(behind) != v:t_number || behind <= 0
+    return ''
+  endif
+  var icon = get(g:, 'simpleline_nerdfont', 1) ? '󰚰 ' : 'vimrc '
+  return icon .. behind
+enddef
+
+# SimpleLine 在渲染时才解析这张表，所以注册顺序与插件加载顺序无关；重新 source
+# 配置时按 fn 去重，避免重复段位。
+const STATUSLINE_SEGMENT = {
+  fn: 'g:VimrcUpdateStatusline',
+  hl: 'SimpleLineDiagWarn',
+}
+var segments = get(g:, 'simpleline_custom_right', [])
+if type(segments) != v:t_list
+  segments = []
+endif
+g:simpleline_custom_right = filter(
+  segments,
+  (_, value) => type(value) != v:t_dict
+    \ || get(value, 'fn', '') !=# STATUSLINE_SEGMENT.fn) + [STATUSLINE_SEGMENT]
 
 command! VimrcUpdate call g:VimrcUpdate()
 command! VimrcUpdateCheck call g:VimrcUpdateCheck()

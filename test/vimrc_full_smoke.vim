@@ -91,6 +91,14 @@ assert_equal(
       '%#SimpleMinimapTitle#%{simpleminimap#Statusline()}%*',
       minimap_status)
 
+# 更新提示接在 SimpleLine 的用户段位上：落后时渲染，最新时消失。
+g:vimrc_update_status = {upstream: 'origin/main', ahead: 0, behind: 3}
+var behind_status = simpleline#ActiveStatusline()
+assert_match('SimpleLineDiagWarn# 󰚰 3 ', behind_status)
+g:vimrc_update_status = {upstream: 'origin/main', ahead: 0, behind: 0}
+assert_notmatch('󰚰', simpleline#ActiveStatusline())
+g:vimrc_update_status = {}
+
 g:VimrcHealth()
 assert_equal(0, get(get(g:, 'vimrc_health_last', {}), 'fail', -1))
 

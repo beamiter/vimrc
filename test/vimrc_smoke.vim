@@ -94,11 +94,28 @@ setline(1, ['alpha  ', 'beta'])
 g:VimrcStripWhitespace()
 assert_equal(['alpha', 'beta'], getline(1, '$'))
 
+# statusline 段位只读缓存的状态，落后时才渲染。
+g:vimrc_update_status = {}
+assert_equal('', g:VimrcUpdateStatusline())
+g:vimrc_update_status = {behind: 0, ahead: 2}
+assert_equal('', g:VimrcUpdateStatusline())
+g:vimrc_update_status = {behind: 'many'}
+assert_equal('', g:VimrcUpdateStatusline())
+g:vimrc_update_status = 'not-a-dict'
+assert_equal('', g:VimrcUpdateStatusline())
+g:vimrc_update_status = {behind: 3}
+assert_match('3$', g:VimrcUpdateStatusline())
+g:vimrc_update_status = {}
+
 # Reloading must be idempotent: no duplicate commands, functions or autocmds.
 execute 'source ' .. fnameescape(ROOT .. '/.vimrc')
 execute 'source ' .. fnameescape(ROOT .. '/.vimrc')
 var ft_autocmds = execute('autocmd vimrc_core FileType')
 assert_equal(1, count(ft_autocmds, 'VimrcConfigureFiletype'))
+# 重复 source 不得堆积 statusline 段位。
+assert_equal(1, len(filter(
+  copy(g:simpleline_custom_right),
+  (_, value) => get(value, 'fn', '') ==# 'g:VimrcUpdateStatusline')))
 
 g:VimrcHealth()
 assert_equal(0, get(get(g:, 'vimrc_health_last', {}), 'fail', -1))
