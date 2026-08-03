@@ -24,6 +24,9 @@ command -v vim >/dev/null 2>&1 || {
   exit 1
 }
 
+# 测试保持离线：不让配置的更新检查在 CI 里访问网络。
+export VIMRC_SKIP_UPDATE_CHECK=1
+
 for script in \
   "$repo_root/deps.sh" \
   "$repo_root/utils/install.sh" \

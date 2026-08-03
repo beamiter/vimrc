@@ -13,7 +13,8 @@
     ├── core.vim       核心选项、undo/swap/state
     ├── plugins.vim    插件配置与 SimplePlug 清单
     ├── behavior.vim   FileType、健康检查、兼容层
-    └── mappings.vim   所有真实键位与 WhichKey 描述
+    ├── mappings.vim   所有真实键位与 WhichKey 描述
+    └── update.vim     配置仓库更新检查（只读 fetch，拉取需显式执行）
 #+end_example
 
 只需要链接一个 =~/.vimrc=。顶层配置会根据自身真实路径加载其他模块，因此仓库
@@ -21,7 +22,8 @@
 
 设计原则：
 
-- 默认离线：启动 Vim 不会自动 clone、更新插件或下载语言服务器。
+- 默认离线：启动 Vim 不会自动 clone、更新插件或下载语言服务器。唯一的例外是
+  本仓库自身的更新检查：启动后异步 =git fetch=，只读远端引用，不改工作区。
 - 可降级：SimplePlug 或所有插件都不存在时，Vim 的核心编辑能力仍能正常启动。
 - 可恢复：启用 swap、write-backup 和 persistent undo，状态统一放在 XDG state。
 - 单一键位来源：插件默认映射尽量关闭，真实 mapping 与 WhichKey 描述放在一起。
@@ -112,6 +114,42 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/simplecc/simplecc.json
 :PlugUpdate
 #+end_example
 
+* 配置自身的更新检查
+
+启动完成后（=VimEnter= 之后约 0.8 秒）会异步执行一次
+=git fetch --quiet --no-tags=，然后比较本地 =HEAD= 与 upstream。落后时提示：
+
+#+begin_example
+[vimrc] 配置落后 origin/main 3 个提交，运行 :VimrcUpdate 拉取
+#+end_example
+
+fetch 在后台 job 中进行，不阻塞启动；超时后 job 会被终止。检查结果保存在
+=g:vimrc_update_status=（=upstream= / =ahead= / =behind= / =checked=），可用于
+statusline。节流时间戳文件在
+=${XDG_STATE_HOME:-$HOME/.local/state}/vim/update-check=。
+
+| 命令 | 功能 |
+|-
+| =:VimrcUpdateCheck= | 忽略节流，立刻检查一次并汇报结果 |
+| =:VimrcUpdate= | =git pull --ff-only=；工作区有未提交改动时拒绝执行 |
+| =:VimrcReload= | 重新 source =~/.vimrc= |
+
+对应键位：=<leader>vc= 检查，=<leader>vu= 更新，=<leader>vr= 重载。
+
+可调项（放在 =~/.vimrc.local=）：
+
+#+begin_src vim
+let g:vimrc_update_check = 0        " 完全关闭自动检查
+let g:vimrc_update_interval = 3600  " 自动检查最小间隔（秒），默认 86400
+let g:vimrc_update_delay = 2000     " 启动后延迟多久 fetch（毫秒），默认 800
+let g:vimrc_update_timeout = 10000  " fetch 超时（毫秒），默认 20000
+#+end_src
+
+环境变量 =VIMRC_SKIP_UPDATE_CHECK=1= 等价于关闭自动检查；=utils/check.sh= 会
+自动设置它，测试始终不联网。
+
+自动检查只覆盖配置仓库，不会自动更新插件；插件仍由 =:PlugUpdate= 显式更新。
+
 * 安全与状态
 
 Vim 状态默认写入：
@@ -196,6 +234,7 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 | =<leader>fS= | 保存所有文件 |
 | =<leader>ve= / =vr= | 编辑 / 重载配置 |
 | =<leader>vh= | 运行 =:VimrcHealth= |
+| =<leader>vc= / =vu= | 检查配置更新 / 拉取配置更新 |
 | =<leader>h= | 清除搜索高亮 |
 | =<leader>cw= | 清理当前 buffer 尾随空白 |
 | =<C-h/j/k/l>= | 窗口导航 |
@@ -306,6 +345,7 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 
 #+begin_example
 :VimrcHealth
+:VimrcUpdateCheck
 :PlugStatus
 :SimpleLineHealth
 :SimpleTreeHealth

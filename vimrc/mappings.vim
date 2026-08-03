@@ -12,6 +12,8 @@ nnoremap <silent> <leader>fS <Cmd>wall<CR>
 nnoremap <silent> <leader>ve <Cmd>execute 'edit ' .. fnameescape(g:vimrc_root .. '/.vimrc')<CR>
 nnoremap <silent> <leader>vr <Cmd>execute 'source ' .. fnameescape(g:vimrc_root .. '/.vimrc')<CR>
 nnoremap <silent> <leader>vh <Cmd>VimrcHealth<CR>
+nnoremap <silent> <leader>vc <Cmd>VimrcUpdateCheck<CR>
+nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 
 # 保留 Vim 原生 s / ( / )；快速跳转统一放到 leader 下。
@@ -301,9 +303,11 @@ if get(C, 'plugins_ready', false)
     },
     v: {
       name: '+vimrc',
+      c: 'check-update',
       e: 'edit-vimrc',
       h: 'health',
       r: 'reload-vimrc',
+      u: 'update-vimrc',
     },
     w: {
       name: '+window',

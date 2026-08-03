@@ -29,6 +29,12 @@ assert_match('/vim/swap//$', &directory)
 assert_match('/vim/viminfo$', &viminfofile)
 assert_equal(2, exists(':VimrcHealth'))
 assert_equal(2, exists(':StripWhitespace'))
+assert_equal(2, exists(':VimrcUpdate'))
+assert_equal(2, exists(':VimrcUpdateCheck'))
+assert_equal(2, exists(':VimrcReload'))
+# VIMRC_SKIP_UPDATE_CHECK=1 必须让启动检查完全不注册，测试不联网。
+assert_equal(0, g:vimrc_update_check)
+assert_equal(0, exists('#vimrc_update#VimEnter'))
 assert_equal(ROOT .. '/simplecc.json', g:simplecc_config_path)
 
 colorscheme habamax
@@ -40,6 +46,8 @@ assert_equal('', maparg('(', 'n'))
 assert_equal('', maparg(')', 'n'))
 assert_equal('<Cmd>update<CR>', maparg('<Space>fs', 'n'))
 assert_equal('<Cmd>VimrcHealth<CR>', maparg('<Space>vh', 'n'))
+assert_equal('<Cmd>VimrcUpdateCheck<CR>', maparg('<Space>vc', 'n'))
+assert_equal('<Cmd>VimrcUpdate<CR>', maparg('<Space>vu', 'n'))
 assert_equal('', maparg(',1', 'x'))
 assert_equal('', maparg(',1', 'o'))
 

@@ -65,7 +65,13 @@ g:vimrc_context = {
   plugins_ready: false,
 }
 
-for module in ['core.vim', 'plugins.vim', 'behavior.vim', 'mappings.vim']
+for module in [
+  'core.vim',
+  'plugins.vim',
+  'behavior.vim',
+  'mappings.vim',
+  'update.vim',
+]
   execute 'source ' .. fnameescape(ROOT .. '/vimrc/' .. module)
 endfor
 
