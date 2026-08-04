@@ -104,6 +104,10 @@ g:simplegit_enable_default_mappings = 0
 # 默认关闭当前行 inlay blame，需要时用 <leader>gt 开启。
 g:simplegit_line_blame = 0
 
+# SimpleMarkdown：键位统一由 mappings.vim 管理；插件默认的 <leader>md 会落进
+# minimap 的 m 前缀组，预览键位改挂在 <leader>p 下。
+g:simplemarkdown_set_default_mapping = 0
+
 # 其他插件
 g:EasyMotion_do_mapping = 0
 g:EasyMotion_smartcase = 1
@@ -180,6 +184,7 @@ if plugins_enabled && isdirectory(simpleplug_home)
     simpleplug#Plug('beamiter/simpletree', {do: './install.sh'})
     simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
     simpleplug#Plug('beamiter/simplecc', {do: './install.sh'})
+    simpleplug#Plug('beamiter/simplemarkdown', {do: './install.sh'})
 
     simpleplug#End()
     plugins_ready = true

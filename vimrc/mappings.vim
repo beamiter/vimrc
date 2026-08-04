@@ -177,6 +177,14 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>ms <Cmd>SimpleMinimapStyle<CR>
   nnoremap <silent> <leader>mh <Cmd>SimpleMinimapHealth<CR>
 
+  # Markdown 预览
+  nmap <silent> <leader>pp <Plug>(simplemarkdown-toggle)
+  nmap <silent> <leader>pf <Plug>(simplemarkdown-focus)
+  nmap <silent> <leader>po <Plug>(simplemarkdown-toc)
+  nnoremap <silent> <leader>pr <Cmd>SimpleMarkdownRefresh<CR>
+  nnoremap <silent> <leader>ps <Cmd>SimpleMarkdownStyle<CR>
+  nnoremap <silent> <leader>ph <Cmd>SimpleMarkdownHealth<CR>
+
   # Clipboard
   nmap <silent> <leader>y <Plug>(SimpleCopyYank)
   xmap <silent> <leader>y <Plug>(SimpleCopyVisual)
@@ -282,6 +290,15 @@ if get(C, 'plugins_ready', false)
       f: 'focus',
       h: 'health',
       m: 'toggle',
+      s: 'style',
+    },
+    p: {
+      name: '+preview',
+      f: 'focus',
+      h: 'health',
+      o: 'contents',
+      p: 'toggle',
+      r: 'refresh',
       s: 'style',
     },
     s: {
