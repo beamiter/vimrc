@@ -120,7 +120,7 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/simplecc/simplecc.json
 =git fetch --quiet --no-tags=，然后比较本地 =HEAD= 与 upstream。落后时提示：
 
 #+begin_example
-[vimrc] 配置落后 origin/main 3 个提交，运行 :VimrcUpdate 拉取
+[vimrc] 配置落后 origin/master 3 个提交，运行 :VimrcUpdate 拉取
 #+end_example
 
 fetch 在后台 job 中进行，不阻塞启动；超时后 job 会被终止。检查结果保存在
