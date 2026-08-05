@@ -2,6 +2,16 @@ vim9script
 
 var C = g:vimrc_context
 
+# SimpleMarkdown 的渲染选项是 g: 变量，没有命令可以翻转。改完要重绘才看得见，
+# 而重绘是 SimpleMarkdownRefresh 的事，所以两步绑在一起；没有预览窗口时它什么
+# 也不做，因此不必先判断。
+def ToggleMarkdown(option: string, label: string)
+  var name = 'simplemarkdown_' .. option
+  g:[name] = get(g:, name, 0) ? 0 : 1
+  silent! SimpleMarkdownRefresh
+  echo printf('[SimpleMarkdown] %s%s', label, g:[name] ? '：开' : '：关')
+enddef
+
 # ============================================================================
 # 原生键位
 # ============================================================================
@@ -177,13 +187,26 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>ms <Cmd>SimpleMinimapStyle<CR>
   nnoremap <silent> <leader>mh <Cmd>SimpleMinimapHealth<CR>
 
-  # Markdown 预览
+  # Markdown 预览（终端内）
   nmap <silent> <leader>pp <Plug>(simplemarkdown-toggle)
   nmap <silent> <leader>pf <Plug>(simplemarkdown-focus)
   nmap <silent> <leader>po <Plug>(simplemarkdown-toc)
   nnoremap <silent> <leader>pr <Cmd>SimpleMarkdownRefresh<CR>
   nnoremap <silent> <leader>ps <Cmd>SimpleMarkdownStyle<CR>
   nnoremap <silent> <leader>ph <Cmd>SimpleMarkdownHealth<CR>
+
+  # Markdown 预览（浏览器，由 omd 提供）。两个预览是并存的：终端里的那个随
+  # 打字更新、光标同步，浏览器里的那个才有图片和排版好的公式，跟的是 :w。
+  # 需要先 `cargo install omd`；没装时只会提示，终端预览不受影响。
+  nmap <silent> <leader>pb <Plug>(simplemarkdown-external)
+  nnoremap <silent> <leader>pB <Cmd>SimpleMarkdownExternalStatic<CR>
+  nnoremap <silent> <leader>pq <Cmd>SimpleMarkdownExternalClose!<CR>
+
+  # 这几个渲染开关只有 g: 变量，没有对应命令：就地翻转再重绘。默认关着的两个
+  # 都会占掉正文的列宽，所以是按需打开而不是常驻。
+  nnoremap <silent> <leader>pn <ScriptCmd>ToggleMarkdown('code_numbers', '代码行号')<CR>
+  nnoremap <silent> <leader>pz <ScriptCmd>ToggleMarkdown('table_zebra', '表格斑马纹')<CR>
+  nnoremap <silent> <leader>pu <ScriptCmd>ToggleMarkdown('show_urls', '链接目标')<CR>
 
   # Clipboard
   nmap <silent> <leader>y <Plug>(SimpleCopyYank)

@@ -293,6 +293,10 @@ buffer 保留 Vim/lexima 的原行为。Enter 补全确认与 lexima 的括号�
 | =<leader>jj= | EasyMotion 跨窗口跳转 |
 | =<leader>th/to/ts= | Tree-sitter 开关 / outline / 状态 |
 | =<leader>mm/mf/ms= | Minimap 开关 / 聚焦 / 风格 |
+| =<leader>pp/pf/po= | Markdown 预览开关 / 聚焦 / 目录 |
+| =<leader>pr/ps/ph= | 预览重绘 / 切换装饰字符 / 健康检查 |
+| =<leader>pb/pB/pq= | 浏览器预览开关 / 静态渲染一次 / 停掉全部（需 =omd=） |
+| =<leader>pn/pz/pu= | 预览开关：代码行号 / 表格斑马纹 / 链接目标 |
 | =<leader>tt/tn/tp/tN= | 终端开关 / 新建 / 上一个 / 下一个 |
 | =<leader>y= | 复制到系统剪贴板 |
 | =<leader>1= … =<leader>0= | 跳到 SimpleLine 显示的 buffer 索引 |
