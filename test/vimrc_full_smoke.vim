@@ -39,6 +39,23 @@ assert_equal('', maparg('gr', 'n'))
 assert_equal('', maparg('gi', 'n'))
 assert_notequal('<Plug>(simplecc-select-tab)', maparg('<Tab>', 'i'))
 
+# 前缀提示：SimpleWhichKey 必须接管前缀键本身，且不碰前缀下的映射。
+for [prefix, mode] in [['<Space>', 'n'], ['<C-w>', 'n'], ['g', 'n'], ['z', 'n'],
+      ['[', 'n'], [']', 'n'], ['"', 'n'], ['<Space>', 'x']]
+  assert_match('simplewhichkey#Start', maparg(prefix, mode), prefix .. ' ' .. mode)
+endfor
+assert_equal('<Cmd>SimpleFinderFiles<CR>', maparg('<Space>ff', 'n'))
+# 描述来自 g:simplewhichkey_map；面板里 <C-w> 和 ] 要同时有原生命令和映射。
+var leader_hints = simplewhichkey#Keys('n', '<leader>')
+assert_equal('+git', get(get(leader_hints, 'g', {}), 'desc', ''))
+assert_equal('+lsp', get(get(leader_hints, 'l', {}), 'desc', ''))
+assert_false(has_key(leader_hints, '1'))
+assert_equal('split-vertical',
+      get(get(simplewhichkey#Keys('n', '<C-w>'), 'v', {}), 'desc', ''))
+var forward_hints = simplewhichkey#Keys('n', ']')
+assert_equal('SimpleGitHunkNext', get(get(forward_hints, 'g', {}), 'desc', ''))
+assert_equal('next-diff-change', get(get(forward_hints, 'c', {}), 'desc', ''))
+
 # LSP-like native overrides are buffer-local and disappear with the filetype.
 &l:filetype = 'rust'
 g:VimrcConfigureFiletype()

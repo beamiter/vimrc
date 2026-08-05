@@ -13,7 +13,7 @@
     ├── core.vim       核心选项、undo/swap/state
     ├── plugins.vim    插件配置与 SimplePlug 清单
     ├── behavior.vim   FileType、健康检查、兼容层
-    ├── mappings.vim   所有真实键位与 WhichKey 描述
+    ├── mappings.vim   所有真实键位与 SimpleWhichKey 描述
     └── update.vim     配置仓库更新检查（只读 fetch，拉取需显式执行）
 #+end_example
 
@@ -26,7 +26,8 @@
   本仓库自身的更新检查：启动后异步 =git fetch=，只读远端引用，不改工作区。
 - 可降级：SimplePlug 或所有插件都不存在时，Vim 的核心编辑能力仍能正常启动。
 - 可恢复：启用 swap、write-backup 和 persistent undo，状态统一放在 XDG state。
-- 单一键位来源：插件默认映射尽量关闭，真实 mapping 与 WhichKey 描述放在一起。
+- 单一键位来源：插件默认映射尽量关闭，真实 mapping 与 SimpleWhichKey 描述放在
+  一起；没写描述的键位，面板直接从 mapping 的 rhs 里读。
 - 可验证：同时提供空 HOME 核心测试和本机完整插件栈测试。
 
 * 要求
@@ -220,6 +221,7 @@ g:simplecc_config_path = ''
 | SimpleCC | LSP、补全、诊断、格式化和代码导航 |
 | SimpleClipboard | =-clipboard=、SSH、容器和 OSC52 剪贴板降级 |
 | SimpleGit | 行内 blame、文件历史、diff、仓库状态与 hunk 操作 |
+| SimpleWhichKey | 所有前缀键的实时提示面板（含 Vim 原生前缀） |
 | lexima + tcomment + matchup | 配对输入、注释和括号匹配 |
 
 已移除两个会在空 buffer 触发错误且与现有能力重叠的插件：
@@ -301,7 +303,26 @@ buffer 保留 Vim/lexima 的原行为。Enter 补全确认与 lexima 的括号�
 | =<leader>y= | 复制到系统剪贴板 |
 | =<leader>1= … =<leader>0= | 跳到 SimpleLine 显示的 buffer 索引 |
 
-按 =<leader>= 或 =<localleader>= 可打开 WhichKey。
+** 键位提示
+
+停在任何前缀键上不动，SimpleWhichKey 就会把下一个键的所有可能列出来——不只是
+=<leader>= 和 =<localleader>=，还包括 Vim 自己的前缀：
+
+| 前缀 | 面板内容 |
+|-
+| =<leader>= / =<localleader>= | 本配置和插件的映射，带上面这些描述 |
+| =<C-w>= | Vim 全部窗口命令 |
+| =g= / =z= / =Z= | 跳转、折叠与滚动、退出命令，混入同前缀的映射 |
+| =[= / =]= | 原生跳转加上 =]q= / =]g= 这类映射 |
+| ="= | 当前真正有内容的寄存器，带内容预览 |
+| ='= / =`= | 当前真正设置过的 mark，带文件与行号 |
+
+面板里 =<BS>= 回上一层，=<Esc>= 关掉且不执行任何东西，没列出的键照常执行。
+按得快时面板不会出现：只有停顿超过 =g:simplewhichkey_delay=（本配置 180ms）才
+弹出，前缀下还有更长映射时由 ='timeoutlen'=（本配置 450ms）决定。
+
+=:SimpleWhichKeyHealth= 报告每个前缀是否挂上；=<leader>0= … =<leader>9= 这类
+buffer 索引键位刻意不进面板（=g:simplewhichkey_ignore=）。
 
 * 语言服务器
 

@@ -108,6 +108,16 @@ g:simplegit_line_blame = 0
 # minimap 的 m 前缀组，预览键位改挂在 <leader>p 下。
 g:simplemarkdown_set_default_mapping = 0
 
+# SimpleWhichKey：不止 leader，Vim 自己的前缀键也给提示面板。<leader> 下已经有
+# 更长的映射，Vim 本来就会等 timeoutlen，所以那一档不再叠加自己的延时；g/z/
+# <C-w> 这些 Vim 立刻分发的前缀才用 delay。
+g:simplewhichkey_delay = 180
+g:simplewhichkey_position = 'bottom'
+g:simplewhichkey_sort = 'group'
+# <leader>0…<leader>9 是 SimpleLine 的 buffer 索引，十个条目会把 leader 面板挤
+# 满，留在键位里但不进面板。
+g:simplewhichkey_ignore = range(0, 9)->mapnew((_, index) => '<leader>' .. index)
+
 # 其他插件
 g:EasyMotion_do_mapping = 0
 g:EasyMotion_smartcase = 1
@@ -177,7 +187,7 @@ if plugins_enabled && isdirectory(simpleplug_home)
 
     # 终端和键位提示
     simpleplug#Plug('voldikss/vim-floaterm')
-    simpleplug#Plug('liuchengxu/vim-which-key')
+    simpleplug#Plug('beamiter/simplewhichkey')
 
     # beamiter/simple* 工作台
     simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})

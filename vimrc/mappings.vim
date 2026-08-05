@@ -227,8 +227,20 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <S-F8> <Cmd>FloatermNew<CR>
   tnoremap <silent> <S-F8> <C-\><C-n><Cmd>FloatermNew<CR>
 
-  # WhichKey 只注册 Normal 模式，避免 Visual range 污染普通命令。
-  g:which_key_map = {
+  # 键位描述只写 Normal 模式这一份：Visual 模式的映射 SimpleWhichKey 自己从
+  # maplist() 里读，Vim 原生的 g/z/<C-w>/[/] 由插件内置表覆盖，这里都不重复。
+  g:simplewhichkey_map = {
+    e: 'file-tree',
+    h: 'clear-search-highlight',
+    y: 'copy-to-clipboard',
+    i: {
+      name: '+inlay',
+      h: 'inlay-hints',
+    },
+    r: {
+      name: '+refactor',
+      n: 'rename',
+    },
     b: {
       name: '+buffer',
       b: 'find-buffers',
@@ -242,6 +254,7 @@ if get(C, 'plugins_ready', false)
       name: '+code',
       a: 'code-action',
       c: 'comment',
+      f: 'format',
       l: 'comment-compat',
       s: 'clipboard-status',
       w: 'strip-whitespace',
@@ -252,6 +265,7 @@ if get(C, 'plugins_ready', false)
       f: 'find-files',
       g: 'live-grep',
       h: 'recent-files-compat',
+      m: 'format',
       o: 'recent-files-compat',
       r: 'recent-files',
       s: 'save',
@@ -317,12 +331,18 @@ if get(C, 'plugins_ready', false)
     },
     p: {
       name: '+preview',
+      b: 'browser-preview',
+      B: 'browser-render-once',
       f: 'focus',
       h: 'health',
+      n: 'toggle-code-numbers',
       o: 'contents',
       p: 'toggle',
+      q: 'browser-close-all',
       r: 'refresh',
       s: 'style',
+      u: 'toggle-link-targets',
+      z: 'toggle-table-zebra',
     },
     s: {
       name: '+search',
@@ -367,18 +387,19 @@ if get(C, 'plugins_ready', false)
       '=': 'balance',
     },
   }
-  g:which_key_map[' '] = 'find-files'
-  for index in range(0, 9)
-    g:which_key_map[string(index)] = 'buffer-' .. string(index)
-  endfor
+  g:simplewhichkey_map[' '] = 'find-files'
 
+  # 前缀键由插件自己接管（<leader>、<localleader>，以及 g/z/Z/<C-w>/[/]/"/'/`），
+  # 这里只补描述。localleader 下的数字跳窗从 rhs 就能看懂，不必再写一遍。
   try
-    which_key#register('<Space>', 'g:which_key_map', 'n')
-    nnoremap <silent> <leader> <Cmd>WhichKey '<Space>'<CR>
-    nnoremap <silent> <localleader> <Cmd>WhichKey ','<CR>
+    simplewhichkey#Register('<leader>', 'g:simplewhichkey_map', 'n')
+    simplewhichkey#Describe({
+      '<localleader>j': 'easymotion-down',
+      '<localleader>k': 'easymotion-up',
+    })
   catch /^Vim\%((\a\+)\)\=:E117/
     echohl WarningMsg
-    echomsg '[vimrc] WhichKey 注册失败'
+    echomsg '[vimrc] SimpleWhichKey 注册失败'
     echohl None
   endtry
 endif
