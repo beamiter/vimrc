@@ -9,7 +9,7 @@
 
 #+begin_example
 .vimrc
-└── vimrc/
+└── config/
     ├── core.vim       核心选项、undo/swap/state
     ├── plugins.vim    插件配置与 SimplePlug 清单
     ├── behavior.vim   FileType、健康检查、兼容层
@@ -130,7 +130,7 @@ fetch 在后台 job 中进行，不阻塞启动；超时后 job 会被终止。�
 
 同一份状态还会渲染到 statusline 上：落后时 SimpleLine 右侧出现
 =󰚰 3=（=SimpleLineDiagWarn= 高亮），已是最新则不占位置。实现是 SimpleLine 的
-用户段位接口 =g:simpleline_custom_right=，=vimrc/update.vim= 注册
+用户段位接口 =g:simpleline_custom_right=，=config/update.vim= 注册
 =g:VimrcUpdateStatusline= 进去；该函数只读 =g:vimrc_update_status=，不会在重画
 时跑 git。SimpleLine 版本过旧（没有这个接口）时段位不显示，其余功能不受影响。
 

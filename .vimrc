@@ -72,7 +72,7 @@ for module in [
   'mappings.vim',
   'update.vim',
 ]
-  execute 'source ' .. fnameescape(ROOT .. '/vimrc/' .. module)
+  execute 'source ' .. fnameescape(ROOT .. '/config/' .. module)
 endfor
 
 # Host-specific settings stay outside version control and intentionally run
