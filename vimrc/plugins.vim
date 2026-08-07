@@ -124,11 +124,17 @@ g:EasyMotion_smartcase = 1
 g:matchup_matchparen_offscreen = {method: 'popup'}
 g:lexima_accept_pum_with_enter = 0
 
-g:startify_change_to_dir = 0
-g:startify_change_to_vcs_root = 1
-g:startify_session_dir = session_dir
-g:startify_session_persistence = 1
-g:startify_custom_header = []
+# SimpleStartify：每次进入启动页随机一套布局，并避免连续重复；session 仍只写
+# XDG state。保留 filetype=startify，现有 sidebar/minimap 规则无需兼容分支。
+g:simplestartify_style = 'random'
+g:simplestartify_styles = ['minimal', 'boxed', 'centered', 'terminal']
+g:simplestartify_avoid_repeat = 1
+g:simplestartify_recent_count = 7
+g:simplestartify_session_count = 4
+g:simplestartify_change_to_dir = 0
+g:simplestartify_change_to_vcs_root = 1
+g:simplestartify_session_dir = session_dir
+g:simplestartify_session_persistence = 1
 
 # Julia/Haskell
 g:haskell_enable_quantification = 1
@@ -170,7 +176,7 @@ if plugins_enabled && isdirectory(simpleplug_home)
     simpleplug#Plug('ryanoasis/vim-devicons')
     simpleplug#Plug('beamiter/simpleline', {do: './install.sh'})
     simpleplug#Plug('beamiter/simpleminimap', {do: './install.sh'})
-    simpleplug#Plug('mhinz/vim-startify')
+    simpleplug#Plug('beamiter/simplestartify')
 
     # 导航和搜索
     simpleplug#Plug('beamiter/simplefinder', {do: './install.sh'})

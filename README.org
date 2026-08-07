@@ -174,7 +174,7 @@ ${XDG_STATE_HOME:-$HOME/.local/state}/vim/
 - =writebackup=：写入过程中保留临时保护副本。
 - =nobackup=：成功写入后不长期保留 =~= 文件。
 - =viminfo=：marks、registers、命令历史和 oldfiles。
-- Startify session 只存放在权限受控的 state 目录。
+- SimpleStartify session 只存放在权限受控的 state 目录。
 - 如果 state 目录无法创建或写入，undo、swap 和 write-backup 会关闭，不会退回到
   项目目录生成恢复文件。
 - 无效或指向根目录的 XDG 路径会被忽略；无效的 =HOME= 会直接停止加载，避免向
@@ -222,6 +222,7 @@ g:simplecc_config_path = ''
 | SimpleClipboard | =-clipboard=、SSH、容器和 OSC52 剪贴板降级 |
 | SimpleGit | 行内 blame、文件历史、diff、仓库状态与 hunk 操作 |
 | SimpleWhichKey | 所有前缀键的实时提示面板（含 Vim 原生前缀） |
+| SimpleStartify | 随机启动页、recent 文件与受控 session 管理 |
 | lexima + tcomment + matchup | 配对输入、注释和括号匹配 |
 
 已移除两个会在空 buffer 触发错误且与现有能力重叠的插件：
@@ -370,6 +371,7 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 - SimpleCC 映射无尾随空格；
 - lexima 与补全 Enter 兼容；
 - SimpleTree/SimpleMinimap 状态栏不被 SimpleLine 覆盖。
+- SimpleStartify 启动页可加载，且连续随机布局不会立即重复。
 
 常用诊断：
 
@@ -380,6 +382,7 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 :SimpleLineHealth
 :SimpleTreeHealth
 :SimpleMinimapHealth
+:SimpleStartifyHealth
 :SimpleCopyStatus
 :TsHlStatus
 :SimpleCC

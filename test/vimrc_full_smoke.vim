@@ -17,12 +17,25 @@ for command_name in [
       'SimpleTree',
       'SimpleLineHealth',
       'SimpleMinimapHealth',
+      'SimpleStartify',
+      'Startify',
       'SimpleCopyStatus',
       'TsHlStatus',
       'SimpleCC',
     ]
   assert_equal(2, exists(':' .. command_name), command_name)
 endfor
+
+# 启动页保留 startify filetype/命令兼容，但实际 UI 每次从 SimpleStartify 的
+# renderer 池抽取，并保证紧邻两次不重复。
+Startify
+assert_equal('startify', &filetype)
+assert_equal(1, get(b:, 'simplestartify', 0))
+var first_start_style = get(b:, 'simplestartify_style', '')
+assert_true(index(g:simplestartify_styles, first_start_style) >= 0)
+SimpleStartifyNextStyle
+assert_notequal(first_start_style, get(b:, 'simplestartify_style', ''))
+execute 'edit ' .. fnameescape(ROOT .. '/.vimrc')
 
 # Explicit SimpleCC mappings must not inherit the upstream trailing-space bug.
 assert_equal(
