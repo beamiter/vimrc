@@ -48,7 +48,14 @@ enddef
 
 # 同步 git 调用只用于本地引用比较，不涉及网络，耗时可忽略。
 def GitLines(arguments: list<string>): list<string>
-  var output = systemlist(['git', '-C', C.root] + arguments)
+  # Vim's systemlist() takes a shell command string (unlike job_start(), which
+  # also accepts argv).  Quote every dynamic component so paths and ref names
+  # remain safe when handed to the shell.
+  var command = 'git -C ' .. shellescape(C.root)
+  for argument in arguments
+    command ..= ' ' .. shellescape(argument)
+  endfor
+  var output = systemlist(command)
   if v:shell_error != 0
     return []
   endif

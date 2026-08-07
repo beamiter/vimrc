@@ -171,6 +171,14 @@ g:vimrc_update_status = {behind: 3}
 assert_match('3$', g:VimrcUpdateStatusline())
 g:vimrc_update_status = {}
 
+# The synchronous Git helper must use systemlist()'s string-command API.  An
+# untracked marker makes :VimrcUpdate stop before its networked pull while
+# still exercising `git status` through that helper.
+var update_marker = ROOT .. '/.vimrc-update-smoke-' .. getpid()
+writefile(['smoke'], update_marker)
+add(temp_files, update_marker)
+assert_match('有未提交改动', execute('VimrcUpdate'))
+
 # Reloading must be idempotent: no duplicate commands, functions or autocmds.
 execute 'source ' .. fnameescape(ROOT .. '/.vimrc')
 execute 'source ' .. fnameescape(ROOT .. '/.vimrc')
