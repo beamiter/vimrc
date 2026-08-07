@@ -25,6 +25,7 @@ nnoremap <silent> <leader>vh <Cmd>VimrcHealth<CR>
 nnoremap <silent> <leader>vc <Cmd>VimrcUpdateCheck<CR>
 nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
+nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
 
 # 保留 Vim 原生 s / ( / )；快速跳转统一放到 leader 下。
 xnoremap < <gv
@@ -69,6 +70,10 @@ nnoremap <silent> ]q <Cmd>cnext<CR>
 nnoremap <silent> [q <Cmd>cprevious<CR>
 nnoremap <silent> ]l <Cmd>lnext<CR>
 nnoremap <silent> [l <Cmd>lprevious<CR>
+nnoremap <silent> <leader>qq <Cmd>QFToggle<CR>
+nnoremap <silent> <leader>ql <Cmd>LLToggle<CR>
+nnoremap <silent> <leader>qn <Cmd>cnext<CR>
+nnoremap <silent> <leader>qp <Cmd>cprevious<CR>
 
 # 仅 Normal 模式：按窗口编号跳转，0 表示第 10 个窗口。
 for window_nr in range(1, 10)
@@ -262,6 +267,7 @@ if get(C, 'plugins_ready', false)
     f: {
       name: '+file',
       b: 'find-buffers',
+      d: 'cd-project-root',
       f: 'find-files',
       g: 'live-grep',
       h: 'recent-files-compat',
@@ -343,6 +349,13 @@ if get(C, 'plugins_ready', false)
       s: 'style',
       u: 'toggle-link-targets',
       z: 'toggle-table-zebra',
+    },
+    q: {
+      name: '+quickfix',
+      l: 'toggle-location-list',
+      n: 'next-quickfix',
+      p: 'previous-quickfix',
+      q: 'toggle-quickfix',
     },
     s: {
       name: '+search',

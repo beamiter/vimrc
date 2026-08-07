@@ -137,7 +137,9 @@ enddef
 def ApplyLspMappings()
   # Keep Vim's native gd/gr/gi/K motions everywhere except buffers covered by
   # the configured language-server set.
-  if !C.plugins_ready || index(LSP_FILETYPES, &filetype) < 0
+  if !C.plugins_ready
+        \ || get(b:, 'vimrc_large_file', 0)
+        \ || index(LSP_FILETYPES, &filetype) < 0
     return
   endif
   for mapping in SIMPLECC_NMAPS
@@ -152,6 +154,11 @@ def g:VimrcConfigureFiletype()
   ClearStaleSimpleccMaps()
   ApplyBufferBaseline()
   ApplyFiletypeOverrides()
+  # FileType can run after EditorConfig's BufReadPost hook.  Reapply it here so
+  # project policy wins over this configuration's fallback indentation rules.
+  if exists(':EditorConfigReload') == 2 && !empty(expand('%:p'))
+    execute 'silent! EditorConfigReload'
+  endif
   ApplyLspMappings()
 enddef
 
@@ -177,6 +184,7 @@ def ShowWhitespaceMatch()
   ClearWhitespaceMatch()
   if &buftype !=# ''
         \ || !&modifiable
+        \ || get(b:, 'vimrc_large_file', 0)
         \ || index(SIDEBAR_FILETYPES, &filetype) >= 0
     return
   endif
@@ -275,6 +283,22 @@ def g:VimrcHealth()
   var json_ok = exists('*json_encode') && exists('*json_decode')
   HealthLine(json_ok ? 'ok' : 'fail', 'JSON functions')
   failures += json_ok ? 0 : 1
+
+  var editorconfig_enabled = get(g:, 'vimrc_editorconfig', 1) != 0
+  var editorconfig_ok = !editorconfig_enabled || exists(':EditorConfigReload') == 2
+  HealthLine(
+    editorconfig_ok ? (editorconfig_enabled ? 'ok' : 'skip') : 'warn',
+    'EditorConfig',
+    editorconfig_enabled ? 'Vim runtime package' : 'disabled')
+  warnings += editorconfig_ok ? 0 : 1
+
+  var hlyank_enabled = get(g:, 'vimrc_highlight_yank', 1) != 0
+  var hlyank_ok = !hlyank_enabled || exists('#hlyank#TextYankPost')
+  HealthLine(
+    hlyank_ok ? (hlyank_enabled ? 'ok' : 'skip') : 'warn',
+    'highlight yank',
+    hlyank_enabled ? 'Vim runtime package' : 'disabled')
+  warnings += hlyank_ok ? 0 : 1
 
   for tool in ['git', 'rg', 'cargo', 'rustc']
     var ok = executable(tool)

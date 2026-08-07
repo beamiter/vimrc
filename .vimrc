@@ -26,10 +26,25 @@ if empty(HOME_DIR) || !isdirectory(HOME_DIR)
   finish
 endif
 
-g:mapleader = ' '
-g:maplocalleader = ','
-
 const ROOT = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+const LOCAL_BEFORE = HOME_DIR .. '/.vimrc.before'
+const LOCAL_AFTER = HOME_DIR .. '/.vimrc.local'
+g:vimrc_root = ROOT
+
+# Settings that must exist before plugins are sourced belong here.  This makes
+# plugin options, the plugin directory and even leader keys genuinely
+# overridable without editing the tracked vimrc.
+if filereadable(LOCAL_BEFORE)
+  execute 'source ' .. fnameescape(LOCAL_BEFORE)
+endif
+
+if !exists('g:mapleader')
+  g:mapleader = ' '
+endif
+if !exists('g:maplocalleader')
+  g:maplocalleader = ','
+endif
+
 const DEFAULT_PLUGIN_HOME = HOME_DIR .. '/.vim/plugged'
 const STATE_CANDIDATE = NormalizePath($XDG_STATE_HOME)
 const CONFIG_CANDIDATE = NormalizePath($XDG_CONFIG_HOME)
@@ -46,7 +61,6 @@ const PLUGIN_HOME = empty(PLUGIN_CANDIDATE)
       \ : PLUGIN_CANDIDATE
 const VIM_STATE = STATE_HOME .. '/vim'
 
-g:vimrc_root = ROOT
 g:vimrc_plugin_home = PLUGIN_HOME
 g:vimrc_plugins_ready = 0
 g:vimrc_context = {
@@ -60,6 +74,8 @@ g:vimrc_context = {
   session_dir: VIM_STATE .. '/session',
   simplecc_user_config: CONFIG_HOME .. '/simplecc/simplecc.json',
   plugin_home: PLUGIN_HOME,
+  local_before: LOCAL_BEFORE,
+  local_after: LOCAL_AFTER,
   plugins_enabled: get(g:, 'vimrc_skip_plugins', 0) == 0
         \ && $VIMRC_SKIP_PLUGINS !=# '1',
   plugins_ready: false,
@@ -69,6 +85,7 @@ for module in [
   'core.vim',
   'plugins.vim',
   'behavior.vim',
+  'workflow.vim',
   'mappings.vim',
   'update.vim',
 ]
@@ -77,7 +94,6 @@ endfor
 
 # Host-specific settings stay outside version control and intentionally run
 # after the shared defaults.
-const LOCAL_VIMRC = HOME_DIR .. '/.vimrc.local'
-if filereadable(LOCAL_VIMRC)
-  execute 'source ' .. fnameescape(LOCAL_VIMRC)
+if filereadable(LOCAL_AFTER)
+  execute 'source ' .. fnameescape(LOCAL_AFTER)
 endif

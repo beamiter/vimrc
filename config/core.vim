@@ -9,6 +9,8 @@ set nocompatible
 set encoding=utf-8
 set nolangremap
 set ambiwidth=double
+set noexrc
+set nomodeline
 
 set autoindent
 set smartindent
@@ -43,6 +45,7 @@ set pumheight=12
 set pumwidth=20
 set ruler
 set mouse=a
+set virtualedit=block
 
 set ignorecase
 set smartcase
@@ -83,6 +86,16 @@ set diffopt+=algorithm:histogram,indent-heuristic
 set nrformats-=octal
 set shortmess+=Ic
 set listchars=tab:>-,trail:~,extends:>,precedes:<,nbsp:+
+
+# Vim 自带的可选包不引入第三方依赖。老版本/runtime 未提供时静默降级。
+if get(g:, 'vimrc_editorconfig', 1)
+  g:EditorConfig_preserve_formatoptions = 1
+  silent! packadd editorconfig
+endif
+if get(g:, 'vimrc_highlight_yank', 1)
+  g:hlyank_duration = get(g:, 'vimrc_highlight_yank_duration', 220)
+  silent! packadd hlyank
+endif
 
 if exists('+termguicolors')
   set termguicolors

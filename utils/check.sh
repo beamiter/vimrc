@@ -94,6 +94,16 @@ VIMRC_SKIP_PLUGINS=1 \
   -S "$repo_root/test/vimrc_xdg_config.vim"
 printf 'vimrc XDG config smoke: OK\n'
 
+mkdir -p "$tmp/override-home"
+cp "$repo_root/test/fixtures/vimrc.before" "$tmp/override-home/.vimrc.before"
+cp "$repo_root/test/fixtures/vimrc.local" "$tmp/override-home/.vimrc.local"
+HOME="$tmp/override-home" \
+XDG_STATE_HOME="$tmp/state" \
+VIMRC_SKIP_PLUGINS=1 \
+  vim -Nu "$repo_root/.vimrc" -n -i NONE -es \
+  -S "$repo_root/test/vimrc_overrides.vim"
+printf 'vimrc local-override smoke: OK\n'
+
 if ((run_full)); then
   mkdir -p "$tmp/full-state"
   XDG_STATE_HOME="$tmp/full-state" \

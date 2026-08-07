@@ -32,10 +32,17 @@ assert_equal(2, exists(':StripWhitespace'))
 assert_equal(2, exists(':VimrcUpdate'))
 assert_equal(2, exists(':VimrcUpdateCheck'))
 assert_equal(2, exists(':VimrcReload'))
+assert_equal(2, exists(':VimrcRoot'))
+assert_equal(2, exists(':VimrcLargeFile'))
+assert_equal(2, exists(':QFToggle'))
+assert_equal(2, exists(':LLToggle'))
 # VIMRC_SKIP_UPDATE_CHECK=1 必须让启动检查完全不注册，测试不联网。
 assert_equal(0, g:vimrc_update_check)
 assert_equal(0, exists('#vimrc_update#VimEnter'))
 assert_equal(ROOT .. '/simplecc.json', g:simplecc_config_path)
+assert_false(&modeline)
+assert_false(&exrc)
+assert_match('block', &virtualedit)
 
 colorscheme habamax
 assert_notmatch('cleared', execute('highlight ExtraWhitespace'))
@@ -48,6 +55,8 @@ assert_equal('<Cmd>update<CR>', maparg('<Space>fs', 'n'))
 assert_equal('<Cmd>VimrcHealth<CR>', maparg('<Space>vh', 'n'))
 assert_equal('<Cmd>VimrcUpdateCheck<CR>', maparg('<Space>vc', 'n'))
 assert_equal('<Cmd>VimrcUpdate<CR>', maparg('<Space>vu', 'n'))
+assert_equal('<Cmd>VimrcRoot<CR>', maparg('<Space>fd', 'n'))
+assert_equal('<Cmd>QFToggle<CR>', maparg('<Space>qq', 'n'))
 assert_equal('', maparg(',1', 'x'))
 assert_equal('', maparg(',1', 'o'))
 
@@ -89,6 +98,61 @@ assert_false(&expandtab)
 assert_equal(4, &shiftwidth)
 assert_equal(0, &softtabstop)
 
+# Project root discovery is marker-based and :VimrcRoot changes only the
+# current window's directory.
+var project = tempname()
+mkdir(project .. '/.git', 'p')
+mkdir(project .. '/src/deep', 'p')
+var editorconfig_file = project .. '/.editorconfig'
+writefile(['root = true', '', '[*]', 'indent_style = space', 'indent_size = 3'],
+  editorconfig_file)
+var project_file = project .. '/src/deep/main.rs'
+writefile(['fn main() {}'], project_file)
+add(temp_files, project_file)
+add(temp_files, editorconfig_file)
+add(temp_files, project .. '/src/deep')
+add(temp_files, project .. '/src')
+add(temp_files, project .. '/.git')
+add(temp_files, project)
+execute 'edit ' .. fnameescape(project_file)
+assert_equal(project, g:VimrcProjectRoot())
+if exists(':EditorConfigReload') == 2
+  assert_equal(3, &l:shiftwidth)
+endif
+var old_cwd = getcwd()
+g:VimrcCdRoot()
+assert_equal(project, getcwd())
+execute 'lcd ' .. fnameescape(old_cwd)
+
+# Large-file mode is buffer-local and can be tested with a tiny threshold.
+var old_threshold = g:vimrc_large_file_bytes
+g:vimrc_large_file_bytes = 32
+EditTemp('large.txt', [repeat('x', 80)])
+assert_equal(1, get(b:, 'vimrc_large_file', 0))
+assert_equal(1, get(b:, 'simpletreesitter_disable', 0))
+assert_false(&l:undofile)
+assert_false(&l:swapfile)
+assert_equal(100, &l:undolevels)
+assert_equal('OFF', &l:syntax)
+assert_match('^BIG ', g:VimrcLargeFileStatusline())
+g:VimrcLargeFileStatus()
+g:vimrc_large_file_bytes = old_threshold
+
+# Quickfix toggle opens an existing list and closes the same window again.
+setqflist([{filename: ROOT .. '/.vimrc', lnum: 1, text: 'smoke'}])
+QFToggle
+assert_true(getqflist({winid: 0}).winid > 0)
+QFToggle
+assert_equal(0, getqflist({winid: 0}).winid)
+setqflist([])
+
+setloclist(0, [{filename: ROOT .. '/.vimrc', lnum: 1, text: 'smoke'}])
+LLToggle
+assert_true(getloclist(0, {winid: 0}).winid > 0)
+LLToggle
+assert_equal(0, getloclist(0, {winid: 0}).winid)
+setloclist(0, [])
+
 enew!
 setline(1, ['alpha  ', 'beta'])
 g:VimrcStripWhitespace()
@@ -116,13 +180,16 @@ assert_equal(1, count(ft_autocmds, 'VimrcConfigureFiletype'))
 assert_equal(1, len(filter(
   copy(g:simpleline_custom_right),
   (_, value) => get(value, 'fn', '') ==# 'g:VimrcUpdateStatusline')))
+assert_equal(1, len(filter(
+  copy(g:simpleline_custom_right),
+  (_, value) => get(value, 'fn', '') ==# 'g:VimrcLargeFileStatusline')))
 
 g:VimrcHealth()
 assert_equal(0, get(get(g:, 'vimrc_health_last', {}), 'fail', -1))
 
 for path in reverse(temp_files)
   if isdirectory(path)
-    delete(path, 'd')
+    delete(path, 'rf')
   else
     delete(path)
   endif

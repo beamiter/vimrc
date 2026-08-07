@@ -13,6 +13,7 @@
     ├── core.vim       核心选项、undo/swap/state
     ├── plugins.vim    插件配置与 SimplePlug 清单
     ├── behavior.vim   FileType、健康检查、兼容层
+    ├── workflow.vim   大文件保护、项目根目录、quickfix 工作流
     ├── mappings.vim   所有真实键位与 SimpleWhichKey 描述
     └── update.vim     配置仓库更新检查（只读 fetch，拉取需显式执行）
 #+end_example
@@ -26,6 +27,8 @@
   本仓库自身的更新检查：启动后异步 =git fetch=，只读远端引用，不改工作区。
 - 可降级：SimplePlug 或所有插件都不存在时，Vim 的核心编辑能力仍能正常启动。
 - 可恢复：启用 swap、write-backup 和 persistent undo，状态统一放在 XDG state。
+- 项目友好：自动读取 =.editorconfig=，并能从当前文件向上发现工作区根目录。
+- 大文件可控：超过 5 MiB 自动关闭当前 buffer 的高成本显示和恢复特性。
 - 单一键位来源：插件默认映射尽量关闭，真实 mapping 与 SimpleWhichKey 描述放在
   一起；没写描述的键位，面板直接从 mapping 的 rhs 里读。
 - 可验证：同时提供空 HOME 核心测试和本机完整插件栈测试。
@@ -191,12 +194,32 @@ g:simplecc_auto_install = 0
 SimpleCC 配置中的 =command= / =args= 会启动本地进程，因此默认只信任这个仓库或
 用户级 XDG 配置，不自动信任刚打开项目里的配置。
 
-机器专属设置放在 =~/.vimrc.local=，例如：
+需要在插件加载 *之前* 生效的机器设置放在 =~/.vimrc.before=，例如 leader、插件
+目录和 =g:simple*= 选项：
+
+#+begin_src vim
+vim9script
+g:vimrc_plugin_home = '/data/vim/plugged'
+g:simplecc_semantic_tokens = 1
+#+end_src
+
+普通机器专属设置放在 =~/.vimrc.local=，它在所有共享模块之后加载，例如：
 
 #+begin_src vim
 vim9script
 set ambiwidth=single
 #+end_src
+
+两个文件都可选且不进入版本控制。可调的核心开关：
+
+#+begin_src vim
+g:vimrc_editorconfig = 0          # 不加载 Vim runtime 的 EditorConfig
+g:vimrc_highlight_yank = 0        # 不高亮刚复制的文本
+g:vimrc_large_file_bytes = 0      # 关闭大文件模式（默认 5 MiB）
+g:vimrc_root_markers = ['.git']   # 自定义项目根标记
+#+end_src
+
+为防止刚打开的项目执行未信任配置，默认启用 =nomodeline= 和 =noexrc=。
 
 如果确实信任所有会打开的项目，可以显式恢复 SimpleCC 的项目优先发现：
 
@@ -245,6 +268,9 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 | =<leader>vc= / =vu= | 检查配置更新 / 拉取配置更新 |
 | =<leader>h= | 清除搜索高亮 |
 | =<leader>cw= | 清理当前 buffer 尾随空白 |
+| =<leader>fd= | 当前窗口切换到项目根目录 |
+| =<leader>qq/ql= | 开关 quickfix / location list |
+| =<leader>qn/qp= | 下一条 / 上一条 quickfix |
 | =<C-h/j/k/l>= | 窗口导航 |
 | =<leader>ww/ws/wv/wd= | 切换 / 横分 / 竖分 / 关闭窗口 |
 | =<leader>bn/bk/bl/bd= | 下一个 / 上一个 / alternate / 删除 buffer |
@@ -263,6 +289,10 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 | =<leader>fw= / =sw= | 搜索光标词或可视选择 |
 | =<leader>e= / =ft= / =F3= | 文件树 |
 | =<leader>fT= | 在文件树中定位当前文件 |
+
+=:VimrcRoot= 使用 =lcd=，只改变当前窗口目录；=:VimrcRoot!= 使用全局 =cd=。
+=:VimrcLargeFile= 显示当前 buffer 是否进入大文件模式以及实际阈值。
+进入大文件模式时 SimpleLine 右侧还会显示 =BIG <size>=。
 
 ** LSP
 
@@ -366,7 +396,9 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 - 空 HOME、无插件 Vim 启动；
 - 无效 HOME/XDG 以及 state 不可写时的 fail-closed 行为；
 - 非默认 =XDG_CONFIG_HOME= 的 SimpleCC 配置路径；
+- 前置/后置本机配置和自定义 leader；
 - FileType 局部设置互不泄漏；
+- 项目根目录、quickfix 开关和大文件自动保护；
 - 配置连续 source 两次；
 - SimpleCC 映射无尾随空格；
 - lexima 与补全 Enter 兼容；

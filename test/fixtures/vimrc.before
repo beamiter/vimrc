@@ -1,0 +1,6 @@
+vim9script
+
+g:mapleader = ';'
+g:vimrc_editorconfig = 0
+g:vimrc_before_test = 'before-loaded'
+g:vimrc_before_root = g:vimrc_root
