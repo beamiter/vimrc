@@ -29,6 +29,7 @@ export VIMRC_SKIP_UPDATE_CHECK=1
 
 for script in \
   "$repo_root/deps.sh" \
+  "$repo_root/utils/bootstrap-simpleplug.sh" \
   "$repo_root/utils/install.sh" \
   "$repo_root/utils/check.sh" \
   "$repo_root/test/install_smoke.sh"; do
@@ -104,10 +105,23 @@ VIMRC_SKIP_PLUGINS=1 \
   -S "$repo_root/test/vimrc_overrides.vim"
 printf 'vimrc local-override smoke: OK\n'
 
+mkdir -p "$tmp/bootstrap-home" "$tmp/bootstrap-state"
+cp "$repo_root/test/fixtures/vimrc.bootstrap.before" \
+  "$tmp/bootstrap-home/.vimrc.before"
+HOME="$tmp/bootstrap-home" \
+XDG_STATE_HOME="$tmp/bootstrap-state" \
+VIMRC_TEST_PLUGIN_HOME="$tmp/bootstrap-plugins" \
+VIMRC_TEST_BOOTSTRAP_SCRIPT="$repo_root/test/fixtures/bootstrap-simpleplug-fixture.sh" \
+VIMRC_TEST_SIMPLEPLUG_FIXTURE="$repo_root/test/fixtures/simpleplug" \
+  vim -Nu "$repo_root/.vimrc" -n -i NONE -es \
+  -S "$repo_root/test/vimrc_bootstrap.vim"
+printf 'vimrc one-launch bootstrap smoke: OK\n'
+
 if ((run_full)); then
   mkdir -p "$tmp/full-state"
   XDG_STATE_HOME="$tmp/full-state" \
-    vim -Nu "$repo_root/.vimrc" -n -i NONE -es \
+    vim --cmd 'let g:simpleplug_auto_install = 0' \
+    -Nu "$repo_root/.vimrc" -n -i NONE -es \
     -S "$repo_root/test/vimrc_full_smoke.vim"
   printf 'vimrc full smoke: OK\n'
 fi

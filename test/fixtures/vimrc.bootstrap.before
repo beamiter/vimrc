@@ -1,0 +1,5 @@
+vim9script
+
+g:vimrc_plugin_home = $VIMRC_TEST_PLUGIN_HOME
+g:vimrc_simpleplug_bootstrap_script = $VIMRC_TEST_BOOTSTRAP_SCRIPT
+g:vimrc_simpleplug_update_timeout = 10

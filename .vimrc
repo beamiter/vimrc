@@ -83,13 +83,22 @@ g:vimrc_context = {
 
 for module in [
   'core.vim',
+  'bootstrap.vim',
   'plugins.vim',
   'behavior.vim',
   'workflow.vim',
   'mappings.vim',
   'update.vim',
 ]
-  execute 'source ' .. fnameescape(ROOT .. '/config/' .. module)
+  # bootstrap.vim owns live job/timer callbacks.  Re-sourcing that Vim9 script
+  # would delete functions still on a callback stack, so reload only its
+  # autocmd wiring once the controller has been initialized.
+  if module ==# 'bootstrap.vim'
+        && exists('*g:VimrcConfigureSimplePlugBootstrap') == 1
+    execute 'call g:VimrcConfigureSimplePlugBootstrap()'
+  else
+    execute 'source ' .. fnameescape(ROOT .. '/config/' .. module)
+  endif
 endfor
 
 # Host-specific settings stay outside version control and intentionally run

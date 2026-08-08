@@ -12,8 +12,11 @@ var plugins_ready = false
 # 插件加载前配置
 # ============================================================================
 
-# SimplePlug：默认启动绝不联网，安装和更新必须显式执行。
-g:simpleplug_auto_install = 0
+# 已有 SimplePlug 时自动补齐新加入的插件；管理器本身缺失时由
+# bootstrap.vim 事务式安装，并在成功后接续一次完整的 :PlugUpdate。
+if !exists('g:simpleplug_auto_install')
+  g:simpleplug_auto_install = 1
+endif
 g:simpleplug_jobs = 8
 g:simpleplug_window_width = 88
 
@@ -155,7 +158,7 @@ g:netrw_fastbrowse = 2
 # ============================================================================
 var simpleplug_home = plugin_home .. '/simpleplug'
 
-if plugins_enabled && isdirectory(simpleplug_home)
+if plugins_enabled && g:VimrcSimplePlugReady()
   if index(split(&runtimepath, ','), simpleplug_home) < 0
     &runtimepath = simpleplug_home .. ',' .. &runtimepath
   endif
@@ -211,8 +214,12 @@ if plugins_enabled && isdirectory(simpleplug_home)
   endtry
 elseif plugins_enabled
   echohl WarningMsg
-  echomsg '[vimrc] SimplePlug 未安装；当前使用核心模式。运行 '
-        \ .. root .. '/utils/install.sh --bootstrap-simpleplug'
+  if g:vimrc_simpleplug_auto_bootstrap
+    echomsg '[vimrc] SimplePlug 尚未就绪；已安排自动 bootstrap，当前先使用核心模式'
+  else
+    echomsg '[vimrc] SimplePlug 尚未就绪且自动 bootstrap 已关闭；运行 '
+          \ .. ':VimrcBootstrapRetry 可手动启动'
+  endif
   echohl None
 endif
 

@@ -322,8 +322,15 @@ def g:VimrcHealth()
 
   if C.plugins_enabled
     var simpleplug_home = C.plugin_home .. '/simpleplug'
-    var manager_ok = isdirectory(simpleplug_home)
-    HealthLine(manager_ok ? 'ok' : 'warn', 'SimplePlug', simpleplug_home)
+    var manager_ok = g:VimrcSimplePlugReady()
+    var bootstrap_phase = get(
+          get(g:, 'vimrc_simpleplug_bootstrap_state', {}),
+          'phase',
+          'idle')
+    HealthLine(
+          manager_ok ? 'ok' : 'warn',
+          'SimplePlug',
+          manager_ok ? simpleplug_home : simpleplug_home .. ' (' .. bootstrap_phase .. ')')
     warnings += manager_ok ? 0 : 1
 
     var daemons = [
@@ -354,10 +361,12 @@ def g:VimrcHealth()
   HealthLine(clipboard_ok ? 'ok' : 'warn', 'clipboard provider')
   warnings += clipboard_ok ? 0 : 1
 
-  var safe_install = get(g:, 'simpleplug_auto_install', 1) == 0
-        \ && get(g:, 'simplecc_auto_install', 1) == 0
-  HealthLine(safe_install ? 'ok' : 'fail', 'offline-by-default')
-  failures += safe_install ? 0 : 1
+  var lsp_install_is_explicit = get(g:, 'simplecc_auto_install', 1) == 0
+  HealthLine(
+        lsp_install_is_explicit ? 'ok' : 'warn',
+        'language-server install',
+        lsp_install_is_explicit ? 'explicit' : 'automatic')
+  warnings += lsp_install_is_explicit ? 0 : 1
 
   g:vimrc_health_last = {fail: failures, warn: warnings}
   echomsg printf(

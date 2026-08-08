@@ -3,9 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 umask 077
 
-readonly SIMPLEPLUG_URL="https://github.com/beamiter/simpleplug.git"
-readonly SIMPLEPLUG_REV="751ed1aa68b2d8b0b32c304a8dc73ad9d7ba50e7"
-
 profile="core"
 dry_run=0
 bootstrap_simpleplug=0
@@ -19,13 +16,13 @@ Safely link this repository's Vim configuration.
 Options:
   --profile core|full       core: ~/.vimrc only (default)
                             full: also install the global SimpleCC config
-  --bootstrap-simpleplug    explicitly download and build pinned SimplePlug
+  --bootstrap-simpleplug    eagerly download and build the latest SimplePlug
   --dry-run                 print the plan without changing files or networking
   -h, --help                show this help
 
-The default path is offline: it never runs git, cargo, Vim, sudo, or a package
-manager. Installing the remaining plugins is always a separate, explicit
-:PlugInstall action.
+The installer itself is offline by default: it never runs git, cargo, Vim,
+sudo, or a package manager. On the first Vim launch, the vimrc automatically
+bootstraps SimplePlug and continues with :PlugUpdate in the same session.
 EOF
 }
 
@@ -164,10 +161,6 @@ timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
 created_targets=()
 created_sources=()
 backup_paths=()
-bootstrap_staging=""
-bootstrap_target=""
-bootstrap_backup=""
-bootstrap_activated=0
 transaction_committed=0
 
 unique_backup_path() {
@@ -248,82 +241,14 @@ install_link() {
 }
 
 bootstrap_simpleplug_fn() {
-  local plugin_parent="$HOME/.vim/plugged"
-  local plugin_target="$plugin_parent/simpleplug"
-  local checkout=""
-  local backup=""
-  local install_complete=0
-
-  if [[ -f "$plugin_target/autoload/simpleplug.vim" \
-        && -f "$plugin_target/plugin/simpleplug.vim" \
-        && -x "$plugin_target/lib/simpleplug-daemon" ]]; then
-    install_complete=1
-  fi
+  local plugin_target="$HOME/.vim/plugged/simpleplug"
 
   if ((dry_run)); then
-    if ((install_complete)); then
-      log "DRY-RUN" "replace unverified SimplePlug at $plugin_target"
-    fi
-    log "DRY-RUN" "fetch pinned SimplePlug $SIMPLEPLUG_REV"
-    log "DRY-RUN" "build and install simpleplug-daemon"
-    log "DRY-RUN" "activate $plugin_target"
+    log "DRY-RUN" "fetch and build the latest SimplePlug"
+    log "DRY-RUN" "transactionally activate $plugin_target"
     return
   fi
-
-  command -v git >/dev/null 2>&1 || {
-    printf 'error: git is required for --bootstrap-simpleplug\n' >&2
-    return 1
-  }
-  command -v cargo >/dev/null 2>&1 || {
-    printf 'error: cargo is required for --bootstrap-simpleplug\n' >&2
-    return 1
-  }
-
-  mkdir -p -- "$plugin_parent"
-  bootstrap_staging="$(mktemp -d "$plugin_parent/.simpleplug.stage.XXXXXX")"
-  bootstrap_target="$plugin_target"
-  checkout="$bootstrap_staging/simpleplug"
-
-  mkdir -- "$checkout"
-  git -C "$checkout" init --quiet
-  git -C "$checkout" remote add origin "$SIMPLEPLUG_URL"
-  git -C "$checkout" fetch --quiet --depth 1 origin "$SIMPLEPLUG_REV"
-  git -C "$checkout" checkout --quiet --detach FETCH_HEAD
-
-  (
-    cd -- "$checkout"
-    cargo build --release --locked
-    mkdir -p lib
-    install -m 0755 target/release/simpleplug-daemon lib/simpleplug-daemon
-  )
-
-  [[ -f "$checkout/autoload/simpleplug.vim" \
-        && -f "$checkout/plugin/simpleplug.vim" \
-        && -x "$checkout/lib/simpleplug-daemon" ]] || {
-    printf 'error: staged SimplePlug failed verification\n' >&2
-    return 1
-  }
-
-  if [[ -e "$plugin_target" || -L "$plugin_target" ]]; then
-    backup="$(unique_backup_path "$plugin_target")"
-    mv -- "$plugin_target" "$backup"
-    bootstrap_backup="$backup"
-    log "BACKUP" "$plugin_target -> $backup"
-  fi
-
-  if ! mv -- "$checkout" "$plugin_target"; then
-    if [[ -n "$backup" && ( -e "$backup" || -L "$backup" ) ]]; then
-      mv -- "$backup" "$plugin_target"
-      bootstrap_backup=""
-    fi
-    printf 'error: failed to activate SimplePlug\n' >&2
-    return 1
-  fi
-  bootstrap_activated=1
-
-  rm -rf -- "$bootstrap_staging"
-  bootstrap_staging=""
-  log "INSTALL" "SimplePlug $SIMPLEPLUG_REV -> $plugin_target"
+  "$script_dir/bootstrap-simpleplug.sh" --force "$plugin_target"
 }
 
 cleanup_transaction() {
@@ -331,20 +256,7 @@ cleanup_transaction() {
   set +e
 
   if ((status != 0 && transaction_committed == 0)); then
-    if ((bootstrap_activated)) && [[ -n "$bootstrap_target" ]]; then
-      rm -rf -- "$bootstrap_target"
-    fi
-    if [[ -n "$bootstrap_backup" \
-          && ( -e "$bootstrap_backup" || -L "$bootstrap_backup" ) \
-          && ! -e "$bootstrap_target" \
-          && ! -L "$bootstrap_target" ]]; then
-      mv -- "$bootstrap_backup" "$bootstrap_target"
-    fi
     rollback_links
-  fi
-
-  if [[ -n "$bootstrap_staging" && -d "$bootstrap_staging" ]]; then
-    rm -rf -- "$bootstrap_staging"
   fi
   return "$status"
 }
@@ -369,8 +281,7 @@ transaction_committed=1
 trap - EXIT
 
 if ((bootstrap_simpleplug)); then
-  printf '\nNext (explicit network action): open Vim and run :PlugInstall\n'
+  printf '\nLatest SimplePlug installed. Open Vim; remaining plugins will install automatically.\n'
 else
-  printf '\nSimplePlug was not downloaded. To bootstrap the pinned manager explicitly:\n'
-  printf '  %s --bootstrap-simpleplug\n' "$0"
+  printf '\nOpen Vim once; it will bootstrap SimplePlug and install all plugins automatically.\n'
 fi

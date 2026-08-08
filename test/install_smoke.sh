@@ -75,16 +75,15 @@ fi
 [[ "$(sed -n '1p' "$early_home/.vimrc")" == "restore-early" ]]
 [[ -z "$(find "$early_home" -name '*.backup.*' -print -quit)" ]]
 
-# A failed explicit bootstrap is transactional: restore the previous vimrc and
-# remove the private staging directory.  Fake tools keep this test offline.
+# A failed eager bootstrap is transactional: restore the previous vimrc and
+# remove the private staging directory. Fake tools keep this test offline.
 failure_home="$tmp/failure-home"
 fake_bin="$tmp/fake-bin"
 mkdir -p "$failure_home" "$fake_bin"
 printf 'restore-me\n' >"$failure_home/.vimrc"
 printf '%s\n' \
   '#!/usr/bin/env bash' \
-  'if [[ " $* " == *" fetch "* ]]; then exit 42; fi' \
-  'exit 0' >"$fake_bin/git"
+  'exit 42' >"$fake_bin/git"
 printf '%s\n' '#!/usr/bin/env bash' 'exit 0' >"$fake_bin/cargo"
 chmod +x "$fake_bin/git" "$fake_bin/cargo"
 
@@ -98,48 +97,52 @@ fi
 [[ -z "$(find "$failure_home" -name '*.backup.*' -print -quit)" ]]
 [[ -z "$(find "$failure_home" -name '.simpleplug.stage.*' -print -quit)" ]]
 
-# Also cover a failure after the staged plugin has been activated but before
-# the transaction commits.
-late_home="$tmp/late-home"
-mkdir -p "$late_home"
-printf 'restore-late\n' >"$late_home/.vimrc"
+# A successful bootstrap clones the remote's current default-branch HEAD,
+# builds in staging, preserves an incomplete checkout and activates atomically.
+success_home="$tmp/success-home"
+success_target="$success_home/.vim/plugged/simpleplug"
+fake_git_log="$tmp/fake-git.log"
+mkdir -p "$success_target"
+printf 'preserve-local-change\n' >"$success_target/local-change"
 printf '%s\n' \
   '#!/usr/bin/env bash' \
-  'set -e' \
-  'checkout=""' \
-  'if [[ "${1:-}" == "-C" ]]; then checkout="$2"; shift 2; fi' \
-  'if [[ "${1:-}" == "checkout" ]]; then' \
-  '  mkdir -p "$checkout/autoload" "$checkout/plugin"' \
-  '  : >"$checkout/autoload/simpleplug.vim"' \
-  '  : >"$checkout/plugin/simpleplug.vim"' \
+  'set -eu' \
+  'printf "%s\\n" "$*" >>"$FAKE_GIT_LOG"' \
+  'if [[ "${1:-}" == "clone" ]]; then' \
+  '  checkout="${@: -1}"' \
+  '  mkdir -p "$checkout/autoload" "$checkout/plugin" "$checkout/.git"' \
+  '  printf "vim9script\\n" >"$checkout/autoload/simpleplug.vim"' \
+  '  printf "vim9script\\n" >"$checkout/plugin/simpleplug.vim"' \
+  '  printf "#!/usr/bin/env bash\\nset -eu\\nmkdir -p lib\\n: >lib/simpleplug-daemon\\nchmod 0755 lib/simpleplug-daemon\\n" >"$checkout/install.sh"' \
+  'elif [[ "${1:-}" == "-C" && "${3:-}" == "rev-parse" ]]; then' \
+  '  printf "69e15f5e4a59\\n"' \
   'fi' \
   'exit 0' >"$fake_bin/git"
-printf '%s\n' \
-  '#!/usr/bin/env bash' \
-  'set -e' \
-  'mkdir -p target/release' \
-  ': >target/release/simpleplug-daemon' \
-  'chmod +x target/release/simpleplug-daemon' >"$fake_bin/cargo"
-chmod +x "$fake_bin/git" "$fake_bin/cargo"
+chmod +x "$fake_bin/git"
 
-if (
-  printf() {
-    if [[ "${2:-}" == "INSTALL" ]]; then
-      return 88
-    fi
-    builtin printf "$@"
-  }
-  export -f printf
-  PATH="$fake_bin:$PATH" HOME="$late_home" \
-    "$installer" --bootstrap-simpleplug >/dev/null 2>&1
-); then
-  printf 'late bootstrap failure unexpectedly succeeded\n' >&2
+FAKE_GIT_LOG="$fake_git_log" PATH="$fake_bin:$PATH" HOME="$success_home" \
+  "$installer" --bootstrap-simpleplug >/dev/null
+[[ "$success_home/.vimrc" -ef "$repo_root/.vimrc" ]]
+[[ -f "$success_target/autoload/simpleplug.vim" ]]
+[[ -f "$success_target/plugin/simpleplug.vim" ]]
+[[ -x "$success_target/lib/simpleplug-daemon" ]]
+[[ "$(find "$success_home/.vim/plugged/.vimrc-bootstrap-backups" \
+      -name local-change -exec sed -n '1p' {} \; -quit)" == \
+      "preserve-local-change" ]]
+[[ "$(sed -n '1p' "$fake_git_log")" == \
+      *"clone"*"--depth 1"*"--single-branch"* ]]
+[[ -z "$(find "$success_home" -name '.simpleplug.stage.*' -print -quit)" ]]
+
+# The automatic (non-forced) path is idempotent and performs no network call
+# once all required manager files are present.
+: >"$fake_git_log"
+FAKE_GIT_LOG="$fake_git_log" PATH="$fake_bin:$PATH" HOME="$success_home" \
+  "$repo_root/utils/bootstrap-simpleplug.sh" "$success_target" >/dev/null
+[[ ! -s "$fake_git_log" ]]
+
+if "$repo_root/utils/bootstrap-simpleplug.sh" /simpleplug >/dev/null 2>&1; then
+  printf 'root-level SimplePlug target unexpectedly succeeded\n' >&2
   exit 1
 fi
-[[ ! -L "$late_home/.vimrc" ]]
-[[ "$(sed -n '1p' "$late_home/.vimrc")" == "restore-late" ]]
-[[ ! -e "$late_home/.vim/plugged/simpleplug" ]]
-[[ -z "$(find "$late_home" -name '*.backup.*' -print -quit)" ]]
-[[ -z "$(find "$late_home" -name '.simpleplug.stage.*' -print -quit)" ]]
 
 printf 'installer smoke: OK\n'
