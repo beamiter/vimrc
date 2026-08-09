@@ -117,9 +117,11 @@ for info in getwininfo()
     minimap_status = gettabwinvar(info.tabnr, info.winnr, '&statusline')
   endif
 endfor
-assert_equal(
-      '%#SimpleMinimapTitle#%{simpleminimap#Statusline()}%*',
-      minimap_status)
+# 断言规范值而不是字面量：minimap 自己会在 BufWinEnter/WinEnter 上重新断言窗口
+# 选项，这里要验的是"SimpleLine 改写之后它确实被恢复了"，而不是复制一份字面量
+# 等着两边漂移。
+assert_equal(simpleminimap#StatuslineExpr(), minimap_status)
+assert_notequal('', minimap_status)
 
 # 更新提示接在 SimpleLine 的用户段位上：落后时渲染，最新时消失。
 g:vimrc_update_status = {upstream: 'origin/master', ahead: 0, behind: 3}

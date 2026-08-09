@@ -209,13 +209,20 @@ def g:VimrcStripWhitespace()
 enddef
 
 # SimpleLine 会在窗口事件中重写 statusline；侧栏必须恢复插件自己的状态栏。
+# SimpleMinimap 现在自己在 BufWinEnter/WinEnter 上重新断言窗口选项，并导出规范
+# 值，所以这里取用 StatuslineExpr() 而不是照抄字面量——两边各写一份迟早会漂移。
+# 保留字面量分支，是为了插件尚未更新到带该接口的版本时仍能工作。
 def RestoreSidebarStatusline()
   if &filetype ==# 'simpletree'
     &l:statusline = '%{simpletree#StatusLine()}'
   elseif &filetype ==# 'simpleminimap'
-    &l:statusline = get(g:, 'simpleminimap_show_statusline', 1)
-          \ ? '%#SimpleMinimapTitle#%{simpleminimap#Statusline()}%*'
-          \ : ''
+    if exists('*simpleminimap#StatuslineExpr')
+      &l:statusline = simpleminimap#StatuslineExpr()
+    else
+      &l:statusline = get(g:, 'simpleminimap_show_statusline', 1)
+            \ ? '%#SimpleMinimapTitle#%{simpleminimap#Statusline()}%*'
+            \ : ''
+    endif
   endif
 enddef
 
