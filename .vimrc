@@ -87,6 +87,7 @@ for module in [
   'plugins.vim',
   'behavior.vim',
   'workflow.vim',
+  'remote.vim',
   'mappings.vim',
   'update.vim',
 ]

@@ -282,6 +282,58 @@ g:simplecc_config_path = ''
 | SimpleStartify | 随机启动页、recent 文件与受控 session 管理 |
 | lexima + tcomment + matchup | 配对输入、注释和括号匹配 |
 
+* 本地 UI + 远程 RPC（实验性）
+
+Vim 始终运行在本地，远端不需要 Vim 9。安装远端 agent 后，在本地 Vim 中执行：
+
+#+begin_src shell
+ssh host 'mkdir -p ~/.cache/vimrc'
+scp utils/simpleremote-agent.sh host:~/.cache/vimrc/simpleremote-agent.sh
+ssh host chmod 700 ~/.cache/vimrc/simpleremote-agent.sh
+#+end_src
+
+然后：
+
+#+begin_example
+:VimrcRemoteConnect ssh host /workspace/project
+:VimrcRemoteOpen src/main.rs
+:VimrcRemoteExec cargo test
+:VimrcRemoteStatus
+#+end_example
+
+远端 agent 的路径可通过 `g:vimrc_remote_agent` 覆盖。Docker 容器需要把 agent 放在
+容器内的 `~/.cache/vimrc/simpleremote-agent.sh`，例如：
+
+#+begin_src shell
+docker cp utils/simpleremote-agent.sh container:/tmp/simpleremote-agent.sh
+docker exec container sh -c 'mkdir -p ~/.cache/vimrc && mv /tmp/simpleremote-agent.sh ~/.cache/vimrc/ && chmod 700 ~/.cache/vimrc/simpleremote-agent.sh'
+#+end_src
+
+Docker 使用同一协议：
+
+#+begin_example
+:VimrcRemoteConnect docker container-name /workspace/project
+#+end_example
+
+远程文件使用 `remote://` buffer 名称，本地 UI 不会把它误认为本地文件；写入时通过
+RPC 原子回传。远端 agent 只依赖 POSIX shell 和 `base64`。远程搜索和 Git 结果分别
+通过 `:VimrcRemoteFind`、`:VimrcRemoteGit` 写入 quickfix：
+
+#+begin_example
+:VimrcRemoteFind rust
+:VimrcRemoteList
+:VimrcRemoteGit status --short
+:VimrcRemoteHealth
+#+end_example
+
+这为 SimpleFinder、SimpleGit、SimpleCC 的 provider 接入提供统一 transport。
+
+打开 `remote://` buffer 后，SimpleCC 会把本地 daemon 的 LSP 进程通过同一 SSH 或
+Docker transport 启动在远端，并把远端 `file://` URI 映射回 `remote://` buffer。远程
+模式目前使用 SimpleCC 的内建语言服务器清单；本地用户配置路径不会错误地传给远端，
+远端 workspace 根目录下的 `simplecc.json` 会通过 RPC 读取并传给本地 daemon，项目
+自定义 server、args、initializationOptions 和 settings 因此可以生效。
+
 已移除两个会在空 buffer 触发错误且与现有能力重叠的插件：
 
 - =vim-polyglot=：改用 Vim 9 runtime、语言专用插件和 SimpleTreeSitter。

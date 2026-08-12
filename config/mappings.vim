@@ -26,6 +26,11 @@ nnoremap <silent> <leader>vc <Cmd>VimrcUpdateCheck<CR>
 nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
+nnoremap <silent> <leader>rs <Cmd>VimrcRemoteStatus<CR>
+nnoremap <silent> <leader>rf <Cmd>VimrcRemoteFind <C-r>=input('remote files: ')<CR><CR>
+nnoremap <silent> <leader>rg <Cmd>VimrcRemoteGit status --short<CR>
+nnoremap <silent> <leader>rt <Cmd>VimrcRemoteList<CR>
+nnoremap <silent> <leader>rh <Cmd>VimrcRemoteHealth<CR>
 
 # 保留 Vim 原生 s / ( / )；快速跳转统一放到 leader 下。
 xnoremap < <gv
