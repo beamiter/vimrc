@@ -93,10 +93,15 @@ for module in [
 ]
   # bootstrap.vim owns live job/timer callbacks.  Re-sourcing that Vim9 script
   # would delete functions still on a callback stack, so reload only its
-  # autocmd wiring once the controller has been initialized.
+  # autocmd wiring once the controller has been initialized.  remote.vim has
+  # the same ownership rule for transport callbacks; its autocmd function also
+  # makes a reload disconnect deliberately instead of orphaning the old job.
   if module ==# 'bootstrap.vim'
         && exists('*g:VimrcConfigureSimplePlugBootstrap') == 1
     execute 'call g:VimrcConfigureSimplePlugBootstrap()'
+  elseif module ==# 'remote.vim'
+        && exists('*g:VimrcConfigureRemote') == 1
+    execute 'call g:VimrcConfigureRemote()'
   else
     execute 'source ' .. fnameescape(ROOT .. '/config/' .. module)
   endif

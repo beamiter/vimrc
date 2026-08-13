@@ -32,9 +32,27 @@ for script in \
   "$repo_root/utils/bootstrap-simpleplug.sh" \
   "$repo_root/utils/install.sh" \
   "$repo_root/utils/check.sh" \
-  "$repo_root/test/install_smoke.sh"; do
+  "$repo_root/test/install_smoke.sh" \
+  "$repo_root/test/simpleremote_agent.sh" \
+  "$repo_root/test/vimrc_remote.sh" \
+  "$repo_root/test/vimrc_remote_transport.sh"; do
   bash -n "$script"
 done
+sh -n "$repo_root/utils/simpleremote-agent.sh"
+bash -n "$repo_root/test/fixtures/simpleremote/ssh"
+bash -n "$repo_root/test/fixtures/simpleremote/docker"
+sh -n "$repo_root/test/fixtures/simpleremote/agent wrapper"
+if command -v shellcheck >/dev/null 2>&1; then
+  shellcheck -s sh \
+    "$repo_root/utils/simpleremote-agent.sh" \
+    "$repo_root/test/fixtures/simpleremote/agent wrapper"
+  shellcheck \
+    "$repo_root/test/simpleremote_agent.sh" \
+    "$repo_root/test/vimrc_remote.sh" \
+    "$repo_root/test/vimrc_remote_transport.sh" \
+    "$repo_root/test/fixtures/simpleremote/ssh" \
+    "$repo_root/test/fixtures/simpleremote/docker"
+fi
 
 if command -v jq >/dev/null 2>&1; then
   jq empty "$repo_root/simplecc.json"
@@ -45,6 +63,9 @@ else
 fi
 
 "$repo_root/test/install_smoke.sh"
+"$repo_root/test/simpleremote_agent.sh"
+"$repo_root/test/vimrc_remote.sh"
+"$repo_root/test/vimrc_remote_transport.sh"
 
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT
@@ -53,7 +74,7 @@ mkdir -p "$tmp/home" "$tmp/state"
 mkdir -p "$tmp/invalid-home-cwd"
 if (
   cd "$tmp/invalid-home-cwd"
-  HOME= XDG_STATE_HOME= XDG_CONFIG_HOME= VIMRC_SKIP_PLUGINS=1 \
+  HOME='' XDG_STATE_HOME='' XDG_CONFIG_HOME='' VIMRC_SKIP_PLUGINS=1 \
     vim -Nu "$repo_root/.vimrc" -n -i NONE -es +qall
 ); then
   printf 'error: vimrc accepted an empty HOME\n' >&2

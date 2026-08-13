@@ -15,6 +15,7 @@
     ├── plugins.vim    插件配置与 SimplePlug 清单
     ├── behavior.vim   FileType、健康检查、兼容层
     ├── workflow.vim   大文件保护、项目根目录、quickfix 工作流
+    ├── remote.vim     SSH/Docker RPC、remote:// buffer 与远程 SimpleCC
     ├── mappings.vim   所有真实键位与 SimpleWhichKey 描述
     └── update.vim     配置仓库更新检查（只读 fetch，拉取需显式执行）
 #+end_example
@@ -284,12 +285,13 @@ g:simplecc_config_path = ''
 
 * 本地 UI + 远程 RPC（实验性）
 
-Vim 始终运行在本地，远端不需要 Vim 9。安装远端 agent 后，在本地 Vim 中执行：
+Vim 始终运行在本地，远端不需要 Vim 9。当前 transport 使用
+=simpleremote/2= 协议；更新本配置后也要同步更新远端 agent。安装后在本地 Vim 中执行：
 
 #+begin_src shell
 ssh host 'mkdir -p ~/.cache/vimrc'
 scp utils/simpleremote-agent.sh host:~/.cache/vimrc/simpleremote-agent.sh
-ssh host chmod 700 ~/.cache/vimrc/simpleremote-agent.sh
+ssh host 'chmod 700 ~/.cache/vimrc/simpleremote-agent.sh'
 #+end_src
 
 然后：
@@ -299,6 +301,7 @@ ssh host chmod 700 ~/.cache/vimrc/simpleremote-agent.sh
 :VimrcRemoteOpen src/main.rs
 :VimrcRemoteExec cargo test
 :VimrcRemoteStatus
+:VimrcRemoteDisconnect
 #+end_example
 
 远端 agent 的路径可通过 `g:vimrc_remote_agent` 覆盖。Docker 容器需要把 agent 放在
@@ -315,24 +318,56 @@ Docker 使用同一协议：
 :VimrcRemoteConnect docker container-name /workspace/project
 #+end_example
 
-远程文件使用 `remote://` buffer 名称，本地 UI 不会把它误认为本地文件；写入时通过
-RPC 原子回传。远端 agent 只依赖 POSIX shell 和 `base64`。远程搜索和 Git 结果分别
-通过 `:VimrcRemoteFind`、`:VimrcRemoteGit` 写入 quickfix：
+远程文件使用 =remote://= buffer 名称，本地 UI 不会把它误认为本地文件；写入时通过
+RPC 原子回传。文件内容在协议内单独编码，因此 EOF 换行不会被 shell 截断，覆盖已有
+文件时也保留其权限。异步读写绑定发起操作的 buffer；如果保存后又继续编辑，旧 ACK
+不会把新改动误标成已保存。远端 agent 依赖 POSIX shell、=base64= 和 =mktemp=。
+远程搜索和 Git 结果分别通过 =:VimrcRemoteFind=、=:VimrcRemoteGit= 写入 quickfix：
 
 #+begin_example
 :VimrcRemoteFind rust
 :VimrcRemoteList
 :VimrcRemoteGit status --short
 :VimrcRemoteHealth
+:VimrcRemoteReloadConfig
 #+end_example
+
+连接、配置读取和普通 RPC 都有超时（默认 15 秒），可通过
+=g:vimrc_remote_request_timeout= 设置毫秒数，设为 0 表示关闭。再次 connect 会先关闭旧
+transport，=:VimrcRemoteDisconnect= 也会清理 workspace、配置和挂起请求。不同连接间
+不会复用可写状态；旧连接打开且有未保存修改的 buffer 必须先处理，再在新连接中重开。
+agent 当前串行处理请求；预计超过 15 秒的 =:VimrcRemoteExec= 应先调高超时，否则本地
+请求会超时，而远端命令仍可能占用 transport，需断开后重连。目录列表中的目录项不可
+直接打开，可用 =:VimrcRemoteList 子目录= 继续下钻。
+
+这些命令面向受信任的开发环境：workspace root 是默认工作目录而不是文件沙箱，绝对
+路径和 =..= 可以访问 workspace 外的路径；=:VimrcRemoteExec= / =:VimrcRemoteGit=
+会执行传入的 shell / Git 参数；Docker 进程还可能以容器内 root 身份运行。连接项目也
+表示信任其 =simplecc.json= 中的 language-server =command= / =args=，因为它们会在
+远端启动。不要连接不受信任的 host、容器或 workspace。
 
 这为 SimpleFinder、SimpleGit、SimpleCC 的 provider 接入提供统一 transport。
 
-打开 `remote://` buffer 后，SimpleCC 会把本地 daemon 的 LSP 进程通过同一 SSH 或
+第一次打开 =remote://= buffer 时，SimpleCC 会在该 buffer 的上下文中重启 workspace，
+把本地 daemon 的 LSP 进程通过同一 SSH 或
 Docker transport 启动在远端，并把远端 `file://` URI 映射回 `remote://` buffer。远程
 模式目前使用 SimpleCC 的内建语言服务器清单；本地用户配置路径不会错误地传给远端，
 远端 workspace 根目录下的 `simplecc.json` 会通过 RPC 读取并传给本地 daemon，项目
-自定义 server、args、initializationOptions 和 settings 因此可以生效。
+自定义 server、args、initializationOptions 和 settings 因此可以生效。断开 remote
+会停止这次远程 SimpleCC workspace；回到本地项目后可用 =:SimpleCCStart= 重新启动。
+=:VimrcReload= 会先安全断开当前 remote，避免热重载删除仍被 job callback 使用的函数；
+若修改了 =remote.vim= controller 本身，请重启 Vim 载入新实现。
+
+常用键位：
+
+| 键位 | 功能 |
+|-
+| =<leader>rd= | 断开 remote |
+| =<leader>rf= | 搜索远程文件 |
+| =<leader>rg= | 远程 Git status |
+| =<leader>rh= | 远程健康检查 |
+| =<leader>rs= | 显示连接状态 |
+| =<leader>rt= | 列出远程目录 |
 
 已移除两个会在空 buffer 触发错误且与现有能力重叠的插件：
 
@@ -486,6 +521,8 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 - FileType 局部设置互不泄漏；
 - 项目根目录、quickfix 开关和大文件自动保护；
 - 配置连续 source 两次；
+- simpleremote/2 agent 字节协议、错误码、权限、符号链接和长文件名；
+- fake SSH（含 OpenSSH 命令重解析）与 Docker transport 端到端读写、重连和清理；
 - SimpleCC 映射无尾随空格；
 - lexima 与补全 Enter 兼容；
 - SimpleTree/SimpleMinimap 状态栏不被 SimpleLine 覆盖。

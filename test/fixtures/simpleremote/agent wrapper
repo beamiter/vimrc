@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+if [ "${VIMRC_TEST_PARSE_ONLY:-}" = 1 ]; then
+  printf '%s' "$0" >&3
+  exit 0
+fi
+
+exec sh "${VIMRC_TEST_REMOTE_AGENT:?}"

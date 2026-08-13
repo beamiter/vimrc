@@ -26,8 +26,9 @@ nnoremap <silent> <leader>vc <Cmd>VimrcUpdateCheck<CR>
 nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
+nnoremap <silent> <leader>rd <Cmd>VimrcRemoteDisconnect<CR>
 nnoremap <silent> <leader>rs <Cmd>VimrcRemoteStatus<CR>
-nnoremap <silent> <leader>rf <Cmd>VimrcRemoteFind <C-r>=input('remote files: ')<CR><CR>
+nnoremap <silent> <leader>rf <Cmd>call g:VimrcRemotePromptFind()<CR>
 nnoremap <silent> <leader>rg <Cmd>VimrcRemoteGit status --short<CR>
 nnoremap <silent> <leader>rt <Cmd>VimrcRemoteList<CR>
 nnoremap <silent> <leader>rh <Cmd>VimrcRemoteHealth<CR>
@@ -248,8 +249,14 @@ if get(C, 'plugins_ready', false)
       h: 'inlay-hints',
     },
     r: {
-      name: '+refactor',
+      name: '+remote/refactor',
+      d: 'remote-disconnect',
+      f: 'remote-files',
+      g: 'remote-git-status',
+      h: 'remote-health',
       n: 'rename',
+      s: 'remote-status',
+      t: 'remote-list',
     },
     b: {
       name: '+buffer',

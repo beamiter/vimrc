@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# A deliberately small ssh stand-in for the Vim integration test.  Besides
+# keeping the test offline, validating argv makes sure TargetCommand() keeps
+# using the documented `ssh -T target sh agent` transport contract.
+: "${VIMRC_TEST_REMOTE_AGENT:?}"
+: "${VIMRC_TEST_REMOTE_AGENT_COMMAND:?}"
+: "${VIMRC_TEST_REMOTE_TARGET:?}"
+: "${VIMRC_TEST_SSH_LOG:?}"
+: "${VIMRC_TEST_GATE_DIR:?}"
+
+mkdir -p "$VIMRC_TEST_GATE_DIR"
+printf '%s\n' "$$" >"$VIMRC_TEST_GATE_DIR/ssh.pid"
+stop_child() {
+  local name=$1
+  local pid=''
+  if [[ -r "$VIMRC_TEST_GATE_DIR/$name.pid" ]]; then
+    pid=$(<"$VIMRC_TEST_GATE_DIR/$name.pid")
+  fi
+  if [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; then
+    kill "$pid" 2>/dev/null || true
+  fi
+  if [[ "$pid" =~ ^[0-9]+$ ]]; then
+    wait "$pid" 2>/dev/null || true
+  fi
+}
+mark_exit() {
+  local status=$?
+  trap - EXIT
+  stop_child agent
+  stop_child responses
+  printf '%s\n' "$status" >"$VIMRC_TEST_GATE_DIR/ssh.exit"
+  exit "$status"
+}
+trap mark_exit EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+expected="'exec '\''$VIMRC_TEST_REMOTE_AGENT_COMMAND'\'''"
+if [ "$#" -ne 5 ] \
+    || [ "$1" != "-T" ] \
+    || [ "$2" != "$VIMRC_TEST_REMOTE_TARGET" ] \
+    || [ "$3" != "sh" ] \
+    || [ "$4" != "-lc" ] \
+    || [ "$5" != "$expected" ]; then
+  printf 'unexpected ssh invocation:' >&2
+  printf ' <%s>' "$@" >&2
+  printf '\n' >&2
+  exit 64
+fi
+
+{
+  printf 'argc=%s\n' "$#"
+  for argument do
+    printf 'arg=%s\n' "$argument"
+  done
+} >"$VIMRC_TEST_SSH_LOG"
+
+# OpenSSH joins the argv after the host and asks the remote login shell to
+# parse it.  Parse the same command here: this catches missing outer quoting
+# around `sh -lc`'s script while keeping the fixture offline.
+remote_command=$(printf '%s ' "${@:3}")
+remote_command=${remote_command% }
+parsed_agent=$(VIMRC_TEST_PARSE_ONLY=1 sh -c \
+  "$remote_command" 3>&1 1>/dev/null 2>/dev/null || true)
+if [[ $parsed_agent != "$VIMRC_TEST_REMOTE_AGENT_COMMAND" ]]; then
+  printf 'ssh command did not preserve agent path: <%s>\n' "$parsed_agent" >&2
+  exit 65
+fi
+
+# Vim channel callbacks are asynchronous.  Hold file responses behind explicit
+# gates so the test, rather than scheduler timing, decides which buffer is
+# current when each callback runs.  Request ids 1 and 2 are connect/config;
+# ids 3-6 are the read and three writes, ids 7-9 are ordinary config reloads,
+# ids 10-11 are concurrent config reloads delivered newest-first, and id 12 is
+# a hidden write whose BufWritePost state must not survive a reconnect.
+wait_for_release() {
+  local name=$1
+  local deadline=$((SECONDS + 10))
+  printf 'pending\n' >"$VIMRC_TEST_GATE_DIR/$name.pending"
+  while [[ ! -e "$VIMRC_TEST_GATE_DIR/$name.release" ]]; do
+    if ((SECONDS >= deadline)); then
+      printf 'timed out waiting for %s release\n' "$name" >&2
+      return 1
+    fi
+    sleep 0.01
+  done
+}
+
+run_agent() {
+  printf '%s\n' "$BASHPID" >"$VIMRC_TEST_GATE_DIR/agent.pid"
+  exec sh "$VIMRC_TEST_REMOTE_AGENT"
+}
+
+filter_responses() {
+  local held_config_response=''
+  printf '%s\n' "$BASHPID" >"$VIMRC_TEST_GATE_DIR/responses.pid"
+  while IFS= read -r response; do
+    response_id=${response%%$'\t'*}
+    case "$response_id" in
+      1) wait_for_release handshake ;;
+      3) wait_for_release read ;;
+      4) wait_for_release write ;;
+      5) wait_for_release stale-write ;;
+      6) wait_for_release eol-write ;;
+      10)
+        held_config_response=$response
+        printf 'pending\n' >"$VIMRC_TEST_GATE_DIR/config-stale.pending"
+        continue
+        ;;
+      11)
+        if [[ -z $held_config_response ]]; then
+          printf 'latest config response arrived before stale response\n' >&2
+          return 1
+        fi
+        printf '%s\n' "$response"
+        printf '%s\n' "$held_config_response"
+        held_config_response=''
+        continue
+        ;;
+      12) wait_for_release generation-write ;;
+    esac
+    printf '%s\n' "$response"
+  done
+}
+
+run_agent | filter_responses
