@@ -43,7 +43,7 @@ if [ "$#" -ne 5 ] \
     || [ "$1" != "-T" ] \
     || [ "$2" != "$VIMRC_TEST_REMOTE_TARGET" ] \
     || [ "$3" != "sh" ] \
-    || [ "$4" != "-lc" ] \
+    || [ "$4" != "-c" ] \
     || [ "$5" != "$expected" ]; then
   printf 'unexpected ssh invocation:' >&2
   printf ' <%s>' "$@" >&2
@@ -60,7 +60,7 @@ fi
 
 # OpenSSH joins the argv after the host and asks the remote login shell to
 # parse it.  Parse the same command here: this catches missing outer quoting
-# around `sh -lc`'s script while keeping the fixture offline.
+# around `sh -c`'s script while keeping the fixture offline.
 remote_command=$(printf '%s ' "${@:3}")
 remote_command=${remote_command% }
 parsed_agent=$(VIMRC_TEST_PARSE_ONLY=1 sh -c \

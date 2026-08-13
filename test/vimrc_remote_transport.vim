@@ -2,6 +2,13 @@ vim9script
 
 set nomore
 
+if exists(':VimrcRemoteConnect') != 2
+      && filereadable($VIMRC_TEST_SIMPLEREMOTE_ROOT .. '/plugin/simpleremote.vim')
+  execute 'set runtimepath^=' .. fnameescape($VIMRC_TEST_SIMPLEREMOTE_ROOT)
+  execute 'source ' .. fnameescape(
+    $VIMRC_TEST_SIMPLEREMOTE_ROOT .. '/plugin/simpleremote.vim')
+endif
+
 def Status(): string
   return trim(execute('VimrcRemoteStatus'))
 enddef
@@ -24,7 +31,7 @@ assert_true(WaitForStatus('docker:' .. $VIMRC_TEST_REMOTE_TARGET),
       'docker transport did not become ready')
 assert_equal({kind: 'docker', target: $VIMRC_TEST_REMOTE_TARGET,
       root: $VIMRC_TEST_REMOTE_ROOT}, g:vimrc_remote_workspace)
-VimrcRemoteDisconnect
+execute 'VimrcRemoteDisconnect'
 
 if !empty(v:errors)
   writefile(v:errors, '/dev/stderr')

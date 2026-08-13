@@ -2,6 +2,13 @@ vim9script
 
 set nomore hidden
 
+if exists(':VimrcRemoteConnect') != 2
+      && filereadable($VIMRC_TEST_SIMPLEREMOTE_ROOT .. '/plugin/simpleremote.vim')
+  execute 'set runtimepath^=' .. fnameescape($VIMRC_TEST_SIMPLEREMOTE_ROOT)
+  execute 'source ' .. fnameescape(
+    $VIMRC_TEST_SIMPLEREMOTE_ROOT .. '/plugin/simpleremote.vim')
+endif
+
 const REMOTE_ROOT = $VIMRC_TEST_REMOTE_ROOT
 const REMOTE_TARGET = $VIMRC_TEST_REMOTE_TARGET
 const REMOTE_FILE = REMOTE_ROOT .. '/notes.txt'
@@ -124,7 +131,7 @@ def RunTests()
   ExpectNotConnected('VimrcRemoteExec pwd')
   var disconnect_error = ''
   try
-    VimrcRemoteDisconnect
+    execute 'VimrcRemoteDisconnect'
   catch
     disconnect_error = v:exception
   endtry
@@ -141,7 +148,7 @@ def RunTests()
         'handshake response was not captured')
   const not_ready_message = '[VimrcRemote] connection is not ready'
   const not_ready_messages = count(execute('messages'), not_ready_message)
-  VimrcRemoteReloadConfig
+  execute 'VimrcRemoteReloadConfig'
   Require(WaitForMessage(not_ready_message, not_ready_messages),
         'pre-handshake config reload was not rejected')
   assert_match('^connecting ssh:' .. REMOTE_TARGET, Status())
@@ -289,7 +296,7 @@ def RunTests()
   # deliberately removed file switches back to SimpleCC's defaults.
   const config_path = REMOTE_ROOT .. '/simplecc.json'
   writefile(['{"fixture": "reloaded", "version": 2}'], config_path)
-  VimrcRemoteReloadConfig
+  execute 'VimrcRemoteReloadConfig'
   Require(WaitForConfig({fixture: 'reloaded', version: 2}),
         'valid config reload did not replace the active config')
   assert_equal('ssh:' .. REMOTE_TARGET, Status())
@@ -298,7 +305,7 @@ def RunTests()
   const invalid_message = '[VimrcRemote] invalid remote simplecc.json:'
   const invalid_messages = count(execute('messages'), invalid_message)
   writefile(['{"fixture":'], config_path)
-  VimrcRemoteReloadConfig
+  execute 'VimrcRemoteReloadConfig'
   Require(WaitForMessage(invalid_message, invalid_messages),
         'invalid config reload was not handled')
   assert_equal(last_good_config, g:vimrc_remote_simplecc_config)
@@ -310,7 +317,7 @@ def RunTests()
         '[VimrcRemote] no remote simplecc.json; using SimpleCC defaults'
   const defaults_messages = count(execute('messages'), defaults_message)
   assert_equal(0, delete(config_path))
-  VimrcRemoteReloadConfig
+  execute 'VimrcRemoteReloadConfig'
   Require(WaitForMessage(defaults_message, defaults_messages),
         'deleted config did not switch to defaults')
   assert_false(exists('g:vimrc_remote_simplecc_config'))
@@ -320,11 +327,11 @@ def RunTests()
   # fixture captures request 10, then emits request 11 before it; only the
   # newest config is allowed to win.
   writefile(['{"fixture": "stale", "version": 3}'], config_path)
-  VimrcRemoteReloadConfig
+  execute 'VimrcRemoteReloadConfig'
   Require(WaitForMarker('config-stale.pending'),
         'stale config response was not captured')
   writefile(['{"fixture": "latest", "version": 4}'], config_path)
-  VimrcRemoteReloadConfig
+  execute 'VimrcRemoteReloadConfig'
   Require(WaitForConfig({fixture: 'latest', version: 4}),
         'latest concurrent config reload did not win')
   sleep 50m
@@ -356,7 +363,7 @@ def RunTests()
   const writepost_count = g:vimrc_test_remote_writepost_count
   const restart_count = len(g:vimrc_test_simplecc_restart_bufs)
 
-  VimrcRemoteDisconnect
+  execute 'VimrcRemoteDisconnect'
   Require(WaitForMarker('ssh.exit'),
         'transport did not exit before generation reconnect')
   assert_equal('disconnected', Status())
@@ -373,7 +380,7 @@ def RunTests()
 
   const reload_message = '[VimrcRemote] remote SimpleCC config loaded'
   const reload_messages = count(execute('messages'), reload_message)
-  VimrcRemoteReloadConfig
+  execute 'VimrcRemoteReloadConfig'
   Require(WaitForMessage(reload_message, reload_messages),
         'post-reconnect config reload did not finish')
   assert_equal(restart_count, len(g:vimrc_test_simplecc_restart_bufs))
@@ -391,7 +398,7 @@ def RunTests()
   execute 'VimrcRemoteConnect ssh ' .. REMOTE_TARGET .. ' '
         .. fnameescape(REMOTE_ROOT)
   Require(WaitForReady(), 'reconnected transport did not become ready')
-  VimrcRemoteDisconnect
+  execute 'VimrcRemoteDisconnect'
   Require(WaitForMarker('ssh.exit'), 'transport did not exit on disconnect')
   var disconnected_started = reltime()
   while Status() !=# 'disconnected'
@@ -409,7 +416,7 @@ catch
   test_exception = v:exception .. ' @ ' .. v:throwpoint
 finally
   if exists(':VimrcRemoteDisconnect') == 2
-    silent! VimrcRemoteDisconnect
+    silent! execute 'VimrcRemoteDisconnect'
   endif
 endtry
 if !empty(test_exception)

@@ -51,7 +51,7 @@ mapfile -t ssh_log <"$tmp/ssh.log"
 [[ ${ssh_log[1]} == 'arg=-T' ]]
 [[ ${ssh_log[2]} == 'arg=fixture-target' ]]
 [[ ${ssh_log[3]} == 'arg=sh' ]]
-[[ ${ssh_log[4]} == 'arg=-lc' ]]
+[[ ${ssh_log[4]} == 'arg=-c' ]]
 expected_ssh_command="arg='exec '\''$repo_root/test/fixtures/simpleremote/agent wrapper'\'''"
 [[ ${ssh_log[5]} == "$expected_ssh_command" ]]
 

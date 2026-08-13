@@ -64,8 +64,20 @@ fi
 
 "$repo_root/test/install_smoke.sh"
 "$repo_root/test/simpleremote_agent.sh"
-"$repo_root/test/vimrc_remote.sh"
-"$repo_root/test/vimrc_remote_transport.sh"
+simpleremote_test_root="${VIMRC_TEST_SIMPLEREMOTE_ROOT:-}"
+if [[ -z "$simpleremote_test_root" \
+      && -f "$HOME/.vim/plugged/simpleremote/plugin/simpleremote.vim" ]]; then
+  simpleremote_test_root="$HOME/.vim/plugged/simpleremote"
+fi
+if [[ "${VIMRC_RUN_EXTERNAL_REMOTE_TESTS:-0}" == "1" \
+      && -n "$simpleremote_test_root" \
+      && -f "$simpleremote_test_root/plugin/simpleremote.vim" ]]; then
+  export VIMRC_TEST_SIMPLEREMOTE_ROOT="$simpleremote_test_root"
+  "$repo_root/test/vimrc_remote.sh"
+  "$repo_root/test/vimrc_remote_transport.sh"
+else
+  printf 'vimrc external SimpleRemote integration: owned by beamiter/simpleremote (set VIMRC_RUN_EXTERNAL_REMOTE_TESTS=1 for legacy compatibility tests)\n'
+fi
 
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT

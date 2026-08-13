@@ -11,7 +11,7 @@ if [[ $# -ne 6 \
       || $2 != -i \
       || $3 != "$VIMRC_TEST_REMOTE_TARGET" \
       || $4 != sh \
-      || $5 != -lc \
+      || $5 != -c \
       || $6 != "$expected" ]]; then
   printf 'unexpected docker invocation:' >&2
   printf ' <%s>' "$@" >&2

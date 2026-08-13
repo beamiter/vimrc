@@ -31,7 +31,7 @@ expected_command='arg=exec "$HOME"/'"'"'.cache/vimrc/agent dir/simpleremote-agen
 [[ ${docker_log[2]} == 'arg=-i' ]]
 [[ ${docker_log[3]} == 'arg=fixture-container' ]]
 [[ ${docker_log[4]} == 'arg=sh' ]]
-[[ ${docker_log[5]} == 'arg=-lc' ]]
+[[ ${docker_log[5]} == 'arg=-c' ]]
 [[ ${docker_log[6]} == "$expected_command" ]]
 
 printf 'vimrc remote docker transport: OK\n'
