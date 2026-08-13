@@ -84,6 +84,12 @@ if !exists('g:vimrc_root_markers')
 endif
 
 def g:VimrcProjectRoot(path: string = ''): string
+  if exists('*g:SimpleRemoteProjectRoot') == 1
+    var remote_root = g:SimpleRemoteProjectRoot(path)
+    if !empty(remote_root)
+      return remote_root
+    endif
+  endif
   var candidate = empty(path) ? expand('%:p') : fnamemodify(path, ':p')
   var dir = isdirectory(candidate) ? candidate : fnamemodify(candidate, ':h')
   if empty(dir) || !isdirectory(dir)
@@ -109,6 +115,10 @@ enddef
 
 def g:VimrcCdRoot(global: bool = false)
   var root = g:VimrcProjectRoot()
+  if exists('*g:SimpleRemoteIsVirtual') == 1 && g:SimpleRemoteIsVirtual()
+    echomsg '[SimpleRemote] virtual cwd -> ' .. root
+    return
+  endif
   execute (global ? 'cd ' : 'lcd ') .. fnameescape(root)
   echomsg '[vimrc] cwd → ' .. root
 enddef

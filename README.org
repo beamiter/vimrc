@@ -277,60 +277,67 @@ g:simplecc_config_path = ''
 | SimpleMinimap | 代码缩略图 |
 | SimpleTreeSitter | Tree-sitter 高亮与 outline |
 | SimpleCC | LSP、补全、诊断、格式化和代码导航 |
+| SimpleRemote | SSH/Docker 目标选择、工作区投影、远端文件与进程 |
 | SimpleClipboard | =-clipboard=、SSH、容器和 OSC52 剪贴板降级 |
 | SimpleGit | 行内 blame、文件历史、diff、仓库状态与 hunk 操作 |
 | SimpleWhichKey | 所有前缀键的实时提示面板（含 Vim 原生前缀） |
 | SimpleStartify | 随机启动页、recent 文件与受控 session 管理 |
 | lexima + tcomment + matchup | 配对输入、注释和括号匹配 |
 
-* 本地 UI + 远程 RPC（实验性）
+* SimpleRemote：接近本地的远程工作区
 
-Vim 始终运行在本地，远端不需要 Vim 9。当前 transport 使用
-=simpleremote/2= 协议；更新本配置后也要同步更新远端 agent。安装后在本地 Vim 中执行：
+SimpleRemote 已从 =config/remote.vim= 的单体实验代码重构为
+=simpleremote/{plugin,autoload,bin,doc}= 插件。Vim 和所有 UI 始终运行在本地，
+transport 支持 SSH host 与 Docker container；=:SimpleRemote= 会统一列出 profile、
+最近连接、=~/.ssh/config= host 和运行中的容器。
 
-#+begin_src shell
-ssh host 'mkdir -p ~/.cache/vimrc'
-scp utils/simpleremote-agent.sh host:~/.cache/vimrc/simpleremote-agent.sh
-ssh host 'chmod 700 ~/.cache/vimrc/simpleremote-agent.sh'
+#+begin_src vim
+:SimpleRemote
+:SimpleRemoteConnect ssh devbox /workspace/project
+:SimpleRemoteConnect docker api-dev /workspace/project
+:SimpleRemoteTerminal
+:SimpleRemoteDisconnect
 #+end_src
 
-然后：
+也可以在 =~/.vimrc.before= 声明常用工作区：
 
-#+begin_example
-:VimrcRemoteConnect ssh host /workspace/project
-:VimrcRemoteOpen src/main.rs
-:VimrcRemoteExec cargo test
-:VimrcRemoteStatus
-:VimrcRemoteDisconnect
-#+end_example
-
-远端 agent 的路径可通过 `g:vimrc_remote_agent` 覆盖。Docker 容器需要把 agent 放在
-容器内的 `~/.cache/vimrc/simpleremote-agent.sh`，例如：
-
-#+begin_src shell
-docker cp utils/simpleremote-agent.sh container:/tmp/simpleremote-agent.sh
-docker exec container sh -c 'mkdir -p ~/.cache/vimrc && mv /tmp/simpleremote-agent.sh ~/.cache/vimrc/ && chmod 700 ~/.cache/vimrc/simpleremote-agent.sh'
+#+begin_src vim
+g:simpleremote_profiles = [
+  {name: 'dev', kind: 'ssh', target: 'devbox', root: '/srv/app'},
+  {name: 'api', kind: 'docker', target: 'api-dev',
+    root: '/workspace/api', local_root: '~/src/api'},
+]
 #+end_src
 
-Docker 使用同一协议：
+首次使用某个目标时执行 =:SimpleRemoteInstallAgent=。它会把插件自带的 POSIX shell
+agent 原子安装到 =~/.cache/vimrc/simpleremote-agent.sh=；路径可通过
+=g:simpleremote_agent= 覆盖。协议仍为 =simpleremote/2=，旧的
+=:VimrcRemote*= 命令和 =g:vimrc_remote_*= 变量继续作为兼容接口。
+
+** 工作区映射
+
+连接完成后 SimpleRemote 按以下顺序建立工作区：
+
+- profile 的 =local_root= 或 =g:simpleremote_local_roots= 显式映射；
+- Docker 自动选择覆盖远端 root 的最长 bind mount；
+- SSH 在本机有 =sshfs= 时创建受管投影；
+- 都不可用时降级为 =remote://= virtual workspace。
+
+前三种模式暴露普通本地路径，并把 tab cwd 与 SimpleTree root 切到投影目录，因此
+SimpleFinder、SimpleGit、TreeSitter、Minimap、formatter、tags 等依赖本地路径的插件
+保持 native 行为。Docker 没有 bind mount、SSH 没有 sshfs 时，不应伪称任意插件都能
+透明访问远端文件；virtual 模式保留可靠的异步读写、SimpleCC、远端搜索/Git/terminal，
+并用内置侧栏浏览远端 folder。
 
 #+begin_example
-:VimrcRemoteConnect docker container-name /workspace/project
+:SimpleRemoteOpen src/main.rs
+:SimpleRemoteFind rust
+:SimpleRemoteGit status --short
+:SimpleRemoteExec cargo test
+:SimpleRemoteHealth
 #+end_example
 
-远程文件使用 =remote://= buffer 名称，本地 UI 不会把它误认为本地文件；写入时通过
-RPC 原子回传。文件内容在协议内单独编码，因此 EOF 换行不会被 shell 截断，覆盖已有
-文件时也保留其权限。异步读写绑定发起操作的 buffer；如果保存后又继续编辑，旧 ACK
-不会把新改动误标成已保存。远端 agent 依赖 POSIX shell、=base64= 和 =mktemp=。
-远程搜索和 Git 结果分别通过 =:VimrcRemoteFind=、=:VimrcRemoteGit= 写入 quickfix：
-
-#+begin_example
-:VimrcRemoteFind rust
-:VimrcRemoteList
-:VimrcRemoteGit status --short
-:VimrcRemoteHealth
-:VimrcRemoteReloadConfig
-#+end_example
+完整命令、profile、事件和集成 API 见 =:help simpleremote=。
 
 连接、配置读取和普通 RPC 都有超时（默认 15 秒），可通过
 =g:vimrc_remote_request_timeout= 设置毫秒数，设为 0 表示关闭。再次 connect 会先关闭旧

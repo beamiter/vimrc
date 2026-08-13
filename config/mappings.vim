@@ -26,12 +26,15 @@ nnoremap <silent> <leader>vc <Cmd>VimrcUpdateCheck<CR>
 nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
-nnoremap <silent> <leader>rd <Cmd>VimrcRemoteDisconnect<CR>
-nnoremap <silent> <leader>rs <Cmd>VimrcRemoteStatus<CR>
+nnoremap <silent> <leader>ro <Cmd>SimpleRemote<CR>
+nnoremap <silent> <leader>rc <Cmd>SimpleRemoteConnect<CR>
+nnoremap <silent> <leader>rd <Cmd>SimpleRemoteDisconnect<CR>
+nnoremap <silent> <leader>rs <Cmd>SimpleRemoteStatus<CR>
 nnoremap <silent> <leader>rf <Cmd>call g:VimrcRemotePromptFind()<CR>
-nnoremap <silent> <leader>rg <Cmd>VimrcRemoteGit status --short<CR>
-nnoremap <silent> <leader>rt <Cmd>VimrcRemoteList<CR>
-nnoremap <silent> <leader>rh <Cmd>VimrcRemoteHealth<CR>
+nnoremap <silent> <leader>rg <Cmd>SimpleRemoteGit status --short<CR>
+nnoremap <silent> <leader>rt <Cmd>SimpleRemoteTree<CR>
+nnoremap <silent> <leader>rx <Cmd>SimpleRemoteTerminal<CR>
+nnoremap <silent> <leader>rh <Cmd>SimpleRemoteHealth<CR>
 
 # 保留 Vim 原生 s / ( / )；快速跳转统一放到 leader 下。
 xnoremap < <gv
@@ -114,10 +117,10 @@ if get(C, 'plugins_ready', false)
   xnoremap <silent> <leader>sw <Cmd>SimpleFinderGrepVisual<CR>
   nnoremap <silent> <leader><Space> <Cmd>SimpleFinderFiles<CR>
 
-  nmap <silent> <leader>e <Plug>(simpletree-toggle)
-  nmap <silent> <leader>ft <Plug>(simpletree-toggle)
-  nnoremap <silent> <leader>fT <Cmd>SimpleTreeReveal<CR>
-  nmap <silent> <F3> <Plug>(simpletree-toggle)
+  nmap <silent> <leader>e <Plug>(simpleremote-tree-toggle)
+  nmap <silent> <leader>ft <Plug>(simpleremote-tree-toggle)
+  nnoremap <silent> <leader>fT <Cmd>SimpleRemoteTreeReveal<CR>
+  nmap <silent> <F3> <Plug>(simpleremote-tree-toggle)
 
   # Buffer tabline：数字表示可见 buffer 索引，不是 Vim tabpage。
   nmap <silent> <leader>bp <Plug>(simpleline-buffer-pick)
@@ -250,13 +253,16 @@ if get(C, 'plugins_ready', false)
     },
     r: {
       name: '+remote/refactor',
+      c: 'remote-connect',
       d: 'remote-disconnect',
       f: 'remote-files',
       g: 'remote-git-status',
       h: 'remote-health',
       n: 'rename',
+      o: 'remote-panel',
       s: 'remote-status',
-      t: 'remote-list',
+      t: 'remote-tree',
+      x: 'remote-terminal',
     },
     b: {
       name: '+buffer',
