@@ -200,6 +200,7 @@ if plugins_enabled && g:VimrcSimplePlugReady()
 
     # beamiter/simple* 工作台
     simpleplug#Plug('beamiter/simpleclipboard', {do: './install.sh'})
+    simpleplug#Plug('beamiter/simpleremote')
     simpleplug#Plug('beamiter/simpletree', {do: './install.sh'})
     simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
     simpleplug#Plug('beamiter/simplecc', {do: './install.sh'})

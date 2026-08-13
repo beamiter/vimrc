@@ -286,10 +286,10 @@ g:simplecc_config_path = ''
 
 * SimpleRemote：接近本地的远程工作区
 
-SimpleRemote 已从 =config/remote.vim= 的单体实验代码重构为
-=simpleremote/{plugin,autoload,bin,doc}= 插件。Vim 和所有 UI 始终运行在本地，
-transport 支持 SSH host 与 Docker container；=:SimpleRemote= 会统一列出 profile、
-最近连接、=~/.ssh/config= host 和运行中的容器。
+SimpleRemote 已从 =config/remote.vim= 的单体实验代码重构为独立的
+=beamiter/simpleremote= 插件，并由 SimplePlug 安装和更新。Vim 和所有 UI 始终运行在
+本地，transport 支持 SSH host 与 Docker container；=:SimpleRemote= 会统一列出
+profile、最近连接、=~/.ssh/config= host 和运行中的容器。
 
 #+begin_src vim
 :SimpleRemote

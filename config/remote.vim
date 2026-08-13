@@ -1,10 +1,8 @@
 vim9script
 
-# Compatibility loader.  The implementation now lives in the standalone
-# simpleremote plugin; this module remains in the vimrc load order so existing
-# installations and :VimrcReload keep the old lifecycle contract.
-const PLUGIN_ROOT = g:vimrc_root .. '/simpleremote'
-if index(split(&runtimepath, ','), PLUGIN_ROOT) < 0
-  &runtimepath = PLUGIN_ROOT .. ',' .. &runtimepath
+# SimpleRemote is installed and loaded by SimplePlug.  This module remains in
+# the vimrc load order only to preserve the controller's deliberate reload
+# lifecycle without embedding the plugin implementation in this repository.
+if exists('*g:VimrcConfigureRemote') == 1
+  g:VimrcConfigureRemote()
 endif
-execute 'source ' .. fnameescape(PLUGIN_ROOT .. '/plugin/simpleremote.vim')
