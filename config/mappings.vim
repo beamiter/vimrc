@@ -179,15 +179,23 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>gH <Cmd>SimpleGitHealth<CR>
 
   # 注释
-  nnoremap <silent> <leader>cc <Cmd>TComment<CR>
-  xnoremap <silent> <leader>cc :TComment<CR>
-  nnoremap <silent> <leader>cl <Cmd>TComment<CR>
-  xnoremap <silent> <leader>cl :TComment<CR>
+  nmap <silent> <leader>cc <Plug>(simplecomment-toggle-line)
+  xmap <silent> <leader>cc <Plug>(simplecomment-toggle)
+  nmap <silent> <leader>cl <Plug>(simplecomment-toggle-line)
+  xmap <silent> <leader>cl <Plug>(simplecomment-toggle)
 
-  # EasyMotion：不再覆盖原生 s。
-  nmap <leader>jj <Plug>(easymotion-overwin-f2)
-  nmap <localleader>j <Plug>(easymotion-j)
-  nmap <localleader>k <Plug>(easymotion-k)
+  # SimpleMotion：不覆盖原生 s。
+  nmap <leader>jj <Plug>(simplemotion-overwin-f2)
+  nmap <localleader>j <Plug>(simplemotion-down)
+  nmap <localleader>k <Plug>(simplemotion-up)
+
+  # 多选批量编辑；具体替换/插入文本可用 :SimpleMultiReplace/Insert/Append。
+  nmap <silent> <C-n> <Plug>(simplemulti-next)
+  nmap <silent> <leader>xa <Plug>(simplemulti-all)
+  nmap <silent> <leader>xj <Plug>(simplemulti-below)
+  nmap <silent> <leader>xk <Plug>(simplemulti-above)
+  nmap <silent> <leader>xc <Plug>(simplemulti-clear)
+  nnoremap <silent> <leader>xd <Cmd>SimpleMultiDelete<CR>
 
   # Tree-sitter
   nmap <silent> <leader>th <Plug>(simpletreesitter-toggle)
@@ -227,19 +235,19 @@ if get(C, 'plugins_ready', false)
   xmap <silent> <leader>y <Plug>(SimpleCopyVisual)
   nnoremap <silent> <leader>cs <Cmd>SimpleCopyStatus<CR>
 
-  # 浮动终端：保留 F7/F8，并提供可移植 leader 键。
-  nnoremap <silent> <leader>tt <Cmd>FloatermToggle<CR>
-  nnoremap <silent> <leader>tn <Cmd>FloatermNew<CR>
-  nnoremap <silent> <leader>tp <Cmd>FloatermPrev<CR>
-  nnoremap <silent> <leader>tN <Cmd>FloatermNext<CR>
-  nnoremap <silent> <S-F7> <Cmd>FloatermPrev<CR>
-  tnoremap <silent> <S-F7> <C-\><C-n><Cmd>FloatermPrev<CR>
-  nnoremap <silent> <F7> <Cmd>FloatermNext<CR>
-  tnoremap <silent> <F7> <C-\><C-n><Cmd>FloatermNext<CR>
-  nnoremap <silent> <F8> <Cmd>FloatermToggle<CR>
-  tnoremap <silent> <F8> <C-\><C-n><Cmd>FloatermToggle<CR>
-  nnoremap <silent> <S-F8> <Cmd>FloatermNew<CR>
-  tnoremap <silent> <S-F8> <C-\><C-n><Cmd>FloatermNew<CR>
+  # SimpleTerminal：保留 F7/F8，并自动跟随 SimpleRemote 当前 workspace。
+  nnoremap <silent> <leader>tt <Cmd>SimpleTerminalToggle<CR>
+  nnoremap <silent> <leader>tn <Cmd>SimpleTerminalNew<CR>
+  nnoremap <silent> <leader>tp <Cmd>SimpleTerminalPrev<CR>
+  nnoremap <silent> <leader>tN <Cmd>SimpleTerminalNext<CR>
+  nnoremap <silent> <S-F7> <Cmd>SimpleTerminalPrev<CR>
+  tnoremap <silent> <S-F7> <C-\><C-n><Cmd>SimpleTerminalPrev<CR>
+  nnoremap <silent> <F7> <Cmd>SimpleTerminalNext<CR>
+  tnoremap <silent> <F7> <C-\><C-n><Cmd>SimpleTerminalNext<CR>
+  nnoremap <silent> <F8> <Cmd>SimpleTerminalToggle<CR>
+  tnoremap <silent> <F8> <C-\><C-n><Cmd>SimpleTerminalToggle<CR>
+  nnoremap <silent> <S-F8> <Cmd>SimpleTerminalNew<CR>
+  tnoremap <silent> <S-F8> <C-\><C-n><Cmd>SimpleTerminalNew<CR>
 
   # 键位描述只写 Normal 模式这一份：Visual 模式的映射 SimpleWhichKey 自己从
   # maplist() 里读，Vim 原生的 g/z/<C-w>/[/] 由插件内置表覆盖，这里都不重复。
@@ -315,7 +323,7 @@ if get(C, 'plugins_ready', false)
     },
     j: {
       name: '+jump',
-      j: 'easymotion',
+      j: 'simple-motion',
     },
     l: {
       name: '+lsp',
@@ -392,6 +400,14 @@ if get(C, 'plugins_ready', false)
       s: 'treesitter-status',
       t: 'toggle-terminal',
     },
+    x: {
+      name: '+multi-edit',
+      a: 'select-all',
+      c: 'clear-selections',
+      d: 'delete-selections',
+      j: 'add-below',
+      k: 'add-above',
+    },
     v: {
       name: '+vimrc',
       c: 'check-update',
@@ -425,8 +441,8 @@ if get(C, 'plugins_ready', false)
   try
     simplewhichkey#Register('<leader>', 'g:simplewhichkey_map', 'n')
     simplewhichkey#Describe({
-      '<localleader>j': 'easymotion-down',
-      '<localleader>k': 'easymotion-up',
+      '<localleader>j': 'simple-motion-down',
+      '<localleader>k': 'simple-motion-up',
     })
   catch /^Vim\%((\a\+)\)\=:E117/
     echohl WarningMsg

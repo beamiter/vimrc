@@ -11,6 +11,16 @@ doautocmd VimEnter
 sleep 150m
 
 assert_equal(1, get(g:, 'vimrc_plugins_ready', 0))
+var plugin_home = g:vimrc_context.plugin_home
+var plugin_prefix = substitute(plugin_home, '/\+$', '', '') .. '/'
+for runtime_entry in split(&runtimepath, ',')
+  if stridx(runtime_entry, plugin_prefix) == 0
+    var relative = strpart(runtime_entry, strlen(plugin_prefix))
+    var plugin_name = split(relative, '/')[0]
+    assert_match('^simple', plugin_name,
+      'non-simple plugin reached runtimepath: ' .. runtime_entry)
+  endif
+endfor
 for command_name in [
       'PlugStatus',
       'SimpleFinderFiles',
@@ -20,6 +30,13 @@ for command_name in [
       'SimpleStartify',
       'Startify',
       'SimpleCopyStatus',
+      'SimpleCommentHealth',
+      'SimpleMotionHealth',
+      'SimplePairsHealth',
+      'SimpleEditHealth',
+      'SimpleMultiHealth',
+      'SimpleEditorConfigHealth',
+      'SimpleTerminalHealth',
       'TsHlStatus',
       'SimpleCC',
     ]
@@ -83,13 +100,28 @@ assert_equal('', maparg('gr', 'n'))
 assert_equal('', maparg('gi', 'n'))
 assert_notequal('<Plug>(simplecc-select-tab)', maparg('<Tab>', 'i'))
 
-# Initialize lexima once, then verify the combined completion/newline mapping.
-lexima#init()
+# Completion confirmation and SimplePairs newline expansion share Enter.
 doautocmd InsertEnter
 var enter_map = maparg('<CR>', 'i', false, true)
 assert_true(get(enter_map, 'expr', 0))
 assert_match('simplecc#SelectEnterKey', get(enter_map, 'rhs', ''))
-assert_match('lexima#expand', get(enter_map, 'rhs', ''))
+assert_match('simplepairs#Enter', get(enter_map, 'rhs', ''))
+
+enew
+noautocmd setlocal filetype=julia
+setlocal virtualedit=onemore
+setline(1, 'x = \alpha')
+cursor(1, strlen(getline(1)) + 1)
+assert_equal(repeat("\<BS>", 6) .. 'α', simplecc#SelectTabKey(),
+      'SimpleEdit Unicode expansion was not composed into SimpleCC Tab')
+setlocal virtualedit=block
+execute 'edit ' .. fnameescape(ROOT .. '/.vimrc')
+
+# All migrated mappings point at simple* implementations.
+assert_match('simplecomment', maparg('<Space>cc', 'n'))
+assert_match('simplemotion', maparg('<Space>jj', 'n'))
+assert_equal('<Cmd>SimpleTerminalToggle<CR>', maparg('<Space>tt', 'n'))
+assert_match('simplemulti', maparg('<C-n>', 'n'))
 
 # SimpleLine must not steal the two sidebar-specific statuslines.
 execute 'SimpleTree ' .. fnameescape(ROOT)

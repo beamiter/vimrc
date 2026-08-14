@@ -53,6 +53,15 @@ assert_false(&modeline)
 assert_false(&exrc)
 assert_match('block', &virtualedit)
 
+# The plugin manifest is intentionally closed over beamiter/simple*: adding a
+# third-party Plug declaration must fail even though this smoke runs core-only.
+for declaration in readfile(ROOT .. '/config/plugins.vim')
+  if stridx(declaration, "simpleplug#Plug('") >= 0
+    assert_match("simpleplug#Plug('beamiter/simple", declaration,
+      'non-simple plugin declaration: ' .. trim(declaration))
+  endif
+endfor
+
 colorscheme habamax
 assert_notmatch('cleared', execute('highlight ExtraWhitespace'))
 
@@ -131,7 +140,7 @@ add(temp_files, project .. '/.git')
 add(temp_files, project)
 execute 'edit ' .. fnameescape(project_file)
 assert_equal(project, g:VimrcProjectRoot())
-if exists(':EditorConfigReload') == 2
+if exists(':SimpleEditorConfigReload') == 2
   assert_equal(3, &l:shiftwidth)
 endif
 var old_cwd = getcwd()

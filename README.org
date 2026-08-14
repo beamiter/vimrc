@@ -4,8 +4,8 @@
 
 * 概览
 
-这是一个以 *Vim 9 + Vim9script* 为核心的个人开发工作台。配置保留了
-=beamiter/simple*= 插件生态，同时把基础编辑能力、插件层、行为逻辑和键位层分开：
+这是一个以 *Vim 9 + Vim9script* 为核心的个人开发工作台。插件清单已经完全收敛到
+=beamiter/simple*= 生态，同时把基础编辑能力、插件层、行为逻辑和键位层分开：
 
 #+begin_example
 .vimrc
@@ -248,8 +248,8 @@ set ambiwidth=single
 两个文件都可选且不进入版本控制。可调的核心开关：
 
 #+begin_src vim
-g:vimrc_editorconfig = 0          # 不加载 Vim runtime 的 EditorConfig
-g:vimrc_highlight_yank = 0        # 不高亮刚复制的文本
+g:simpleeditorconfig_enable = 0   # 关闭本地/远端 EditorConfig
+g:simpleedit_yank_highlight = 0   # 不高亮刚复制的文本
 g:vimrc_large_file_bytes = 0      # 关闭大文件模式（默认 5 MiB）
 g:vimrc_root_markers = ['.git']   # 自定义项目根标记
 #+end_src
@@ -275,14 +275,24 @@ g:simplecc_config_path = ''
 | SimpleTree | 异步文件树 |
 | SimpleLine | 状态栏与 buffer tabline |
 | SimpleMinimap | 代码缩略图 |
-| SimpleTreeSitter | Tree-sitter 高亮与 outline |
+| SimpleTreeSitter | Tree-sitter 高亮、outline、Julia/Haskell 与块匹配 |
 | SimpleCC | LSP、补全、诊断、格式化和代码导航 |
 | SimpleRemote | SSH/Docker 目标选择、工作区投影、远端文件与进程 |
 | SimpleClipboard | =-clipboard=、SSH、容器和 OSC52 剪贴板降级 |
 | SimpleGit | 行内 blame、文件历史、diff、仓库状态与 hunk 操作 |
 | SimpleWhichKey | 所有前缀键的实时提示面板（含 Vim 原生前缀） |
 | SimpleStartify | 随机启动页、recent 文件与受控 session 管理 |
-| lexima + tcomment + matchup | 配对输入、注释和括号匹配 |
+| SimpleComment | =commentstring= 驱动的行、motion 与可视注释 |
+| SimpleMotion | 当前 tab 可见目标的跨窗口快速跳转 |
+| SimplePairs | 括号/引号配对、智能关闭、退格与换行 |
+| SimpleEdit | yank 高亮与 Julia LaTeX/emoji Unicode 输入 |
+| SimpleMulti | 多选、垂直光标与单次 undo 的批量编辑 |
+| SimpleEditorConfig | 本地及 =remote://= 工作区的 EditorConfig |
+| SimpleTerminal | 本地及 SimpleRemote workspace 的多会话 popup terminal |
+
+SimplePlug 清单只允许 =beamiter/simple*=；核心 smoke 会静态检查这一约束，防止以后
+无意重新引入第三方 Vim 插件。Vim runtime（如 filetype、syntax、matchit）仍作为
+编辑器自身能力使用。
 
 * SimpleRemote：接近本地的远程工作区
 
@@ -295,7 +305,7 @@ profile、最近连接、=~/.ssh/config= host 和运行中的容器。
 :SimpleRemote
 :SimpleRemoteConnect ssh devbox /workspace/project
 :SimpleRemoteConnect docker api-dev /workspace/project
-:SimpleRemoteTerminal
+:SimpleRemoteTerminal          " 由 SimpleTerminal 统一承载
 :SimpleRemoteDisconnect
 #+end_src
 
@@ -326,8 +336,9 @@ agent 原子安装到 =~/.cache/vimrc/simpleremote-agent.sh=；路径可通过
 前三种模式暴露普通本地路径，并把 tab cwd 与 SimpleTree root 切到投影目录，因此
 SimpleFinder、SimpleGit、TreeSitter、Minimap、formatter、tags 等依赖本地路径的插件
 保持 native 行为。Docker 没有 bind mount、SSH 没有 sshfs 时，不应伪称任意插件都能
-透明访问远端文件；virtual 模式保留可靠的异步读写、SimpleCC、远端搜索/Git/terminal，
-并用内置侧栏浏览远端 folder。
+透明访问远端文件；virtual 模式保留可靠的异步读写、SimpleCC、远端搜索/Git/terminal、
+EditorConfig，并用内置侧栏浏览远端 folder。SimpleTree 改根会同步更新
+SimpleRemote workspace，随后新建的 SimpleTerminal 会话也从新 workspace 启动。
 
 #+begin_example
 :SimpleRemoteOpen src/main.rs
@@ -376,10 +387,14 @@ Docker transport 启动在远端，并把远端 `file://` URI 映射回 `remote:
 | =<leader>rs= | 显示连接状态 |
 | =<leader>rt= | 列出远程目录 |
 
-已移除两个会在空 buffer 触发错误且与现有能力重叠的插件：
+已移除所有非 simple* Vim 插件。原有能力分别由 simple* 或 Vim runtime 接管：
 
-- =vim-polyglot=：改用 Vim 9 runtime、语言专用插件和 SimpleTreeSitter。
+- =vim-polyglot=、=julia-vim=、=haskell-vim=：改用 Vim 9 runtime、
+  SimpleTreeSitter 和 SimpleEdit。
 - =vim-better-whitespace=：改为内建、可测试的尾随空白高亮与清理。
+- =vim-devicons=、EasyMotion、lexima、tcomment、vim-matchup、vim-visual-multi、
+  vim-floaterm：依次由 SimpleTree/SimpleLine 自带图标、SimpleMotion、SimplePairs、
+  SimpleComment、SimpleTreeSitter + matchit、SimpleMulti 和 SimpleTerminal 替代。
 
 * 键位
 
@@ -440,7 +455,8 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 SimpleCC 的默认 mapping 已关闭。显式 mapping 修复了旧版本部分 RHS 尾随空格的
 问题；=gd/gr/K/gi/gy/[d/]d= 仅在配置了语言服务器的代码 buffer 内覆盖，
 Insert 模式的 Tab、Shift-Tab 和补全上下选择同样只在这些 buffer 内接管；其他
-buffer 保留 Vim/lexima 的原行为。Enter 补全确认与 lexima 的括号换行也已组合处理。
+buffer 保留 Vim/SimplePairs 的原行为。Enter 补全确认与 SimplePairs 的括号换行
+已组合处理；Julia 中完整的 =\alpha<Tab>= 会先由 SimpleEdit 展开，再考虑 LSP 补全。
 
 ** Git、工具与 UI
 
@@ -451,7 +467,9 @@ buffer 保留 Vim/lexima 的原行为。Enter 补全确认与 lexima 的括号�
 | =<leader>gh/gm/gt= | 文件历史 / 行 blame / 行内注解开关 |
 | =<leader>gp/ga/gu= | 预览 / stage / undo hunk |
 | =<leader>cc= | 注释当前行或可视范围 |
-| =<leader>jj= | EasyMotion 跨窗口跳转 |
+| =<leader>jj= | SimpleMotion 跨窗口跳转 |
+| =<C-n>= / =<leader>xa= | 添加下一个 / 选中全部相同文本 |
+| =<leader>xj/xk/xc/xd= | 多选向下 / 向上 / 清除 / 删除 |
 | =<leader>th/to/ts= | Tree-sitter 开关 / outline / 状态 |
 | =<leader>mm/mf/ms= | Minimap 开关 / 聚焦 / 风格 |
 | =<leader>pp/pf/po= | Markdown 预览开关 / 聚焦 / 目录 |
@@ -531,7 +549,8 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 - simpleremote/2 agent 字节协议、错误码、权限、符号链接和长文件名；
 - fake SSH（含 OpenSSH 命令重解析）与 Docker transport 端到端读写、重连和清理；
 - SimpleCC 映射无尾随空格；
-- lexima 与补全 Enter 兼容；
+- SimplePairs 与补全 Enter 兼容；
+- 插件声明仅包含 =beamiter/simple*=；
 - SimpleTree/SimpleMinimap 状态栏不被 SimpleLine 覆盖。
 - SimpleStartify 启动页可加载，且连续随机布局不会立即重复。
 
@@ -546,6 +565,13 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 :SimpleMinimapHealth
 :SimpleStartifyHealth
 :SimpleCopyStatus
+:SimpleCommentHealth
+:SimpleMotionHealth
+:SimplePairsHealth
+:SimpleEditHealth
+:SimpleMultiHealth
+:SimpleEditorConfigHealth
+:SimpleTerminalHealth
 :TsHlStatus
 :SimpleCC
 #+end_example

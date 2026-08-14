@@ -92,7 +92,7 @@ def ClearStaleSimpleccMaps()
   var enter_rhs = get(enter_mapping, 'rhs', '')
   if get(enter_mapping, 'buffer', 0) == 1
         \ && enter_rhs =~# 'simplecc#SelectEnterKey'
-        \ && enter_rhs =~# 'lexima#expand'
+        \ && enter_rhs =~# 'simplepairs#Enter'
     silent! iunmap <buffer> <CR>
   endif
 enddef
@@ -154,10 +154,10 @@ def g:VimrcConfigureFiletype()
   ClearStaleSimpleccMaps()
   ApplyBufferBaseline()
   ApplyFiletypeOverrides()
-  # FileType can run after EditorConfig's BufReadPost hook.  Reapply it here so
+  # FileType can run after SimpleEditorConfig's BufReadPost hook. Reapply it so
   # project policy wins over this configuration's fallback indentation rules.
-  if exists(':EditorConfigReload') == 2 && !empty(expand('%:p'))
-    execute 'silent! EditorConfigReload'
+  if exists('g:loaded_simpleeditorconfig') && !empty(bufname())
+    simpleeditorconfig#Apply(bufnr())
   endif
   ApplyLspMappings()
 enddef
@@ -227,10 +227,10 @@ def RestoreSidebarStatusline()
 enddef
 
 def SetupCompletionEnter()
-  if exists('*simplecc#SelectEnterKey') && exists('*lexima#expand')
+  if exists('g:loaded_simplecc') && exists('g:loaded_simplepairs')
     inoremap <buffer> <silent> <expr> <CR> pumvisible()
           \ ? simplecc#SelectEnterKey()
-          \ : lexima#expand('<CR>', 'i')
+          \ : simplepairs#Enter()
   endif
 enddef
 
@@ -291,20 +291,21 @@ def g:VimrcHealth()
   HealthLine(json_ok ? 'ok' : 'fail', 'JSON functions')
   failures += json_ok ? 0 : 1
 
-  var editorconfig_enabled = get(g:, 'vimrc_editorconfig', 1) != 0
-  var editorconfig_ok = !editorconfig_enabled || exists(':EditorConfigReload') == 2
+  var editorconfig_enabled = get(g:, 'simpleeditorconfig_enable', 1) != 0
+  var editorconfig_ok = !editorconfig_enabled
+        \ || exists(':SimpleEditorConfigReload') == 2
   HealthLine(
     editorconfig_ok ? (editorconfig_enabled ? 'ok' : 'skip') : 'warn',
-    'EditorConfig',
-    editorconfig_enabled ? 'Vim runtime package' : 'disabled')
+    'SimpleEditorConfig',
+    editorconfig_enabled ? 'local + SimpleRemote' : 'disabled')
   warnings += editorconfig_ok ? 0 : 1
 
-  var hlyank_enabled = get(g:, 'vimrc_highlight_yank', 1) != 0
-  var hlyank_ok = !hlyank_enabled || exists('#hlyank#TextYankPost')
+  var hlyank_enabled = get(g:, 'simpleedit_yank_highlight', 1) != 0
+  var hlyank_ok = !hlyank_enabled || exists(':SimpleEditClearYank') == 2
   HealthLine(
     hlyank_ok ? (hlyank_enabled ? 'ok' : 'skip') : 'warn',
-    'highlight yank',
-    hlyank_enabled ? 'Vim runtime package' : 'disabled')
+    'SimpleEdit yank highlight',
+    hlyank_enabled ? 'text properties' : 'disabled')
   warnings += hlyank_ok ? 0 : 1
 
   for tool in ['git', 'rg', 'cargo', 'rustc']
