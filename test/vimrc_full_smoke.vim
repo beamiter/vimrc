@@ -109,6 +109,9 @@ assert_match('simplepairs#Enter', get(enter_map, 'rhs', ''))
 
 enew
 noautocmd setlocal filetype=julia
+g:VimrcConfigureFiletype()
+# SimpleEdit 的 Unicode 补全挂到 <C-x><C-u>，Tab 展开由 SimpleCC 原生组合。
+assert_equal('simpleedit#UnicodeComplete', &l:completefunc)
 setlocal virtualedit=onemore
 setline(1, 'x = \alpha')
 cursor(1, strlen(getline(1)) + 1)
@@ -119,9 +122,13 @@ execute 'edit ' .. fnameescape(ROOT .. '/.vimrc')
 
 # All migrated mappings point at simple* implementations.
 assert_match('simplecomment', maparg('<Space>cc', 'n'))
+assert_match('simplecomment', maparg('gc', 'n'))
+assert_match('simplecomment', maparg('gcc', 'n'))
 assert_match('simplemotion', maparg('<Space>jj', 'n'))
 assert_equal('<Cmd>SimpleTerminalToggle<CR>', maparg('<Space>tt', 'n'))
+assert_equal('<Cmd>SimpleTerminalKill<CR>', maparg('<Space>tk', 'n'))
 assert_match('simplemulti', maparg('<C-n>', 'n'))
+assert_equal('<Cmd>SimpleMultiRemove<CR>', maparg('<Space>xr', 'n'))
 
 # SimpleLine must not steal the two sidebar-specific statuslines.
 execute 'SimpleTree ' .. fnameescape(ROOT)

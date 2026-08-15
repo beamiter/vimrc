@@ -21,6 +21,9 @@ g:simpleplug_jobs = 8
 g:simpleplug_window_width = 88
 
 # SimpleFinder
+# simplefinder_remote：直接搜索 SimpleRemote 当前 workspace（文件与 grep 都走
+# agent，不要求本地投影）；粘贴进 prompt 的多行文本原样作为查询词。
+g:simplefinder_remote = 1
 g:simplefinder_max_results = 300
 g:simplefinder_debounce_ms = 40
 g:simplefinder_panel_width = 52
@@ -145,6 +148,8 @@ g:simplestartify_styles = ['minimal', 'boxed', 'centered', 'terminal']
 g:simplestartify_avoid_repeat = 1
 g:simplestartify_recent_count = 7
 g:simplestartify_session_count = 4
+# 启动页同时列出最近的 SimpleRemote workspace，点击直接重连。
+g:simplestartify_remote_count = 3
 g:simplestartify_change_to_dir = 0
 g:simplestartify_change_to_vcs_root = 1
 g:simplestartify_session_dir = session_dir

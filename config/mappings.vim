@@ -178,11 +178,15 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>gt <Cmd>SimpleGitToggleLineBlame<CR>
   nnoremap <silent> <leader>gH <Cmd>SimpleGitHealth<CR>
 
-  # 注释
+  # 注释：<leader>cc/cl 切换行/选区，gc 提供 operator 形式（gcap、gcip、
+  # gcc 等），覆盖 tcomment 时代的两类用法。
   nmap <silent> <leader>cc <Plug>(simplecomment-toggle-line)
   xmap <silent> <leader>cc <Plug>(simplecomment-toggle)
   nmap <silent> <leader>cl <Plug>(simplecomment-toggle-line)
   xmap <silent> <leader>cl <Plug>(simplecomment-toggle)
+  nmap <silent> gc <Plug>(simplecomment-operator)
+  nmap <silent> gcc <Plug>(simplecomment-toggle-line)
+  xmap <silent> gc <Plug>(simplecomment-toggle)
 
   # SimpleMotion：不覆盖原生 s。
   nmap <leader>jj <Plug>(simplemotion-overwin-f2)
@@ -196,6 +200,7 @@ if get(C, 'plugins_ready', false)
   nmap <silent> <leader>xk <Plug>(simplemulti-above)
   nmap <silent> <leader>xc <Plug>(simplemulti-clear)
   nnoremap <silent> <leader>xd <Cmd>SimpleMultiDelete<CR>
+  nnoremap <silent> <leader>xr <Cmd>SimpleMultiRemove<CR>
 
   # Tree-sitter
   nmap <silent> <leader>th <Plug>(simpletreesitter-toggle)
@@ -217,9 +222,9 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>ps <Cmd>SimpleMarkdownStyle<CR>
   nnoremap <silent> <leader>ph <Cmd>SimpleMarkdownHealth<CR>
 
-  # Markdown 预览（浏览器，由 omd 提供）。两个预览是并存的：终端里的那个随
-  # 打字更新、光标同步，浏览器里的那个才有图片和排版好的公式，跟的是 :w。
-  # 需要先 `cargo install omd`；没装时只会提示，终端预览不受影响。
+  # Markdown 预览（浏览器）。两个预览是并存的：终端里的那个随打字更新、光标
+  # 同步，浏览器里的那个才有图片和排版好的公式；新版 SimpleMarkdown 自己渲染并
+  # 起 HTTP 服务，页面跟随 buffer 内容，不再依赖外部 omd 二进制。
   nmap <silent> <leader>pb <Plug>(simplemarkdown-external)
   nnoremap <silent> <leader>pB <Cmd>SimpleMarkdownExternalStatic<CR>
   nnoremap <silent> <leader>pq <Cmd>SimpleMarkdownExternalClose!<CR>
@@ -240,6 +245,8 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>tn <Cmd>SimpleTerminalNew<CR>
   nnoremap <silent> <leader>tp <Cmd>SimpleTerminalPrev<CR>
   nnoremap <silent> <leader>tN <Cmd>SimpleTerminalNext<CR>
+  nnoremap <silent> <leader>tk <Cmd>SimpleTerminalKill<CR>
+  nnoremap <silent> <leader>tl <Cmd>SimpleTerminalList<CR>
   nnoremap <silent> <S-F7> <Cmd>SimpleTerminalPrev<CR>
   tnoremap <silent> <S-F7> <C-\><C-n><Cmd>SimpleTerminalPrev<CR>
   nnoremap <silent> <F7> <Cmd>SimpleTerminalNext<CR>
@@ -393,6 +400,8 @@ if get(C, 'plugins_ready', false)
       name: '+tools',
       a: 'treesitter-ast',
       h: 'treesitter-toggle',
+      k: 'kill-terminal',
+      l: 'list-terminals',
       n: 'new-terminal',
       N: 'next-terminal',
       o: 'treesitter-outline',
@@ -407,6 +416,7 @@ if get(C, 'plugins_ready', false)
       d: 'delete-selections',
       j: 'add-below',
       k: 'add-above',
+      r: 'remove-current',
     },
     v: {
       name: '+vimrc',
@@ -443,6 +453,8 @@ if get(C, 'plugins_ready', false)
     simplewhichkey#Describe({
       '<localleader>j': 'simple-motion-down',
       '<localleader>k': 'simple-motion-up',
+      gc: 'comment-motion',
+      gcc: 'comment-line',
     })
   catch /^Vim\%((\a\+)\)\=:E117/
     echohl WarningMsg

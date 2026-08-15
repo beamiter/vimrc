@@ -113,6 +113,7 @@ def ApplyBufferBaseline()
   setlocal formatoptions-=r
   setlocal formatoptions-=o
   setlocal formatoptions+=j
+  setlocal completefunc=
 enddef
 
 def ApplyFiletypeOverrides()
@@ -131,6 +132,12 @@ def ApplyFiletypeOverrides()
   if &filetype ==# 'gitcommit'
     setlocal textwidth=72
     setlocal colorcolumn=73
+  endif
+
+  # SimpleEdit 的 LaTeX/emoji 序列补全挂到 <C-x><C-u>；SimpleCC 走自己的
+  # 补全通道，不经过 completefunc，两者互不干扰。
+  if &filetype ==# 'julia' && exists('g:loaded_simpleedit')
+    setlocal completefunc=simpleedit#UnicodeComplete
   endif
 enddef
 
@@ -357,6 +364,27 @@ def g:VimrcHealth()
       HealthLine(ok ? 'ok' : 'warn', daemon[0] .. ' backend', path)
       warnings += ok ? 0 : 1
     endfor
+
+    var suite_health_commands = [
+      'SimpleCommentHealth',
+      'SimpleMotionHealth',
+      'SimplePairsHealth',
+      'SimpleEditHealth',
+      'SimpleMultiHealth',
+      'SimpleEditorConfigHealth',
+      'SimpleTerminalHealth',
+    ]
+    var missing_commands = filter(
+          copy(suite_health_commands),
+          (_, name) => exists(':' .. name) != 2)
+    HealthLine(
+          empty(missing_commands) ? 'ok' : 'warn',
+          'Simple suite health',
+          empty(missing_commands)
+            ? printf('%d/%d commands', len(suite_health_commands),
+                len(suite_health_commands))
+            : 'missing: ' .. join(missing_commands, ', '))
+    warnings += empty(missing_commands) ? 0 : 1
   else
     HealthLine('skip', 'plugins', 'VIMRC_SKIP_PLUGINS=1')
   endif

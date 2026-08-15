@@ -271,7 +271,7 @@ g:simplecc_config_path = ''
 | 组件 | 职责 |
 |-
 | SimplePlug | 安全的异步插件安装、更新和状态检查 |
-| SimpleFinder | 文件、buffer、recent 和全文搜索 |
+| SimpleFinder | 文件、buffer、recent 和全文搜索（含 SimpleRemote workspace） |
 | SimpleTree | 异步文件树 |
 | SimpleLine | 状态栏与 buffer tabline |
 | SimpleMinimap | 代码缩略图 |
@@ -281,7 +281,7 @@ g:simplecc_config_path = ''
 | SimpleClipboard | =-clipboard=、SSH、容器和 OSC52 剪贴板降级 |
 | SimpleGit | 行内 blame、文件历史、diff、仓库状态与 hunk 操作 |
 | SimpleWhichKey | 所有前缀键的实时提示面板（含 Vim 原生前缀） |
-| SimpleStartify | 随机启动页、recent 文件与受控 session 管理 |
+| SimpleStartify | 随机启动页、recent 文件/远端 workspace 与受控 session 管理 |
 | SimpleComment | =commentstring= 驱动的行、motion 与可视注释 |
 | SimpleMotion | 当前 tab 可见目标的跨窗口快速跳转 |
 | SimplePairs | 括号/引号配对、智能关闭、退格与换行 |
@@ -456,7 +456,18 @@ SimpleCC 的默认 mapping 已关闭。显式 mapping 修复了旧版本部分 R
 问题；=gd/gr/K/gi/gy/[d/]d= 仅在配置了语言服务器的代码 buffer 内覆盖，
 Insert 模式的 Tab、Shift-Tab 和补全上下选择同样只在这些 buffer 内接管；其他
 buffer 保留 Vim/SimplePairs 的原行为。Enter 补全确认与 SimplePairs 的括号换行
-已组合处理；Julia 中完整的 =\alpha<Tab>= 会先由 SimpleEdit 展开，再考虑 LSP 补全。
+已组合处理。Insert 的 =<Tab>= 组合由 SimpleCC 原生完成：补全菜单可见时先走
+候选项选择；snippet 跳转之后，光标前是完整的 =\alpha= 这类 LaTeX/emoji 序列时
+由 SimpleEdit 展开；否则触发 LSP 补全或落入原生 Tab。自定义展开源可挂
+=g:SimpleCCTabExpansionProvider=。Julia buffer 额外把
+=simpleedit#UnicodeComplete= 挂到 ='completefunc'=，=<C-x><C-u>= 可按序列名模糊
+补全 Unicode 符号。
+
+=<leader>lc/lC= 打开 / 热加载配置。项目级 Python 环境用 =:SimpleCCPython=（无参数
+弹出自动发现的环境选择器，={python} [{lsp}]= 直接指定，=auto= 恢复自动发现），
+Julia 项目环境用 =:SimpleCCJuliaActivate [dir]=。远端 workspace 的语言服务器由
+SimpleCC 直接经 SimpleRemote agent 启动，=remote://= buffer 的补全、诊断和导航
+与本地一致。
 
 ** Git、工具与 UI
 
@@ -467,16 +478,19 @@ buffer 保留 Vim/SimplePairs 的原行为。Enter 补全确认与 SimplePairs �
 | =<leader>gh/gm/gt= | 文件历史 / 行 blame / 行内注解开关 |
 | =<leader>gp/ga/gu= | 预览 / stage / undo hunk |
 | =<leader>cc= | 注释当前行或可视范围 |
+| =gc{motion}= / =gcc= | operator 形式注释（如 =gcap=）/ 注释当前行 |
 | =<leader>jj= | SimpleMotion 跨窗口跳转 |
 | =<C-n>= / =<leader>xa= | 添加下一个 / 选中全部相同文本 |
 | =<leader>xj/xk/xc/xd= | 多选向下 / 向上 / 清除 / 删除 |
+| =<leader>xr= | 移除当前多选选区 |
 | =<leader>th/to/ts= | Tree-sitter 开关 / outline / 状态 |
 | =<leader>mm/mf/ms= | Minimap 开关 / 聚焦 / 风格 |
 | =<leader>pp/pf/po= | Markdown 预览开关 / 聚焦 / 目录 |
 | =<leader>pr/ps/ph= | 预览重绘 / 切换装饰字符 / 健康检查 |
-| =<leader>pb/pB/pq= | 浏览器预览开关 / 静态渲染一次 / 停掉全部（需 =omd=） |
+| =<leader>pb/pB/pq= | 浏览器预览开关 / 静态渲染一次 / 停掉全部（插件自带服务） |
 | =<leader>pn/pz/pu= | 预览开关：代码行号 / 表格斑马纹 / 链接目标 |
 | =<leader>tt/tn/tp/tN= | 终端开关 / 新建 / 上一个 / 下一个 |
+| =<leader>tk/tl= | 关闭当前终端 / 列出全部终端会话 |
 | =<leader>y= | 复制到系统剪贴板 |
 | =<leader>1= … =<leader>0= | 跳到 SimpleLine 显示的 buffer 索引 |
 
@@ -547,9 +561,11 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 - 项目根目录、quickfix 开关和大文件自动保护；
 - 配置连续 source 两次；
 - simpleremote/2 agent 字节协议、错误码、权限、符号链接和长文件名；
-- fake SSH（含 OpenSSH 命令重解析）与 Docker transport 端到端读写、重连和清理；
+  （传输与端到端集成测试由 beamiter/simpleremote 仓库自带）
 - SimpleCC 映射无尾随空格；
 - SimplePairs 与补全 Enter 兼容；
+- Insert =<Tab>= 组合：SimpleEdit 的 =\alpha= Unicode 展开先于 LSP 补全，
+  Julia buffer 的 ='completefunc'= 指向 =simpleedit#UnicodeComplete=；
 - 插件声明仅包含 =beamiter/simple*=；
 - SimpleTree/SimpleMinimap 状态栏不被 SimpleLine 覆盖。
 - SimpleStartify 启动页可加载，且连续随机布局不会立即重复。
