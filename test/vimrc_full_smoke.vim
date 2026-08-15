@@ -43,6 +43,35 @@ for command_name in [
   assert_equal(2, exists(':' .. command_name), command_name)
 endfor
 
+# 健康命令不能只存在，还必须端到端跑通：任何一个抛异常都说明套件装配有问题。
+for health_command in [
+      'SimpleCommentHealth',
+      'SimpleMotionHealth',
+      'SimplePairsHealth',
+      'SimpleEditHealth',
+      'SimpleMultiHealth',
+      'SimpleEditorConfigHealth',
+      'SimpleTerminalHealth',
+      'SimpleLineHealth',
+      'SimpleMinimapHealth',
+      'SimpleGitHealth',
+      'SimpleMarkdownHealth',
+      'SimpleCCHealth',
+    ]
+  var health_error = ''
+  try
+    execute health_command
+  catch
+    health_error = v:exception
+  endtry
+  assert_equal('', health_error, health_command)
+endfor
+
+# 启动与健康检查全程必须安静：:messages 里不允许出现 Vim 错误。
+for message_line in split(execute('messages'), "\n")
+  assert_notmatch('^E\d\+:', message_line)
+endfor
+
 # 启动页保留 startify filetype/命令兼容，但实际 UI 每次从 SimpleStartify 的
 # renderer 池抽取，并保证紧邻两次不重复。
 Startify
@@ -127,6 +156,8 @@ assert_match('simplecomment', maparg('gcc', 'n'))
 assert_match('simplemotion', maparg('<Space>jj', 'n'))
 assert_equal('<Cmd>SimpleTerminalToggle<CR>', maparg('<Space>tt', 'n'))
 assert_equal('<Cmd>SimpleTerminalKill<CR>', maparg('<Space>tk', 'n'))
+assert_match('SendLinesToTerminal', maparg('<Space>tx', 'n'))
+assert_match('SendLinesToTerminal', maparg('<Space>tx', 'x'))
 assert_match('simplemulti', maparg('<C-n>', 'n'))
 assert_equal('<Cmd>SimpleMultiRemove<CR>', maparg('<Space>xr', 'n'))
 

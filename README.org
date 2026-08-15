@@ -491,6 +491,7 @@ SimpleCC 直接经 SimpleRemote agent 启动，=remote://= buffer 的补全、�
 | =<leader>pn/pz/pu= | 预览开关：代码行号 / 表格斑马纹 / 链接目标 |
 | =<leader>tt/tn/tp/tN= | 终端开关 / 新建 / 上一个 / 下一个 |
 | =<leader>tk/tl= | 关闭当前终端 / 列出全部终端会话 |
+| =<leader>tx= | 把当前行 / 可视行发进当前终端会话（REPL 用法） |
 | =<leader>y= | 复制到系统剪贴板 |
 | =<leader>1= … =<leader>0= | 跳到 SimpleLine 显示的 buffer 索引 |
 

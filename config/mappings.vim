@@ -98,6 +98,12 @@ tnoremap <silent> <Esc><Esc> <C-\><C-n>
 # ============================================================================
 # 插件键位
 # ============================================================================
+# <leader>tx 把当前行/可视行发进当前 SimpleTerminal 会话（Julia/Python 的
+# REPL 用法）。走导出的 simpleterminal#Send()，文本不经 Ex 命令行转义。
+def SendLinesToTerminal(line1: number, line2: number)
+  simpleterminal#Send(join(getline(line1, line2), "\n"))
+enddef
+
 if get(C, 'plugins_ready', false)
   # 文件 / 搜索
   nnoremap <silent> <leader>ff <Cmd>SimpleFinderFiles<CR>
@@ -247,6 +253,8 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>tN <Cmd>SimpleTerminalNext<CR>
   nnoremap <silent> <leader>tk <Cmd>SimpleTerminalKill<CR>
   nnoremap <silent> <leader>tl <Cmd>SimpleTerminalList<CR>
+  nnoremap <silent> <leader>tx <ScriptCmd>call SendLinesToTerminal(line('.'), line('.'))<CR>
+  xnoremap <silent> <leader>tx <ScriptCmd>call SendLinesToTerminal(line("'<"), line("'>"))<CR>
   nnoremap <silent> <S-F7> <Cmd>SimpleTerminalPrev<CR>
   tnoremap <silent> <S-F7> <C-\><C-n><Cmd>SimpleTerminalPrev<CR>
   nnoremap <silent> <F7> <Cmd>SimpleTerminalNext<CR>
@@ -408,6 +416,7 @@ if get(C, 'plugins_ready', false)
       p: 'previous-terminal',
       s: 'treesitter-status',
       t: 'toggle-terminal',
+      x: 'send-to-terminal',
     },
     x: {
       name: '+multi-edit',
