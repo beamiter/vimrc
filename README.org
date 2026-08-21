@@ -403,6 +403,9 @@ Docker transport 启动在远端，并把远端 `file://` URI 映射回 `remote:
 
 Leader 为 =Space=，LocalLeader 为 =,=。
 
+下面几张表只覆盖常用键位；完整、实时的清单以 SimpleWhichKey 面板（停顿在任意
+前缀上即弹出）和唯一来源 =config/mappings.vim= 为准。
+
 ** 通用
 
 | 键位 | 功能 |

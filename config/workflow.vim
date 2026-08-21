@@ -40,14 +40,14 @@ enddef
 def g:VimrcLargeFileStatus()
   var threshold = get(g:, 'vimrc_large_file_bytes', 0)
   if get(b:, 'vimrc_large_file', 0)
-    echomsg printf(
-      '[vimrc] large-file mode: ON (%s, threshold %s)',
+    g:VimrcInfo(printf(
+      'large-file mode: ON (%s, threshold %s)',
       FormatBytes(get(b:, 'vimrc_file_size', -1)),
-      FormatBytes(threshold))
+      FormatBytes(threshold)))
   else
-    echomsg printf(
-      '[vimrc] large-file mode: off (threshold %s)',
-      threshold > 0 ? FormatBytes(threshold) : 'disabled')
+    g:VimrcInfo(printf(
+      'large-file mode: off (threshold %s)',
+      threshold > 0 ? FormatBytes(threshold) : 'disabled'))
   endif
 enddef
 
@@ -120,7 +120,7 @@ def g:VimrcCdRoot(global: bool = false)
     return
   endif
   execute (global ? 'cd ' : 'lcd ') .. fnameescape(root)
-  echomsg '[vimrc] cwd → ' .. root
+  g:VimrcInfo('cwd → ' .. root)
 enddef
 
 # ============================================================================
@@ -131,9 +131,7 @@ def ToggleQuickfix()
   if info.winid > 0
     cclose
   elseif info.size == 0
-    echohl WarningMsg
-    echomsg '[vimrc] quickfix list 为空'
-    echohl None
+    g:VimrcWarn('quickfix list 为空')
   else
     botright copen
   endif
@@ -144,9 +142,7 @@ def ToggleLocationList()
   if info.winid > 0
     lclose
   elseif info.size == 0
-    echohl WarningMsg
-    echomsg '[vimrc] location list 为空'
-    echohl None
+    g:VimrcWarn('location list 为空')
   else
     botright lopen
   endif

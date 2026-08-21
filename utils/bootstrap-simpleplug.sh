@@ -65,36 +65,10 @@ if [[ -z "$target" ]]; then
   target="$HOME/.vim/plugged/simpleplug"
 fi
 
-canonicalize_dir_with_missing_tail() {
-  local path="${1%/}"
-  local component resolved
-  local -a missing=()
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
-  [[ -n "$path" ]] || path="/"
-  while [[ ! -e "$path" && ! -L "$path" ]]; do
-    component="${path##*/}"
-    missing=("$component" "${missing[@]}")
-    path="${path%/*}"
-    [[ -n "$path" ]] || path="/"
-  done
-  [[ -d "$path" ]] || return 1
-  resolved="$(cd -- "$path" && pwd -P)" || return 1
-  path="$resolved"
-
-  for component in "${missing[@]}"; do
-    case "$component" in
-      ""|.) ;;
-      ..)
-        if [[ "$path" != "/" ]]; then
-          path="${path%/*}"
-          [[ -n "$path" ]] || path="/"
-        fi
-        ;;
-      *) path="${path%/}/$component" ;;
-    esac
-  done
-  printf '%s\n' "$path"
-}
+# shellcheck source=utils/path-utils.sh
+source -- "$script_dir/path-utils.sh"
 
 target="${target%/}"
 [[ "$target" == /* && "${target##*/}" == "simpleplug" ]] \

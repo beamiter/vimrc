@@ -2,16 +2,6 @@ vim9script
 
 var C = g:vimrc_context
 
-# SimpleMarkdown 的渲染选项是 g: 变量，没有命令可以翻转。改完要重绘才看得见，
-# 而重绘是 SimpleMarkdownRefresh 的事，所以两步绑在一起；没有预览窗口时它什么
-# 也不做，因此不必先判断。
-def ToggleMarkdown(option: string, label: string)
-  var name = 'simplemarkdown_' .. option
-  g:[name] = get(g:, name, 0) ? 0 : 1
-  silent! SimpleMarkdownRefresh
-  echo printf('[SimpleMarkdown] %s%s', label, g:[name] ? '：开' : '：关')
-enddef
-
 # ============================================================================
 # 原生键位
 # ============================================================================
@@ -102,6 +92,16 @@ tnoremap <silent> <Esc><Esc> <C-\><C-n>
 # REPL 用法）。走导出的 simpleterminal#Send()，文本不经 Ex 命令行转义。
 def SendLinesToTerminal(line1: number, line2: number)
   simpleterminal#Send(join(getline(line1, line2), "\n"))
+enddef
+
+# SimpleMarkdown 的渲染选项是 g: 变量，没有命令可以翻转。改完要重绘才看得见，
+# 而重绘是 SimpleMarkdownRefresh 的事，所以两步绑在一起；没有预览窗口时它什么
+# 也不做，因此不必先判断。
+def ToggleMarkdown(option: string, label: string)
+  var name = 'simplemarkdown_' .. option
+  g:[name] = get(g:, name, 0) ? 0 : 1
+  silent! SimpleMarkdownRefresh
+  echo printf('[SimpleMarkdown] %s%s', label, g:[name] ? '：开' : '：关')
 enddef
 
 if get(C, 'plugins_ready', false)
@@ -466,8 +466,6 @@ if get(C, 'plugins_ready', false)
       gcc: 'comment-line',
     })
   catch /^Vim\%((\a\+)\)\=:E117/
-    echohl WarningMsg
-    echomsg '[vimrc] SimpleWhichKey 注册失败'
-    echohl None
+    g:VimrcWarn('SimpleWhichKey 注册失败')
   endtry
 endif

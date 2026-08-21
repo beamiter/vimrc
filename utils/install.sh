@@ -95,39 +95,8 @@ export HOME
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 repo_root="$(cd -- "$script_dir/.." && pwd -P)"
 
-canonicalize_dir_with_missing_tail() {
-  local path="${1%/}"
-  local component
-  local resolved
-  local -a missing=()
-
-  [[ -n "$path" ]] || path="/"
-  while [[ ! -e "$path" && ! -L "$path" ]]; do
-    component="${path##*/}"
-    missing=("$component" "${missing[@]}")
-    path="${path%/*}"
-    [[ -n "$path" ]] || path="/"
-  done
-  [[ -d "$path" ]] || return 1
-  if ! resolved="$(cd -- "$path" && pwd -P)"; then
-    return 1
-  fi
-  path="$resolved"
-
-  for component in "${missing[@]}"; do
-    case "$component" in
-      ""|.) ;;
-      ..)
-        if [[ "$path" != "/" ]]; then
-          path="${path%/*}"
-          [[ -n "$path" ]] || path="/"
-        fi
-        ;;
-      *) path="${path%/}/$component" ;;
-    esac
-  done
-  printf '%s\n' "$path"
-}
+# shellcheck source=utils/path-utils.sh
+source -- "$script_dir/path-utils.sh"
 
 sources=("$repo_root/.vimrc")
 targets=("$HOME/.vimrc")

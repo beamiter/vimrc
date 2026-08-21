@@ -114,9 +114,7 @@ for dir in [
     try
       mkdir(dir, 'p', 0o700)
     catch
-      echohl WarningMsg
-      echomsg '[vimrc] 无法创建状态目录: ' .. dir
-      echohl None
+      g:VimrcWarn('无法创建状态目录: ' .. dir)
     endtry
   endif
 endfor

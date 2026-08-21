@@ -210,19 +210,15 @@ if plugins_enabled && g:VimrcSimplePlugReady()
     simpleplug#End()
     plugins_ready = true
   catch
-    echohl WarningMsg
-    echomsg '[vimrc] 插件层加载失败，已保留核心编辑能力: ' .. v:exception
-    echohl None
+    g:VimrcWarn('插件层加载失败，已保留核心编辑能力: ' .. v:exception)
   endtry
 elseif plugins_enabled
-  echohl WarningMsg
   if g:vimrc_simpleplug_auto_bootstrap
-    echomsg '[vimrc] SimplePlug 尚未就绪；已安排自动 bootstrap，当前先使用核心模式'
+    g:VimrcWarn('SimplePlug 尚未就绪；已安排自动 bootstrap，当前先使用核心模式')
   else
-    echomsg '[vimrc] SimplePlug 尚未就绪且自动 bootstrap 已关闭；运行 '
-          \ .. ':VimrcBootstrapRetry 可手动启动'
+    g:VimrcWarn(
+      'SimplePlug 尚未就绪且自动 bootstrap 已关闭；运行 :VimrcBootstrapRetry 可手动启动')
   endif
-  echohl None
 endif
 
 if !plugins_ready
