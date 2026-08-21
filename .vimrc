@@ -82,10 +82,13 @@ g:vimrc_context = {
 }
 
 for module in [
+  'lib.vim',
   'core.vim',
   'bootstrap.vim',
   'plugins.vim',
   'behavior.vim',
+  'compat.vim',
+  'health.vim',
   'workflow.vim',
   'remote.vim',
   'mappings.vim',

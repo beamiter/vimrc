@@ -95,7 +95,7 @@ assert_equal('org', &filetype)
 assert_true(&linebreak)
 assert_true(&breakindent)
 
-execute 'edit ' .. fnameescape(ROOT .. '/tunel1.sh')
+execute 'edit ' .. fnameescape(ROOT .. '/utils/install.sh')
 assert_equal('sh', &filetype)
 assert_equal(2, &shiftwidth)
 assert_equal(0, &conceallevel)

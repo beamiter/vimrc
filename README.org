@@ -10,12 +10,15 @@
 #+begin_example
 .vimrc
 └── config/
+    ├── lib.vim        跨模块共享辅助（消息输出、statusline 段位注册）
     ├── core.vim       核心选项、undo/swap/state
     ├── bootstrap.vim  首次启动自动安装 SimplePlug 并接续 PlugUpdate
     ├── plugins.vim    插件配置与 SimplePlug 清单
-    ├── behavior.vim   FileType、健康检查、兼容层
+    ├── behavior.vim   FileType、缩进规则、尾随空白与核心自动命令
+    ├── compat.vim     插件兼容层（侧栏 statusline、补全 Enter）
+    ├── health.vim     :VimrcHealth 环境健康检查
     ├── workflow.vim   大文件保护、项目根目录、quickfix 工作流
-    ├── remote.vim     SSH/Docker RPC、remote:// buffer 与远程 SimpleCC
+    ├── remote.vim     SimpleRemote 控制器的热重载入口
     ├── mappings.vim   所有真实键位与 SimpleWhichKey 描述
     └── update.vim     配置仓库更新检查（只读 fetch，拉取需显式执行）
 #+end_example

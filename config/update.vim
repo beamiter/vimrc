@@ -36,16 +36,6 @@ var fetch_job: any = v:null
 var fetch_timer = -1
 var pull_job: any = v:null
 
-def Warn(message: string)
-  echohl WarningMsg
-  echomsg '[vimrc] ' .. message
-  echohl None
-enddef
-
-def Info(message: string)
-  echomsg '[vimrc] ' .. message
-enddef
-
 # 同步 git 调用只用于本地引用比较，不涉及网络，耗时可忽略。
 def GitLines(arguments: list<string>): list<string>
   # Vim's systemlist() takes a shell command string (unlike job_start(), which
@@ -95,7 +85,7 @@ def ReportStatus(forced: bool)
   if empty(upstream)
     g:vimrc_update_status = {checked: localtime(), error: 'no-upstream'}
     if forced
-      Warn('当前分支没有 upstream，跳过更新检查')
+      g:VimrcWarn('当前分支没有 upstream，跳过更新检查')
     endif
     return
   endif
@@ -106,7 +96,7 @@ def ReportStatus(forced: bool)
   if len(counts) < 2
     g:vimrc_update_status = {checked: localtime(), error: 'rev-list-failed'}
     if forced
-      Warn('无法比较本地与 ' .. upstream)
+      g:VimrcWarn('无法比较本地与 ' .. upstream)
     endif
     return
   endif
@@ -126,13 +116,13 @@ def ReportStatus(forced: bool)
   endif
 
   if behind > 0
-    Warn(printf(
+    g:VimrcWarn(printf(
       '配置落后 %s %d 个提交%s，运行 :VimrcUpdate 拉取',
       upstream,
       behind,
       ahead > 0 ? printf('（本地另有 %d 个未推送提交）', ahead) : ''))
   elseif forced
-    Info(printf(
+    g:VimrcInfo(printf(
       '配置已是最新（%s%s）',
       upstream,
       ahead > 0 ? printf('，本地领先 %d 个提交', ahead) : ''))
@@ -152,7 +142,7 @@ def OnFetchExit(status: number, forced: bool)
   if status != 0
     g:vimrc_update_status = {checked: localtime(), error: 'fetch-failed'}
     if forced
-      Warn('git fetch 失败（退出码 ' .. status .. '）')
+      g:VimrcWarn('git fetch 失败（退出码 ' .. status .. '）')
     endif
     return
   endif
@@ -162,19 +152,19 @@ enddef
 def Check(forced: bool)
   if !IsRepository()
     if forced
-      Warn('配置目录不是 git 仓库: ' .. C.root)
+      g:VimrcWarn('配置目录不是 git 仓库: ' .. C.root)
     endif
     return
   endif
   if !has('job')
     if forced
-      Warn('缺少 +job，无法后台检查更新')
+      g:VimrcWarn('缺少 +job，无法后台检查更新')
     endif
     return
   endif
   if type(fetch_job) == v:t_job && job_status(fetch_job) ==# 'run'
     if forced
-      Info('更新检查正在进行中')
+      g:VimrcInfo('更新检查正在进行中')
     endif
     return
   endif
@@ -197,7 +187,7 @@ def Check(forced: bool)
   if type(fetch_job) != v:t_job || job_status(fetch_job) ==# 'fail'
     fetch_job = v:null
     if forced
-      Warn('无法启动 git fetch')
+      g:VimrcWarn('无法启动 git fetch')
     endif
     return
   endif
@@ -207,7 +197,7 @@ def Check(forced: bool)
     if type(fetch_job) == v:t_job && job_status(fetch_job) ==# 'run'
       job_stop(fetch_job)
       if forced
-        Warn('git fetch 超时')
+        g:VimrcWarn('git fetch 超时')
       endif
     endif
   })
@@ -216,29 +206,29 @@ enddef
 def OnPullExit(status: number)
   pull_job = v:null
   if status != 0
-    Warn('git pull --ff-only 失败（退出码 ' .. status .. '），请手动处理')
+    g:VimrcWarn('git pull --ff-only 失败（退出码 ' .. status .. '），请手动处理')
     return
   endif
   TouchStamp()
   ReportStatus(false)
-  Info('配置已更新，执行 :VimrcReload 或重启 Vim 生效')
+  g:VimrcInfo('配置已更新，执行 :VimrcReload 或重启 Vim 生效')
 enddef
 
 def g:VimrcUpdate()
   if !IsRepository()
-    Warn('配置目录不是 git 仓库: ' .. C.root)
+    g:VimrcWarn('配置目录不是 git 仓库: ' .. C.root)
     return
   endif
   if type(pull_job) == v:t_job && job_status(pull_job) ==# 'run'
-    Info('更新正在进行中')
+    g:VimrcInfo('更新正在进行中')
     return
   endif
   if !empty(GitLines(['status', '--porcelain']))
-    Warn('配置仓库有未提交改动，请先处理后再运行 :VimrcUpdate')
+    g:VimrcWarn('配置仓库有未提交改动，请先处理后再运行 :VimrcUpdate')
     return
   endif
 
-  Info('正在拉取配置更新…')
+  g:VimrcInfo('正在拉取配置更新…')
   pull_job = job_start(
     ['git', '-C', C.root, 'pull', '--ff-only', '--quiet'],
     {
@@ -249,7 +239,7 @@ def g:VimrcUpdate()
     })
   if type(pull_job) != v:t_job || job_status(pull_job) ==# 'fail'
     pull_job = v:null
-    Warn('无法启动 git pull')
+    g:VimrcWarn('无法启动 git pull')
   endif
 enddef
 
@@ -274,20 +264,11 @@ def g:VimrcUpdateStatusline(): string
   return icon .. behind
 enddef
 
-# SimpleLine 在渲染时才解析这张表，所以注册顺序与插件加载顺序无关；重新 source
-# 配置时按 fn 去重，避免重复段位。
 const STATUSLINE_SEGMENT = {
   fn: 'g:VimrcUpdateStatusline',
   hl: 'SimpleLineDiagWarn',
 }
-var segments = get(g:, 'simpleline_custom_right', [])
-if type(segments) != v:t_list
-  segments = []
-endif
-g:simpleline_custom_right = filter(
-  segments,
-  (_, value) => type(value) != v:t_dict
-    \ || get(value, 'fn', '') !=# STATUSLINE_SEGMENT.fn) + [STATUSLINE_SEGMENT]
+g:VimrcRegisterStatuslineSegment(STATUSLINE_SEGMENT)
 
 command! VimrcUpdate call g:VimrcUpdate()
 command! VimrcUpdateCheck call g:VimrcUpdateCheck()

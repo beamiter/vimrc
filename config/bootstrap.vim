@@ -31,16 +31,6 @@ def State(): dict<any>
   return g:vimrc_simpleplug_bootstrap_state
 enddef
 
-def Warn(message: string)
-  echohl WarningMsg
-  echomsg '[vimrc] ' .. message
-  echohl None
-enddef
-
-def Info(message: string)
-  echomsg '[vimrc] ' .. message
-enddef
-
 def g:VimrcSimplePlugReady(): bool
   var home = g:vimrc_context.plugin_home .. '/simpleplug'
   return filereadable(home .. '/autoload/simpleplug.vim')
@@ -61,7 +51,7 @@ def AppendBootstrapLog(message: string)
     remove(state.log, 0, len(state.log) - 81)
   endif
   if message =~# '^BOOTSTRAP\>' || message =~? '^error:'
-    Info(message)
+    g:VimrcInfo(message)
   endif
 enddef
 
@@ -115,7 +105,7 @@ def FinishInitialUpdate(errors: number)
     execute 'source ' .. fnameescape(g:vimrc_root .. '/.vimrc')
   catch
     state.phase = 'update-failed'
-    Warn('插件已经安装，但自动重载失败: ' .. v:exception)
+    g:VimrcWarn('插件已经安装，但自动重载失败: ' .. v:exception)
     return
   endtry
 
@@ -130,10 +120,10 @@ def FinishInitialUpdate(errors: number)
     if type(origin_winid) == v:t_number && origin_winid > 0
       win_gotoid(origin_winid)
     endif
-    Info('首次配置完成：SimplePlug 与全部插件已经就绪')
+    g:VimrcInfo('首次配置完成：SimplePlug 与全部插件已经就绪')
   else
     state.phase = 'ready-with-errors'
-    Warn(printf(
+    g:VimrcWarn(printf(
           '首次 PlugUpdate 完成，但有 %d 个错误；详情保留在 SimplePlug 窗口',
           errors))
   endif
@@ -160,12 +150,12 @@ def PollInitialUpdate(timer_id: number)
   if localtime() - get(state, 'update_started', localtime()) >= timeout
     StopUpdateTimer()
     state.phase = 'update-failed'
-    Warn('首次 PlugUpdate 超时；可在 SimplePlug 窗口检查进度并手动重试')
+    g:VimrcWarn('首次 PlugUpdate 超时；可在 SimplePlug 窗口检查进度并手动重试')
   elseif localtime() - get(state, 'update_started', localtime()) >= 10
         && !bufexists(get(state, 'update_bufnr', -1))
     StopUpdateTimer()
     state.phase = 'update-failed'
-    Warn('首次 PlugUpdate 未能启动；运行 :VimrcBootstrapStatus 查看日志')
+    g:VimrcWarn('首次 PlugUpdate 未能启动；运行 :VimrcBootstrapStatus 查看日志')
   endif
 enddef
 
@@ -176,7 +166,7 @@ def g:VimrcStartInitialPlugUpdate()
   endif
   if exists(':PlugUpdate') != 2
     state.phase = 'update-failed'
-    Warn('SimplePlug 已安装，但 :PlugUpdate 命令没有加载')
+    g:VimrcWarn('SimplePlug 已安装，但 :PlugUpdate 命令没有加载')
     return
   endif
 
@@ -188,7 +178,7 @@ def g:VimrcStartInitialPlugUpdate()
     execute 'PlugUpdate'
   catch
     state.phase = 'update-failed'
-    Warn('无法启动首次 PlugUpdate: ' .. v:exception)
+    g:VimrcWarn('无法启动首次 PlugUpdate: ' .. v:exception)
     return
   endtry
   state.update_bufnr = FindSimplePlugUi()
@@ -203,24 +193,24 @@ def OnBootstrapExit(_job: any, status: number)
   state.job = v:null
   if get(state, 'phase', '') ==# 'stopping'
     state.phase = 'stopped'
-    Warn('SimplePlug bootstrap 已停止；运行 :VimrcBootstrapRetry 可重试')
+    g:VimrcWarn('SimplePlug bootstrap 已停止；运行 :VimrcBootstrapRetry 可重试')
     return
   endif
   if status != 0 || !g:VimrcSimplePlugReady()
     state.phase = 'failed'
-    Warn(printf(
+    g:VimrcWarn(printf(
           'SimplePlug bootstrap 失败（退出码 %d）；运行 :VimrcBootstrapStatus 查看日志，:VimrcBootstrapRetry 重试',
           status))
     return
   endif
 
   state.phase = 'manager-ready'
-  Info('最新版 SimplePlug 安装完成，正在加载配置并执行首次 PlugUpdate…')
+  g:VimrcInfo('最新版 SimplePlug 安装完成，正在加载配置并执行首次 PlugUpdate…')
   try
     execute 'source ' .. fnameescape(g:vimrc_root .. '/.vimrc')
   catch
     state.phase = 'failed'
-    Warn('SimplePlug 安装成功，但自动加载配置失败: ' .. v:exception)
+    g:VimrcWarn('SimplePlug 安装成功，但自动加载配置失败: ' .. v:exception)
     return
   endtry
   timer_start(0, (_) => g:VimrcStartInitialPlugUpdate())
@@ -240,19 +230,19 @@ def g:VimrcStartSimplePlugBootstrap()
   var script = get(g:, 'vimrc_simpleplug_bootstrap_script', '')
   if type(script) != v:t_string || !filereadable(script)
     state.phase = 'failed'
-    Warn('找不到 SimplePlug bootstrap 脚本: ' .. string(script))
+    g:VimrcWarn('找不到 SimplePlug bootstrap 脚本: ' .. string(script))
     return
   endif
   if !executable('bash')
     state.phase = 'failed'
-    Warn('自动安装 SimplePlug 需要 bash')
+    g:VimrcWarn('自动安装 SimplePlug 需要 bash')
     return
   endif
 
   state.phase = 'running'
   state.log = []
   state.origin_winid = win_getid()
-  Info('首次启动：正在后台安装最新版 SimplePlug（Vim 核心功能可直接使用）')
+  g:VimrcInfo('首次启动：正在后台安装最新版 SimplePlug（Vim 核心功能可直接使用）')
 
   var bootstrap_job: any = v:null
   try
@@ -270,13 +260,13 @@ def g:VimrcStartSimplePlugBootstrap()
           })
   catch
     state.phase = 'failed'
-    Warn('无法启动 SimplePlug bootstrap: ' .. v:exception)
+    g:VimrcWarn('无法启动 SimplePlug bootstrap: ' .. v:exception)
     return
   endtry
 
   if type(bootstrap_job) != v:t_job || job_status(bootstrap_job) ==# 'fail'
     state.phase = 'failed'
-    Warn('无法启动 SimplePlug bootstrap job')
+    g:VimrcWarn('无法启动 SimplePlug bootstrap job')
     return
   endif
   state.job = bootstrap_job
@@ -286,12 +276,12 @@ def g:VimrcSimplePlugBootstrapRetry()
   var state = State()
   if type(get(state, 'job', v:null)) == v:t_job
         && job_status(state.job) ==# 'run'
-    Info('SimplePlug bootstrap 已在运行')
+    g:VimrcInfo('SimplePlug bootstrap 已在运行')
     return
   endif
   if g:VimrcSimplePlugReady()
     state.phase = 'ready'
-    Info('SimplePlug 已安装，无需 bootstrap')
+    g:VimrcInfo('SimplePlug 已安装，无需 bootstrap')
     return
   endif
   state.phase = 'idle'
@@ -302,7 +292,7 @@ def g:VimrcSimplePlugBootstrapStop()
   var state = State()
   var bootstrap_job = get(state, 'job', v:null)
   if type(bootstrap_job) != v:t_job || job_status(bootstrap_job) !=# 'run'
-    Info('当前没有正在运行的 SimplePlug bootstrap')
+    g:VimrcInfo('当前没有正在运行的 SimplePlug bootstrap')
     return
   endif
   state.phase = 'stopping'
@@ -311,7 +301,7 @@ enddef
 
 def g:VimrcSimplePlugBootstrapStatus()
   var state = State()
-  Info('SimplePlug bootstrap 状态: ' .. get(state, 'phase', 'unknown'))
+  g:VimrcInfo('SimplePlug bootstrap 状态: ' .. get(state, 'phase', 'unknown'))
   var lines = get(state, 'log', [])
   if type(lines) == v:t_list
     var first = max([0, len(lines) - 12])

@@ -28,7 +28,7 @@ command -v vim >/dev/null 2>&1 || {
 export VIMRC_SKIP_UPDATE_CHECK=1
 
 for script in \
-  "$repo_root/deps.sh" \
+  "$repo_root/utils/deps.sh" \
   "$repo_root/utils/bootstrap-simpleplug.sh" \
   "$repo_root/utils/install.sh" \
   "$repo_root/utils/check.sh" \

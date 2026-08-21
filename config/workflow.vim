@@ -157,19 +157,13 @@ command! -bang VimrcRoot call g:VimrcCdRoot(<bang>0 == 1)
 command! QFToggle call ToggleQuickfix()
 command! LLToggle call ToggleLocationList()
 
-# 与 update.vim 的段位使用同一公开接口；按函数名去重保证反复 source 幂等。
+# 与 update.vim 的段位共用 config/lib.vim 的同一注册接口；按函数名去重保证
+# 反复 source 幂等。
 const STATUSLINE_SEGMENT = {
   fn: 'g:VimrcLargeFileStatusline',
   hl: 'SimpleLineDiagWarn',
 }
-var segments = get(g:, 'simpleline_custom_right', [])
-if type(segments) != v:t_list
-  segments = []
-endif
-g:simpleline_custom_right = filter(
-  segments,
-  (_, value) => type(value) != v:t_dict
-    \ || get(value, 'fn', '') !=# STATUSLINE_SEGMENT.fn) + [STATUSLINE_SEGMENT]
+g:VimrcRegisterStatuslineSegment(STATUSLINE_SEGMENT)
 
 augroup vimrc_workflow
   autocmd!

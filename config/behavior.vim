@@ -6,13 +6,7 @@ var C = g:vimrc_context
 # Vim9 辅助函数
 # ============================================================================
 # 只有测试和键位依赖的入口保留为全局函数；其余为脚本局部，重新 source 时
-# 自动重定义。全局 def 无法覆盖旧定义，先统一清理再声明。
-for completion in getcompletion('Vimrc', 'function')
-  var function_name = substitute(completion, '(.*$', '', '')
-  if exists('*' .. function_name)
-    execute 'delfunction ' .. function_name
-  endif
-endfor
+# 由 Vim9 自动重定义。
 
 # SimpleCC buffer 键位：同一张表负责按 filetype 安装，以及在 filetype 切换
 # 后清理残留的 buffer-local 映射。
@@ -200,9 +194,7 @@ enddef
 
 def g:VimrcStripWhitespace()
   if !&modifiable || &readonly || &binary
-    echohl WarningMsg
-    echomsg '[vimrc] 当前 buffer 不允许清理尾随空白'
-    echohl None
+    g:VimrcWarn('当前 buffer 不允许清理尾随空白')
     return
   endif
 
@@ -215,204 +207,7 @@ def g:VimrcStripWhitespace()
   endtry
 enddef
 
-# SimpleLine 会在窗口事件中重写 statusline；侧栏必须恢复插件自己的状态栏。
-# SimpleMinimap 现在自己在 BufWinEnter/WinEnter 上重新断言窗口选项，并导出规范
-# 值，所以这里取用 StatuslineExpr() 而不是照抄字面量——两边各写一份迟早会漂移。
-# 保留字面量分支，是为了插件尚未更新到带该接口的版本时仍能工作。
-def RestoreSidebarStatusline()
-  if &filetype ==# 'simpletree'
-    &l:statusline = '%{simpletree#StatusLine()}'
-  elseif &filetype ==# 'simpleminimap'
-    if exists('*simpleminimap#StatuslineExpr')
-      &l:statusline = simpleminimap#StatuslineExpr()
-    else
-      &l:statusline = get(g:, 'simpleminimap_show_statusline', 1)
-            \ ? '%#SimpleMinimapTitle#%{simpleminimap#Statusline()}%*'
-            \ : ''
-    endif
-  endif
-enddef
-
-def SetupCompletionEnter()
-  if exists('g:loaded_simplecc') && exists('g:loaded_simplepairs')
-    inoremap <buffer> <silent> <expr> <CR> pumvisible()
-          \ ? simplecc#SelectEnterKey()
-          \ : simplepairs#Enter()
-  endif
-enddef
-
-def InstallPluginCompatibility()
-  augroup vimrc_plugin_compat
-    autocmd!
-    autocmd WinEnter,WinLeave,BufEnter,BufWinEnter *
-          \ call RestoreSidebarStatusline()
-    autocmd FileType simpletree,simpleminimap
-          \ call RestoreSidebarStatusline()
-    autocmd InsertEnter * call SetupCompletionEnter()
-  augroup END
-  RestoreSidebarStatusline()
-enddef
-
-def SchedulePluginCompatibility()
-  timer_start(0, (_) => InstallPluginCompatibility())
-enddef
-
-def HealthLine(state: string, label: string, detail: string = '')
-  var icon = state ==# 'ok' ? '[OK]'
-        \ : state ==# 'fail' ? '[FAIL]'
-        \ : state ==# 'warn' ? '[WARN]'
-        \ : '[SKIP]'
-  var hl = state ==# 'ok' ? 'MoreMsg'
-        \ : state ==# 'fail' ? 'ErrorMsg'
-        \ : state ==# 'warn' ? 'WarningMsg'
-        \ : 'Comment'
-  echohl {hl}
-  echomsg printf('  %-6s %-24s %s', icon, label, detail)
-  echohl None
-enddef
-
-def g:VimrcHealth()
-  var failures = 0
-  var warnings = 0
-
-  echomsg 'vimrc health — ' .. C.root
-
-  var features = [
-    'vim9script',
-    'job',
-    'channel',
-    'timers',
-    'popupwin',
-    'textprop',
-    'persistent_undo',
-  ]
-  for feature in features
-    var ok = has(feature)
-    HealthLine(ok ? 'ok' : 'fail', '+' .. feature)
-    if !ok
-      failures += 1
-    endif
-  endfor
-
-  var json_ok = exists('*json_encode') && exists('*json_decode')
-  HealthLine(json_ok ? 'ok' : 'fail', 'JSON functions')
-  failures += json_ok ? 0 : 1
-
-  var editorconfig_enabled = get(g:, 'simpleeditorconfig_enable', 1) != 0
-  var editorconfig_ok = !editorconfig_enabled
-        \ || exists(':SimpleEditorConfigReload') == 2
-  HealthLine(
-    editorconfig_ok ? (editorconfig_enabled ? 'ok' : 'skip') : 'warn',
-    'SimpleEditorConfig',
-    editorconfig_enabled ? 'local + SimpleRemote' : 'disabled')
-  warnings += editorconfig_ok ? 0 : 1
-
-  var hlyank_enabled = get(g:, 'simpleedit_yank_highlight', 1) != 0
-  var hlyank_ok = !hlyank_enabled || exists(':SimpleEditClearYank') == 2
-  HealthLine(
-    hlyank_ok ? (hlyank_enabled ? 'ok' : 'skip') : 'warn',
-    'SimpleEdit yank highlight',
-    hlyank_enabled ? 'text properties' : 'disabled')
-  warnings += hlyank_ok ? 0 : 1
-
-  for tool in ['git', 'rg', 'cargo', 'rustc']
-    var ok = executable(tool)
-    HealthLine(ok ? 'ok' : 'warn', tool, ok ? exepath(tool) : '未找到')
-    warnings += ok ? 0 : 1
-  endfor
-
-  for dir in [C.undo_dir, C.swap_dir, C.backup_dir, C.session_dir]
-    var ok = isdirectory(dir) && filewritable(dir) == 2
-    HealthLine(ok ? 'ok' : 'fail', fnamemodify(dir, ':t') .. ' state', dir)
-    failures += ok ? 0 : 1
-  endfor
-
-  var active_config = get(g:, 'simplecc_config_path', '')
-  var config_ok = !empty(active_config) && filereadable(active_config)
-  var config_detail = empty(active_config)
-        \ ? '项目配置发现已启用；其中 command/args 会执行'
-        \ : active_config
-  HealthLine(config_ok ? 'ok' : 'warn', 'SimpleCC config', config_detail)
-  warnings += config_ok ? 0 : 1
-
-  if C.plugins_enabled
-    var simpleplug_home = C.plugin_home .. '/simpleplug'
-    var manager_ok = g:VimrcSimplePlugReady()
-    var bootstrap_phase = get(
-          get(g:, 'vimrc_simpleplug_bootstrap_state', {}),
-          'phase',
-          'idle')
-    HealthLine(
-          manager_ok ? 'ok' : 'warn',
-          'SimplePlug',
-          manager_ok ? simpleplug_home : simpleplug_home .. ' (' .. bootstrap_phase .. ')')
-    warnings += manager_ok ? 0 : 1
-
-    var daemons = [
-      ['simpleplug', 'simpleplug-daemon'],
-      ['simplefinder', 'simplefinder-daemon'],
-      ['simpletree', 'simpletree-daemon'],
-      ['simpleline', 'simpleline-daemon'],
-      ['simpleminimap', 'simpleminimap-daemon'],
-      ['simpleclipboard', 'simpleclipboard-daemon'],
-      ['simpletreesitter', 'ts-hl-daemon'],
-      ['simplecc', 'simplecc-daemon'],
-    ]
-    for daemon in daemons
-      var path = C.plugin_home .. '/' .. daemon[0] .. '/lib/' .. daemon[1]
-      var ok = executable(path)
-      HealthLine(ok ? 'ok' : 'warn', daemon[0] .. ' backend', path)
-      warnings += ok ? 0 : 1
-    endfor
-
-    var suite_health_commands = [
-      'SimpleCommentHealth',
-      'SimpleMotionHealth',
-      'SimplePairsHealth',
-      'SimpleEditHealth',
-      'SimpleMultiHealth',
-      'SimpleEditorConfigHealth',
-      'SimpleTerminalHealth',
-    ]
-    var missing_commands = filter(
-          copy(suite_health_commands),
-          (_, name) => exists(':' .. name) != 2)
-    HealthLine(
-          empty(missing_commands) ? 'ok' : 'warn',
-          'Simple suite health',
-          empty(missing_commands)
-            ? printf('%d/%d commands', len(suite_health_commands),
-                len(suite_health_commands))
-            : 'missing: ' .. join(missing_commands, ', '))
-    warnings += empty(missing_commands) ? 0 : 1
-  else
-    HealthLine('skip', 'plugins', 'VIMRC_SKIP_PLUGINS=1')
-  endif
-
-  var clipboard_ok = has('unnamedplus')
-        \ || executable('wl-copy')
-        \ || executable('xclip')
-        \ || executable('xsel')
-        \ || executable(C.plugin_home .. '/simpleclipboard/lib/simpleclipboard-daemon')
-  HealthLine(clipboard_ok ? 'ok' : 'warn', 'clipboard provider')
-  warnings += clipboard_ok ? 0 : 1
-
-  var lsp_install_is_explicit = get(g:, 'simplecc_auto_install', 1) == 0
-  HealthLine(
-        lsp_install_is_explicit ? 'ok' : 'warn',
-        'language-server install',
-        lsp_install_is_explicit ? 'explicit' : 'automatic')
-  warnings += lsp_install_is_explicit ? 0 : 1
-
-  g:vimrc_health_last = {fail: failures, warn: warnings}
-  echomsg printf(
-        'vimrc health: %d failure(s), %d warning(s)',
-        failures,
-        warnings)
-enddef
-
 command! StripWhitespace call g:VimrcStripWhitespace()
-command! VimrcHealth call g:VimrcHealth()
 
 # ============================================================================
 # 自动命令
@@ -436,23 +231,6 @@ augroup vimrc_core
           \ setlocal nonumber norelativenumber signcolumn=no
   endif
 augroup END
-
-augroup vimrc_plugin_compat_boot
-  autocmd!
-  if C.plugins_ready
-    autocmd VimEnter * ++once call SchedulePluginCompatibility()
-  endif
-augroup END
-
-if !C.plugins_ready
-  augroup vimrc_plugin_compat
-    autocmd!
-  augroup END
-endif
-
-if C.plugins_ready && v:vim_did_enter
-  SchedulePluginCompatibility()
-endif
 
 if &filetype !=# ''
   g:VimrcConfigureFiletype()
