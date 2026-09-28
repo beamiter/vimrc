@@ -137,6 +137,31 @@ if ((run_full)); then
     -Nu "$repo_root/.vimrc" -n -i NONE -es \
     -S "$repo_root/test/vimrc_full_smoke.vim"
   printf 'vimrc full smoke: OK\n'
+
+  # 普通模式会话：Visual 模式和 VimEnter 之后的重载只有这里测得到。没有终端时
+  # Vim 从 stdin 读按键，读到 EOF 就在 VimEnter 之前退出，所以用一个只睡不写的
+  # 进程把 stdin 撑开；它睡完即 EOF，脚本就算卡住也只等到那时为止。
+  mkfifo "$tmp/live-stdin"
+  sleep 60 >"$tmp/live-stdin" 2>/dev/null &
+  live_hold=$!
+  live_status=0
+  VIMRC_TEST_ERRORS="$tmp/live-errors.log" \
+  XDG_STATE_HOME="$tmp/full-state" \
+    vim --not-a-term --cmd 'let g:simpleplug_auto_install = 0' \
+    -Nu "$repo_root/.vimrc" -n -i NONE \
+    -S "$repo_root/test/vimrc_live_smoke.vim" \
+    <"$tmp/live-stdin" >/dev/null 2>&1 || live_status=$?
+  kill "$live_hold" 2>/dev/null || true
+  wait "$live_hold" 2>/dev/null || true
+  if ((live_status)); then
+    if [[ -s "$tmp/live-errors.log" ]]; then
+      cat "$tmp/live-errors.log" >&2
+    else
+      printf 'error: vimrc live smoke exited before reporting\n' >&2
+    fi
+    exit 1
+  fi
+  printf 'vimrc live smoke: OK\n'
 fi
 
 printf 'all requested checks passed\n'
