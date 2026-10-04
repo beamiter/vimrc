@@ -156,6 +156,10 @@ add(temp_files, project .. '/.git')
 add(temp_files, project)
 execute 'edit ' .. fnameescape(project_file)
 assert_equal(project, g:VimrcProjectRoot())
+var saved_markers = g:vimrc_root_markers
+g:vimrc_root_markers = []
+assert_equal('/', g:VimrcProjectRoot('/'), 'filesystem root must remain a valid cwd')
+g:vimrc_root_markers = saved_markers
 if exists(':SimpleEditorConfigReload') == 2
   assert_equal(3, &l:shiftwidth)
 endif

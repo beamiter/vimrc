@@ -107,7 +107,7 @@ def g:VimrcProjectRoot(path: string = ''): string
   while !empty(dir)
     for marker in get(g:, 'vimrc_root_markers', [])
       if isdirectory(dir .. '/' .. marker) || filereadable(dir .. '/' .. marker)
-        return substitute(dir, '[\\/]\+$', '', '')
+        return NormalizeRoot(dir)
       endif
     endfor
     var parent = fnamemodify(dir, ':h')
@@ -116,7 +116,12 @@ def g:VimrcProjectRoot(path: string = ''): string
     endif
     dir = parent
   endwhile
-  return substitute(fallback, '[\\/]\+$', '', '')
+  return NormalizeRoot(fallback)
+enddef
+
+def NormalizeRoot(dir: string): string
+  var trimmed = substitute(dir, '\m[\\/]\+$', '', '')
+  return empty(trimmed) ? dir : trimmed
 enddef
 
 def g:VimrcCdRoot(global: bool = false)
