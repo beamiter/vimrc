@@ -46,6 +46,25 @@ def g:VimrcHealth()
   HealthLine(json_ok ? 'ok' : 'fail', 'JSON functions')
   failures += json_ok ? 0 : 1
 
+  var matchit_ok = exists('g:loaded_matchit')
+  HealthLine(matchit_ok ? 'ok' : 'warn', 'matchit',
+        matchit_ok ? 'packadd' : 'not loaded')
+  warnings += matchit_ok ? 0 : 1
+
+  var encodings_ok = stridx(&fileencodings, 'gb18030') >= 0
+        && stridx(&fileencodings, 'utf-8') >= 0
+  HealthLine(encodings_ok ? 'ok' : 'warn', 'fileencodings', &fileencodings)
+  warnings += encodings_ok ? 0 : 1
+
+  if get(g:, 'simpleline_nerdfont', 0)
+        && &ambiwidth ==# 'double'
+    HealthLine('warn', 'ambiwidth',
+          'double 与 Nerd Font 同时开启，图标可能错位')
+    warnings += 1
+  else
+    HealthLine('ok', 'ambiwidth', &ambiwidth)
+  endif
+
   var editorconfig_enabled = get(g:, 'simpleeditorconfig_enable', 1) != 0
   var editorconfig_ok = !editorconfig_enabled
         \ || exists(':SimpleEditorConfigReload') == 2

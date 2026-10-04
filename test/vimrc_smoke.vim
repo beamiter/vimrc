@@ -51,7 +51,19 @@ assert_equal(0, exists('#vimrc_simpleplug_bootstrap#VimEnter'))
 assert_equal(ROOT .. '/simplecc.json', g:simplecc_config_path)
 assert_false(&modeline)
 assert_false(&exrc)
+assert_equal('single', &ambiwidth)
+assert_match('gb18030', &fileencodings)
+assert_match('useopen', &switchbuf)
+assert_notmatch('newtab', &switchbuf)
+assert_match('histogram', &diffopt)
+assert_equal(1, exists('g:loaded_matchit'))
+assert_true(index(g:vimrc_root_markers, 'compile_commands.json') >= 0)
+assert_equal(g:vimrc_root_markers, g:simplefinder_root_markers)
 assert_match('block', &virtualedit)
+assert_equal('<Cmd>VimrcReload<CR>', maparg('<Space>vr', 'n'))
+assert_equal(1, exists('*g:VimrcReload'))
+assert_equal(1, exists('*g:VimrcRemotePromptFind'))
+assert_equal(1, exists('*g:VimrcStopUpdateJobs'))
 
 # The plugin manifest is intentionally closed over beamiter/simple*: adding a
 # third-party Plug declaration must fail even though this smoke runs core-only.
@@ -101,10 +113,14 @@ assert_equal(2, &shiftwidth)
 assert_equal(0, &conceallevel)
 assert_false(&linebreak)
 
-execute 'edit ' .. fnameescape(ROOT .. '/.vimrc')
-assert_equal('vim', &filetype)
-assert_equal(2, &shiftwidth)
-assert_false(&linebreak)
+EditTemp('COMMIT_EDITMSG', ['summary', '', 'body'])
+setf gitcommit
+assert_equal('gitcommit', &filetype)
+assert_equal(72, &textwidth)
+assert_true(&spell)
+setf vim
+assert_false(&spell)
+assert_equal(0, &textwidth)
 
 EditTemp('Makefile', ['all:', "\t@true"])
 assert_equal('make', &filetype)
@@ -158,6 +174,8 @@ assert_false(&l:undofile)
 assert_false(&l:swapfile)
 assert_equal(100, &l:undolevels)
 assert_equal('OFF', &l:syntax)
+assert_equal('', &l:indentexpr)
+assert_false(&l:spell)
 assert_match('^BIG ', g:VimrcLargeFileStatusline())
 g:VimrcLargeFileStatus()
 g:vimrc_large_file_bytes = old_threshold
@@ -204,8 +222,14 @@ add(temp_files, update_marker)
 assert_match('有未提交改动', execute('VimrcUpdate'))
 
 # Reloading must be idempotent: no duplicate commands, functions or autocmds.
+var wildignore_once = &wildignore
+var diffopt_once = &diffopt
+var clipboard_once = &clipboard
 execute 'source ' .. fnameescape(ROOT .. '/.vimrc')
 execute 'source ' .. fnameescape(ROOT .. '/.vimrc')
+assert_equal(wildignore_once, &wildignore)
+assert_equal(diffopt_once, &diffopt)
+assert_equal(clipboard_once, &clipboard)
 var ft_autocmds = execute('autocmd vimrc_core FileType')
 assert_equal(1, count(ft_autocmds, 'VimrcConfigureFiletype'))
 # 重复 source 不得堆积 statusline 段位。

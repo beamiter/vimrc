@@ -63,6 +63,22 @@ const VIM_STATE = STATE_HOME .. '/vim'
 
 g:vimrc_plugin_home = PLUGIN_HOME
 g:vimrc_plugins_ready = 0
+# Shared with SimpleFinder and :VimrcRoot so both walk the same markers.
+if !exists('g:vimrc_root_markers')
+  g:vimrc_root_markers = [
+    '.git',
+    '.hg',
+    '.svn',
+    'Cargo.toml',
+    'go.mod',
+    'pyproject.toml',
+    'package.json',
+    'Project.toml',
+    'Makefile',
+    'CMakeLists.txt',
+    'compile_commands.json',
+  ]
+endif
 g:vimrc_context = {
   root: ROOT,
   state_home: STATE_HOME,

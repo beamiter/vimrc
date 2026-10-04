@@ -10,7 +10,7 @@ var C = g:vimrc_context
 nnoremap <silent> <leader>fs <Cmd>update<CR>
 nnoremap <silent> <leader>fS <Cmd>wall<CR>
 nnoremap <silent> <leader>ve <Cmd>execute 'edit ' .. fnameescape(g:vimrc_root .. '/.vimrc')<CR>
-nnoremap <silent> <leader>vr <Cmd>execute 'source ' .. fnameescape(g:vimrc_root .. '/.vimrc')<CR>
+nnoremap <silent> <leader>vr <Cmd>VimrcReload<CR>
 nnoremap <silent> <leader>vh <Cmd>VimrcHealth<CR>
 nnoremap <silent> <leader>vc <Cmd>VimrcUpdateCheck<CR>
 nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>

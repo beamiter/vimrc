@@ -7,8 +7,10 @@ var C = g:vimrc_context
 # ============================================================================
 set nocompatible
 set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,utf-16,gb18030,gbk,latin1
 set nolangremap
-set ambiwidth=double
+# Nerd Font glyphs are single-cell; double-width cells misalign icons.
+set ambiwidth=single
 set noexrc
 set nomodeline
 
@@ -31,7 +33,6 @@ set fileformats=unix,dos,mac
 
 set number
 set relativenumber
-set signcolumn=yes
 set cursorline
 set scrolloff=5
 set sidescrolloff=5
@@ -44,6 +45,13 @@ set cmdheight=1
 set pumheight=12
 set pumwidth=20
 set ruler
+if exists('+signcolumn')
+  try
+    &signcolumn = 'auto:2'
+  catch
+    set signcolumn=yes
+  endtry
+endif
 set mouse=a
 set virtualedit=block
 
@@ -58,16 +66,25 @@ set showmatch
 set wildmenu
 set wildmode=longest:full,full
 set wildoptions=pum,fuzzy
-set wildignore+=*/.git/*,*/node_modules/*,*/target/*,*/dist/*,*/build/*
-set wildignore+=*.o,*.obj,*.pyc,*.class,*.cache
+set wildignorecase
+# Assign then append so a reload cannot grow this list.
+set wildignore=*.o,*.obj,*.pyc,*.pyo,*.class,*.cache
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
+set wildignore+=*/node_modules/*,*/target/*,*/dist/*,*/build/*
+set wildignore+=*/.venv/*,*/venv/*,*/__pycache__/*
 set completeopt=menuone,noselect,popup
 set complete-=i
 
 set splitbelow
 set splitright
 set splitkeep=screen
-set switchbuf=useopen,usetab,newtab
+# newtab made :cnext / grep results jump into extra tab pages.
+set switchbuf=useopen,usetab
 set jumpoptions=stack
+silent! set jumpoptions+=view
+if exists('+cdhome')
+  set cdhome
+endif
 
 set timeout
 set timeoutlen=450
@@ -82,16 +99,36 @@ set smoothscroll
 
 set sessionoptions=buffers,curdir,folds,help,localoptions,tabpages,winsize,winpos
 set viewoptions=cursor,folds,slash,unix
-set diffopt+=algorithm:histogram,indent-heuristic
+if stridx(&backupskip, '/tmp/*') < 0
+  set backupskip+=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*
+endif
+set undolevels=5000
 set nrformats-=octal
 set shortmess+=Ic
-set listchars=tab:>-,trail:~,extends:>,precedes:<,nbsp:+
+&fillchars = "vert:│,fold:·,eob: "
+set listchars=tab:»·,trail:·,extends:»,precedes:«,nbsp:␣
+silent! packadd matchit
+
+def EnsureOptionFlag(option_name: string, flag: string)
+  var current = eval('&' .. option_name)
+  if stridx(',' .. current .. ',', ',' .. flag .. ',') >= 0
+    return
+  endif
+  try
+    execute 'set ' .. option_name .. '+=' .. flag
+  catch
+  endtry
+enddef
+
+EnsureOptionFlag('diffopt', 'algorithm:histogram')
+EnsureOptionFlag('diffopt', 'indent-heuristic')
+EnsureOptionFlag('diffopt', 'linematch:60')
 
 if exists('+termguicolors')
   set termguicolors
 endif
 
-if has('unnamedplus')
+if has('unnamedplus') && stridx(',' .. &clipboard .. ',', ',unnamedplus,') < 0
   set clipboard^=unnamedplus
 endif
 
@@ -160,7 +197,10 @@ else
 endif
 
 if executable('rg')
-  &grepprg = 'rg --vimgrep --smart-case --hidden --glob '
-        .. shellescape('!.git/*')
+  &grepprg = 'rg --vimgrep --smart-case --hidden'
+        .. ' --glob ' .. shellescape('!.git/*')
+        .. ' --glob ' .. shellescape('!.hg/*')
+        .. ' --glob ' .. shellescape('!node_modules/*')
+        .. ' --glob ' .. shellescape('!target/*')
   &grepformat = '%f:%l:%c:%m'
 endif

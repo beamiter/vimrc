@@ -6,3 +6,15 @@ vim9script
 if exists('*g:VimrcConfigureRemote') == 1
   g:VimrcConfigureRemote()
 endif
+
+# Core-only sessions still bind <leader>rf; keep a fallback until the plugin
+# (or a previous definition) supplies the real prompt.
+if exists('*g:VimrcRemotePromptFind') != 1
+  def g:VimrcRemotePromptFind()
+    if exists(':SimpleRemoteFind') == 2
+      execute 'SimpleRemoteFind'
+      return
+    endif
+    g:VimrcWarn('SimpleRemote 尚未就绪')
+  enddef
+endif

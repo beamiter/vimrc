@@ -35,6 +35,9 @@ def ApplyLargeFileMode()
   setlocal foldmethod=manual nofoldenable
   setlocal nocursorline norelativenumber
   setlocal synmaxcol=200
+  setlocal nospell
+  setlocal indentexpr=
+  setlocal conceallevel=0
 enddef
 
 def g:VimrcLargeFileStatus()
@@ -74,12 +77,15 @@ if !exists('g:vimrc_root_markers')
   g:vimrc_root_markers = [
     '.git',
     '.hg',
+    '.svn',
     'Cargo.toml',
     'go.mod',
     'pyproject.toml',
     'package.json',
     'Project.toml',
     'Makefile',
+    'CMakeLists.txt',
+    'compile_commands.json',
   ]
 endif
 

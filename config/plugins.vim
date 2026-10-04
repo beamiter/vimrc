@@ -28,15 +28,9 @@ g:simplefinder_max_results = 300
 g:simplefinder_debounce_ms = 40
 g:simplefinder_panel_width = 52
 g:simplefinder_position = 'right'
-g:simplefinder_root_markers = [
-  '.git',
-  'Cargo.toml',
-  'Project.toml',
-  'pyproject.toml',
-  'package.json',
-  'go.mod',
-  'Makefile',
-]
+if !exists('g:simplefinder_root_markers')
+  g:simplefinder_root_markers = get(g:, 'vimrc_root_markers', ['.git'])
+endif
 
 # SimpleTree
 g:simpletree_set_default_mapping = 0
@@ -228,6 +222,14 @@ endif
 
 C.plugins_ready = plugins_ready
 g:vimrc_plugins_ready = plugins_ready ? 1 : 0
+
+# SimpleLine already shows the current mode; keep Vim's duplicate -- INSERT --
+# only as a no-plugin fallback.
+if plugins_ready
+  set noshowmode
+else
+  set showmode
+endif
 
 # ============================================================================
 # 颜色

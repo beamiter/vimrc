@@ -214,6 +214,32 @@ def OnPullExit(status: number)
   g:VimrcInfo('配置已更新，执行 :VimrcReload 或重启 Vim 生效')
 enddef
 
+def g:VimrcStopUpdateJobs()
+  StopFetchTimer()
+  if type(fetch_job) == v:t_job && job_status(fetch_job) ==# 'run'
+    job_stop(fetch_job)
+  endif
+  if type(pull_job) == v:t_job && job_status(pull_job) ==# 'run'
+    job_stop(pull_job)
+  endif
+  fetch_job = v:null
+  pull_job = v:null
+enddef
+
+def g:VimrcReload()
+  # Drop live jobs before this Vim9 script is re-sourced; otherwise their
+  # callbacks would point at deleted functions.  Disconnect remote first for
+  # the same reason (its controller is also torn down on reload).
+  g:VimrcStopUpdateJobs()
+  if exists(':SimpleRemoteDisconnect') == 2
+    try
+      silent execute 'SimpleRemoteDisconnect'
+    catch
+    endtry
+  endif
+  execute 'source ' .. fnameescape(g:vimrc_root .. '/.vimrc')
+enddef
+
 def g:VimrcUpdate()
   if !IsRepository()
     g:VimrcWarn('配置目录不是 git 仓库: ' .. C.root)
@@ -272,7 +298,7 @@ g:VimrcRegisterStatuslineSegment(STATUSLINE_SEGMENT)
 
 command! VimrcUpdate call g:VimrcUpdate()
 command! VimrcUpdateCheck call g:VimrcUpdateCheck()
-command! VimrcReload execute 'source ' .. fnameescape(g:vimrc_root .. '/.vimrc')
+command! VimrcReload call g:VimrcReload()
 
 def ScheduleCheck()
   timer_start(g:vimrc_update_delay, (_) => Check(false))

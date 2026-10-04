@@ -103,6 +103,8 @@ def ApplyBufferBaseline()
   setlocal textwidth=0
   setlocal colorcolumn=
   setlocal conceallevel=0
+  setlocal nospell
+  setlocal spelllang=
   setlocal formatoptions-=c
   setlocal formatoptions-=r
   setlocal formatoptions-=o
@@ -126,6 +128,8 @@ def ApplyFiletypeOverrides()
   if &filetype ==# 'gitcommit'
     setlocal textwidth=72
     setlocal colorcolumn=73
+    setlocal spell
+    setlocal spelllang=en,cjk
   endif
 
   # SimpleEdit 的 LaTeX/emoji 序列补全挂到 <C-x><C-u>；SimpleCC 走自己的
@@ -164,8 +168,12 @@ def g:VimrcConfigureFiletype()
 enddef
 
 def RestoreCursor()
+  if get(b:, 'vimrc_large_file', 0)
+        \ || index(['gitcommit', 'gitrebase', 'gitconfig'], &filetype) >= 0
+    return
+  endif
   var last_line = line('''"')
-  if last_line > 1 && last_line <= line('$') && &filetype !=# 'gitcommit'
+  if last_line > 1 && last_line <= line('$')
     execute 'normal! g`"'
   endif
 enddef
