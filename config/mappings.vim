@@ -20,7 +20,7 @@ nnoremap <silent> <leader>ro <Cmd>SimpleRemote<CR>
 nnoremap <silent> <leader>rc <Cmd>SimpleRemoteConnect<CR>
 nnoremap <silent> <leader>rd <Cmd>SimpleRemoteDisconnect<CR>
 nnoremap <silent> <leader>rs <Cmd>SimpleRemoteStatus<CR>
-nnoremap <silent> <leader>rf <Cmd>call g:VimrcRemotePromptFind()<CR>
+nnoremap <silent> <leader>rf <Cmd>call g:VimrcPromptRemoteFind()<CR>
 nnoremap <silent> <leader>rg <Cmd>SimpleRemoteGit status --short<CR>
 nnoremap <silent> <leader>rt <Cmd>SimpleRemoteTree<CR>
 nnoremap <silent> <leader>rx <Cmd>SimpleRemoteTerminal<CR>
