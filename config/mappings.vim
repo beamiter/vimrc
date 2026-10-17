@@ -14,6 +14,9 @@ nnoremap <silent> <leader>vr <Cmd>VimrcReload<CR>
 nnoremap <silent> <leader>vh <Cmd>VimrcHealth<CR>
 nnoremap <silent> <leader>vc <Cmd>VimrcUpdateCheck<CR>
 nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>
+nnoremap <silent> <leader>vs <Cmd>VimrcUpdateStop<CR>
+nnoremap <silent> <leader>vp <Cmd>VimrcProfile<CR>
+nnoremap <silent> <leader>vH <Cmd>VimrcHealth!<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
 nnoremap <silent> <leader>ro <Cmd>SimpleRemote<CR>
@@ -73,6 +76,16 @@ nnoremap <silent> <leader>qq <Cmd>QFToggle<CR>
 nnoremap <silent> <leader>ql <Cmd>LLToggle<CR>
 nnoremap <silent> <leader>qn <Cmd>cnext<CR>
 nnoremap <silent> <leader>qp <Cmd>cprevious<CR>
+
+# Native project search remains available while plugins bootstrap or are off.
+# With SimpleFinder installed, its familiar interactive mappings below win.
+nnoremap <silent> <leader>sg <Cmd>call g:VimrcGrepPrompt()<CR>
+nnoremap <silent> <leader>sw <Cmd>VimrcGrepWord<CR>
+nnoremap <silent> <leader>fg <Cmd>call g:VimrcGrepPrompt()<CR>
+nnoremap <silent> <leader>fw <Cmd>VimrcGrepWord<CR>
+nnoremap <silent> <leader>sq <Cmd>call g:VimrcGrepPrompt()<CR>
+nnoremap <silent> <leader>sx <Cmd>VimrcGrepStop<CR>
+nnoremap <silent> <leader>vl <Cmd>VimrcLargeFile<CR>
 
 # 仅 Normal 模式：按窗口编号跳转，0 表示第 10 个窗口。
 for window_nr in range(1, 10)
@@ -401,8 +414,10 @@ if get(C, 'plugins_ready', false)
     s: {
       name: '+search',
       g: 'grep',
+      q: 'async-quickfix-grep',
       t: 'live-grep',
       w: 'grep-word',
+      x: 'stop-quickfix-grep',
     },
     t: {
       name: '+tools',
@@ -432,7 +447,11 @@ if get(C, 'plugins_ready', false)
       c: 'check-update',
       e: 'edit-vimrc',
       h: 'health',
+      H: 'health-report',
+      l: 'large-file-status',
+      p: 'load-profile',
       r: 'reload-vimrc',
+      s: 'stop-update',
       u: 'update-vimrc',
     },
     w: {

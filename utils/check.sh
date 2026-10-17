@@ -34,6 +34,7 @@ for script in \
   "$repo_root/utils/install.sh" \
   "$repo_root/utils/check.sh" \
   "$repo_root/test/install_smoke.sh" \
+  "$repo_root/test/bootstrap_smoke.sh" \
   "$repo_root/test/simpleremote_agent.sh"; do
   bash -n "$script"
 done
@@ -42,6 +43,13 @@ if command -v shellcheck >/dev/null 2>&1; then
   shellcheck -s sh \
     "$repo_root/utils/simpleremote-agent.sh"
   shellcheck \
+    "$repo_root/utils/deps.sh" \
+    "$repo_root/utils/path-utils.sh" \
+    "$repo_root/utils/bootstrap-simpleplug.sh" \
+    "$repo_root/utils/install.sh" \
+    "$repo_root/utils/check.sh" \
+    "$repo_root/test/install_smoke.sh" \
+    "$repo_root/test/bootstrap_smoke.sh" \
     "$repo_root/test/simpleremote_agent.sh"
 fi
 
@@ -54,6 +62,7 @@ else
 fi
 
 "$repo_root/test/install_smoke.sh"
+"$repo_root/test/bootstrap_smoke.sh"
 "$repo_root/test/simpleremote_agent.sh"
 
 # SimpleRemote 的传输与集成测试由 beamiter/simpleremote 仓库自带；本仓库只保留
@@ -88,6 +97,25 @@ VIMRC_SKIP_PLUGINS=1 \
   vim -Nu "$repo_root/.vimrc" -n -es \
   -S "$repo_root/test/vimrc_smoke.vim"
 printf 'vimrc core smoke: OK\n'
+
+# Keep new regression suites isolated and retain verbose diagnostics only when
+# a suite fails; -es alone can otherwise hide a Vim9 compile/runtime error.
+for suite in editing workflow search update reports; do
+  mkdir -p "$tmp/$suite-home" "$tmp/$suite-state"
+  if HOME="$tmp/$suite-home" \
+    XDG_STATE_HOME="$tmp/$suite-state" \
+    XDG_CONFIG_HOME="$tmp/$suite-config" \
+    VIMRC_SKIP_PLUGINS=1 \
+      vim -Nu "$repo_root/.vimrc" -n -es \
+      -V1"$tmp/$suite.log" -S "$repo_root/test/vimrc_$suite.vim" \
+      >"$tmp/$suite.out" 2>&1; then
+    printf 'vimrc %s regression: OK\n' "$suite"
+  else
+    cat "$tmp/$suite.out" "$tmp/$suite.log" >&2
+    printf 'error: vimrc %s regression failed\n' "$suite" >&2
+    exit 1
+  fi
+done
 
 printf 'not a directory\n' >"$tmp/state-blocker"
 HOME="$tmp/home" \
@@ -133,7 +161,7 @@ printf 'vimrc one-launch bootstrap smoke: OK\n'
 if ((run_full)); then
   mkdir -p "$tmp/full-state"
   XDG_STATE_HOME="$tmp/full-state" \
-    vim --cmd 'let g:simpleplug_auto_install = 0' \
+    vim --cmd 'let g:simpleplug_auto_install = 0 | let g:vimrc_simpleplug_auto_bootstrap = 0' \
     -Nu "$repo_root/.vimrc" -n -i NONE -es \
     -S "$repo_root/test/vimrc_full_smoke.vim"
   printf 'vimrc full smoke: OK\n'
@@ -147,7 +175,7 @@ if ((run_full)); then
   live_status=0
   VIMRC_TEST_ERRORS="$tmp/live-errors.log" \
   XDG_STATE_HOME="$tmp/full-state" \
-    vim --not-a-term --cmd 'let g:simpleplug_auto_install = 0' \
+    vim --not-a-term --cmd 'let g:simpleplug_auto_install = 0 | let g:vimrc_simpleplug_auto_bootstrap = 0' \
     -Nu "$repo_root/.vimrc" -n -i NONE \
     -S "$repo_root/test/vimrc_live_smoke.vim" \
     <"$tmp/live-stdin" >/dev/null 2>&1 || live_status=$?

@@ -81,7 +81,6 @@ set splitkeep=screen
 # newtab made :cnext / grep results jump into extra tab pages.
 set switchbuf=useopen,usetab
 set jumpoptions=stack
-silent! set jumpoptions+=view
 if exists('+cdhome')
   set cdhome
 endif
@@ -162,16 +161,19 @@ set noundofile
 set noswapfile
 set nobackup
 set nowritebackup
+# These options parse a directory list even when assigned through &option.
+# Escape commas/backslashes; interior spaces are already literal in these
+# comma-separated options and must not gain an extra backslash.
 if isdirectory(C.undo_dir) && filewritable(C.undo_dir) == 2
-  &undodir = C.undo_dir .. '//'
+  &undodir = escape(C.undo_dir, ',\') .. '//'
   set undofile
 endif
 if isdirectory(C.swap_dir) && filewritable(C.swap_dir) == 2
-  &directory = C.swap_dir .. '//'
+  &directory = escape(C.swap_dir, ',\') .. '//'
   set swapfile
 endif
 if isdirectory(C.backup_dir) && filewritable(C.backup_dir) == 2
-  &backupdir = C.backup_dir .. '//'
+  &backupdir = escape(C.backup_dir, ',\') .. '//'
   set writebackup
 endif
 

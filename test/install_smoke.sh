@@ -7,24 +7,24 @@ installer="$repo_root/utils/install.sh"
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT
 
-home="$tmp/home"
+install_home="$tmp/home with spaces"
 config="$tmp/config"
-mkdir -p "$home"
+mkdir -p "$install_home"
 
 before="$(find "$tmp" -mindepth 1 -print | sort)"
-HOME="$home" XDG_CONFIG_HOME="$config" \
+HOME="$install_home" XDG_CONFIG_HOME="$config" \
   "$installer" --profile full --bootstrap-simpleplug --dry-run >/dev/null
 after="$(find "$tmp" -mindepth 1 -print | sort)"
 [[ "$before" == "$after" ]]
 
-HOME="$home" XDG_CONFIG_HOME="$config" \
+HOME="$install_home" XDG_CONFIG_HOME="$config" \
   "$installer" --profile full >/dev/null
-[[ -L "$home/.vimrc" ]]
-[[ "$home/.vimrc" -ef "$repo_root/.vimrc" ]]
+[[ -L "$install_home/.vimrc" ]]
+[[ "$install_home/.vimrc" -ef "$repo_root/.vimrc" ]]
 [[ -L "$config/simplecc/simplecc.json" ]]
 [[ "$config/simplecc/simplecc.json" -ef "$repo_root/simplecc.json" ]]
 
-HOME="$home" XDG_CONFIG_HOME="$config" \
+HOME="$install_home" XDG_CONFIG_HOME="$config" \
   "$installer" --profile full >/dev/null
 [[ -z "$(find "$tmp" -name '*.backup.*' -print -quit)" ]]
 
@@ -37,7 +37,7 @@ backup="$(find "$backup_home" -maxdepth 1 -name '.vimrc.backup.*' -print -quit)"
 [[ "$(sed -n '1p' "$backup")" == "preserve-me" ]]
 [[ "$backup_home/.vimrc" -ef "$repo_root/.vimrc" ]]
 
-if HOME="$home" "$installer" --profile unknown >/dev/null 2>&1; then
+if HOME="$install_home" "$installer" --profile unknown >/dev/null 2>&1; then
   printf 'invalid profile unexpectedly succeeded\n' >&2
   exit 1
 fi
@@ -45,7 +45,7 @@ if HOME=/tmp/.. "$installer" --dry-run >/dev/null 2>&1; then
   printf 'root-resolving HOME unexpectedly succeeded\n' >&2
   exit 1
 fi
-if HOME="$home" XDG_CONFIG_HOME=/ \
+if HOME="$install_home" XDG_CONFIG_HOME=/ \
     "$installer" --profile full --dry-run >/dev/null 2>&1; then
   printf 'root XDG_CONFIG_HOME unexpectedly succeeded\n' >&2
   exit 1
@@ -59,6 +59,8 @@ early_home="$tmp/early-home"
 mkdir -p "$early_home"
 printf 'restore-early\n' >"$early_home/.vimrc"
 if (
+  # Exported into the installer; pass through printf's original arguments.
+  # shellcheck disable=SC2317,SC2059
   printf() {
     if [[ "${2:-}" == "BACKUP" ]]; then
       return 89
@@ -85,7 +87,8 @@ printf '%s\n' \
   '#!/usr/bin/env bash' \
   'exit 42' >"$fake_bin/git"
 printf '%s\n' '#!/usr/bin/env bash' 'exit 0' >"$fake_bin/cargo"
-chmod +x "$fake_bin/git" "$fake_bin/cargo"
+printf '%s\n' '#!/usr/bin/env bash' 'exit 0' >"$fake_bin/rustc"
+chmod +x "$fake_bin/git" "$fake_bin/cargo" "$fake_bin/rustc"
 
 if PATH="$fake_bin:$PATH" HOME="$failure_home" \
     "$installer" --bootstrap-simpleplug >/dev/null 2>&1; then
@@ -104,20 +107,20 @@ success_target="$success_home/.vim/plugged/simpleplug"
 fake_git_log="$tmp/fake-git.log"
 mkdir -p "$success_target"
 printf 'preserve-local-change\n' >"$success_target/local-change"
-printf '%s\n' \
-  '#!/usr/bin/env bash' \
-  'set -eu' \
-  'printf "%s\\n" "$*" >>"$FAKE_GIT_LOG"' \
-  'if [[ "${1:-}" == "clone" ]]; then' \
-  '  checkout="${@: -1}"' \
-  '  mkdir -p "$checkout/autoload" "$checkout/plugin" "$checkout/.git"' \
-  '  printf "vim9script\\n" >"$checkout/autoload/simpleplug.vim"' \
-  '  printf "vim9script\\n" >"$checkout/plugin/simpleplug.vim"' \
-  '  printf "#!/usr/bin/env bash\\nset -eu\\nmkdir -p lib\\n: >lib/simpleplug-daemon\\nchmod 0755 lib/simpleplug-daemon\\n" >"$checkout/install.sh"' \
-  'elif [[ "${1:-}" == "-C" && "${3:-}" == "rev-parse" ]]; then' \
-  '  printf "69e15f5e4a59\\n"' \
-  'fi' \
-  'exit 0' >"$fake_bin/git"
+cat >"$fake_bin/git" <<'EOF'
+#!/usr/bin/env bash
+set -eu
+printf '%s\n' "$*" >>"$FAKE_GIT_LOG"
+if [[ "${1:-}" == clone ]]; then
+  checkout="${@: -1}"
+  mkdir -p "$checkout/autoload" "$checkout/plugin" "$checkout/.git"
+  printf 'vim9script\n' >"$checkout/autoload/simpleplug.vim"
+  printf 'vim9script\n' >"$checkout/plugin/simpleplug.vim"
+  printf '#!/usr/bin/env bash\nset -eu\nmkdir -p lib\n: >lib/simpleplug-daemon\nchmod 0755 lib/simpleplug-daemon\n' >"$checkout/install.sh"
+elif [[ "${1:-}" == -C && "${3:-}" == rev-parse ]]; then
+  printf '69e15f5e4a59\n'
+fi
+EOF
 chmod +x "$fake_bin/git"
 
 FAKE_GIT_LOG="$fake_git_log" PATH="$fake_bin:$PATH" HOME="$success_home" \
@@ -142,6 +145,107 @@ FAKE_GIT_LOG="$fake_git_log" PATH="$fake_bin:$PATH" HOME="$success_home" \
 
 if "$repo_root/utils/bootstrap-simpleplug.sh" /simpleplug >/dev/null 2>&1; then
   printf 'root-level SimplePlug target unexpectedly succeeded\n' >&2
+  exit 1
+fi
+
+# Expanding a missing tail through .. can reveal a symlink. Re-resolve it
+# before validating the final directory, including a symlink to /.
+ln -s / "$tmp/root-link"
+if HOME="$install_home" XDG_CONFIG_HOME="$tmp/missing/../root-link" \
+    "$installer" --profile full --dry-run >/dev/null 2>&1; then
+  printf 'root symlink hidden behind a missing tail unexpectedly succeeded\n' >&2
+  exit 1
+fi
+if HOME="$install_home" XDG_CONFIG_HOME=relative/config \
+    "$installer" --profile full --dry-run >/dev/null 2>&1; then
+  printf 'relative XDG_CONFIG_HOME unexpectedly succeeded\n' >&2
+  exit 1
+fi
+
+# A symlinked HOME and a normal XDG symlink must still work.
+ln -s "$install_home" "$tmp/home-alias"
+ln -s "$config" "$tmp/config-alias"
+HOME="$tmp/home-alias" XDG_CONFIG_HOME="$tmp/missing/../config-alias" \
+  "$installer" --profile full >/dev/null
+[[ "$config/simplecc/simplecc.json" -ef "$repo_root/simplecc.json" ]]
+
+# A competing install cannot take over a transaction or remove its lock.
+mkdir "$install_home/.vimrc.install.lock"
+printf 'existing owner\n' >"$install_home/.vimrc.install.lock/pid"
+if HOME="$install_home" "$installer" >/dev/null 2>&1; then
+  printf 'concurrent installation unexpectedly succeeded\n' >&2
+  exit 1
+fi
+[[ "$(cat "$install_home/.vimrc.install.lock/pid")" == "existing owner" ]]
+rm "$install_home/.vimrc.install.lock/pid"
+rmdir "$install_home/.vimrc.install.lock"
+
+# Preserve broken symlinks exactly, not the nonexistent file they pointed at.
+broken_home="$tmp/broken-home"
+mkdir "$broken_home"
+ln -s nonexistent-original "$broken_home/.vimrc"
+HOME="$broken_home" "$installer" >/dev/null
+broken_backup="$(find "$broken_home" -name '.vimrc.backup.*' -print -quit)"
+[[ -L "$broken_backup" ]]
+[[ "$(readlink "$broken_backup")" == nonexistent-original ]]
+
+# If another actor writes the target after backup, rollback must preserve both
+# the new contents and our saved original rather than clobbering either one.
+changed_home="$tmp/changed-home"
+mkdir "$changed_home"
+printf 'saved original\n' >"$changed_home/.vimrc"
+if (
+  # Exported into the installer; pass through printf's original arguments.
+  # shellcheck disable=SC2317,SC2059
+  printf() {
+    if [[ "${2:-}" == "BACKUP" ]]; then
+      builtin printf 'new external contents\n' >"$VIMRC_CHANGED_TARGET"
+      return 89
+    fi
+    builtin printf "$@"
+  }
+  export -f printf
+  HOME="$changed_home" VIMRC_CHANGED_TARGET="$changed_home/.vimrc" \
+    "$installer" >/dev/null 2>&1
+); then
+  printf 'injected external change unexpectedly succeeded\n' >&2
+  exit 1
+fi
+[[ "$(cat "$changed_home/.vimrc")" == 'new external contents' ]]
+changed_backup="$(find "$changed_home" -name '.vimrc.backup.*' -print -quit)"
+[[ "$(cat "$changed_backup")" == 'saved original' ]]
+
+[[ -z "$(find "$tmp" -name '.vimrc.install.lock' -print -quit)" ]]
+
+# Diagnostics must not require Rust for core use, but --build must report a
+# missing/broken build toolchain. The fake Vim avoids invoking user settings.
+deps_bin="$tmp/deps-bin"
+mkdir "$deps_bin"
+ln -s "$(command -v bash)" "$deps_bin/bash"
+cat >"$deps_bin/vim" <<'EOF'
+#!/bin/sh
+if [ "$1" = --version ]; then
+  printf '%s\n' 'VIM - Vi IMproved 9.1' \
+    "+vim9script ${VIMRC_TEST_JOB_FEATURE:-+job} +channel +timers +popupwin +textprop +persistent_undo"
+fi
+EOF
+printf '#!/bin/sh\nexit 0\n' >"$deps_bin/git"
+chmod +x "$deps_bin/vim" "$deps_bin/git"
+PATH="$deps_bin" "$repo_root/utils/deps.sh" >/dev/null
+if PATH="$deps_bin" "$repo_root/utils/deps.sh" --build >/dev/null 2>&1; then
+  printf 'missing build toolchain unexpectedly passed strict diagnostics\n' >&2
+  exit 1
+fi
+if PATH="$deps_bin" VIMRC_TEST_JOB_FEATURE=-job \
+    "$repo_root/utils/deps.sh" >/dev/null 2>&1; then
+  printf 'missing Vim job feature unexpectedly passed diagnostics\n' >&2
+  exit 1
+fi
+printf '#!/bin/sh\nexit 42\n' >"$deps_bin/cargo"
+printf '#!/bin/sh\nexit 42\n' >"$deps_bin/rustc"
+chmod +x "$deps_bin/cargo" "$deps_bin/rustc"
+if PATH="$deps_bin" "$repo_root/utils/deps.sh" --build >/dev/null 2>&1; then
+  printf 'broken build toolchain unexpectedly passed strict diagnostics\n' >&2
   exit 1
 fi
 

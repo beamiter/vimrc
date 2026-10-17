@@ -30,11 +30,39 @@ if !exists('g:vimrc_update_status')
   g:vimrc_update_status = {}
 endif
 
-const STAMP_FILE = C.vim_state .. '/update-check'
+# Keep this controller alive across :source; pending callbacks must retain
+# their script-local functions until their job and channel are drained.
 
 var fetch_job: any = v:null
 var fetch_timer = -1
 var pull_job: any = v:null
+var pull_timer = -1
+var schedule_timer = -1
+var generation = 0
+var fetch_error = ''
+var pull_error = ''
+var fetch_timed_out = false
+var pull_timed_out = false
+
+def NumberSetting(name: string, fallback: number): number
+  var value = get(g:, name, fallback)
+  return type(value) == v:t_number && value > 0 ? value : fallback
+enddef
+
+def Running(job: any): bool
+  return type(job) == v:t_job && job_status(job) ==# 'run'
+enddef
+
+def CaptureError(token: number, kind: string, message: string)
+  if token != generation
+    return
+  endif
+  if kind ==# 'fetch'
+    fetch_error = strpart(fetch_error .. message, 0, 2048)
+  else
+    pull_error = strpart(pull_error .. message, 0, 2048)
+  endif
+enddef
 
 # 同步 git 调用只用于本地引用比较，不涉及网络，耗时可忽略。
 def GitLines(arguments: list<string>): list<string>
@@ -66,14 +94,14 @@ def TouchStamp()
     return
   endif
   try
-    writefile([], STAMP_FILE)
+    writefile([], C.vim_state .. '/update-check')
   catch
   endtry
 enddef
 
 def StampIsFresh(): bool
-  var stamp = getftime(STAMP_FILE)
-  return stamp > 0 && localtime() - stamp < g:vimrc_update_interval
+  var stamp = getftime(C.vim_state .. '/update-check')
+  return stamp > 0 && localtime() - stamp < NumberSetting('vimrc_update_interval', 86400)
 enddef
 
 # fetch 之后比较本地 HEAD 与 upstream；forced 时才对无 upstream 等情况出声。
@@ -136,13 +164,18 @@ def StopFetchTimer()
   endif
 enddef
 
-def OnFetchExit(status: number, forced: bool)
+def OnFetchExit(token: number, status: number, forced: bool)
+  if token != generation
+    return
+  endif
   StopFetchTimer()
   fetch_job = v:null
   if status != 0
-    g:vimrc_update_status = {checked: localtime(), error: 'fetch-failed'}
+    g:vimrc_update_status = {checked: localtime(),
+      error: fetch_timed_out ? 'fetch-timeout' : 'fetch-failed'}
     if forced
-      g:VimrcWarn('git fetch 失败（退出码 ' .. status .. '）')
+      g:VimrcWarn(fetch_timed_out ? 'git fetch 超时，已停止'
+        : 'git fetch 失败（退出码 ' .. status .. '）: ' .. trim(fetch_error))
     endif
     return
   endif
@@ -162,9 +195,9 @@ def Check(forced: bool)
     endif
     return
   endif
-  if type(fetch_job) == v:t_job && job_status(fetch_job) ==# 'run'
+  if Running(fetch_job) || Running(pull_job)
     if forced
-      g:VimrcInfo('更新检查正在进行中')
+      g:VimrcInfo('配置检查或更新正在进行中')
     endif
     return
   endif
@@ -175,13 +208,20 @@ def Check(forced: bool)
   # 无论 fetch 成败都记时间戳：失败时不要每次启动都重试网络。
   TouchStamp()
 
+  generation += 1
+  const token = generation
+  fetch_error = ''
+  fetch_timed_out = false
   fetch_job = job_start(
     ['git', '-C', C.root, 'fetch', '--quiet', '--no-tags'],
     {
       in_io: 'null',
       out_io: 'null',
-      err_io: 'null',
-      exit_cb: (_, status) => OnFetchExit(status, forced),
+      err_io: 'pipe',
+      err_mode: 'raw',
+      env: {GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never'},
+      err_cb: (_, message) => CaptureError(token, 'fetch', message),
+      exit_cb: (_, status) => OnFetchExit(token, status, forced),
     })
 
   if type(fetch_job) != v:t_job || job_status(fetch_job) ==# 'fail'
@@ -193,20 +233,33 @@ def Check(forced: bool)
   endif
 
   StopFetchTimer()
-  fetch_timer = timer_start(g:vimrc_update_timeout, (_) => {
-    if type(fetch_job) == v:t_job && job_status(fetch_job) ==# 'run'
-      job_stop(fetch_job)
-      if forced
-        g:VimrcWarn('git fetch 超时')
-      endif
+  # job_status() may synchronously deliver an exit callback for a fast job.
+  # Do not recreate a timeout that the callback has already cleaned up.
+  if !Running(fetch_job)
+    return
+  endif
+  fetch_timer = timer_start(NumberSetting('vimrc_update_timeout', 20000), (_) => {
+    if token == generation && Running(fetch_job)
+      fetch_timed_out = true
+      job_stop(fetch_job, 'kill')
     endif
   })
 enddef
 
-def OnPullExit(status: number)
+def OnPullExit(token: number, status: number)
+  if token != generation
+    return
+  endif
+  if pull_timer >= 0
+    timer_stop(pull_timer)
+    pull_timer = -1
+  endif
   pull_job = v:null
   if status != 0
-    g:VimrcWarn('git pull --ff-only 失败（退出码 ' .. status .. '），请手动处理')
+    g:vimrc_update_status = {checked: localtime(),
+      error: pull_timed_out ? 'pull-timeout' : 'pull-failed'}
+    g:VimrcWarn(pull_timed_out ? 'git pull 超时，已停止；可重试 :VimrcUpdate'
+      : 'git pull --ff-only 失败（退出码 ' .. status .. '）: ' .. trim(pull_error))
     return
   endif
   TouchStamp()
@@ -215,22 +268,33 @@ def OnPullExit(status: number)
 enddef
 
 def g:VimrcStopUpdateJobs()
+  # Invalidate late callbacks before stopping their processes.
+  generation += 1
   StopFetchTimer()
+  for timer in [pull_timer, schedule_timer]
+    if timer >= 0
+      timer_stop(timer)
+    endif
+  endfor
+  pull_timer = -1
+  schedule_timer = -1
   if type(fetch_job) == v:t_job && job_status(fetch_job) ==# 'run'
-    job_stop(fetch_job)
+    job_stop(fetch_job, 'kill')
   endif
   if type(pull_job) == v:t_job && job_status(pull_job) ==# 'run'
-    job_stop(pull_job)
+    job_stop(pull_job, 'kill')
   endif
   fetch_job = v:null
   pull_job = v:null
 enddef
 
 def g:VimrcReload()
-  # Drop live jobs before this Vim9 script is re-sourced; otherwise their
-  # callbacks would point at deleted functions.  Disconnect remote first for
-  # the same reason (its controller is also torn down on reload).
+  # Stop background work; controller modules retain callback ownership until
+  # Vim exits, so late process notifications remain safe after a reload.
   g:VimrcStopUpdateJobs()
+  if exists('*g:VimrcGrepStop') == 1
+    g:VimrcGrepStop()
+  endif
   if exists(':SimpleRemoteDisconnect') == 2
     try
       silent execute 'SimpleRemoteDisconnect'
@@ -245,28 +309,56 @@ def g:VimrcUpdate()
     g:VimrcWarn('配置目录不是 git 仓库: ' .. C.root)
     return
   endif
-  if type(pull_job) == v:t_job && job_status(pull_job) ==# 'run'
-    g:VimrcInfo('更新正在进行中')
+  if Running(pull_job) || Running(fetch_job)
+    g:VimrcInfo('配置检查或更新正在进行中')
     return
   endif
-  if !empty(GitLines(['status', '--porcelain']))
+  # A failed status command must never be mistaken for a clean checkout.
+  var changes = systemlist('git -C ' .. shellescape(C.root)
+    .. ' status --porcelain')
+  if v:shell_error != 0
+    g:VimrcWarn('无法读取配置仓库状态，更新已取消')
+    return
+  endif
+  if !empty(changes)
     g:VimrcWarn('配置仓库有未提交改动，请先处理后再运行 :VimrcUpdate')
     return
   endif
 
+  if !has('job')
+    g:VimrcWarn('缺少 +job，无法后台更新')
+    return
+  endif
+  generation += 1
+  const token = generation
+  pull_error = ''
+  pull_timed_out = false
   g:VimrcInfo('正在拉取配置更新…')
   pull_job = job_start(
     ['git', '-C', C.root, 'pull', '--ff-only', '--quiet'],
     {
       in_io: 'null',
       out_io: 'null',
-      err_io: 'null',
-      exit_cb: (_, status) => OnPullExit(status),
+      err_io: 'pipe',
+      err_mode: 'raw',
+      env: {GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never'},
+      err_cb: (_, message) => CaptureError(token, 'pull', message),
+      exit_cb: (_, status) => OnPullExit(token, status),
     })
   if type(pull_job) != v:t_job || job_status(pull_job) ==# 'fail'
     pull_job = v:null
     g:VimrcWarn('无法启动 git pull')
+    return
   endif
+  if !Running(pull_job)
+    return
+  endif
+  pull_timer = timer_start(NumberSetting('vimrc_update_pull_timeout', 120000), (_) => {
+    if token == generation && Running(pull_job)
+      pull_timed_out = true
+      job_stop(pull_job, 'kill')
+    endif
+  })
 enddef
 
 def g:VimrcUpdateCheck()
@@ -290,27 +382,42 @@ def g:VimrcUpdateStatusline(): string
   return icon .. behind
 enddef
 
-const STATUSLINE_SEGMENT = {
-  fn: 'g:VimrcUpdateStatusline',
-  hl: 'SimpleLineDiagWarn',
-}
-g:VimrcRegisterStatuslineSegment(STATUSLINE_SEGMENT)
-
 command! VimrcUpdate call g:VimrcUpdate()
 command! VimrcUpdateCheck call g:VimrcUpdateCheck()
+command! VimrcUpdateStop call g:VimrcStopUpdateJobs()
 command! VimrcReload call g:VimrcReload()
 
 def ScheduleCheck()
-  timer_start(g:vimrc_update_delay, (_) => Check(false))
+  if schedule_timer >= 0
+    timer_stop(schedule_timer)
+  endif
+  const token = generation
+  schedule_timer = timer_start(NumberSetting('vimrc_update_delay', 800), (_) => {
+    schedule_timer = -1
+    if token == generation
+      Check(false)
+    endif
+  })
 enddef
 
-augroup vimrc_update
-  autocmd!
-  if g:vimrc_update_check
-    autocmd VimEnter * ++once call ScheduleCheck()
+def g:VimrcConfigureUpdates()
+  g:VimrcStopUpdateJobs()
+  C = g:vimrc_context
+  g:VimrcRegisterStatuslineSegment({
+    fn: 'g:VimrcUpdateStatusline',
+    hl: 'SimpleLineDiagWarn',
+  })
+  augroup vimrc_update
+    autocmd!
+    autocmd VimLeavePre * call g:VimrcStopUpdateJobs()
+    if get(g:, 'vimrc_update_check', 1) && $VIMRC_SKIP_UPDATE_CHECK !=# '1'
+      autocmd VimEnter * ++once call ScheduleCheck()
+    endif
+  augroup END
+  if get(g:, 'vimrc_update_check', 1) && $VIMRC_SKIP_UPDATE_CHECK !=# '1'
+        && v:vim_did_enter
+    ScheduleCheck()
   endif
-augroup END
+enddef
 
-if g:vimrc_update_check && v:vim_did_enter
-  ScheduleCheck()
-endif
+g:VimrcConfigureUpdates()

@@ -1,5 +1,8 @@
 vim9script
 
+var load_started = reltime()
+g:vimrc_load_timings = []
+
 # Vim 9.1 is the common baseline for this configuration and the simple*
 # workbench.  Stop before loading modules that use newer options.
 if v:version < 901
@@ -92,7 +95,7 @@ g:vimrc_context = {
   plugin_home: PLUGIN_HOME,
   local_before: LOCAL_BEFORE,
   local_after: LOCAL_AFTER,
-  plugins_enabled: get(g:, 'vimrc_skip_plugins', 0) == 0
+  plugins_enabled: !get(g:, 'vimrc_skip_plugins', 0)
         \ && $VIMRC_SKIP_PLUGINS !=# '1',
   plugins_ready: false,
 }
@@ -106,10 +109,12 @@ for module in [
   'compat.vim',
   'health.vim',
   'workflow.vim',
+  'search.vim',
   'remote.vim',
   'mappings.vim',
   'update.vim',
 ]
+  var module_started = reltime()
   # bootstrap.vim owns live job/timer callbacks.  Re-sourcing that Vim9 script
   # would delete functions still on a callback stack, so reload only its
   # autocmd wiring once the controller has been initialized.  remote.vim has
@@ -121,9 +126,19 @@ for module in [
   elseif module ==# 'remote.vim'
         && exists('*g:VimrcConfigureRemote') == 1
     execute 'call g:VimrcConfigureRemote()'
+  elseif module ==# 'search.vim'
+        && exists('*g:VimrcConfigureSearch') == 1
+    execute 'call g:VimrcConfigureSearch()'
+  elseif module ==# 'update.vim'
+        && exists('*g:VimrcConfigureUpdates') == 1
+    execute 'call g:VimrcConfigureUpdates()'
   else
     execute 'source ' .. fnameescape(ROOT .. '/config/' .. module)
   endif
+  add(g:vimrc_load_timings, {
+    module: module,
+    ms: reltimefloat(reltime(module_started)) * 1000.0,
+  })
 endfor
 
 # Host-specific settings stay outside version control and intentionally run
@@ -131,3 +146,5 @@ endfor
 if filereadable(LOCAL_AFTER)
   execute 'source ' .. fnameescape(LOCAL_AFTER)
 endif
+
+g:vimrc_load_ms = reltimefloat(reltime(load_started)) * 1000.0

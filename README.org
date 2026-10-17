@@ -16,8 +16,9 @@
     ├── plugins.vim    插件配置与 SimplePlug 清单
     ├── behavior.vim   FileType、缩进规则、尾随空白与核心自动命令
     ├── compat.vim     插件兼容层（侧栏 statusline、补全 Enter）
-    ├── health.vim     :VimrcHealth 环境健康检查
+    ├── health.vim     健康检查、可复制报告、模块加载耗时
     ├── workflow.vim   大文件保护、项目根目录、quickfix 工作流
+    ├── search.vim     原生异步项目搜索、取消与 quickfix 结果隔离
     ├── remote.vim     SimpleRemote 控制器的热重载入口
     ├── mappings.vim   所有真实键位与 SimpleWhichKey 描述
     └── update.vim     配置仓库更新检查（只读 fetch，拉取需显式执行）
@@ -36,10 +37,12 @@
 - 可恢复：启用 swap、write-backup 和 persistent undo，状态统一放在 XDG state。
 - 项目友好：自动读取 =.editorconfig=，并能从当前文件向上发现工作区根目录
   （=.git= / =Cargo.toml= / =CMakeLists.txt= / =compile_commands.json= 等）。
-- 大文件可控：超过 5 MiB 自动关闭当前 buffer 的高成本显示和恢复特性。
+- 大文件可控：按字节数、行数和长行检测，支持手动开关；分屏各自保存并恢复显示选项。
+- 离线也能工作：无插件时仍有项目根目录、异步 ripgrep 搜索和 quickfix 导航。
+- 默认值可覆盖：=.vimrc.before= 中的插件设置、主题和图标选择在重载后继续生效。
 - 单一键位来源：插件默认映射尽量关闭，真实 mapping 与 SimpleWhichKey 描述放在
   一起；没写描述的键位，面板直接从 mapping 的 rhs 里读。
-- 可验证：同时提供空 HOME 核心测试和本机完整插件栈测试。
+- 可验证：提供空 HOME 离线回归、本机完整插件栈测试和 GitHub Actions 自动检查。
 
 * 要求
 
@@ -49,21 +52,25 @@
 - 必需特性：=+vim9script=、=+job=、=+channel=、=+timers=、
   =+popupwin=、=+textprop=、=+persistent_undo=。
 - Git：插件安装、更新及 SimpleGit。
+- ripgrep (=rg=)：原生 =:VimrcGrep= 搜索；未安装时其他核心编辑能力仍可使用。
 - Bash 与可访问 GitHub 的网络：首次自动配置需要。
 - Nerd Font 可选；当前 UI 默认使用 Nerd Font 图标。
 
-执行 =:VimrcHealth= 可以检查当前环境。
+执行 =:VimrcHealth= 可以检查当前环境；=:VimrcHealth!= 打开可搜索、复制的报告。
 
 ** 构建插件
 
-八个 =simple*= 插件包含 Rust 后端。自动 bootstrap 会直接调用各仓库自己的
+部分 =simple*= 插件包含 Rust 后端。自动 bootstrap 会直接调用各仓库自己的
 =install.sh=，因此需要：
 
 - Bash
-- Rust/Cargo 满足插件当前的 MSRV（SimplePlug 当前要求 1.88 或更新版本）
+- Rust/Cargo 满足各插件 =Cargo.toml= 声明的最低版本
 - 各插件安装脚本所需的系统开发库
 
 不构建插件也不影响核心模式。
+
+=./utils/deps.sh= 检查核心依赖；准备构建插件时使用
+=./utils/deps.sh --build=，它会严格检查 Cargo 和 Rust 是否可运行。
 
 * 安装
 
@@ -79,6 +86,7 @@
 - 安全备份已有 =~/.vimrc=；
 - 创建绝对符号链接；
 - 重复执行时保持幂等；
+- 同一 HOME 的并发安装互斥，失败时恢复旧配置并保留外部新改动；
 - 不调用 git、cargo、Vim、sudo 或包管理器。
 
 预览操作而不写入：
@@ -108,6 +116,11 @@ VimEnter
 bootstrap 期间核心编辑能力已经可用。失败不会留下半成品，也不会退出 Vim；可用
 =:VimrcBootstrapStatus= 查看最近日志，修复网络或 Rust 环境后执行
 =:VimrcBootstrapRetry=。=:VimrcBootstrapStop= 可停止仍在运行的 bootstrap。
+停止会同时终止这次下载或构建的子进程。目标级锁防止两个 Vim 同时替换管理器。
+
+正常中断会释放锁。若进程被 =SIGKILL= 强制杀死，先确认对应安装/构建进程已结束，
+再移除遗留的 =~/.vimrc.install.lock= 或插件目录下 =.simpleplug.bootstrap.lock=
+后重试；安装器不会自动抢占一个可能仍在使用的锁。
 
 ** 3. 可选：同时安装全局 SimpleCC 配置入口
 
@@ -186,6 +199,15 @@ let g:vimrc_update_timeout = 10000  " fetch 超时（毫秒），默认 20000
 新增但缺失的插件会由 SimplePlug 自动补装，已有插件的日常完整更新仍由
 =:PlugUpdate= 显式触发。
 
+=:VimrcUpdateStop= 取消当前 fetch/pull 及待启动的定时检查。fetch 和 pull 互斥；
+网络操作不会弹出凭据输入，失败会显示原因。fetch 默认 20 秒超时，pull 默认
+120 秒超时（=g:vimrc_update_pull_timeout=，毫秒）。工作区状态读取失败或存在
+未提交改动时，=:VimrcUpdate= 会停止，成功时仍只允许 =--ff-only=。
+
+重复 =:source= 或 =:VimrcReload= 会取消这些任务；异步控制器保留函数生命周期，
+旧任务的退出和输出不会污染新任务。修改 =bootstrap.vim=、=search.vim= 或
+=update.vim= 控制器代码后需要重启 Vim，普通配置和键位仍可直接重载。
+
 * 安全与状态
 
 Vim 状态默认写入：
@@ -240,6 +262,10 @@ g:simpleplug_auto_install = 0
 vim9script
 g:vimrc_plugin_home = '/data/vim/plugged'
 g:simplecc_semantic_tokens = 1
+g:simplefinder_max_results = 600
+g:simpletree_width = 32
+g:vimrc_colorscheme = 'habamax'
+g:vimrc_background = 'dark'
 #+end_src
 
 普通机器专属设置放在 =~/.vimrc.local=，它在所有共享模块之后加载，例如：
@@ -254,11 +280,16 @@ set ambiwidth=double
 #+begin_src vim
 g:simpleeditorconfig_enable = 0   # 关闭本地/远端 EditorConfig
 g:simpleedit_yank_highlight = 0   # 不高亮刚复制的文本
-g:vimrc_large_file_bytes = 0      # 关闭大文件模式（默认 5 MiB）
+g:vimrc_large_file_bytes = 0      # 关闭自动大文件检测，仍可手动 on
 g:vimrc_root_markers = ['.git']   # 自定义项目根标记
+g:vimrc_whitespace_highlight = 0  # 关闭尾随空白提示
 #+end_src
 
 为防止刚打开的项目执行未信任配置，默认启用 =nomodeline= 和 =noexrc=。
+
+=:StripWhitespace= 默认处理整个文件，也接受 =:10,30StripWhitespace= 或可视范围。
+Markdown 中具有硬换行语义的尾部空格会保留；=:StripWhitespace!= 可显式全部清除。
+操作保留视图、搜索模式和寄存器，不在保存时自动修改文件。
 
 如果确实信任所有会打开的项目，可以显式恢复 SimpleCC 的项目优先发现：
 
@@ -415,7 +446,9 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 | =<leader>fS= | 保存所有文件 |
 | =<leader>ve= / =vr= | 编辑 / 重载配置 |
 | =<leader>vh= | 运行 =:VimrcHealth= |
+| =<leader>vH= / =vp= | 打开健康报告 / 配置加载耗时 |
 | =<leader>vc= / =vu= | 检查配置更新 / 拉取配置更新 |
+| =<leader>vs= / =vl= | 取消配置更新 / 查看大文件状态 |
 | =<leader>h= | 清除搜索高亮 |
 | =<leader>cw= | 清理当前 buffer 尾随空白 |
 | =<leader>fd= | 当前窗口切换到项目根目录 |
@@ -437,12 +470,59 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 | =<leader>fb= / =bb= | 查找 buffer |
 | =<leader>fg= / =st= | 实时全文搜索 |
 | =<leader>fw= / =sw= | 搜索光标词或可视选择 |
+| =<leader>sq= / =sx= | 原生异步项目搜索 / 停止搜索 |
 | =<leader>e= / =ft= / =F3= | 文件树 |
 | =<leader>fT= | 在文件树中定位当前文件 |
 
 =:VimrcRoot= 使用 =lcd=，只改变当前窗口目录；=:VimrcRoot!= 使用全局 =cd=。
-=:VimrcLargeFile= 显示当前 buffer 是否进入大文件模式以及实际阈值。
-进入大文件模式时 SimpleLine 右侧还会显示 =BIG <size>=。
+也可以传入目录，如 =:VimrcRoot ~/src/project=。未命名 buffer 使用当前目录，
+新文件的父目录尚未创建时继续向上查找；Git worktree 的 =.git= 文件也能识别。
+=:QFToggle= / =:LLToggle= 默认保留编辑窗口焦点，加 =!= 则进入结果列表。
+
+*** 原生异步搜索
+
+#+begin_example
+:VimrcGrep TODO|FIXME
+:VimrcGrep! literal.text
+:VimrcGrepWord
+:VimrcGrepStop
+:VimrcGrepStatus
+#+end_example
+
+普通形式使用 ripgrep 正则与 smart-case，=!= 使用字面量。结果以匹配行为单位，
+跳转到这一行第一个匹配的字节列；文件名中的空格、冒号及 Unicode 均可处理。
+搜索读取磁盘内容，未保存的 buffer 修改需要先保存。搜索不会改变 cwd，完成后保留
+编辑焦点，也不会覆盖后来由编译器/LSP 创建的 quickfix 列表。
+
+默认尊重 ignore 规则、搜索隐藏文件并排除版本库及 =node_modules/target= 目录；
+以 argv 传参，不执行搜索文本中的 shell 字符，也不加载用户的 ripgrep 配置文件。
+默认最多 2000 条结果、15 秒；分别用 =g:vimrc_grep_max_results= 和
+=g:vimrc_grep_timeout= 调整。=g:vimrc_grep_open=0= 禁止完成后自动打开列表。
+另外限制单条 JSON 输出为 1 MiB、总输出为 16 MiB；达到限制会停止并保留已有结果。
+非 UTF-8 结果会明确计数并跳过，虚拟远端工作区应使用 SimpleFinder / SimpleRemote。
+
+SimpleFinder 就绪时原有交互式搜索键位继续使用它；插件未就绪时
+=<leader>fg/fw/sg/sw= 自动提供以上原生搜索入口。=<leader>sq= 始终可用。
+
+*** 可恢复的大文件模式
+
+默认任一阈值达到时启用：5 MiB、100000 行或单行 20000 字节。可在前置配置中调整：
+
+#+begin_src vim
+g:vimrc_large_file_bytes = 5 * 1024 * 1024
+g:vimrc_large_file_lines = 100000
+g:vimrc_large_file_line_bytes = 20000
+#+end_src
+
+字节阈值设为 0 关闭全部自动检测；行数/长行阈值的 0 只关闭该项。长行初读最多
+抽查首尾合计 10000 行，未抽到的长行在光标停留时补查；编辑时只检查尺寸、行数
+和当前行，不逐键遍历全文。大文件状态触发后保持，防止阈值附近反复启停。
+
+=:VimrcLargeFile= 显示原因、策略和尺寸；=on= 强制开启，=off= 手动关闭，=auto=
+恢复自动检测并重新判断。重读文件也会重新判断。SimpleLine 右侧显示 =BIG <size>=。
+每个分屏/标签页保存自己的显示设置；退出保护时恢复原值，包括用户原本关闭的
+undo/swap，避免把其他窗口或后续普通文件一起降级。Tree-sitter 使用其正式的
+buffer 局部禁用标记，不全局停止其他 buffer 的 daemon。
 
 ** LSP
 
@@ -560,6 +640,7 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 检查内容包括：
 
 - 安装器 Bash 语法、dry-run、备份、幂等和失败事务回滚；
+- 安装/bootstrap 并发锁、中断后子进程清理和外部修改保护；
 - =simplecc.json= JSON 语法；
 - 空 HOME、无插件 Vim 启动；
 - 无效 HOME/XDG 以及 state 不可写时的 fail-closed 行为；
@@ -567,6 +648,11 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 - 前置/后置本机配置和自定义 leader；
 - FileType 局部设置互不泄漏；
 - 项目根目录、quickfix 开关和大文件自动保护；
+- 多窗口/跨标签页大文件恢复、行数/长行阈值、内存增长和手动策略；
+- Markdown 硬换行、范围清理、用户映射所有权与带逗号/空格的恢复目录；
+- 真实 ripgrep 搜索、Unicode、结果上限、超时/取消和 quickfix 所有权；
+- 配置更新任务的超时/取消、迟到输出、热重载和退出清理；
+- 健康报告、模块加载耗时和重复打开报告；
 - 配置连续 source 两次；
 - simpleremote/2 agent 字节协议、错误码、权限、符号链接和长文件名；
   （传输与端到端集成测试由 beamiter/simpleremote 仓库自带）
@@ -582,6 +668,8 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 
 #+begin_example
 :VimrcHealth
+:VimrcHealth!
+:VimrcProfile
 :VimrcUpdateCheck
 :PlugStatus
 :SimpleLineHealth
@@ -599,6 +687,14 @@ filetypes、rootPatterns、priority 或 initializationOptions 后使用
 :TsHlStatus
 :SimpleCC
 #+end_example
+
+=:VimrcProfile= 显示最近一次配置加载总耗时和逐模块耗时，按耗时排序。
+它包含前置/后置本机配置，*不包含* 后台插件构建、LSP 启动或完整 Vim 启动时间。
+需要完整启动跟踪时使用 =vim --startuptime startup.log=。
+
+GitHub Actions 在 =master= push 和 PR 时执行默认离线检查。新增的 Vim 回归套件
+失败时会输出详细日志；=--full= 仍要求本机真实插件和后端已经安装，不会为测试
+自动下载它们。
 
 如果 CJK 字符需要双宽单元格，可在 =~/.vimrc.local= 中使用
 =set ambiwidth=double=。若 Nerd Font 图标仍错位，可同时关闭图标：

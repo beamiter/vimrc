@@ -1,0 +1,30 @@
+name: Offline configuration checks
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vimrc-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y vim-nox shellcheck jq ripgrep
+      - name: Check required Vim features
+        run: ./utils/deps.sh
+      - name: Run offline smoke tests
+        run: ./utils/check.sh

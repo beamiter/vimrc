@@ -25,6 +25,13 @@ def g:VimrcHealth()
 
   echomsg 'vimrc health — ' .. C.root
 
+  HealthLine(v:version >= 901 ? 'ok' : 'fail', 'Vim 9.1+', v:progpath)
+  failures += v:version >= 901 ? 0 : 1
+  HealthLine('ok', 'config load', printf('%.2f ms / %d modules',
+    get(g:, 'vimrc_load_ms', 0.0), len(get(g:, 'vimrc_load_timings', []))))
+  HealthLine('ok', 'colorscheme', get(g:, 'colors_name', 'default')
+    .. ' / ' .. &background .. (&termguicolors ? ' / truecolor' : ' / terminal palette'))
+
   var features = [
     'vim9script',
     'job',
@@ -65,7 +72,7 @@ def g:VimrcHealth()
     HealthLine('ok', 'ambiwidth', &ambiwidth)
   endif
 
-  var editorconfig_enabled = get(g:, 'simpleeditorconfig_enable', 1) != 0
+  var editorconfig_enabled = !!get(g:, 'simpleeditorconfig_enable', 1)
   var editorconfig_ok = !editorconfig_enabled
         \ || exists(':SimpleEditorConfigReload') == 2
   HealthLine(
@@ -74,7 +81,7 @@ def g:VimrcHealth()
     editorconfig_enabled ? 'local + SimpleRemote' : 'disabled')
   warnings += editorconfig_ok ? 0 : 1
 
-  var hlyank_enabled = get(g:, 'simpleedit_yank_highlight', 1) != 0
+  var hlyank_enabled = !!get(g:, 'simpleedit_yank_highlight', 1)
   var hlyank_ok = !hlyank_enabled || exists(':SimpleEditClearYank') == 2
   HealthLine(
     hlyank_ok ? (hlyank_enabled ? 'ok' : 'skip') : 'warn',
@@ -164,12 +171,27 @@ def g:VimrcHealth()
   HealthLine(clipboard_ok ? 'ok' : 'warn', 'clipboard provider')
   warnings += clipboard_ok ? 0 : 1
 
-  var lsp_install_is_explicit = get(g:, 'simplecc_auto_install', 1) == 0
+  var lsp_install_is_explicit = !get(g:, 'simplecc_auto_install', 1)
   HealthLine(
         lsp_install_is_explicit ? 'ok' : 'warn',
         'language-server install',
         lsp_install_is_explicit ? 'explicit' : 'automatic')
   warnings += lsp_install_is_explicit ? 0 : 1
+
+  HealthLine('ok', 'project root', g:VimrcProjectRoot())
+  var large = get(b:, 'vimrc_large_file', 0)
+  HealthLine(large ? 'skip' : 'ok', 'large-file protection',
+    large ? 'active — :VimrcLargeFile 查看 / on|off|auto 调整' : 'normal buffer')
+  var grep_state = get(g:, 'vimrc_grep_state', {})
+  HealthLine(executable('rg') ? 'ok' : 'warn', 'native async search',
+    get(grep_state, 'phase', 'idle') .. ' — :VimrcGrep / :VimrcGrepStop')
+  var update_state = get(g:, 'vimrc_update_status', {})
+  if type(update_state) == v:t_dict && has_key(update_state, 'error')
+    HealthLine('warn', 'config update', update_state.error .. ' — :VimrcUpdateCheck')
+    warnings += 1
+  else
+    HealthLine('ok', 'config update', 'asynchronous; :VimrcUpdateStop 可取消')
+  endif
 
   g:vimrc_health_last = {fail: failures, warn: warnings}
   echomsg printf(
@@ -178,4 +200,76 @@ def g:VimrcHealth()
         warnings)
 enddef
 
-command! VimrcHealth call g:VimrcHealth()
+def OpenReport(name: string, lines: list<string>)
+  var report_buffer = -1
+  for info in getbufinfo()
+    if getbufvar(info.bufnr, 'vimrc_report_name', '') ==# name
+      report_buffer = info.bufnr
+      break
+    endif
+  endfor
+  if report_buffer > 0
+    var windows = win_findbuf(report_buffer)
+    if !empty(windows)
+      win_gotoid(windows[0])
+    else
+      execute 'botright sbuffer ' .. report_buffer
+    endif
+    setlocal modifiable
+    silent! :%delete _
+  else
+    botright new
+    # A user's real file may have the same display name. Ownership is the
+    # buffer tag above; choose a fresh label without reusing that real file.
+    var names = getbufinfo()->mapnew((_, info) => info.name)
+    var display_name = name
+    var suffix = 1
+    while index(names, fnamemodify(display_name, ':p')) >= 0
+      display_name = name .. '-' .. suffix
+      suffix += 1
+    endwhile
+    execute 'file ' .. fnameescape(display_name)
+    b:vimrc_report_name = name
+  endif
+  setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
+  setlocal filetype=vimrcreport
+  setlocal nowrap nonumber norelativenumber nolist signcolumn=no
+  setlocal foldmethod=manual nofoldenable
+  setline(1, lines)
+  setlocal nomodified nomodifiable
+  nnoremap <buffer> <silent> q <Cmd>close<CR>
+enddef
+
+def g:VimrcHealthReport()
+  var lines = split(execute('call g:VimrcHealth()'), "\n")
+  OpenReport('[vimrc-health]', ['Vimrc health report — q closes this window', ''] + lines)
+enddef
+
+def g:VimrcProfile()
+  var timings = copy(get(g:, 'vimrc_load_timings', []))
+  var lines = [
+    'Vimrc load profile — q closes this window',
+    '',
+    printf('Last configuration load: %.2f ms', get(g:, 'vimrc_load_ms', 0.0)),
+    'Includes .vimrc.before/.vimrc.local; excludes later plugin jobs and Vim startup.',
+    'Use vim --startuptime startup.log for the complete editor startup trace.',
+    '',
+    printf('%-24s %10s', 'Module', 'ms'),
+  ]
+  for entry in sort(timings, (left, right) => left.ms == right.ms ? 0
+        : left.ms < right.ms ? 1 : -1)
+    add(lines, printf('%-24s %10.3f', entry.module, entry.ms))
+  endfor
+  OpenReport('[vimrc-profile]', lines)
+enddef
+
+def ShowHealth(report: bool)
+  if report
+    g:VimrcHealthReport()
+  else
+    g:VimrcHealth()
+  endif
+enddef
+
+command! -bang VimrcHealth call ShowHealth(<bang>0 ? true : false)
+command! VimrcProfile call g:VimrcProfile()

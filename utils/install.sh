@@ -85,12 +85,11 @@ esac
   printf 'error: HOME must be an existing directory\n' >&2
   exit 1
 }
-HOME="$(cd -- "$HOME" && pwd -P)"
-[[ "$HOME" != "/" ]] || {
+install_home="$(cd -- "$HOME" && pwd -P)"
+[[ "$install_home" != "/" ]] || {
   printf 'error: HOME must not resolve to the filesystem root\n' >&2
   exit 1
 }
-export HOME
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 repo_root="$(cd -- "$script_dir/.." && pwd -P)"
@@ -99,10 +98,10 @@ repo_root="$(cd -- "$script_dir/.." && pwd -P)"
 source -- "$script_dir/path-utils.sh"
 
 sources=("$repo_root/.vimrc")
-targets=("$HOME/.vimrc")
+targets=("$install_home/.vimrc")
 
 if [[ "$profile" == "full" ]]; then
-  config_home="${XDG_CONFIG_HOME:-"$HOME/.config"}"
+  config_home="${XDG_CONFIG_HOME:-"$install_home/.config"}"
   [[ "$config_home" == /* ]] || {
     printf 'error: XDG_CONFIG_HOME must be an absolute path\n' >&2
     exit 1
@@ -131,6 +130,9 @@ created_targets=()
 created_sources=()
 backup_paths=()
 transaction_committed=0
+install_lock="$install_home/.vimrc.install.lock"
+lock_owned=0
+bootstrap_pid=""
 
 unique_backup_path() {
   local target="$1"
@@ -156,7 +158,12 @@ rollback_links() {
       rm -- "$target"
     fi
     if [[ -n "$backup" && ( -e "$backup" || -L "$backup" ) ]]; then
-      mv -- "$backup" "$target"
+      if [[ ! -e "$target" && ! -L "$target" ]]; then
+        mv -- "$backup" "$target"
+      else
+        printf 'warning: target changed during installation; backup kept at %s\n' \
+          "$backup" >&2
+      fi
     fi
   done
 }
@@ -185,23 +192,21 @@ install_link() {
   mkdir -p -- "$parent"
   if [[ -e "$target" || -L "$target" ]]; then
     backup="$(unique_backup_path "$target")"
-    mv -- "$target" "$backup"
   fi
 
-  # Register the mutation before any logging or linking can fail so the EXIT
+  # Register the mutation before moving the target, logging or linking so the EXIT
   # transaction always knows how to restore it.
   created_targets+=("$target")
   created_sources+=("$source_path")
   backup_paths+=("$backup")
 
   if [[ -n "$backup" ]]; then
+    mv -- "$target" "$backup"
     log "BACKUP" "$target -> $backup"
   fi
 
-  if ! ln -s -- "$source_path" "$target"; then
-    if [[ -n "$backup" && ( -e "$backup" || -L "$backup" ) ]]; then
-      mv -- "$backup" "$target"
-    fi
+  if [[ -e "$target" || -L "$target" ]] \
+      || ! ln -s -- "$source_path" "$target"; then
     printf 'error: failed to link %s\n' "$target" >&2
     return 1
   fi
@@ -210,27 +215,52 @@ install_link() {
 }
 
 bootstrap_simpleplug_fn() {
-  local plugin_target="$HOME/.vim/plugged/simpleplug"
+  local plugin_target="$install_home/.vim/plugged/simpleplug"
 
   if ((dry_run)); then
     log "DRY-RUN" "fetch and build the latest SimplePlug"
     log "DRY-RUN" "transactionally activate $plugin_target"
     return
   fi
-  "$script_dir/bootstrap-simpleplug.sh" --force "$plugin_target"
+  "$script_dir/bootstrap-simpleplug.sh" --force "$plugin_target" &
+  bootstrap_pid=$!
+  wait "$bootstrap_pid"
+  bootstrap_pid=""
 }
 
 cleanup_transaction() {
   local status=$?
+  trap '' INT TERM HUP
   set +e
 
+  if [[ -n "$bootstrap_pid" ]]; then
+    kill -TERM "$bootstrap_pid" 2>/dev/null
+    wait "$bootstrap_pid" 2>/dev/null
+  fi
   if ((status != 0 && transaction_committed == 0)); then
     rollback_links
+  fi
+  if ((lock_owned)); then
+    rm -f -- "$install_lock/pid"
+    rmdir -- "$install_lock"
   fi
   return "$status"
 }
 
 trap cleanup_transaction EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+trap 'exit 129' HUP
+
+if ((dry_run == 0)); then
+  if ! mkdir -- "$install_lock" 2>/dev/null; then
+    printf 'error: installation lock exists or cannot be created: %s\n' "$install_lock" >&2
+    printf 'Ensure no installer is running before removing a stale lock.\n' >&2
+    exit 1
+  fi
+  lock_owned=1
+  printf '%s\n' "$$" >"$install_lock/pid"
+fi
 
 for index in "${!sources[@]}"; do
   install_link "${sources[index]}" "${targets[index]}"
@@ -247,7 +277,6 @@ else
 fi
 
 transaction_committed=1
-trap - EXIT
 
 if ((bootstrap_simpleplug)); then
   printf '\nLatest SimplePlug installed. Open Vim; remaining plugins will install automatically.\n'
