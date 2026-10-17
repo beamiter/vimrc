@@ -136,12 +136,14 @@ def OnOutput(token: number, message: string)
   if token != sequence || !empty(current.reason)
     return
   endif
+  # Vim may coalesce an entire fast rg response into one raw callback. Keep
+  # complete records within the remaining budget before stopping; rejecting
+  # the whole callback would discard even the first results on a fast runner.
+  var remaining = max([0, 16 * 1024 * 1024 - current.bytes])
+  var overflow = strlen(message) > remaining
   current.bytes += strlen(message)
-  if current.bytes > 16 * 1024 * 1024
-    StopProcess('output-size-limit')
-    return
-  endif
-  var records = split(current.pending .. message, "\n", true)
+  var accepted = overflow ? strpart(message, 0, remaining) : message
+  var records = split(current.pending .. accepted, "\n", true)
   current.pending = remove(records, -1)
   for record in records
     ReadRecord(record)
@@ -149,8 +151,12 @@ def OnOutput(token: number, message: string)
       break
     endif
   endfor
-  if strlen(current.pending) > 1024 * 1024
+  if !empty(current.reason)
+    return
+  elseif strlen(current.pending) > 1024 * 1024
     StopProcess('record-size-limit')
+  elseif overflow
+    StopProcess('output-size-limit')
   endif
 enddef
 

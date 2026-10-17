@@ -231,6 +231,38 @@ assert_match('fixture error:', state.stderr)
 assert_true(strlen(state.stderr) <= 2048)
 
 $VIMRC_RG_FIXTURE = 'slow'
+# Raw channel delivery can coalesce more than the total output budget into
+# one callback, regardless of rg version or OS pipe write sizes.  Feed that
+# case directly to the private callback while a controlled job owns state;
+# a process fixture alone cannot guarantee a particular callback boundary.
+var search_script = getscriptinfo({name: '/config/search\.vim$'})[0]
+var search_functions = getscriptinfo({sid: search_script.sid})[0].functions
+var output_callback = filter(copy(search_functions),
+  (_, name) => name =~# '_OnOutput$')[0]
+var coalesced_record = json_encode({
+  type: 'match',
+  data: {
+    path: {text: SOURCE},
+    lines: {text: 'COALESCED:' .. repeat('c', 3000) .. "\n"},
+    line_number: 1,
+    submatches: [{start: 0}],
+  },
+}) .. "\n"
+var coalesced_output = repeat(coalesced_record, 6000)
+assert_true(strlen(coalesced_output) > 16 * 1024 * 1024)
+g:VimrcGrep('coalesced callback fixture')
+var search_token = getscriptinfo({sid: search_script.sid})[0].variables.sequence
+call(output_callback, [search_token, coalesced_output])
+WaitForSearch()
+state = g:vimrc_grep_state
+assert_equal('limited', state.phase)
+assert_equal('output-size-limit', state.reason)
+assert_true(state.count > 0, 'oversized callbacks must retain complete records within the budget')
+assert_true(state.count < 6000)
+assert_equal('COALESCED:' .. repeat('c', 490), Results()[0].text)
+assert_equal('', state.pending, 'truncated final JSON must be discarded without a parse error')
+coalesced_output = ''
+
 g:vimrc_grep_timeout = 30
 state = Search('fixture')
 assert_equal('timeout', state.phase)
