@@ -307,6 +307,10 @@ enddef
 # ============================================================================
 # 自动命令
 # ============================================================================
+# Plugins may detect the filetype while vimrc is still loading. Define the
+# highlight group before installing handlers or configuring that buffer.
+ApplyHighlights()
+
 augroup vimrc_core
   autocmd!
   autocmd FileType * call g:VimrcConfigureFiletype()
@@ -331,4 +335,3 @@ augroup END
 if &filetype !=# ''
   g:VimrcConfigureFiletype()
 endif
-ApplyHighlights()

@@ -91,10 +91,12 @@ VIMRC_SKIP_PLUGINS=1 \
   -S "$repo_root/test/vimrc_invalid_xdg.vim"
 printf 'vimrc invalid-XDG smoke: OK\n'
 
+# Reproduce plugins detecting a filetype before behavior.vim defines its
+# whitespace highlight group; this must also work on the first vimrc load.
 HOME="$tmp/home" \
 XDG_STATE_HOME="$tmp/state" \
 VIMRC_SKIP_PLUGINS=1 \
-  vim -Nu "$repo_root/.vimrc" -n -es \
+  vim --cmd 'setlocal filetype=toml' -Nu "$repo_root/.vimrc" -n -es \
   -S "$repo_root/test/vimrc_smoke.vim"
 printf 'vimrc core smoke: OK\n'
 
