@@ -119,6 +119,9 @@ command! SimpleCCDiagnostics call Called('diagnostics')
 command! SimpleCCNextDiag call Called('next-diagnostic')
 command! SimpleCCPrevDiag call Called('previous-diagnostic')
 command! SimpleCCOutline call Called('outline')
+command! SimpleCCCodeLens call Called('code-lens')
+command! SimpleCCCodeLensRun call Called('code-lens-run')
+command! SimpleCCInlayHints call Called('inlay-hints')
 command! SimpleGitStatus call Called('git-status')
 command! SimpleGitDiff call Called('git-diff')
 command! SimpleGitHunkPreview call Called('git-hunk')
@@ -126,7 +129,7 @@ command! SimpleMarkdown call Called('markdown')
 command! SimpleWhichKey call Called('keys')
 
 var capabilities = g:VimrcWorkbenchCapabilities()
-assert_equal(25, len(capabilities), 'Markdown preview is hidden outside Markdown')
+assert_equal(28, len(capabilities), 'Markdown preview is hidden outside Markdown')
 assert_equal(-1, index(capabilities, 'rename'), 'typed rename must not become a prompt')
 assert_true(index(capabilities, 'simple_rename') >= 0)
 assert_equal(['simple_git_status', 'simple_git_diff', 'simple_git_hunk'],
@@ -188,6 +191,11 @@ assert_equal('', Act('simple_next_diagnostic'))
 assert_equal('next-diagnostic', g:vimrc_workbench_called)
 assert_equal('', Act('simple_previous_diagnostic'))
 assert_equal('previous-diagnostic', g:vimrc_workbench_called)
+for [action, expected] in [['simple_code_lens', 'code-lens'],
+    ['simple_code_lens_run', 'code-lens-run'], ['simple_inlay_hints', 'inlay-hints']]
+  assert_equal('', Act(action))
+  assert_equal(expected, g:vimrc_workbench_called)
+endfor
 assert_equal('', Act('simple_rename'))
 assert_equal('rename-prompt', g:vimrc_workbench_called)
 assert_match('Unknown', Act("simple_files | let g:workbench_injected = 1"))
@@ -196,10 +204,19 @@ assert_false(exists('g:workbench_injected'))
 
 setlocal readonly
 assert_match('unavailable', Act('format'))
+assert_match('unavailable', Act('simple_code_lens_run'))
+assert_equal('', Act('simple_code_lens'))
+assert_equal('', Act('simple_inlay_hints'))
 assert_true(index(g:VimrcWorkbenchCapabilities(), 'hover') >= 0)
 setlocal noreadonly
+setlocal nomodifiable
+assert_match('unavailable', Act('simple_code_lens_run'))
+setlocal modifiable
 b:vimrc_large_file = 1
 assert_match('unavailable', Act('hover'))
+for action in ['simple_code_lens', 'simple_code_lens_run', 'simple_inlay_hints']
+  assert_match('unavailable', Act(action), 'large files do not start decoration work')
+endfor
 assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_files') >= 0)
 assert_true(g:VimrcWorkbenchState().large_file)
 b:vimrc_large_file = 0
@@ -284,6 +301,9 @@ assert_false(&modifiable)
 assert_false(&modified)
 assert_false(&swapfile)
 assert_false(&buflisted)
+for action in ['simple_code_lens', 'simple_code_lens_run', 'simple_inlay_hints']
+  assert_match('unavailable', Act(action), 'scratch reports never target source decorations')
+endfor
 assert_match('unavailable', Act('simple_tree_reveal'))
 assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_terminal_toggle') >= 0)
 assert_equal('', Act('simple_tree_toggle'))
@@ -297,6 +317,24 @@ assert_equal(source_window, win_getid())
 assert_equal(source_text, getline(1, '$'))
 assert_true(&modified)
 assert_equal('untouched-register', getreg('"'))
+
+# Protocol 6 alone cannot promise after-line text: it was first used for
+# popups. Only an authenticated bridge's explicit feature flag claims it.
+g:jterm_vim9_render_protocol = 6
+g:jterm_vim9_connected = true
+assert_equal('', Run('VimrcWorkbench'))
+assert_match('Virtual text: Vim compatibility view', join(getline(1, '$'), "\n"))
+close
+g:jterm_vim9_virtual_text_after = true
+assert_equal('', Run('VimrcWorkbench'))
+assert_match('Virtual text: native after-line CodeLens and diagnostics; inline hints use Vim compatibility',
+  join(getline(1, '$'), "\n"))
+close
+g:jterm_vim9_connected = false
+assert_equal('', Run('VimrcWorkbench'))
+assert_match('Virtual text: Vim compatibility view', join(getline(1, '$'), "\n"))
+close
+unlet g:jterm_vim9_render_protocol g:jterm_vim9_virtual_text_after
 
 delete(PROJECT, 'rf')
 if !empty(v:errors)

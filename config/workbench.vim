@@ -17,6 +17,9 @@ const ACTIONS = [
   {id: 'simple_next_diagnostic', command: 'SimpleCCNextDiag', title: 'Go to next diagnostic', scope: 'code'},
   {id: 'simple_previous_diagnostic', command: 'SimpleCCPrevDiag', title: 'Go to previous diagnostic', scope: 'code'},
   {id: 'simple_outline', command: 'SimpleCCOutline', title: 'Show document symbols', scope: 'code'},
+  {id: 'simple_code_lens', command: 'SimpleCCCodeLens', title: 'Refresh CodeLens annotations', scope: 'code'},
+  {id: 'simple_code_lens_run', command: 'SimpleCCCodeLensRun', title: 'Run a CodeLens command', scope: 'write'},
+  {id: 'simple_inlay_hints', command: 'SimpleCCInlayHints', title: 'Toggle inline hints (Vim compatibility)', scope: 'code'},
   {id: 'simple_rename', command: 'SimpleCCRename', title: 'Rename symbol (Vim prompt)', scope: 'write'},
   {id: 'simple_code_action', command: 'SimpleCCAction', title: 'Choose code action', scope: 'write'},
   {id: 'simple_git_status', command: 'SimpleGitStatus', title: 'Show Git status', scope: 'any'},
@@ -234,6 +237,9 @@ def g:VimrcWorkbenchReport()
   var state = CaptureState()
   var render_protocol: any = get(g:, 'jterm_vim9_render_protocol', 0)
   var native_popups = state.native && type(render_protocol) == v:t_number && render_protocol >= 6
+  # This is an explicit, authenticated capability. Older protocol-6 bridges
+  # support popups but still fall back for every virtual text property.
+  var native_after = state.native && Flag('jterm_vim9_virtual_text_after', false)
   var capabilities = g:VimrcWorkbenchCapabilities()
   var origin = win_getid()
   var lines = [
@@ -242,6 +248,8 @@ def g:VimrcWorkbenchReport()
     'Integration: ' .. (Flag('vimrc_workbench_enable') ? 'enabled' : 'disabled'),
     'Editor: ' .. (state.native ? 'authenticated native Vim bridge' : 'ordinary Vim / bridge disconnected'),
     'Popups: ' .. (native_popups ? 'native text surfaces from opted-in plugins; complex popups use Vim compatibility'
+      : 'Vim compatibility view'),
+    'Virtual text: ' .. (native_after ? 'native after-line CodeLens and diagnostics; inline hints use Vim compatibility'
       : 'Vim compatibility view'),
     'Workspace: ' .. state.root,
     'Buffer: ' .. BoundedString(bufname(), 4096),
