@@ -6,6 +6,9 @@ const ACTIONS = [
   {id: 'simple_files', command: 'SimpleFinderFiles', title: 'Find project files', scope: 'any'},
   {id: 'simple_buffers', command: 'SimpleFinderBuffers', title: 'Find open buffers', scope: 'any'},
   {id: 'simple_grep', command: 'SimpleFinderIGrep', title: 'Search project text', scope: 'any'},
+  {id: 'simple_diagnostics', command: 'SimpleCCDiagnostics', title: 'Show buffer diagnostics', scope: 'code'},
+  {id: 'simple_next_diagnostic', command: 'SimpleCCNextDiag', title: 'Go to next diagnostic', scope: 'code'},
+  {id: 'simple_previous_diagnostic', command: 'SimpleCCPrevDiag', title: 'Go to previous diagnostic', scope: 'code'},
   {id: 'simple_outline', command: 'SimpleCCOutline', title: 'Show document symbols', scope: 'code'},
   {id: 'simple_rename', command: 'SimpleCCRename', title: 'Rename symbol (Vim prompt)', scope: 'write'},
   {id: 'simple_code_action', command: 'SimpleCCAction', title: 'Choose code action', scope: 'write'},
@@ -129,7 +132,7 @@ def CaptureState(): dict<any>
   }
 enddef
 
-# These three hooks are the optional jterm_core contract. They also work in
+# These hooks are the optional jterm_core contract. They also work in
 # ordinary Vim; an inherited JTERM_VIM9_ADDR alone never claims a connection.
 def g:VimrcWorkbenchCapabilities(): list<string>
   return copy(ACTIONS)->filter((_, entry) => Available(entry))
@@ -138,6 +141,20 @@ enddef
 
 def g:VimrcWorkbenchState(): dict<any>
   return Flag('vimrc_workbench_enable') ? CaptureState() : {}
+enddef
+
+# exists() deliberately avoids autoloading or starting a provider on read.
+def g:VimrcWorkbenchDiagnostics(): dict<any>
+  if !Flag('vimrc_workbench_enable') || !FileBuffer()
+        || !exists('*simplecc#DiagnosticSnapshot')
+    return {items: [], total: 0}
+  endif
+  try
+    var snapshot: any = call('simplecc#DiagnosticSnapshot', [bufnr()])
+    return type(snapshot) == v:t_dict ? snapshot : {items: [], total: 0}
+  catch
+    return {items: [], total: 0}
+  endtry
 enddef
 
 def g:VimrcWorkbenchAction(action: string)

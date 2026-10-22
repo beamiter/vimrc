@@ -309,11 +309,14 @@ SimpleCC、SimpleGit 或 SimpleMarkdown 命令，现有 =Space= leader 键位继
 面板打开时会读取当前窗口的工作区、Git 分支/变更数、SimpleCC 诊断数和
 SimpleRemote 连接。普通编辑时不额外开启工具栏或侧栏。诊断数量来自插件已发布的
 buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 Git 进程。
+=g:VimrcWorkbenchDiagnostics()= 只读取已加载 SimpleCC 的诊断快照，最多 256 条，
+返回当前 buffer 的 1-based UTF-8 字节位置，不修改 quickfix 或请求语言服务。
 提供者尚未报告时数字也是零；它不代表已经完成一次诊断或 Git 检查。
 
 | 原生动作 | 复用的命令 |
 |-
 | =simple_files= / =simple_buffers= / =simple_grep= | =SimpleFinderFiles= / =SimpleFinderBuffers= / =SimpleFinderIGrep= |
+| =simple_diagnostics= / =simple_next_diagnostic= / =simple_previous_diagnostic= | =SimpleCCDiagnostics= / =SimpleCCNextDiag= / =SimpleCCPrevDiag= |
 | =simple_outline= / =simple_rename= / =simple_code_action= | =SimpleCCOutline= / =SimpleCCRename= / =SimpleCCAction= |
 | =simple_git_status= / =simple_git_diff= / =simple_git_hunk= | =SimpleGitStatus= / =SimpleGitDiff= / =SimpleGitHunkPreview= |
 | =simple_markdown_preview= | =SimpleMarkdown=，仅在 Markdown buffer 提供 |
