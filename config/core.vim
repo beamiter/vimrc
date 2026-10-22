@@ -36,7 +36,9 @@ set relativenumber
 set cursorline
 set scrolloff=5
 set sidescrolloff=5
-set wrap
+if !g:VimrcNativeIde()
+  set wrap
+endif
 set display=lastline
 set laststatus=2
 set showtabline=2
@@ -46,11 +48,13 @@ set pumheight=12
 set pumwidth=20
 set ruler
 if exists('+signcolumn')
-  try
-    &signcolumn = 'auto:2'
-  catch
-    set signcolumn=yes
-  endtry
+  if !g:VimrcNativeIde()
+    try
+      &signcolumn = 'auto:2'
+    catch
+      set signcolumn=yes
+    endtry
+  endif
 endif
 set mouse=a
 set virtualedit=block

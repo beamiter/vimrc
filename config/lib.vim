@@ -6,6 +6,14 @@ vim9script
 # 跨模块复用的小型入口；只有真正的全局函数放在这里，模块内部逻辑保持
 # script-local。Vim9 重新 source 时会自动重定义，无需手动清理。
 
+# The bridge removes its startup token after authentication. Its loaded marker
+# therefore owns later :source operations; an inherited address alone is not
+# enough to turn an ordinary shell Vim into a native editor.
+def g:VimrcNativeIde(): bool
+  return !!get(g:, 'jterm_vim9_bridge_loaded', false)
+        || (!empty($JTERM_VIM9_ADDR) && !empty($JTERM_VIM9_TOKEN))
+enddef
+
 def g:VimrcWarn(message: string)
   echohl WarningMsg
   echomsg '[vimrc] ' .. message

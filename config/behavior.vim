@@ -81,13 +81,23 @@ endif
 # whitespace-only lines, a single trailing space, or a trailing tab are noise.
 const WHITESPACE_PATTERN = '\m[ \t]\+$'
 const MARKDOWN_WHITESPACE_PATTERN =
-      '\m^[ \t]\+$\|\S\zs\%([ \t]*\t \?\| \)$'
+      '\m^[ \t]\+$\|\S\@<=\([ \t]*\t \?\| \)$'
 
 def EditingBuffer(): bool
   # Remote files use acwrite; prompt, terminal and plugin buffers own their
   # formatting and window options and must never receive the editing baseline.
   return (&buftype ==# '' || &buftype ==# 'acwrite')
         && index(SIDEBAR_FILETYPES, &filetype) < 0
+enddef
+
+def ApplyNativeIdeView()
+  # Diff and plugin windows own their display and folds. Other unsupported
+  # views, including right-to-left text, keep Vim's compatibility rendering.
+  if !g:VimrcNativeIde() || &buftype !=# '' || !EditingBuffer() || &diff
+    return
+  endif
+  setlocal nowrap nospell nolist conceallevel=0 foldcolumn=0 nofoldenable
+  setlocal signcolumn=yes
 enddef
 
 def ApplyHighlights()
@@ -184,7 +194,7 @@ enddef
 
 def g:VimrcConfigureFiletype()
   ClearStaleSimpleccMaps()
-  if !EditingBuffer()
+  if !EditingBuffer() || (g:VimrcNativeIde() && &diff)
     ShowWhitespaceMatch()
     return
   endif
@@ -201,6 +211,7 @@ def g:VimrcConfigureFiletype()
   if exists('*g:VimrcApplyLargeFileMode')
     g:VimrcApplyLargeFileMode()
   endif
+  ApplyNativeIdeView()
   ShowWhitespaceMatch()
 enddef
 
@@ -320,6 +331,7 @@ augroup vimrc_core
   autocmd ColorScheme * call ApplyHighlights()
   autocmd InsertEnter * call ClearWhitespaceMatch()
   autocmd InsertLeave,BufWinEnter,WinEnter * call ShowWhitespaceMatch()
+  autocmd BufWinEnter,WinEnter * call ApplyNativeIdeView()
   autocmd BufWinLeave * call ClearWhitespaceMatch()
   autocmd User VimrcLargeFileChanged call RefreshLargeFileEditing()
   autocmd FileType help,man
@@ -334,4 +346,12 @@ augroup END
 
 if &filetype !=# ''
   g:VimrcConfigureFiletype()
+endif
+
+# A reload can happen with a sidebar focused or with ordinary files open in
+# other tabs. Reassert only the native file windows without changing focus.
+if g:VimrcNativeIde()
+  for window in getwininfo()
+    win_execute(window.winid, 'call ' .. expand('<SID>') .. 'ApplyNativeIdeView()')
+  endfor
 endif

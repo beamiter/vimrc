@@ -285,6 +285,18 @@ g:vimrc_root_markers = ['.git']   # 自定义项目根标记
 g:vimrc_whitespace_highlight = 0  # 关闭尾随空白提示
 #+end_src
 
+在 Anvil、Ember、Forge、Frost 的 Vim9 IDE 中，普通文件窗口自动使用
+=nowrap nospell nolist conceallevel=0 foldcolumn=0 nofoldenable= 和单列
+=signcolumn=yes=，让长行、诊断标记和滚动保持原生绘制。FileType、分屏、窗口切换
+和 =:VimrcReload= 后会重新应用；普通终端 Vim 的换行、提交信息拼写检查和双列
+signcolumn 偏好不变。diff 窗口保留自身显示和折叠，插件窗口及远端 acwrite 文件
+仍使用各自配置；RTL 不会被自动关闭。
+
+IDE 默认关闭 SimpleCC 的自动 inlay hints 与签名弹窗，保留补全、诊断、Git signs
+及手动 hover/minimap 等命令。若需要提示，可在 =~/.vimrc.before= 显式设置
+=g:simplecc_inlay_hints = 1= 或 =g:simplecc_signature_help = 1=；此类用户设置在
+重载后仍然生效。虚拟文字、弹窗等不支持的画面会暂时使用兼容绘制。
+
 为防止刚打开的项目执行未信任配置，默认启用 =nomodeline= 和 =noexrc=。
 
 =:StripWhitespace= 默认处理整个文件，也接受 =:10,30StripWhitespace= 或可视范围。
