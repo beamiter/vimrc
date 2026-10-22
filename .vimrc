@@ -111,6 +111,7 @@ for module in [
   'workflow.vim',
   'search.vim',
   'remote.vim',
+  'workbench.vim',
   'mappings.vim',
   'update.vim',
 ]

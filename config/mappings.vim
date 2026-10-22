@@ -17,6 +17,8 @@ nnoremap <silent> <leader>vu <Cmd>VimrcUpdate<CR>
 nnoremap <silent> <leader>vs <Cmd>VimrcUpdateStop<CR>
 nnoremap <silent> <leader>vp <Cmd>VimrcProfile<CR>
 nnoremap <silent> <leader>vH <Cmd>VimrcHealth!<CR>
+nnoremap <silent> <leader>vw <Cmd>VimrcWorkbench<CR>
+nnoremap <leader>va :VimrcAction<Space>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
 nnoremap <silent> <leader>ro <Cmd>SimpleRemote<CR>
@@ -444,6 +446,7 @@ if get(C, 'plugins_ready', false)
     },
     v: {
       name: '+vimrc',
+      a: 'workbench-action',
       c: 'check-update',
       e: 'edit-vimrc',
       h: 'health',
@@ -453,6 +456,7 @@ if get(C, 'plugins_ready', false)
       r: 'reload-vimrc',
       s: 'stop-update',
       u: 'update-vimrc',
+      w: 'workbench-context',
     },
     w: {
       name: '+window',

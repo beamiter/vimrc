@@ -20,6 +20,7 @@
     ├── workflow.vim   大文件保护、项目根目录、quickfix 工作流
     ├── search.vim     原生异步项目搜索、取消与 quickfix 结果隔离
     ├── remote.vim     SimpleRemote 控制器的热重载入口
+    ├── workbench.vim  simple* 原生动作、只读上下文与集成诊断
     ├── mappings.vim   所有真实键位与 SimpleWhichKey 描述
     └── update.vim     配置仓库更新检查（只读 fetch，拉取需显式执行）
 #+end_example
@@ -297,6 +298,61 @@ IDE 默认关闭 SimpleCC 的自动 inlay hints 与签名弹窗，保留补全�
 =g:simplecc_inlay_hints = 1= 或 =g:simplecc_signature_help = 1=；此类用户设置在
 重载后仍然生效。虚拟文字、弹窗等不支持的画面会暂时使用兼容绘制。
 
+** 四终端与 simple* 的共同工作台
+
+Anvil / Forge / Ember / Frost 的原生命令面板现在能直接调用这份配置里的
+=simple*= 工作流。在更新共享核心与终端后，打开 =Ctrl+Shift+P=，输入 =>simple=
+可以发现文件查找、实时 grep、outline、重命名、代码动作、Git、Markdown 和键位提示；
+也可以用 =>git=、=>markdown= 等词缩小范围。选择之后执行的仍是对应的 SimpleFinder、
+SimpleCC、SimpleGit 或 SimpleMarkdown 命令，现有 =Space= leader 键位继续有效。
+
+面板打开时会读取当前窗口的工作区、Git 分支/变更数、SimpleCC 诊断数和
+SimpleRemote 连接。普通编辑时不额外开启工具栏或侧栏。诊断数量来自插件已发布的
+buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 Git 进程。
+提供者尚未报告时数字也是零；它不代表已经完成一次诊断或 Git 检查。
+
+| 原生动作 | 复用的命令 |
+|-
+| =simple_files= / =simple_buffers= / =simple_grep= | =SimpleFinderFiles= / =SimpleFinderBuffers= / =SimpleFinderIGrep= |
+| =simple_outline= / =simple_rename= / =simple_code_action= | =SimpleCCOutline= / =SimpleCCRename= / =SimpleCCAction= |
+| =simple_git_status= / =simple_git_diff= / =simple_git_hunk= | =SimpleGitStatus= / =SimpleGitDiff= / =SimpleGitHunkPreview= |
+| =simple_markdown_preview= | =SimpleMarkdown=，仅在 Markdown buffer 提供 |
+| =simple_keys= / =simple_workbench= | =SimpleWhichKey= / =VimrcWorkbench= |
+| =definition= / =hover= / =references= / =format= | 对应的 SimpleCC 命令，供已有 GUI 语义按钮复用 |
+
+=simple_rename= 打开 SimpleCC 自己的 Vim 重命名提示，保留插件的交互和确认流程；
+它与携带新名称的原生 typed rename 请求分别处理。插件窗口、大文件保护或只读
+buffer 会限制不适用的语义/编辑动作。菜单显示后如果上下文改变，执行时会再次
+检查可用性。Markdown、WhichKey、hover 等窗口继续使用插件自身 UI；不支持的
+绘制仍按终端已有策略回退，本轮没有把它们转换成独立的原生浮层。
+
+普通 Vim 也能使用相同入口，无需四终端或任何插件：
+
+#+begin_example
+:VimrcWorkbench                 " 查看连接、上下文及当前可用动作
+:VimrcAction simple_files       " 执行固定动作，Tab 只补全当前可用项
+Space vw                       " 打开工作台报告，q 关闭
+Space va                       " 输入 :VimrcAction ，继续 Tab 补全
+#+end_example
+
+没有插件时，报告仍然可用，其余动作等对应插件就绪后自动出现。报告只读、不触碰
+源 buffer、寄存器或 quickfix。连接状态使用桥认证后的 =g:jterm_vim9_connected=，
+单独继承地址、token 或旧 bridge-loaded 标记不会被显示为已连接。
+
+需要禁用集成或某些动作时，在 =~/.vimrc.before= 中设置；重载会保留这些选择：
+
+#+begin_src vim
+g:vimrc_workbench_enable = 0
+# 或只禁用指定动作：
+g:vimrc_workbench_disabled_actions = ['simple_git_diff', 'simple_grep']
+#+end_src
+
+桥接 API 是 =g:VimrcWorkbenchCapabilities()=、=g:VimrcWorkbenchAction(id)= 和
+=g:VimrcWorkbenchState()=。动作名来自固定清单，不接受任意 Ex、按键序列或 shell
+文本；项目根目录仅在窗口/工作区事件中刷新，状态读取不会反复遍历目录。
+
+** 编辑与配置边界
+
 为防止刚打开的项目执行未信任配置，默认启用 =nomodeline= 和 =noexrc=。
 
 =:StripWhitespace= 默认处理整个文件，也接受 =:10,30StripWhitespace= 或可视范围。
@@ -459,6 +515,7 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 | =<leader>ve= / =vr= | 编辑 / 重载配置 |
 | =<leader>vh= | 运行 =:VimrcHealth= |
 | =<leader>vH= / =vp= | 打开健康报告 / 配置加载耗时 |
+| =<leader>vw= / =va= | 工作台上下文报告 / 输入可补全的工作台动作 |
 | =<leader>vc= / =vu= | 检查配置更新 / 拉取配置更新 |
 | =<leader>vs= / =vl= | 取消配置更新 / 查看大文件状态 |
 | =<leader>h= | 清除搜索高亮 |

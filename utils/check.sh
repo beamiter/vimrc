@@ -102,7 +102,7 @@ printf 'vimrc core smoke: OK\n'
 
 # Keep new regression suites isolated and retain verbose diagnostics only when
 # a suite fails; -es alone can otherwise hide a Vim9 compile/runtime error.
-for suite in editing workflow search update reports native_ide; do
+for suite in editing workflow search update reports native_ide workbench; do
   mkdir -p "$tmp/$suite-home" "$tmp/$suite-state"
   if HOME="$tmp/$suite-home" \
     XDG_STATE_HOME="$tmp/$suite-state" \
