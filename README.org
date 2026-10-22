@@ -317,11 +317,19 @@ buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 G
 |-
 | =simple_files= / =simple_buffers= / =simple_grep= | =SimpleFinderFiles= / =SimpleFinderBuffers= / =SimpleFinderIGrep= |
 | =simple_diagnostics= / =simple_next_diagnostic= / =simple_previous_diagnostic= | =SimpleCCDiagnostics= / =SimpleCCNextDiag= / =SimpleCCPrevDiag= |
+| =simple_recent= | =SimpleFinderRecent= |
+| =simple_tree_toggle= / =simple_tree_reveal= | 优先 =SimpleRemoteTree= / =SimpleRemoteTreeReveal=，未安装时使用 =SimpleTree= / =SimpleTreeReveal= |
+| =simple_terminal_toggle= / =simple_terminal_new= | =SimpleTerminalToggle= / =SimpleTerminalNew= |
+| =simple_terminal_next= / =simple_terminal_previous= | =SimpleTerminalNext= / =SimpleTerminalPrev= |
 | =simple_outline= / =simple_rename= / =simple_code_action= | =SimpleCCOutline= / =SimpleCCRename= / =SimpleCCAction= |
 | =simple_git_status= / =simple_git_diff= / =simple_git_hunk= | =SimpleGitStatus= / =SimpleGitDiff= / =SimpleGitHunkPreview= |
 | =simple_markdown_preview= | =SimpleMarkdown=，仅在 Markdown buffer 提供 |
 | =simple_keys= / =simple_workbench= | =SimpleWhichKey= / =VimrcWorkbench= |
 | =definition= / =hover= / =references= / =format= | 对应的 SimpleCC 命令，供已有 GUI 语义按钮复用 |
+
+树动作仅在实际提供者可用时出现。单独安装远程包装器但缺少 SimpleTree 时，
+只在已连接的虚拟远程工作区提供树；定位动作还要求当前为有远程路径的 buffer。
+终端会话由 SimpleTerminal 管理，F8 收起后再次打开会复用现有 shell。
 
 =simple_rename= 打开 SimpleCC 自己的 Vim 重命名提示，保留插件的交互和确认流程；
 它与携带新名称的原生 typed rename 请求分别处理。插件窗口、大文件保护或只读

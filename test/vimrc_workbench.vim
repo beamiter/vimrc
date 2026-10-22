@@ -100,6 +100,13 @@ unlet g:simpleremote_workspace g:simpleremote_status
 # Provider installation can happen after VimEnter. The same catalog drives
 # capabilities, completion and execution, and execution rechecks live state.
 command! SimpleFinderFiles call Called('files')
+command! SimpleFinderRecent call Called('recent')
+command! SimpleTree call Called('tree-local')
+command! SimpleTreeReveal call Called('reveal-local')
+command! SimpleTerminalToggle call Called('terminal-toggle')
+command! SimpleTerminalNew call Called('terminal-new')
+command! SimpleTerminalNext call Called('terminal-next')
+command! SimpleTerminalPrev call Called('terminal-previous')
 command! SimpleFinderBuffers call Called('buffers')
 command! SimpleFinderIGrep call Called('grep')
 command! SimpleCCDefinition call Called('definition')
@@ -119,11 +126,57 @@ command! SimpleMarkdown call Called('markdown')
 command! SimpleWhichKey call Called('keys')
 
 var capabilities = g:VimrcWorkbenchCapabilities()
-assert_equal(18, len(capabilities), 'Markdown preview is hidden outside Markdown')
+assert_equal(25, len(capabilities), 'Markdown preview is hidden outside Markdown')
 assert_equal(-1, index(capabilities, 'rename'), 'typed rename must not become a prompt')
 assert_true(index(capabilities, 'simple_rename') >= 0)
 assert_equal(['simple_git_status', 'simple_git_diff', 'simple_git_hunk'],
   getcompletion('VimrcAction simple_git_', 'cmdline'))
+for [action, expected] in [
+    ['simple_recent', 'recent'], ['simple_tree_toggle', 'tree-local'],
+    ['simple_tree_reveal', 'reveal-local'], ['simple_terminal_toggle', 'terminal-toggle'],
+    ['simple_terminal_new', 'terminal-new'], ['simple_terminal_next', 'terminal-next'],
+    ['simple_terminal_previous', 'terminal-previous']]
+  assert_equal('', Act(action))
+  assert_equal(expected, g:vimrc_workbench_called)
+endfor
+command! SimpleRemoteTree call Called('tree-remote')
+command! SimpleRemoteTreeReveal call Called('reveal-remote')
+assert_equal('', Act('simple_tree_toggle'))
+assert_equal('tree-remote', g:vimrc_workbench_called)
+assert_equal('', Act('simple_tree_reveal'))
+assert_equal('reveal-remote', g:vimrc_workbench_called)
+# Installed remote wrappers must not advertise missing local providers.
+delcommand SimpleTree
+delcommand SimpleTreeReveal
+assert_match('unavailable', Act('simple_tree_toggle'))
+assert_match('unavailable', Act('simple_tree_reveal'))
+g:simpleremote_workspace = {kind: 'ssh', target: 'test-host', root: '/srv/project', local_root: ''}
+g:simpleremote_status = 'connecting ssh:test-host'
+assert_match('unavailable', Act('simple_tree_toggle'))
+g:simpleremote_status = 'ssh:test-host'
+assert_equal('', Act('simple_tree_toggle'))
+assert_match('unavailable', Act('simple_tree_reveal'))
+g:simpleremote_workspace.local_root = '/tmp/projected'
+assert_match('unavailable', Act('simple_tree_toggle'))
+g:simpleremote_workspace.local_root = ''
+split
+enew
+file remote:///srv/project/main.rs
+setlocal buftype=acwrite filetype=rust
+b:vimrc_remote = {path: '/srv/project/main.rs'}
+assert_equal('', Act('simple_tree_reveal'))
+assert_equal('reveal-remote', g:vimrc_workbench_called)
+g:simpleremote_status = 'disconnected'
+assert_match('unavailable', Act('simple_tree_toggle'))
+assert_match('unavailable', Act('simple_tree_reveal'))
+unlet g:simpleremote_workspace g:simpleremote_status
+close!
+command! SimpleTree call Called('tree-local')
+command! SimpleTreeReveal call Called('reveal-local')
+delcommand SimpleRemoteTree
+delcommand SimpleRemoteTreeReveal
+assert_equal('', Act('simple_tree_reveal'))
+assert_equal('reveal-local', g:vimrc_workbench_called)
 assert_equal('', Run('VimrcAction simple_files'))
 assert_equal('files', g:vimrc_workbench_called)
 assert_equal('', Act('definition'))
@@ -203,6 +256,10 @@ assert_false(&modifiable)
 assert_false(&modified)
 assert_false(&swapfile)
 assert_false(&buflisted)
+assert_match('unavailable', Act('simple_tree_reveal'))
+assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_terminal_toggle') >= 0)
+assert_equal('', Act('simple_tree_toggle'))
+assert_equal('tree-local', g:vimrc_workbench_called)
 assert_match('ordinary Vim / bridge disconnected', join(getline(1, '$'), "\n"))
 assert_match('feature/中文 next', join(getline(1, '$'), "\n"))
 assert_equal('', Run('VimrcWorkbench'))

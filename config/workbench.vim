@@ -4,6 +4,13 @@ vim9script
 # here, never in a host request, a project file or a palette search query.
 const ACTIONS = [
   {id: 'simple_files', command: 'SimpleFinderFiles', title: 'Find project files', scope: 'any'},
+  {id: 'simple_recent', command: 'SimpleFinderRecent', title: 'Find recent files', scope: 'any'},
+  {id: 'simple_tree_toggle', command: 'SimpleRemoteTree', fallback: 'SimpleTree', title: 'Toggle project tree', scope: 'any'},
+  {id: 'simple_tree_reveal', command: 'SimpleRemoteTreeReveal', fallback: 'SimpleTreeReveal', title: 'Reveal current file in tree', scope: 'file'},
+  {id: 'simple_terminal_toggle', command: 'SimpleTerminalToggle', title: 'Toggle terminal', scope: 'any'},
+  {id: 'simple_terminal_new', command: 'SimpleTerminalNew', title: 'New terminal', scope: 'any'},
+  {id: 'simple_terminal_next', command: 'SimpleTerminalNext', title: 'Next terminal', scope: 'any'},
+  {id: 'simple_terminal_previous', command: 'SimpleTerminalPrev', title: 'Previous terminal', scope: 'any'},
   {id: 'simple_buffers', command: 'SimpleFinderBuffers', title: 'Find open buffers', scope: 'any'},
   {id: 'simple_grep', command: 'SimpleFinderIGrep', title: 'Search project text', scope: 'any'},
   {id: 'simple_diagnostics', command: 'SimpleCCDiagnostics', title: 'Show buffer diagnostics', scope: 'code'},
@@ -61,9 +68,38 @@ def Disabled(action: string): bool
   return type(disabled) == v:t_list && index(disabled, action) >= 0
 enddef
 
+# Resolve only the fixed commands from this catalog; prefer the remote-aware
+# wrapper when installed, which also handles ordinary local workspaces.
+def ActionCommand(entry: dict<string>): string
+  var fallback = get(entry, 'fallback', '')
+  var fallback_available = !empty(fallback) && exists(':' .. fallback) == 2
+  if exists(':' .. entry.command) != 2
+    return fallback_available ? fallback : ''
+  endif
+  if empty(fallback) || fallback_available
+    return entry.command
+  endif
+  # A remote wrapper alone cannot service ordinary local buffers. Read only
+  # its already-published connection state; never autoload or probe a host.
+  var workspace = Dictionary(get(g:, 'simpleremote_workspace', {}))
+  var status = get(g:, 'simpleremote_status', 'disconnected')
+  var ready = !empty(workspace) && type(status) == v:t_string
+    && !empty(status) && status !=# 'disconnected' && status !~# '^connecting '
+  if !ready
+    return ''
+  endif
+  if entry.id ==# 'simple_tree_toggle'
+    return empty(get(workspace, 'local_root', '')) ? entry.command : ''
+  endif
+  var remote = Dictionary(get(b:, 'vimrc_remote', {}))
+  var path = get(remote, 'path', '')
+  return entry.id ==# 'simple_tree_reveal' && bufname() =~# '^remote://'
+    && type(path) == v:t_string && !empty(path) ? entry.command : ''
+enddef
+
 def Available(entry: dict<string>): bool
   if !Flag('vimrc_workbench_enable') || Disabled(entry.id)
-        || exists(':' .. entry.command) != 2
+        || empty(ActionCommand(entry))
     return false
   endif
   if entry.scope ==# 'keys'
@@ -163,7 +199,7 @@ def g:VimrcWorkbenchAction(action: string)
       if !Available(entry)
         throw '[vimrc] Workbench action is unavailable in this buffer: ' .. action
       endif
-      execute entry.command
+      execute ActionCommand(entry)
       return
     endif
   endfor
