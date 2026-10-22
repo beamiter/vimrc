@@ -19,7 +19,7 @@ const ACTIONS = [
   {id: 'simple_outline', command: 'SimpleCCOutline', title: 'Show document symbols', scope: 'code'},
   {id: 'simple_code_lens', command: 'SimpleCCCodeLens', title: 'Refresh CodeLens annotations', scope: 'code'},
   {id: 'simple_code_lens_run', command: 'SimpleCCCodeLensRun', title: 'Run a CodeLens command', scope: 'write'},
-  {id: 'simple_inlay_hints', command: 'SimpleCCInlayHints', title: 'Toggle inline hints (Vim compatibility)', scope: 'code'},
+  {id: 'simple_inlay_hints', command: 'SimpleCCInlayHints', title: 'Toggle inline type and parameter hints', scope: 'code'},
   {id: 'simple_rename', command: 'SimpleCCRename', title: 'Rename symbol (Vim prompt)', scope: 'write'},
   {id: 'simple_code_action', command: 'SimpleCCAction', title: 'Choose code action', scope: 'write'},
   {id: 'simple_git_status', command: 'SimpleGitStatus', title: 'Show Git status', scope: 'any'},
@@ -240,6 +240,7 @@ def g:VimrcWorkbenchReport()
   # This is an explicit, authenticated capability. Older protocol-6 bridges
   # support popups but still fall back for every virtual text property.
   var native_after = state.native && Flag('jterm_vim9_virtual_text_after', false)
+  var native_inline = state.native && Flag('jterm_vim9_virtual_text_inline', false)
   var capabilities = g:VimrcWorkbenchCapabilities()
   var origin = win_getid()
   var lines = [
@@ -249,7 +250,9 @@ def g:VimrcWorkbenchReport()
     'Editor: ' .. (state.native ? 'authenticated native Vim bridge' : 'ordinary Vim / bridge disconnected'),
     'Popups: ' .. (native_popups ? 'native text surfaces from opted-in plugins; complex popups use Vim compatibility'
       : 'Vim compatibility view'),
-    'Virtual text: ' .. (native_after ? 'native after-line CodeLens and diagnostics; inline hints use Vim compatibility'
+    'Virtual text: ' .. (native_after ? 'native after-line CodeLens and diagnostics'
+      : 'Vim compatibility view'),
+    'Inline hints: ' .. (native_inline ? 'native single-line hints in nowrap views; complex layouts use Vim compatibility'
       : 'Vim compatibility view'),
     'Workspace: ' .. state.root,
     'Buffer: ' .. BoundedString(bufname(), 4096),

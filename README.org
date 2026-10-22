@@ -296,8 +296,9 @@ signcolumn 偏好不变。diff 窗口保留自身显示和折叠，插件窗口�
 IDE 默认关闭 SimpleCC 的自动 inlay hints 与签名弹窗，保留补全、诊断、Git signs
 及手动 hover/minimap 等命令。若需要提示，可在 =~/.vimrc.before= 显式设置
 =g:simplecc_inlay_hints = 1= 或 =g:simplecc_signature_help = 1=；此类用户设置在
-重载后仍然生效。inline inlay hints 会暂时使用兼容绘制；更新后的四终端可原生
-绘制 CodeLens 和诊断的单行行末文字。下文的原生文字浮层可用于手动 hover、
+重载后仍然生效。更新后的四终端可原生绘制不换行视图中的单行 inline hints，
+以及 CodeLens 和诊断的单行行末文字；复杂布局仍由 Vim 兼容视图显示。
+下文的原生文字浮层可用于手动 hover、
 签名提示和 Git hunk 预览。
 
 ** 四终端与 simple* 的共同工作台
@@ -325,7 +326,7 @@ buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 G
 | =simple_terminal_next= / =simple_terminal_previous= | =SimpleTerminalNext= / =SimpleTerminalPrev= |
 | =simple_outline= / =simple_rename= / =simple_code_action= | =SimpleCCOutline= / =SimpleCCRename= / =SimpleCCAction= |
 | =simple_code_lens= / =simple_code_lens_run= | 刷新 CodeLens 行末提示 / 执行当前文件的 CodeLens 命令 |
-| =simple_inlay_hints= | =SimpleCCInlayHints=，切换 inline 提示；此显示仍使用 Vim 兼容视图 |
+| =simple_inlay_hints= | =SimpleCCInlayHints=，切换 inline 类型／参数提示；支持的布局使用原生绘制 |
 | =simple_git_status= / =simple_git_diff= / =simple_git_hunk= | =SimpleGitStatus= / =SimpleGitDiff= / =SimpleGitHunkPreview= |
 | =simple_markdown_preview= | =SimpleMarkdown=，遵循插件支持的 filetype 和无 filetype 时的 Markdown 扩展名 |
 | =simple_keys= / =simple_workbench= | =SimpleWhichKey= / =VimrcWorkbench= |
@@ -370,7 +371,7 @@ Markdown 动作同时尊重 =g:simplemarkdown_filetypes=，包括 Pandoc、Rmd�
 GitHub Markdown、自定义类型和显式空列表；无 filetype 的 =remote://= Markdown
 buffer 也可通过文件扩展名识别。此入口调整不等于新增富文本 Markdown 渲染器。
 
-*** 原生行末提示与 CodeLens 身份校验
+*** 原生行内／行末提示与 CodeLens 身份校验
 
 更新共享核心和四终端后，SimpleCC 的 =:SimpleCCCodeLens= 以及可选的行末诊断
 可直接显示在原生编辑区。提示保留 GUI 高亮，按可见宽度截断，不改变 buffer 内容
@@ -378,11 +379,17 @@ buffer 也可通过文件扩展名识别。此入口调整不等于新增富文�
 =:VimrcAction simple_code_lens= 与 =simple_code_lens_run= 提供相同入口。
 执行动作在只读、不可修改、受大文件保护及插件 scratch buffer 中不会被工作台调用。
 
-=Space vw= 新增 =Virtual text= 状态。它同时检查已认证连接与桥发布的
-=g:jterm_vim9_virtual_text_after=，不会把旧版 protocol 6 的弹窗支持误认作行末提示支持。
-inline inlay hints、改变行高或需要换行的虚拟文字继续使用兼容绘制；用户的 inlay
-默认偏好保持不变。需要查看 inline 提示可执行 =:VimrcAction simple_inlay_hints=，
-再次执行即可关闭；关闭会清除其他已打开 buffer 的提示，并取消未完成回复。
+=Space vw= 分别显示 =Virtual text= 和 =Inline hints= 状态。它们检查已认证连接与
+桥发布的 =g:jterm_vim9_virtual_text_after=、=g:jterm_vim9_virtual_text_inline=，
+不会把旧版 protocol 6 的弹窗支持误认作行末或行内提示支持。支持的 =nowrap=
+视图可原生显示 SimpleCC 类型／参数提示，文字与 UTF-8 源文件字节坐标分开；
+需要换行或改变行高等复杂布局继续使用 Vim 兼容绘制。
+
+用户的 inlay 默认偏好保持不变。执行 =:VimrcAction simple_inlay_hints= 或
+=Space ih= 可切换提示；再次执行即可关闭。关闭会清除其他已打开 buffer 的提示，
+并取消未完成回复。SimpleCC 只缓存 Vim 成功放置的非空提示，因此无效的首条回复
+不会阻止后续有效提示恢复；CJK、emoji 的 UTF-16 位置会转换为 Vim 的字节列，
+并保留语言服务器提供的左右 padding。
 
 CodeLens 的执行绑定到产生它的文档 URI、buffer、changedtick、filetype 和 daemon
 代次；选择菜单打开后发生编辑、切文件或刷新提示，旧选择会被拒绝。daemon 再检查
