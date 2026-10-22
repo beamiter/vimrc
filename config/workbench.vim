@@ -63,6 +63,21 @@ def FileBuffer(): bool
         && &filetype !~# '^\%(startify\|simple\|vimrcreport\)'
 enddef
 
+# Match SimpleMarkdown's supported filetypes without loading a plugin or
+# starting its daemon while a host reads the action catalog. An explicit
+# list (including []) replaces defaults, just as the provider's Setting().
+def MarkdownBuffer(): bool
+  if !FileBuffer()
+    return false
+  endif
+  const defaults = ['markdown', 'markdown.pandoc', 'pandoc', 'rmd', 'vimwiki', 'ghmarkdown']
+  var configured: any = get(g:, 'simplemarkdown_filetypes', defaults)
+  var filetypes = type(configured) == v:t_list
+    ? filter(copy(configured), (_, item) => type(item) == v:t_string) : defaults
+  return index(filetypes, &filetype) >= 0
+    || (&filetype ==# '' && bufname() =~? '\.\(md\|markdown\|mdown\|mkd\|mkdn\|rmd\|qmd\)$')
+enddef
+
 def Disabled(action: string): bool
   var disabled = get(g:, 'vimrc_workbench_disabled_actions', [])
   return type(disabled) == v:t_list && index(disabled, action) >= 0
@@ -107,7 +122,7 @@ def Available(entry: dict<string>): bool
   elseif entry.scope ==# 'file'
     return FileBuffer() && !empty(bufname())
   elseif entry.scope ==# 'markdown'
-    return FileBuffer() && &filetype =~# '^markdown\%(\.\|$\)'
+    return MarkdownBuffer()
   elseif entry.scope ==# 'code' || entry.scope ==# 'write'
     return FileBuffer() && !empty(&filetype)
           && !get(b:, 'vimrc_large_file', 0)
@@ -217,6 +232,8 @@ def g:VimrcWorkbenchReport()
   endif
   RefreshRoot()
   var state = CaptureState()
+  var render_protocol: any = get(g:, 'jterm_vim9_render_protocol', 0)
+  var native_popups = state.native && type(render_protocol) == v:t_number && render_protocol >= 6
   var capabilities = g:VimrcWorkbenchCapabilities()
   var origin = win_getid()
   var lines = [
@@ -224,6 +241,8 @@ def g:VimrcWorkbenchReport()
     '',
     'Integration: ' .. (Flag('vimrc_workbench_enable') ? 'enabled' : 'disabled'),
     'Editor: ' .. (state.native ? 'authenticated native Vim bridge' : 'ordinary Vim / bridge disconnected'),
+    'Popups: ' .. (native_popups ? 'native text surfaces from opted-in plugins; complex popups use Vim compatibility'
+      : 'Vim compatibility view'),
     'Workspace: ' .. state.root,
     'Buffer: ' .. BoundedString(bufname(), 4096),
     'Large file: ' .. (state.large_file ? 'protected' : 'no'),

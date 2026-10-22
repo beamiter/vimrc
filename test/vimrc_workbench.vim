@@ -208,6 +208,34 @@ assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_markdown_preview') >= 
 assert_equal('', Act('simple_markdown_preview'))
 assert_equal('markdown', g:vimrc_workbench_called)
 
+# Use the provider's exact filetype policy, including user overrides, without
+# autoloading it merely to populate the native palette.
+for filetype in ['markdown.pandoc', 'pandoc', 'rmd', 'vimwiki', 'ghmarkdown']
+  &l:filetype = filetype
+  assert_equal('', Act('simple_markdown_preview'), filetype)
+endfor
+setlocal filetype=markdown.extra
+assert_match('unavailable', Act('simple_markdown_preview'))
+g:simplemarkdown_filetypes = ['quarto', 7]
+setlocal filetype=quarto
+assert_equal('', Act('simple_markdown_preview'))
+setlocal filetype=markdown
+assert_match('unavailable', Act('simple_markdown_preview'), 'custom filetypes replace the defaults')
+g:simplemarkdown_filetypes = []
+assert_match('unavailable', Act('simple_markdown_preview'), 'an explicit empty list stays empty')
+g:simplemarkdown_filetypes = 'invalid'
+assert_equal('', Act('simple_markdown_preview'), 'invalid options fall back like SimpleMarkdown')
+unlet g:simplemarkdown_filetypes
+split
+enew
+file remote:///docs/notes.QMD
+setlocal buftype=acwrite filetype=
+assert_equal('', Act('simple_markdown_preview'), 'untyped remote Markdown uses its extension')
+setlocal filetype=text
+assert_match('unavailable', Act('simple_markdown_preview'), 'an assigned filetype owns recognition')
+close!
+setlocal filetype=markdown
+
 # User opt-outs are authoritative, including Boolean values and re-source.
 g:simplewhichkey_enable = false
 assert_match('unavailable', Act('simple_keys'))

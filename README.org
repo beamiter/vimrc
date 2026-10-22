@@ -296,7 +296,8 @@ signcolumn 偏好不变。diff 窗口保留自身显示和折叠，插件窗口�
 IDE 默认关闭 SimpleCC 的自动 inlay hints 与签名弹窗，保留补全、诊断、Git signs
 及手动 hover/minimap 等命令。若需要提示，可在 =~/.vimrc.before= 显式设置
 =g:simplecc_inlay_hints = 1= 或 =g:simplecc_signature_help = 1=；此类用户设置在
-重载后仍然生效。虚拟文字、弹窗等不支持的画面会暂时使用兼容绘制。
+重载后仍然生效。虚拟文字等不支持的画面会暂时使用兼容绘制；下文的原生
+文字浮层可用于手动 hover、签名提示和 Git hunk 预览。
 
 ** 四终端与 simple* 的共同工作台
 
@@ -323,7 +324,7 @@ buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 G
 | =simple_terminal_next= / =simple_terminal_previous= | =SimpleTerminalNext= / =SimpleTerminalPrev= |
 | =simple_outline= / =simple_rename= / =simple_code_action= | =SimpleCCOutline= / =SimpleCCRename= / =SimpleCCAction= |
 | =simple_git_status= / =simple_git_diff= / =simple_git_hunk= | =SimpleGitStatus= / =SimpleGitDiff= / =SimpleGitHunkPreview= |
-| =simple_markdown_preview= | =SimpleMarkdown=，仅在 Markdown buffer 提供 |
+| =simple_markdown_preview= | =SimpleMarkdown=，遵循插件支持的 filetype 和无 filetype 时的 Markdown 扩展名 |
 | =simple_keys= / =simple_workbench= | =SimpleWhichKey= / =VimrcWorkbench= |
 | =definition= / =hover= / =references= / =format= | 对应的 SimpleCC 命令，供已有 GUI 语义按钮复用 |
 
@@ -334,8 +335,37 @@ buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 G
 =simple_rename= 打开 SimpleCC 自己的 Vim 重命名提示，保留插件的交互和确认流程；
 它与携带新名称的原生 typed rename 请求分别处理。插件窗口、大文件保护或只读
 buffer 会限制不适用的语义/编辑动作。菜单显示后如果上下文改变，执行时会再次
-检查可用性。Markdown、WhichKey、hover 等窗口继续使用插件自身 UI；不支持的
-绘制仍按终端已有策略回退，本轮没有把它们转换成独立的原生浮层。
+检查可用性。Markdown 文档预览、WhichKey 等窗口继续使用插件自身 UI；不支持的
+绘制仍按终端已有策略回退。SimpleCC 与 SimpleGit 的文字浮层按下文接入原生绘制。
+
+*** 原生文字浮层：现有 simple* 动作直接受益
+
+更新 SimpleCC、SimpleGit 以及四终端后，render protocol 6 可以在原生编辑区上
+绘制它们声明支持的矩形文字浮层。内容、位置、关闭时机及按键仍由 Vim/插件管理，
+终端直接绘制 GUI RGB 颜色、语法文字、边框和留白。短且完整可见的 hover、签名、
+当前行诊断、补全文档、Git hunk 和 blame 因而无需切换整个编辑区的绘制方式。
+补全列表与说明文档可以同时存在，按 Vim 的层级覆盖跨分屏区域。
+
+| 体验入口 | 内容来源 |
+|-
+| =Space lh= / =:SimpleCCHover= | LSP 悬浮文档 |
+| =Space ls= / =:SimpleCCSignatureHelp= | 函数签名及参数说明 |
+| =:SimpleCCDiag= | 当前行诊断详情 |
+| 补全列表中的文档 | SimpleCC 已有的补全/resolve 流程 |
+| =Space gp= / =:SimpleGitHunkPreview= | 当前 hunk 的 diff 语法高亮 |
+| =:SimpleGitBlameLine= | 当前行 blame 文字弹窗 |
+
+浮层出现时暂停原生像素滚动和源坐标鼠标请求，让事件回到 Vim；浮层消失后恢复。
+插件保留原有 =moved= / =close= 行为，浮层文字不进入 buffer 的可编辑坐标映射。
+未声明支持、需要实际换行/滚动/裁剪、带交互 filter、标题或透明遮罩的弹窗
+继续使用兼容显示。Vim 无法完整查询遮罩，因此只接受插件明确声明的无遮罩
+文字浮层，避免把不透明矩形错误盖在其他 UI 上。
+
+=Space vw= 的 =Popups= 一行显示当前已认证桥接是否支持该协议。旧终端和普通
+Vim 仍使用原有弹窗。自动 inlay hints、自动签名提示及侧栏默认值保持现有配置。
+Markdown 动作同时尊重 =g:simplemarkdown_filetypes=，包括 Pandoc、Rmd、VimWiki、
+GitHub Markdown、自定义类型和显式空列表；无 filetype 的 =remote://= Markdown
+buffer 也可通过文件扩展名识别。此入口调整不等于新增富文本 Markdown 渲染器。
 
 普通 Vim 也能使用相同入口，无需四终端或任何插件：
 
