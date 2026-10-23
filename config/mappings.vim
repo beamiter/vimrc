@@ -269,7 +269,7 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>tk <Cmd>SimpleTerminalKill<CR>
   nnoremap <silent> <leader>tl <Cmd>SimpleTerminalList<CR>
   nnoremap <silent> <leader>tx <ScriptCmd>call SendLinesToTerminal(line('.'), line('.'))<CR>
-  xnoremap <silent> <leader>tx <ScriptCmd>call SendLinesToTerminal(line("'<"), line("'>"))<CR>
+  xnoremap <silent> <leader>tx <ScriptCmd>call SendLinesToTerminal(min([line('v'), line('.')]), max([line('v'), line('.')]))<CR>
   nnoremap <silent> <S-F7> <Cmd>SimpleTerminalPrev<CR>
   tnoremap <silent> <S-F7> <C-\><C-n><Cmd>SimpleTerminalPrev<CR>
   nnoremap <silent> <F7> <Cmd>SimpleTerminalNext<CR>

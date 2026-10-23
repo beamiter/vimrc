@@ -290,8 +290,10 @@ g:vimrc_whitespace_highlight = 0  # 关闭尾随空白提示
 =nowrap nospell nolist conceallevel=0 foldcolumn=0 nofoldenable= 和单列
 =signcolumn=yes=，让长行、诊断标记和滚动保持原生绘制。FileType、分屏、窗口切换
 和 =:VimrcReload= 后会重新应用；普通终端 Vim 的换行、提交信息拼写检查和双列
-signcolumn 偏好不变。diff 窗口保留自身显示和折叠，插件窗口及远端 acwrite 文件
-仍使用各自配置；RTL 不会被自动关闭。
+signcolumn 偏好不变。已连接的 SimpleRemote 虚拟文件也使用相同视图，缓冲区的
+URI、连接 generation 必须与当前工作区一致；断线、过期连接及其他 acwrite
+缓冲区保留各自配置。设置 =g:vimrc_native_remote_view = 0= 可关闭远端视图同步。
+diff 和插件窗口仍保留自身显示与折叠；RTL 不会被自动关闭。
 
 IDE 默认关闭 SimpleCC 的自动 inlay hints 与签名弹窗，保留补全、诊断、Git signs
 及手动 hover/minimap 等命令。若需要提示，可在 =~/.vimrc.before= 显式设置
@@ -346,6 +348,8 @@ buffer 或对应命令缺失时不提供。工作区符号实时搜索保留 Sim
 树动作仅在实际提供者可用时出现。单独安装远程包装器但缺少 SimpleTree 时，
 只在已连接的虚拟远程工作区提供树；定位动作还要求当前为有远程路径的 buffer。
 终端会话由 SimpleTerminal 管理，F8 收起后再次打开会复用现有 shell。
+Visual 模式的 =Space tx= 发送当前活动选区覆盖的行，支持反向及连续选择，
+不依赖上次退出 Visual 时留下的标记。
 
 =simple_rename= 打开 SimpleCC 自己的 Vim 重命名提示，保留插件的交互和确认流程；
 它与携带新名称的原生 typed rename 请求分别处理。插件窗口、大文件保护或只读

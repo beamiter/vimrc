@@ -289,6 +289,27 @@ iunmap <buffer> <CR>
 setlocal buftype=prompt
 doautocmd InsertEnter
 assert_equal('', maparg('<CR>', 'i'))
+# ScriptCmd keeps Visual active, so '< and '> may still name an older
+# selection. Exercise the actual mapping with a deterministic send provider.
+var terminal_runtime = scratch .. '/terminal-runtime'
+mkdir(terminal_runtime .. '/autoload', 'p')
+writefile(['vim9script', 'export def Send(text: string)',
+  '  g:vimrc_sent_lines = text', 'enddef'], terminal_runtime .. '/autoload/simpleterminal.vim')
+execute 'set runtimepath^=' .. fnameescape(terminal_runtime)
+execute 'source ' .. fnameescape(ROOT .. '/config/mappings.vim')
+enew!
+setline(1, ['one', 'two', 'three', 'four', 'five', 'six'])
+setpos("'<", [0, 0, 0, 0])
+setpos("'>", [0, 0, 0, 0])
+feedkeys("ggVj" .. g:mapleader .. "tx\<Esc>", 'xt')
+assert_equal("one\ntwo", get(g:, 'vimrc_sent_lines', ''), 'first live Visual selection')
+feedkeys("4GVj" .. g:mapleader .. "tx\<Esc>", 'xt')
+assert_equal("four\nfive", g:vimrc_sent_lines, 'new selection must replace old marks')
+feedkeys("6GV2k" .. g:mapleader .. "tx\<Esc>", 'xt')
+assert_equal("four\nfive\nsix", g:vimrc_sent_lines, 'reverse selection sends ascending lines')
+feedkeys("3Gvl" .. g:mapleader .. "tx\<Esc>", 'xt')
+assert_equal('three', g:vimrc_sent_lines, 'character selection sends its covered lines')
+
 g:vimrc_context.plugins_ready = false
 unlet g:loaded_simplecc g:loaded_simplepairs
 execute 'source ' .. fnameescape(ROOT .. '/config/compat.vim')

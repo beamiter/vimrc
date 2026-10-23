@@ -97,7 +97,7 @@ win_gotoid(third)
 assert_equal(plugin_view, View(), 'entering a plugin window must preserve its view')
 
 # Diff owns folds and its visual comparison options. Remote acwrite buffers
-# use the compatibility renderer and retain their own window settings too.
+# retain their own window settings unless their live SimpleRemote identity matches.
 enew!
 setlocal filetype=cpp
 setlocal diff nowrap spell list conceallevel=2 foldcolumn=2 foldenable signcolumn=auto
@@ -119,6 +119,67 @@ setlocal wrap spell list conceallevel=2 foldcolumn=2 foldenable signcolumn=auto
 var remote_view = View()
 doautocmd BufWinEnter
 assert_equal(remote_view, View(), 'remote views keep their own display')
+
+file remote:///srv/project/main.rs
+b:vimrc_remote = {path: '/srv/project/main.rs', uri: 'remote:///srv/project/main.rs', generation: 7}
+g:simpleremote_workspace = {id: 7, mode: 'virtual', local_root: ''}
+g:simpleremote_status = 'connected'
+doautocmd BufWinEnter
+AssertNative('connected virtual remote file')
+
+# A later asynchronous reread of an already typed buffer has no FileType or
+# WinEnter event. Both visible copies update while another buffer keeps focus.
+var remote_buffer = bufnr()
+var remote_first = win_getid()
+split
+var remote_second = win_getid()
+for id in [remote_first, remote_second]
+  win_execute(id, 'setlocal wrap spell list conceallevel=2 foldcolumn=2 foldenable signcolumn=auto')
+endfor
+new
+var focused = win_getid()
+setlocal buftype=nofile filetype=simpletree
+setline(1, ['keep focus', 'and cursor'])
+cursor(2, 3)
+var focused_buffer = bufnr()
+var focused_cursor = getcurpos()
+var focused_view = View()
+g:simpleremote_event = {event: 'SimpleRemoteBufferRead', bufnr: remote_buffer}
+doautocmd User SimpleRemoteBufferRead
+assert_equal(focused, win_getid(), 'async remote view must not steal focus')
+assert_equal(focused_buffer, bufnr())
+assert_equal(focused_cursor, getcurpos())
+assert_equal(focused_view, View(), 'unrelated focused plugin view survives')
+for id in [remote_first, remote_second]
+  assert_false(getwinvar(id, '&wrap'), 'async read updates every displayed target')
+  assert_equal('yes', getwinvar(id, '&signcolumn'))
+endfor
+unlet g:simpleremote_event
+close!
+close!
+win_gotoid(remote_first)
+
+for scenario in ['optout', 'disconnected', 'generation', 'uri', 'projection', 'diff', 'plugin']
+  setlocal wrap spell list conceallevel=2 foldcolumn=2 foldenable signcolumn=auto
+  var preserved = View()
+  g:vimrc_native_remote_view = scenario !=# 'optout'
+  g:simpleremote_status = scenario ==# 'disconnected' ? 'disconnected' : 'connected'
+  g:simpleremote_workspace.id = scenario ==# 'generation' ? 8 : 7
+  g:simpleremote_workspace.local_root = scenario ==# 'projection' ? '/tmp/projection' : ''
+  b:vimrc_remote.uri = scenario ==# 'uri' ? 'remote:///other.rs' : 'remote:///srv/project/main.rs'
+  noautocmd setlocal filetype=rust
+  if scenario ==# 'plugin'
+    noautocmd setlocal filetype=simpletree
+  elseif scenario ==# 'diff'
+    setlocal diff
+  endif
+  doautocmd BufWinEnter
+  assert_equal(preserved, View(), 'remote protection: ' .. scenario)
+  setlocal nodiff
+endfor
+unlet g:vimrc_native_remote_view g:simpleremote_workspace g:simpleremote_status
+unlet b:vimrc_remote
+
 
 # Explicit plugin preferences are authoritative, including on reload. Manual
 # hover/docs/minimap UI remains available with compatibility rendering.

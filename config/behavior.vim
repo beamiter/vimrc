@@ -112,14 +112,57 @@ def EditingBuffer(): bool
         && index(SIDEBAR_FILETYPES, &filetype) < 0
 enddef
 
+# Match the provider's published virtual-buffer identity without probing or
+# autoloading SimpleRemote. Generic acwrite buffers retain their own view.
+def NativeRemoteBuffer(): bool
+  if !get(g:, 'vimrc_native_remote_view', true) || &buftype !=# 'acwrite'
+    return false
+  endif
+  var workspace: any = get(g:, 'simpleremote_workspace', {})
+  var remote: any = get(b:, 'vimrc_remote', {})
+  var status: any = get(g:, 'simpleremote_status', 'disconnected')
+  if type(workspace) != v:t_dict || type(remote) != v:t_dict
+      || type(status) != v:t_string || empty(status)
+      || status ==# 'disconnected' || status =~# '^connecting '
+    return false
+  endif
+  var generation: any = get(remote, 'generation', -1)
+  var path: any = get(remote, 'path', '')
+  return type(generation) == v:t_number && generation >= 0
+    && get(workspace, 'id', -2) == generation
+    && get(workspace, 'mode', '') ==# 'virtual'
+    && empty(get(workspace, 'local_root', ''))
+    && type(path) == v:t_string && path =~# '^/'
+    && get(remote, 'uri', '') ==# 'remote://' .. path
+    && bufname() ==# 'remote://' .. path
+enddef
+
 def ApplyNativeIdeView()
   # Diff and plugin windows own their display and folds. Other unsupported
   # views, including right-to-left text, keep Vim's compatibility rendering.
-  if !g:VimrcNativeIde() || &buftype !=# '' || !EditingBuffer() || &diff
+  if !g:VimrcNativeIde() || (&buftype !=# '' && !NativeRemoteBuffer())
+      || !EditingBuffer() || &diff
     return
   endif
   setlocal nowrap nospell nolist conceallevel=0 foldcolumn=0 nofoldenable
   setlocal signcolumn=yes
+enddef
+
+# An asynchronous read may finish with FileType already set, or in an
+# unfocused split. Apply the existing view policy to every visible target
+# without changing the user's window, buffer, cursor or focus.
+def RemoteBufferReadView()
+  var event: any = get(g:, 'simpleremote_event', {})
+  if type(event) != v:t_dict || get(event, 'event', '') !=# 'SimpleRemoteBufferRead'
+    return
+  endif
+  var buffer: any = get(event, 'bufnr', 0)
+  if type(buffer) != v:t_number || buffer <= 0
+    return
+  endif
+  for window in win_findbuf(buffer)
+    win_execute(window, 'call ' .. expand('<SID>') .. 'ApplyNativeIdeView()')
+  endfor
 enddef
 
 def ApplyHighlights()
@@ -385,6 +428,7 @@ augroup vimrc_core
   autocmd InsertEnter * call ClearWhitespaceMatch()
   autocmd InsertLeave,BufWinEnter,WinEnter * call ShowWhitespaceMatch()
   autocmd BufWinEnter,WinEnter * call ApplyNativeIdeView()
+  autocmd User SimpleRemoteBufferRead call RemoteBufferReadView()
   autocmd BufWinLeave * call ClearWhitespaceMatch()
   autocmd User VimrcLargeFileChanged call RefreshLargeFileEditing()
   autocmd FileType help,man
