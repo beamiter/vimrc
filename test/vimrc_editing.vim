@@ -199,6 +199,70 @@ doautocmd User VimrcLargeFileChanged
 assert_equal('<Plug>(simplecc-references)', maparg('gr', 'n'))
 nunmap gd
 nunmap <buffer> K
+# Modern keys are local, optional and never replace user bindings.
+command! SimpleCCDefinition echo ''
+command! SimpleCCReferences echo ''
+command! SimpleCCRename echo ''
+command! SimpleCCAction echo ''
+command! SimpleCCFormat echo ''
+command! SimpleCCSignatureHelp echo ''
+command! -nargs=1 SimpleCCPopupScroll echo ''
+command! SimpleCCPopupClose echo ''
+g:VimrcConfigureFiletype()
+assert_equal('', maparg('<F12>', 'n'), 'unnamed scratch must keep native keys')
+execute 'file ' .. fnameescape(tempname() .. '.rs')
+g:VimrcConfigureFiletype()
+assert_equal('<Plug>(simplecc-definition)', maparg('<F12>', 'n'))
+assert_equal('<Plug>(simplecc-references)', maparg('<S-F12>', 'n'))
+assert_equal('<Plug>(simplecc-rename)', maparg('<F2>', 'n'))
+assert_equal('<Cmd>SimpleCCSignatureHelp<CR>', maparg('<C-g>s', 'i'))
+assert_equal('<Plug>(simplecc-format)', maparg('<leader>cf', 'x'))
+assert_equal('<Plug>(simplecc-code-action)', maparg('<leader>ca', 'x'))
+assert_equal(1, maparg('<C-f>', 'n', false, true).expr)
+assert_equal(1, maparg('<C-f>', 'n', false, true).noremap)
+assert_match('simplecc#PopupScrollKey(1,', maparg('<C-f>', 'n'))
+assert_match('simplecc#PopupScrollKey(-1,', maparg('<C-b>', 'n'))
+assert_equal('<Cmd>SimpleCCPopupClose<CR>', maparg('<leader>lq', 'n'))
+setlocal buftype=acwrite
+g:VimrcConfigureFiletype()
+assert_equal('<Plug>(simplecc-definition)', maparg('<F12>', 'n'), 'remote acwrite code retains navigation')
+assert_equal('<Plug>(simplecc-format)', maparg('<leader>cf', 'x'), 'remote acwrite code retains range editing')
+setlocal buftype=
+nnoremap <buffer> <F2> user-local-rename
+nnoremap <F12> user-global-definition
+g:VimrcConfigureFiletype()
+assert_equal('user-global-definition', maparg('<F12>', 'n'))
+assert_equal('user-local-rename', maparg('<F2>', 'n'))
+setlocal readonly
+g:VimrcConfigureFiletype()
+assert_equal('<Plug>(simplecc-references)', maparg('<S-F12>', 'n'))
+assert_match('simplecc#PopupScrollKey', maparg('<C-f>', 'n'))
+assert_equal('', maparg('<C-g>s', 'i'))
+assert_equal('', maparg('<leader>cf', 'x'))
+assert_equal('user-local-rename', maparg('<F2>', 'n'))
+setlocal noreadonly
+nunmap <F12>
+nunmap <buffer> <F2>
+g:VimrcConfigureFiletype()
+execute 'source ' .. fnameescape(ROOT .. '/config/behavior.vim')
+g:VimrcConfigureFiletype()
+assert_equal(1, maparg('<F12>', 'n', false, true).buffer)
+delcommand SimpleCCDefinition
+g:VimrcConfigureFiletype()
+assert_equal('', maparg('<F12>', 'n'))
+command! SimpleCCDefinition echo ''
+g:VimrcConfigureFiletype()
+assert_equal('<Plug>(simplecc-definition)', maparg('<F12>', 'n'))
+b:vimrc_large_file = 1
+doautocmd User VimrcLargeFileChanged
+assert_equal('', maparg('<F12>', 'n'))
+assert_equal('', maparg('<leader>ca', 'x'))
+b:vimrc_large_file = 0
+noautocmd setlocal filetype=text
+g:VimrcConfigureFiletype()
+assert_equal('', maparg('<F12>', 'n'))
+assert_equal('', maparg('<C-f>', 'n'))
+assert_equal('', maparg('<C-b>', 'n'))
 enew!
 inoremap <CR> user-global-enter
 doautocmd InsertEnter

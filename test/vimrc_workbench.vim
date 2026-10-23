@@ -119,6 +119,14 @@ command! SimpleCCDiagnostics call Called('diagnostics')
 command! SimpleCCNextDiag call Called('next-diagnostic')
 command! SimpleCCPrevDiag call Called('previous-diagnostic')
 command! SimpleCCOutline call Called('outline')
+command! SimpleCCImplementation call Called('simple_implementation')
+command! SimpleCCTypeDef call Called('simple_type_definition')
+command! SimpleCCWorkspaceSymbolLive call Called('simple_workspace_symbols')
+command! SimpleCCIncomingCalls call Called('simple_incoming_calls')
+command! SimpleCCOutgoingCalls call Called('simple_outgoing_calls')
+command! SimpleCCSupertypes call Called('simple_supertypes')
+command! SimpleCCSubtypes call Called('simple_subtypes')
+command! SimpleCCSignatureHelp call Called('simple_signature_help')
 command! SimpleCCCodeLens call Called('code-lens')
 command! SimpleCCCodeLensRun call Called('code-lens-run')
 command! SimpleCCInlayHints call Called('inlay-hints')
@@ -129,9 +137,31 @@ command! SimpleMarkdown call Called('markdown')
 command! SimpleWhichKey call Called('keys')
 
 var capabilities = g:VimrcWorkbenchCapabilities()
-assert_equal(28, len(capabilities), 'Markdown preview is hidden outside Markdown')
+assert_equal(36, len(capabilities), 'Markdown preview is hidden outside Markdown')
 assert_equal(-1, index(capabilities, 'rename'), 'typed rename must not become a prompt')
 assert_true(index(capabilities, 'simple_rename') >= 0)
+
+# Semantic navigation stays available in read-only code and rechecks providers.
+const NAVIGATION = [
+  {id: 'simple_implementation', command: 'SimpleCCImplementation'},
+  {id: 'simple_type_definition', command: 'SimpleCCTypeDef'},
+  {id: 'simple_workspace_symbols', command: 'SimpleCCWorkspaceSymbolLive'},
+  {id: 'simple_incoming_calls', command: 'SimpleCCIncomingCalls'},
+  {id: 'simple_outgoing_calls', command: 'SimpleCCOutgoingCalls'},
+  {id: 'simple_supertypes', command: 'SimpleCCSupertypes'},
+  {id: 'simple_subtypes', command: 'SimpleCCSubtypes'},
+  {id: 'simple_signature_help', command: 'SimpleCCSignatureHelp'},
+]
+for entry in NAVIGATION
+  assert_true(index(capabilities, entry.id) >= 0)
+  assert_equal('', Act(entry.id))
+  assert_equal(entry.id, g:vimrc_workbench_called)
+  execute 'delcommand ' .. entry.command
+  assert_equal(-1, index(g:VimrcWorkbenchCapabilities(), entry.id))
+  assert_match('unavailable', Act(entry.id))
+  execute 'command! ' .. entry.command .. ' call Called(' .. string(entry.id) .. ')'
+endfor
+
 assert_equal(['simple_git_status', 'simple_git_diff', 'simple_git_hunk'],
   getcompletion('VimrcAction simple_git_', 'cmdline'))
 for [action, expected] in [
@@ -203,6 +233,10 @@ assert_match('Unknown', Act("simple_files\nqall!"))
 assert_false(exists('g:workbench_injected'))
 
 setlocal readonly
+for entry in NAVIGATION
+  assert_equal('', Act(entry.id))
+  assert_equal(entry.id, g:vimrc_workbench_called)
+endfor
 assert_match('unavailable', Act('format'))
 assert_match('unavailable', Act('simple_code_lens_run'))
 assert_equal('', Act('simple_code_lens'))
@@ -210,10 +244,17 @@ assert_equal('', Act('simple_inlay_hints'))
 assert_true(index(g:VimrcWorkbenchCapabilities(), 'hover') >= 0)
 setlocal noreadonly
 setlocal nomodifiable
+for entry in NAVIGATION
+  assert_equal('', Act(entry.id))
+endfor
 assert_match('unavailable', Act('simple_code_lens_run'))
 setlocal modifiable
 b:vimrc_large_file = 1
 assert_match('unavailable', Act('hover'))
+for entry in NAVIGATION
+  assert_equal(-1, index(g:VimrcWorkbenchCapabilities(), entry.id))
+  assert_match('unavailable', Act(entry.id))
+endfor
 for action in ['simple_code_lens', 'simple_code_lens_run', 'simple_inlay_hints']
   assert_match('unavailable', Act(action), 'large files do not start decoration work')
 endfor
@@ -256,7 +297,10 @@ setlocal filetype=markdown
 # User opt-outs are authoritative, including Boolean values and re-source.
 g:simplewhichkey_enable = false
 assert_match('unavailable', Act('simple_keys'))
-g:vimrc_workbench_disabled_actions = ['simple_grep', 'definition']
+g:vimrc_workbench_disabled_actions = ['simple_grep', 'definition'] + mapnew(NAVIGATION, (_, entry) => entry.id)
+for entry in NAVIGATION
+  assert_match('unavailable', Act(entry.id))
+endfor
 assert_match('unavailable', Act('simple_grep'))
 assert_match('unavailable', Act('definition'))
 g:vimrc_workbench_enable = false
@@ -266,12 +310,20 @@ assert_match('unavailable', Act('simple_files'))
 execute 'source ' .. fnameescape(ROOT .. '/.vimrc')
 assert_false(g:vimrc_workbench_enable)
 assert_false(g:simplewhichkey_enable)
-assert_equal(['simple_grep', 'definition'], g:vimrc_workbench_disabled_actions)
+assert_equal(['simple_grep', 'definition'] + mapnew(NAVIGATION, (_, entry) => entry.id),
+  g:vimrc_workbench_disabled_actions)
 assert_equal([], g:VimrcWorkbenchCapabilities())
 g:vimrc_workbench_enable = true
 doautocmd BufEnter
 assert_equal(PROJECT .. '/src', g:VimrcWorkbenchState().root)
 assert_match('unavailable', Act('simple_grep'))
+for entry in NAVIGATION
+  assert_match('unavailable', Act(entry.id), 'reload preserves individual opt-outs')
+endfor
+g:vimrc_workbench_disabled_actions = ['simple_grep', 'definition']
+for entry in NAVIGATION
+  assert_equal('', Act(entry.id), 'actions recover when opt-outs are removed')
+endfor
 assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_files') >= 0)
 
 # Context follows the active split instead of leaking another buffer's Git
@@ -303,6 +355,9 @@ assert_false(&swapfile)
 assert_false(&buflisted)
 for action in ['simple_code_lens', 'simple_code_lens_run', 'simple_inlay_hints']
   assert_match('unavailable', Act(action), 'scratch reports never target source decorations')
+endfor
+for entry in NAVIGATION
+  assert_match('unavailable', Act(entry.id), 'scratch reports never target source navigation')
 endfor
 assert_match('unavailable', Act('simple_tree_reveal'))
 assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_terminal_toggle') >= 0)

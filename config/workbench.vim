@@ -16,6 +16,14 @@ const ACTIONS = [
   {id: 'simple_diagnostics', command: 'SimpleCCDiagnostics', title: 'Show buffer diagnostics', scope: 'code'},
   {id: 'simple_next_diagnostic', command: 'SimpleCCNextDiag', title: 'Go to next diagnostic', scope: 'code'},
   {id: 'simple_previous_diagnostic', command: 'SimpleCCPrevDiag', title: 'Go to previous diagnostic', scope: 'code'},
+  {id: 'simple_implementation', command: 'SimpleCCImplementation', title: 'Go to implementation', scope: 'code'},
+  {id: 'simple_type_definition', command: 'SimpleCCTypeDef', title: 'Go to type definition', scope: 'code'},
+  {id: 'simple_workspace_symbols', command: 'SimpleCCWorkspaceSymbolLive', title: 'Search workspace symbols', scope: 'code'},
+  {id: 'simple_incoming_calls', command: 'SimpleCCIncomingCalls', title: 'Show incoming calls', scope: 'code'},
+  {id: 'simple_outgoing_calls', command: 'SimpleCCOutgoingCalls', title: 'Show outgoing calls', scope: 'code'},
+  {id: 'simple_supertypes', command: 'SimpleCCSupertypes', title: 'Show supertypes', scope: 'code'},
+  {id: 'simple_subtypes', command: 'SimpleCCSubtypes', title: 'Show subtypes', scope: 'code'},
+  {id: 'simple_signature_help', command: 'SimpleCCSignatureHelp', title: 'Show signature help', scope: 'code'},
   {id: 'simple_outline', command: 'SimpleCCOutline', title: 'Show document symbols', scope: 'code'},
   {id: 'simple_code_lens', command: 'SimpleCCCodeLens', title: 'Refresh CodeLens annotations', scope: 'code'},
   {id: 'simple_code_lens_run', command: 'SimpleCCCodeLensRun', title: 'Run a CodeLens command', scope: 'write'},
@@ -237,6 +245,8 @@ def g:VimrcWorkbenchReport()
   var state = CaptureState()
   var render_protocol: any = get(g:, 'jterm_vim9_render_protocol', 0)
   var native_popups = state.native && type(render_protocol) == v:t_number && render_protocol >= 6
+  var native_cards = state.native && Flag('jterm_vim9_popup_cards', false)
+    && Flag('simplecc_popup_cards')
   # This is an explicit, authenticated capability. Older protocol-6 bridges
   # support popups but still fall back for every virtual text property.
   var native_after = state.native && Flag('jterm_vim9_virtual_text_after', false)
@@ -250,6 +260,8 @@ def g:VimrcWorkbenchReport()
     'Editor: ' .. (state.native ? 'authenticated native Vim bridge' : 'ordinary Vim / bridge disconnected'),
     'Popups: ' .. (native_popups ? 'native text surfaces from opted-in plugins; complex popups use Vim compatibility'
       : 'Vim compatibility view'),
+    'LSP cards: ' .. (native_cards ? 'native rounded documentation cards; Ctrl-F/Ctrl-B scroll, Space lq closes'
+      : 'classic popup presentation'),
     'Virtual text: ' .. (native_after ? 'native after-line CodeLens and diagnostics'
       : 'Vim compatibility view'),
     'Inline hints: ' .. (native_inline ? 'native single-line hints in nowrap views; complex layouts use Vim compatibility'

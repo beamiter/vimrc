@@ -19,6 +19,28 @@ const SIMPLECC_NMAPS = [
   ['[d', '<Plug>(simplecc-prev-diagnostic)'],
   [']d', '<Plug>(simplecc-next-diagnostic)'],
 ]
+const SEMANTIC_NMAPS = [
+  ['<F12>', '<Plug>(simplecc-definition)', 'SimpleCCDefinition'],
+  ['<S-F12>', '<Plug>(simplecc-references)', 'SimpleCCReferences'],
+  ['<leader>lq', '<Cmd>SimpleCCPopupClose<CR>', 'SimpleCCPopupClose'],
+]
+const SEMANTIC_POPUP_NMAPS = [
+  ['<C-f>', 'simplecc#PopupScrollKey(1, "\<C-f>")', 'SimpleCCPopupScroll'],
+  ['<C-b>', 'simplecc#PopupScrollKey(-1, "\<C-b>")', 'SimpleCCPopupScroll'],
+]
+const SEMANTIC_EDIT_NMAPS = [
+  ['<F2>', '<Plug>(simplecc-rename)', 'SimpleCCRename'],
+]
+const SEMANTIC_IMAPS = [
+  ['<C-g>s', '<Cmd>SimpleCCSignatureHelp<CR>', 'SimpleCCSignatureHelp'],
+]
+const SEMANTIC_XMAPS = [
+  ['<leader>ca', '<Plug>(simplecc-code-action)', 'SimpleCCAction'],
+  ['<leader>la', '<Plug>(simplecc-code-action)', 'SimpleCCAction'],
+  ['<leader>cf', '<Plug>(simplecc-format)', 'SimpleCCFormat'],
+  ['<leader>fm', '<Plug>(simplecc-format)', 'SimpleCCFormat'],
+  ['<leader>lf', '<Plug>(simplecc-format)', 'SimpleCCFormat'],
+]
 const SIMPLECC_IMAPS = [
   ['<Tab>', '<Plug>(simplecc-select-tab)'],
   ['<S-Tab>', '<Plug>(simplecc-select-shift-tab)'],
@@ -114,6 +136,18 @@ def ClearStaleSimpleccMaps()
       endif
     endfor
   endfor
+  # Only remove shortcuts installed by this script, even when a user chooses
+  # the same plug target. Script IDs survive re-sourcing the same file.
+  var owner = str2nr(matchstr(expand('<SID>'), '\d\+'))
+  for [mode, mappings] in [['n', SEMANTIC_NMAPS + SEMANTIC_EDIT_NMAPS + SEMANTIC_POPUP_NMAPS], ['i', SEMANTIC_IMAPS], ['x', SEMANTIC_XMAPS]]
+    for mapping in mappings
+      var existing = maparg(mapping[0], mode, false, true)
+      if get(existing, 'buffer', 0) == 1 && get(existing, 'sid', -1) == owner
+            \ && get(existing, 'rhs', '') ==# mapping[1]
+        execute $'silent! {mode}unmap <buffer> ' .. mapping[0]
+      endif
+    endfor
+  endfor
 enddef
 
 def ApplyBufferBaseline()
@@ -172,7 +206,7 @@ enddef
 def ApplyLspMappings()
   # Keep Vim's native gd/gr/gi/K motions everywhere except buffers covered by
   # the configured language-server set.
-  if !C.plugins_ready
+  if !exists('g:loaded_simplecc')
         \ || !EditingBuffer()
         \ || get(b:, 'vimrc_large_file', 0)
         \ || index(LSP_FILETYPES, &filetype) < 0
@@ -189,6 +223,23 @@ def ApplyLspMappings()
     if empty(existing) || get(existing, 'rhs', '') ==# mapping[1]
       execute $'imap <buffer> <silent> {mapping[0]} {mapping[1]}'
     endif
+  endfor
+  # Each shortcut is gated on its actual command, including provider reloads.
+  if empty(bufname())
+    return
+  endif
+  for [mode, mappings, edits, expression] in [
+      ['n', SEMANTIC_NMAPS, false, false], ['n', SEMANTIC_EDIT_NMAPS, true, false],
+      ['i', SEMANTIC_IMAPS, true, false], ['x', SEMANTIC_XMAPS, true, false],
+      ['n', SEMANTIC_POPUP_NMAPS, false, true]]
+    if edits && (&readonly || !&modifiable)
+      continue
+    endif
+    for mapping in mappings
+      if exists(':' .. mapping[2]) == 2 && empty(maparg(mapping[0], mode, false, true))
+        execute $'{mode}{expression ? "noremap" : "map"} <buffer> <silent> {expression ? "<expr>" : ""} {mapping[0]} {mapping[1]}'
+      endif
+    endfor
   endfor
 enddef
 
@@ -327,6 +378,8 @@ augroup vimrc_core
   autocmd FileType * call g:VimrcConfigureFiletype()
   autocmd BufReadPost * call RestoreCursor()
   autocmd FocusGained,BufEnter * call CheckCurrentFile()
+  autocmd BufEnter * call RefreshLargeFileEditing()
+  autocmd OptionSet readonly,modifiable call RefreshLargeFileEditing()
   autocmd VimResized * wincmd =
   autocmd ColorScheme * call ApplyHighlights()
   autocmd InsertEnter * call ClearWhitespaceMatch()

@@ -324,6 +324,11 @@ buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 G
 | =simple_tree_toggle= / =simple_tree_reveal= | 优先 =SimpleRemoteTree= / =SimpleRemoteTreeReveal=，未安装时使用 =SimpleTree= / =SimpleTreeReveal= |
 | =simple_terminal_toggle= / =simple_terminal_new= | =SimpleTerminalToggle= / =SimpleTerminalNew= |
 | =simple_terminal_next= / =simple_terminal_previous= | =SimpleTerminalNext= / =SimpleTerminalPrev= |
+| =simple_implementation= / =simple_type_definition= | =SimpleCCImplementation= / =SimpleCCTypeDef=，跳转到实现／类型定义 |
+| =simple_workspace_symbols= | =SimpleCCWorkspaceSymbolLive=，实时搜索工作区符号 |
+| =simple_incoming_calls= / =simple_outgoing_calls= | =SimpleCCIncomingCalls= / =SimpleCCOutgoingCalls=，查看调用关系 |
+| =simple_supertypes= / =simple_subtypes= | =SimpleCCSupertypes= / =SimpleCCSubtypes=，查看类型层级 |
+| =simple_signature_help= | =SimpleCCSignatureHelp=，显示签名及参数帮助 |
 | =simple_outline= / =simple_rename= / =simple_code_action= | =SimpleCCOutline= / =SimpleCCRename= / =SimpleCCAction= |
 | =simple_code_lens= / =simple_code_lens_run= | 刷新 CodeLens 行末提示 / 执行当前文件的 CodeLens 命令 |
 | =simple_inlay_hints= | =SimpleCCInlayHints=，切换 inline 类型／参数提示；支持的布局使用原生绘制 |
@@ -331,6 +336,12 @@ buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 G
 | =simple_markdown_preview= | =SimpleMarkdown=，遵循插件支持的 filetype 和无 filetype 时的 Markdown 扩展名 |
 | =simple_keys= / =simple_workbench= | =SimpleWhichKey= / =VimrcWorkbench= |
 | =definition= / =hover= / =references= / =format= | 对应的 SimpleCC 命令，供已有 GUI 语义按钮复用 |
+
+以上语义导航与签名帮助动作允许只读代码 buffer；大文件保护、插件 scratch
+buffer 或对应命令缺失时不提供。工作区符号实时搜索保留 SimpleCC 的 Vim
+兼容交互视图，输入查询后使用上下键选择、Enter 跳转、Esc 关闭；签名帮助
+使用已接入的原生文本 popup（不支持的布局仍回退到 Vim 兼容视图）。这些入口
+复用现有快捷键，也能在四终端命令面板或 =:VimrcAction {id}= 中调用。
 
 树动作仅在实际提供者可用时出现。单独安装远程包装器但缺少 SimpleTree 时，
 只在已连接的虚拟远程工作区提供树；定位动作还要求当前为有远程路径的 buffer。
@@ -695,6 +706,28 @@ buffer 保留 Vim/SimplePairs 的原行为。Enter 补全确认与 SimplePairs �
 Julia 项目环境用 =:SimpleCCJuliaActivate [dir]=。远端 workspace 的语言服务器由
 SimpleCC 直接经 SimpleRemote agent 启动，=remote://= buffer 的补全、诊断和导航
 与本地一致。
+
+** 代码 buffer 的现代语义键位
+
+有 SimpleCC 的代码文件使用 =F12= 跳转定义、=Shift-F12= 查找引用、
+=F2= 重命名；Insert 模式按 =Ctrl-g s= 显示签名，保持插入位置与文本。
+=Ctrl-k= 仍保留 Vim 原生 digraph。Visual 模式的 =Space ca/la= 执行选区
+代码操作，=Space cf/fm/lf= 格式化选中行；Normal 模式仍格式化全文。
+这些键位只安装在当前代码 buffer，包含 SimpleRemote 的 =acwrite= 文件，
+尊重已有全局／局部绑定。只读 buffer 保留定义／引用导航；编辑动作只在可写文件
+中安装。大文件、无提供者和插件 buffer 不安装，重载或切换文件类型时只清理
+配置自己的映射。
+
+在支持文档卡片的四终端中，SimpleCC 的 hover、签名、诊断和补全文档使用原生
+圆角、阴影和细边框，并按 Vim 主题颜色绘制。长文档先在 popup buffer 中换行，
+滚动时仍保留原生绘制。Normal 模式有文档弹窗时，=Ctrl-f= / =Ctrl-b= 滚动文档；
+没有弹窗时仍是 Vim 原生翻页。=Space lq= 关闭 SimpleCC 文档窗口，
+不影响交互式符号选择器。已有用户翻页键映射优先。
+
+在 =~/.vimrc.before= 中设置 =g:simplecc_popup_cards = 0= 可保留经典弹窗样式。
+普通终端 Vim、旧桥接和复杂交互式窗口继续使用原来的显示与输入方式；
+=:VimrcWorkbench= 报告当前文档卡片能力。Markdown 文本沿用 Vim 的语法显示，
+不转换为 HTML，也不删除服务器返回的原始标记。
 
 ** Git、工具与 UI
 
