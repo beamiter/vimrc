@@ -216,6 +216,14 @@ assert_equal('<Plug>(simplecc-definition)', maparg('<F12>', 'n'))
 assert_equal('<Plug>(simplecc-references)', maparg('<S-F12>', 'n'))
 assert_equal('<Plug>(simplecc-rename)', maparg('<F2>', 'n'))
 assert_equal('<Cmd>SimpleCCSignatureHelp<CR>', maparg('<C-g>s', 'i'))
+for key in ['<C-g>f', '<C-g>b', '<C-g>q']
+  assert_equal(1, maparg(key, 'i', false, true).buffer)
+  assert_equal(1, maparg(key, 'i', false, true).expr)
+  assert_equal(1, maparg(key, 'i', false, true).noremap)
+endfor
+assert_match('simplecc#PopupScrollKey(1,', maparg('<C-g>f', 'i'))
+assert_match('simplecc#PopupScrollKey(-1,', maparg('<C-g>b', 'i'))
+assert_match('simplecc#PopupCloseKey', maparg('<C-g>q', 'i'))
 assert_equal('<Plug>(simplecc-format)', maparg('<leader>cf', 'x'))
 assert_equal('<Plug>(simplecc-code-action)', maparg('<leader>ca', 'x'))
 assert_equal(1, maparg('<C-f>', 'n', false, true).expr)
@@ -238,9 +246,17 @@ g:VimrcConfigureFiletype()
 assert_equal('<Plug>(simplecc-references)', maparg('<S-F12>', 'n'))
 assert_match('simplecc#PopupScrollKey', maparg('<C-f>', 'n'))
 assert_equal('', maparg('<C-g>s', 'i'))
+assert_match('simplecc#PopupScrollKey', maparg('<C-g>f', 'i'), 'readonly documentation remains navigable')
 assert_equal('', maparg('<leader>cf', 'x'))
 assert_equal('user-local-rename', maparg('<F2>', 'n'))
 setlocal noreadonly
+inoremap <C-g>f user-global-doc-scroll
+inoremap <buffer> <C-g>q user-buffer-doc-close
+g:VimrcConfigureFiletype()
+assert_equal('user-global-doc-scroll', maparg('<C-g>f', 'i'))
+assert_equal('user-buffer-doc-close', maparg('<C-g>q', 'i'))
+iunmap <C-g>f
+iunmap <buffer> <C-g>q
 nunmap <F12>
 nunmap <buffer> <F2>
 g:VimrcConfigureFiletype()
@@ -257,12 +273,18 @@ b:vimrc_large_file = 1
 doautocmd User VimrcLargeFileChanged
 assert_equal('', maparg('<F12>', 'n'))
 assert_equal('', maparg('<leader>ca', 'x'))
+for key in ['<C-g>f', '<C-g>b', '<C-g>q']
+  assert_equal('', maparg(key, 'i'), 'large-file mode retires owned document keys')
+endfor
 b:vimrc_large_file = 0
 noautocmd setlocal filetype=text
 g:VimrcConfigureFiletype()
 assert_equal('', maparg('<F12>', 'n'))
 assert_equal('', maparg('<C-f>', 'n'))
 assert_equal('', maparg('<C-b>', 'n'))
+for key in ['<C-g>f', '<C-g>b', '<C-g>q']
+  assert_equal('', maparg(key, 'i'), 'filetype changes retire owned document keys')
+endfor
 enew!
 inoremap <CR> user-global-enter
 doautocmd InsertEnter

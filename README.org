@@ -725,7 +725,10 @@ SimpleCC 直接经 SimpleRemote agent 启动，=remote://= buffer 的补全、�
 在支持文档卡片的四终端中，SimpleCC 的 hover、签名、诊断和补全文档使用原生
 圆角、阴影和细边框，并按 Vim 主题颜色绘制。长文档先在 popup buffer 中换行，
 滚动时仍保留原生绘制。Normal 模式有文档弹窗时，=Ctrl-f= / =Ctrl-b= 滚动文档；
-没有弹窗时仍是 Vim 原生翻页。=Space lq= 关闭 SimpleCC 文档窗口，
+没有弹窗时仍是 Vim 原生翻页。插入模式用 =Ctrl-G f= / =Ctrl-G b= 滚动文档，
+=Ctrl-G q= 关闭文档；补全菜单的选择、输入位置和撤销历史保持不变。
+这些键只在有文档窗口时处理，没有文档时保留原键序列；已有用户映射优先。
+=Space lq= 关闭 SimpleCC 文档窗口，
 不影响交互式符号选择器。已有用户翻页键映射优先。
 
 在 =~/.vimrc.before= 中设置 =g:simplecc_popup_cards = 0= 可保留经典弹窗样式。

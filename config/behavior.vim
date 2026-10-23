@@ -34,6 +34,11 @@ const SEMANTIC_EDIT_NMAPS = [
 const SEMANTIC_IMAPS = [
   ['<C-g>s', '<Cmd>SimpleCCSignatureHelp<CR>', 'SimpleCCSignatureHelp'],
 ]
+const SEMANTIC_POPUP_IMAPS = [
+  ['<C-g>f', 'simplecc#PopupScrollKey(1, "\<C-g>f")', 'SimpleCCPopupScroll'],
+  ['<C-g>b', 'simplecc#PopupScrollKey(-1, "\<C-g>b")', 'SimpleCCPopupScroll'],
+  ['<C-g>q', 'exists("*simplecc#PopupCloseKey") ? simplecc#PopupCloseKey("\<C-g>q") : "\<C-g>q"', 'SimpleCCPopupClose'],
+]
 const SEMANTIC_XMAPS = [
   ['<leader>ca', '<Plug>(simplecc-code-action)', 'SimpleCCAction'],
   ['<leader>la', '<Plug>(simplecc-code-action)', 'SimpleCCAction'],
@@ -182,7 +187,7 @@ def ClearStaleSimpleccMaps()
   # Only remove shortcuts installed by this script, even when a user chooses
   # the same plug target. Script IDs survive re-sourcing the same file.
   var owner = str2nr(matchstr(expand('<SID>'), '\d\+'))
-  for [mode, mappings] in [['n', SEMANTIC_NMAPS + SEMANTIC_EDIT_NMAPS + SEMANTIC_POPUP_NMAPS], ['i', SEMANTIC_IMAPS], ['x', SEMANTIC_XMAPS]]
+  for [mode, mappings] in [['n', SEMANTIC_NMAPS + SEMANTIC_EDIT_NMAPS + SEMANTIC_POPUP_NMAPS], ['i', SEMANTIC_IMAPS + SEMANTIC_POPUP_IMAPS], ['x', SEMANTIC_XMAPS]]
     for mapping in mappings
       var existing = maparg(mapping[0], mode, false, true)
       if get(existing, 'buffer', 0) == 1 && get(existing, 'sid', -1) == owner
@@ -274,7 +279,7 @@ def ApplyLspMappings()
   for [mode, mappings, edits, expression] in [
       ['n', SEMANTIC_NMAPS, false, false], ['n', SEMANTIC_EDIT_NMAPS, true, false],
       ['i', SEMANTIC_IMAPS, true, false], ['x', SEMANTIC_XMAPS, true, false],
-      ['n', SEMANTIC_POPUP_NMAPS, false, true]]
+      ['n', SEMANTIC_POPUP_NMAPS, false, true], ['i', SEMANTIC_POPUP_IMAPS, false, true]]
     if edits && (&readonly || !&modifiable)
       continue
     endif

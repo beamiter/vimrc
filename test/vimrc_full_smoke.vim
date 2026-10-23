@@ -128,6 +128,10 @@ assert_equal('<Plug>(simplecc-definition)', maparg('<F12>', 'n'))
 assert_equal('<Plug>(simplecc-references)', maparg('<S-F12>', 'n'))
 assert_equal('<Plug>(simplecc-rename)', maparg('<F2>', 'n'))
 assert_equal('<Cmd>SimpleCCSignatureHelp<CR>', maparg('<C-g>s', 'i'))
+for key in ['<C-g>f', '<C-g>b', '<C-g>q']
+  assert_equal(1, maparg(key, 'i', false, true).expr)
+  assert_equal(1, maparg(key, 'i', false, true).buffer)
+endfor
 assert_equal('<Plug>(simplecc-format)', maparg('<leader>cf', 'x'))
 &l:filetype = 'vim'
 g:VimrcConfigureFiletype()
