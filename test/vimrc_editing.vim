@@ -260,6 +260,7 @@ command! SimpleCCFormat echo ''
 command! SimpleCCSignatureHelp echo ''
 command! -nargs=1 SimpleCCPopupScroll echo ''
 command! SimpleCCPopupClose echo ''
+command! SimpleCCDocPin echo ''
 g:VimrcConfigureFiletype()
 assert_equal('', maparg('<F12>', 'n'), 'unnamed scratch must keep native keys')
 execute 'file ' .. fnameescape(tempname() .. '.rs')
@@ -283,6 +284,8 @@ assert_equal(1, maparg('<C-f>', 'n', false, true).noremap)
 assert_match('simplecc#PopupScrollKey(1,', maparg('<C-f>', 'n'))
 assert_match('simplecc#PopupScrollKey(-1,', maparg('<C-b>', 'n'))
 assert_equal('<Cmd>SimpleCCPopupClose<CR>', maparg('<leader>lq', 'n'))
+assert_equal('<Cmd>SimpleCCDocPin<CR>', maparg('<leader>lP', 'n'))
+assert_match('SimpleCCDocPin', maparg('<C-g>p', 'i'))
 setlocal buftype=acwrite
 g:VimrcConfigureFiletype()
 assert_equal('<Plug>(simplecc-definition)', maparg('<F12>', 'n'), 'remote acwrite code retains navigation')

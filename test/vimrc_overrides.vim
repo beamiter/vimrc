@@ -3,7 +3,7 @@ vim9script
 set nomore
 
 assert_equal(';', g:mapleader)
-assert_equal('<Cmd>update<CR>', maparg(';fs', 'n'))
+assert_equal('<Cmd>VimrcSave<CR>', maparg(';fs', 'n'))
 assert_equal('', maparg('<Space>fs', 'n'))
 assert_equal(0, get(g:, 'simpleeditorconfig_enable', -1))
 assert_equal('before-loaded', get(g:, 'vimrc_before_test', ''))

@@ -24,6 +24,7 @@ const ACTIONS = [
   {id: 'simple_supertypes', command: 'SimpleCCSupertypes', title: 'Show supertypes', scope: 'code'},
   {id: 'simple_subtypes', command: 'SimpleCCSubtypes', title: 'Show subtypes', scope: 'code'},
   {id: 'simple_signature_help', command: 'SimpleCCSignatureHelp', title: 'Show signature help', scope: 'code'},
+  {id: 'simple_doc_pin', command: 'SimpleCCDocPin', title: 'Pin documentation in a split', scope: 'code'},
   {id: 'simple_outline', command: 'SimpleCCOutline', title: 'Show document symbols', scope: 'code'},
   {id: 'simple_code_lens', command: 'SimpleCCCodeLens', title: 'Refresh CodeLens annotations', scope: 'code'},
   {id: 'simple_code_lens_run', command: 'SimpleCCCodeLensRun', title: 'Run a CodeLens command', scope: 'write'},

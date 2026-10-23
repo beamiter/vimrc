@@ -109,6 +109,8 @@ for module in [
   'compat.vim',
   'health.vim',
   'workflow.vim',
+  'buffers.vim',
+  'save.vim',
   'search.vim',
   'remote.vim',
   'workbench.vim',

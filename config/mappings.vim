@@ -7,7 +7,7 @@ var C = g:vimrc_context
 # ============================================================================
 
 # 保存 / 配置 / 健康
-nnoremap <silent> <leader>fs <Cmd>update<CR>
+nnoremap <silent> <leader>fs <Cmd>VimrcSave<CR>
 nnoremap <silent> <leader>fS <Cmd>wall<CR>
 nnoremap <silent> <leader>ve <Cmd>execute 'edit ' .. fnameescape(g:vimrc_root .. '/.vimrc')<CR>
 nnoremap <silent> <leader>vr <Cmd>VimrcReload<CR>
@@ -71,7 +71,8 @@ nnoremap <silent> <C-Right> <C-w>5>
 nnoremap <silent> <leader>bn <Cmd>bnext<CR>
 nnoremap <silent> <leader>bk <Cmd>bprevious<CR>
 nnoremap <silent> <leader>bl <Cmd>buffer #<CR>
-nnoremap <silent> <leader>bd <Cmd>confirm bdelete<CR>
+nnoremap <silent> <leader>bd <Cmd>VimrcCloseBuffer<CR>
+nnoremap <silent> <leader>bR <Cmd>VimrcReopenBuffer<CR>
 nnoremap <silent> ]q <Cmd>cnext<CR>
 nnoremap <silent> [q <Cmd>cprevious<CR>
 nnoremap <silent> ]l <Cmd>lnext<CR>
@@ -308,6 +309,7 @@ if get(C, 'plugins_ready', false)
       name: '+buffer',
       b: 'find-buffers',
       d: 'delete-buffer',
+      R: 'reopen-closed-file',
       k: 'previous-buffer',
       l: 'alternate-buffer',
       n: 'next-buffer',
@@ -376,6 +378,7 @@ if get(C, 'plugins_ready', false)
       n: 'rename',
       o: 'outline',
       p: 'inlay-hints',
+      P: 'pin-documentation',
       r: 'references',
       R: 'restart',
       s: 'signature-help',

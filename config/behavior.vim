@@ -23,6 +23,7 @@ const SEMANTIC_NMAPS = [
   ['<F12>', '<Plug>(simplecc-definition)', 'SimpleCCDefinition'],
   ['<S-F12>', '<Plug>(simplecc-references)', 'SimpleCCReferences'],
   ['<leader>lq', '<Cmd>SimpleCCPopupClose<CR>', 'SimpleCCPopupClose'],
+  ['<leader>lP', '<Cmd>SimpleCCDocPin<CR>', 'SimpleCCDocPin'],
 ]
 const SEMANTIC_POPUP_NMAPS = [
   ['<C-f>', 'simplecc#PopupScrollKey(1, "\<C-f>")', 'SimpleCCPopupScroll'],
@@ -35,6 +36,7 @@ const SEMANTIC_IMAPS = [
   ['<C-g>s', '<Cmd>SimpleCCSignatureHelp<CR>', 'SimpleCCSignatureHelp'],
 ]
 const SEMANTIC_POPUP_IMAPS = [
+  ['<C-g>p', 'simplecc#PopupVisible() ? "\<Cmd>SimpleCCDocPin\<CR>" : "\<C-g>p"', 'SimpleCCDocPin'],
   ['<C-g>f', 'simplecc#PopupScrollKey(1, "\<C-g>f")', 'SimpleCCPopupScroll'],
   ['<C-g>b', 'simplecc#PopupScrollKey(-1, "\<C-g>b")', 'SimpleCCPopupScroll'],
   ['<C-g>q', 'exists("*simplecc#PopupCloseKey") ? simplecc#PopupCloseKey("\<C-g>q") : "\<C-g>q"', 'SimpleCCPopupClose'],

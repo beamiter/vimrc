@@ -734,6 +734,9 @@ SimpleCC 直接经 SimpleRemote agent 启动，=remote://= buffer 的补全、�
 没有弹窗时仍是 Vim 原生翻页。插入模式用 =Ctrl-G f= / =Ctrl-G b= 滚动文档，
 =Ctrl-G q= 关闭文档；补全菜单的选择、输入位置和撤销历史保持不变。
 这些键只在有文档窗口时处理，没有文档时保留原键序列；已有用户映射优先。
+=Space lP=（插入模式 =Ctrl-G p=）将当前文档固定到只读真实分屏，保留原始换行、代码语法和当前参数
+高亮；可用 =/= 搜索、普通 yank 复制，=:close= 关闭。签名显示当前重载序号，
+重复参数、中文和 emoji 的高亮位置随卡片换行保持一致。未知代码语言保留原文。
 =Space lq= 关闭 SimpleCC 文档窗口，
 不影响交互式符号选择器。已有用户翻页键映射优先。
 
@@ -890,3 +893,51 @@ set ambiwidth=double
 g:simpleline_nerdfont = 0
 g:simpletree_use_nerdfont = 0
 #+end_src
+
+* 按项目启用保存流程
+
+=Space fs=、=:VimrcSave= 和 =<Plug>(VimrcSave)= 使用项目保存策略；未配置时等同
+=:update=。普通 =:w= 保持 Vim 的标准写入行为。四终端原生 Save / Ctrl-S 也使用
+该入口；原生 Save All / 保存后构建按同一策略逐个保存，只有全部完成后才构建。
+
+#+begin_src vim
+let g:vimrc_save_projects = {
+      \ '/absolute/project/root': {'rust': {'format': v:true, 'imports': v:true, 'timeout_ms': 3000}},
+      \ }
+" 或只给当前 buffer 启用：
+let b:vimrc_save_pipeline = {'format': v:true, 'imports': v:false}
+#+end_src
+
+默认没有任何项目自动启用。项目根来自 =VimrcProjectRoot()=（支持远程项目根），
+策略按当前 filetype 精确匹配。流程按格式化→整理 imports→写入顺序运行；每阶段
+有超时。Insert / Replace 中请求保存时，保持输入模式和补全菜单，延迟到
+=InsertLeave=；继续输入、切换窗口/文件、超时、只读、大文件保护或 LSP 错误都会
+停止该次写入，已应用编辑保留供检查，不自动重试。
+
+整理 imports 只接受唯一、当前文件的 edit-only =source.organizeImports=；命令型、
+跨文件和资源操作须手工使用 CodeAction。需要新版 SimpleCC daemon，旧 daemon
+明确拒绝。远程写入沿用 =BufWriteCmd=，等待 SimpleRemote 的实际 ACK，绑定请求
+serial、连接 generation、文档 tick、路径和最终换行；仅 undo 回到 clean 状态不能
+冒充保存成功。已有同一快照的 pending write 会被等待，不重复发送；仍在等待、失败
+或内容已变化时不开始构建。无 ACK 接口的旧 acwrite 提供者仅保守降级，无法确认
+完成时显示 pending。
+
+* 四终端工作台的进一步集成
+
+| 功能 | 操作与行为 |
+|------+------------|
+| 文档卡片 | =Space lP= / Insert =Ctrl-G p= 固定当前文档到只读分屏；=/= 搜索、普通 yank 复制；=:close= 关闭。当前参数、重载序号与代码语法同步保留。 |
+| 关闭与恢复文件 | =Space bd= / =:VimrcCloseBuffer= 保留分屏布局；=Space bR= / =:VimrcReopenBuffer= 恢复最近关闭文件和位置。原生命令面板提供同类命令；未保存或 remote ACK pending 的文件拒绝关闭。历史限于当前 Vim 进程。 |
+| 命令面板 | Anvil / Forge / Ember / Frost 均支持 =PageUp= / =PageDown= 按可见结果窗口分页，保持查询焦点；修饰键组合继续交给原快捷键。成功执行的原生命令加入最近使用排序。 |
+| 项目保存 | =Space fs=、原生 Save / Ctrl-S 与保存后构建使用上节的 opt-in 策略；普通 =:w= 不自动格式化或整理 imports。 |
+| 文件移动与 imports | SimpleTree / SimpleRemoteTree 中 =r= 改名，=x= 剪切后 =p= 移动；支持的运行中语言服务器先返回跨文件修改预览。预览按 =a= 应用，=q= / =Esc= / 关闭预览取消。imports 修改留在 buffer 中供检查和保存，不自动写盘。 |
+| 工作台恢复 | 按项目和终端 host 恢复搜索文本、选项、面板可见性、可用尺寸和合理焦点；只在首批真实 Vim metadata 就绪后恢复一次焦点。不会自动启动搜索、构建或保存构建命令、输出及编辑文本。 |
+
+文件移动能力来自语言服务器的 =willRenameFiles= / =didRenameFiles= filters，无需
+新增全局开关。旧 backend 或缺少安全远程读取接口时明确提供 Rename only / Cancel，
+默认取消；无法安全合并的资源操作、版本化 edits、重叠 edits 或多个服务器同时修改
+同一文件会拒绝操作。可查看 SimpleCC 的 =doc/file-rename.md= 了解支持范围。
+
+工作台恢复保存在 XDG state 目录中的数据文件，按项目和 Anvil / Forge / Ember /
+Frost 分隔；将环境变量 =JTERM_VIM9_NO_WORKSPACE_STATE= 设为 =1= 可禁用。某面板不可用或
+隐藏时焦点回到编辑区；Frost 恢复 Files 焦点只打开 Quick Open 表单，不执行文件操作。
