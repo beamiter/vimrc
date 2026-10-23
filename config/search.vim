@@ -56,8 +56,11 @@ def Publish(phase: string)
       id: current.qfid, items: current.items, context: context,
       title: printf('grep: %s [%s, %d lines]', current.pattern, phase, current.count),
     })
+    # Tab numbers change when tabs move or close.  The originating window is
+    # stable; a closed origin must not authorize display in a replacement tab.
     if current.count > 0 && get(g:, 'vimrc_grep_open', 1)
-          && phase !=# 'cancelled' && tabpagenr() == current.tab
+          && phase !=# 'cancelled'
+          && win_id2tabwin(current.origin_win)[0] == tabpagenr()
           && getqflist({id: 0}).id == current.qfid
       var origin = win_getid()
       execute 'botright copen ' .. min([10, max([1, current.count])])
@@ -219,7 +222,7 @@ def g:VimrcGrep(pattern: string, literal: bool = false)
     limit: min([100000, Setting('vimrc_grep_max_results', 2000)]),
     items: [], pending: '', stderr: '', bytes: 0, skipped: 0,
     reason: '', closed: false, exited: false, exit_code: -1,
-    qfid: getqflist({id: 0}).id, tab: tabpagenr(),
+    qfid: getqflist({id: 0}).id, origin_win: win_getid(),
     timer: -1, job: v:null, started: reltime(),
   }
   g:vimrc_grep_state = current

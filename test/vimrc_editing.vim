@@ -6,6 +6,58 @@ const ROOT = g:vimrc_root
 var scratch = tempname()
 mkdir(scratch, 'p')
 
+# Exercise actual Visual keystrokes. Native Visual P keeps the source
+# register while placing replacements correctly at line ends and in blocks.
+# Isolate the default register from a live X clipboard and other Vim tests.
+var paste_clipboard = &clipboard
+set clipboard=
+enew!
+setline(1, 'abc')
+setreg('"', 'Z')
+feedkeys('gg$vp', 'xt')
+assert_equal('abZ', getline(1), 'Visual paste replaces the final character in place')
+assert_equal('Z', getreg('"'), 'Visual paste preserves the source register')
+feedkeys('u', 'xt')
+assert_equal('abc', getline(1), 'one undo restores the whole Visual replacement')
+feedkeys("\<C-r>", 'xt')
+assert_equal('abZ', getline(1), 'redo restores the whole Visual replacement')
+
+enew!
+setline(1, 'abcdef')
+setreg('a', 'NAMED')
+setreg('"', 'UNNAMED')
+feedkeys('gg0vl"ap', 'xt')
+assert_equal('NAMEDcdef', getline(1), 'Visual paste honors an explicit register')
+assert_equal('NAMED', getreg('a'))
+assert_equal('UNNAMED', getreg('"'))
+
+enew!
+setline(1, ['first', 'second', 'third'])
+setreg('"', ['replacement'], 'V')
+feedkeys('ggjVp', 'xt')
+assert_equal(['first', 'replacement', 'third'], getline(1, '$'))
+assert_equal(['replacement'], getreg('"', 1, true))
+assert_equal('V', getregtype('"'))
+
+enew!
+setline(1, ['abcd', 'efgh'])
+setreg('"', ['XY', 'ZW'], "\<C-v>2")
+feedkeys("gg0l\<C-v>jlp", 'xt')
+assert_equal(['aXYd', 'eZWh'], getline(1, '$'), 'Visual block replacement retains its columns')
+assert_equal(['XY', 'ZW'], getreg('"', 1, true))
+assert_equal("\<C-v>2", getregtype('"'))
+
+enew!
+setline(1, 'abcd')
+var previous_selection = &selection
+set selection=exclusive
+setreg('"', 'Z')
+feedkeys('gg0lvlp', 'xt')
+assert_equal('aZcd', getline(1), 'exclusive selection replaces only selected characters')
+assert_equal('Z', getreg('"'))
+&selection = previous_selection
+&clipboard = paste_clipboard
+
 def Whitespaces(): list<dict<any>>
   return filter(getmatches(), (_, item) => item.group ==# 'ExtraWhitespace')
 enddef
@@ -245,11 +297,21 @@ setlocal readonly
 g:VimrcConfigureFiletype()
 assert_equal('<Plug>(simplecc-references)', maparg('<S-F12>', 'n'))
 assert_match('simplecc#PopupScrollKey', maparg('<C-f>', 'n'))
-assert_equal('', maparg('<C-g>s', 'i'))
+assert_equal('<Cmd>SimpleCCSignatureHelp<CR>', maparg('<C-g>s', 'i'), 'readonly signature help remains available')
 assert_match('simplecc#PopupScrollKey', maparg('<C-g>f', 'i'), 'readonly documentation remains navigable')
 assert_equal('', maparg('<leader>cf', 'x'))
 assert_equal('user-local-rename', maparg('<F2>', 'n'))
 setlocal noreadonly
+setlocal nomodifiable
+g:VimrcConfigureFiletype()
+assert_equal('<Cmd>SimpleCCSignatureHelp<CR>', maparg('<C-g>s', 'i'), 'nomodifiable signature help remains available')
+assert_equal('', maparg('<leader>cf', 'x'), 'nomodifiable buffer has no range-editing shortcut')
+assert_equal('user-local-rename', maparg('<F2>', 'n'), 'user rename mapping remains owned by the user')
+nunmap <buffer> <F2>
+g:VimrcConfigureFiletype()
+assert_equal('', maparg('<F2>', 'n'), 'nomodifiable buffer has no owned rename shortcut')
+nnoremap <buffer> <F2> user-local-rename
+setlocal modifiable
 inoremap <C-g>f user-global-doc-scroll
 inoremap <buffer> <C-g>q user-buffer-doc-close
 g:VimrcConfigureFiletype()

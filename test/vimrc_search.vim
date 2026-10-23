@@ -155,6 +155,88 @@ assert_equal(0, getqflist({winid: 0}).winid)
 tabclose!
 assert_equal(ORIGIN, win_getid())
 
+# Hold real rg behind an explicit release, so window changes always precede
+# completion even when a CI runner can finish a tiny search immediately.
+const REAL_RG = exepath('rg')
+const HAD_RELEASE = exists('$VIMRC_RG_RELEASE')
+const OLD_RELEASE = $VIMRC_RG_RELEASE
+const RELEASE = FIXTURE .. '/release-search'
+mkdir(FIXTURE .. '/gated-bin', 'p')
+writefile([
+  '#!/bin/sh',
+  'while [ ! -f "$VIMRC_RG_RELEASE" ]; do sleep 0.01; done',
+  'exec ' .. shellescape(REAL_RG) .. ' "$@"',
+], FIXTURE .. '/gated-bin/rg')
+setfperm(FIXTURE .. '/gated-bin/rg', 'rwx------')
+$PATH = FIXTURE .. '/gated-bin:' .. REAL_PATH
+$VIMRC_RG_RELEASE = RELEASE
+
+# Tab numbers are positions, not identities: insertion must not authorize
+# presentation in a new tab that takes over the request's old number.
+delete(RELEASE)
+g:VimrcGrep('needle')
+assert_equal('running', g:vimrc_grep_state.phase)
+:0tabnew
+other_win = win_getid()
+writefile(['release'], RELEASE)
+WaitForSearch()
+assert_equal(other_win, win_getid())
+assert_equal(0, getqflist({winid: 0}).winid, 'front insertion must not open another tab')
+tabclose!
+assert_equal(ORIGIN, win_getid())
+
+# Moving the request's tab must still allow results in that same live window.
+tabnew
+win_gotoid(ORIGIN)
+delete(RELEASE)
+g:VimrcGrep('needle')
+assert_equal('running', g:vimrc_grep_state.phase)
+execute 'tabmove $'
+writefile(['release'], RELEASE)
+WaitForSearch()
+assert_equal(ORIGIN, win_getid())
+assert_true(getqflist({winid: 0}).winid > 0, 'moved origin tab still opens results')
+cclose
+tabprevious
+tabclose!
+assert_equal(ORIGIN, win_getid())
+
+# A replacement window in the same tab cannot inherit an abandoned request.
+split
+var abandoned_win = win_getid()
+delete(RELEASE)
+g:VimrcGrep('needle')
+assert_equal('running', g:vimrc_grep_state.phase)
+close
+writefile(['release'], RELEASE)
+WaitForSearch()
+assert_equal(ORIGIN, win_getid())
+assert_equal([0, 0], win_id2tabwin(abandoned_win))
+assert_equal(0, getqflist({winid: 0}).winid, 'closed origin window cannot open results')
+
+# Closing the origin tab and creating another with its number cannot revive it.
+tabnew
+execute 'edit ' .. fnameescape(SOURCE)
+delete(RELEASE)
+g:VimrcGrep('needle')
+assert_equal('running', g:vimrc_grep_state.phase)
+tabclose!
+tabnew
+other_win = win_getid()
+writefile(['release'], RELEASE)
+WaitForSearch()
+assert_equal(other_win, win_getid())
+assert_equal(0, getqflist({winid: 0}).winid, 'reused tab number cannot inherit request')
+tabclose!
+assert_equal(ORIGIN, win_getid())
+
+$PATH = REAL_PATH
+if HAD_RELEASE
+  $VIMRC_RG_RELEASE = OLD_RELEASE
+else
+  unlet $VIMRC_RG_RELEASE
+endif
+
 # rg exit 1 means a successful zero-result search; invalid regex exits 2.
 state = Search('THIS_PATTERN_DOES_NOT_EXIST')
 assert_equal('done', state.phase)

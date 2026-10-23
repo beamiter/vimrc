@@ -278,7 +278,7 @@ def ApplyLspMappings()
   endif
   for [mode, mappings, edits, expression] in [
       ['n', SEMANTIC_NMAPS, false, false], ['n', SEMANTIC_EDIT_NMAPS, true, false],
-      ['i', SEMANTIC_IMAPS, true, false], ['x', SEMANTIC_XMAPS, true, false],
+      ['i', SEMANTIC_IMAPS, false, false], ['x', SEMANTIC_XMAPS, true, false],
       ['n', SEMANTIC_POPUP_NMAPS, false, true], ['i', SEMANTIC_POPUP_IMAPS, false, true]]
     if edits && (&readonly || !&modifiable)
       continue

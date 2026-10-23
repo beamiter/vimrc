@@ -648,6 +648,8 @@ Leader 为 =Space=，LocalLeader 为 =,=。
 跳转到这一行第一个匹配的字节列；文件名中的空格、冒号及 Unicode 均可处理。
 搜索读取磁盘内容，未保存的 buffer 修改需要先保存。搜索不会改变 cwd，完成后保留
 编辑焦点，也不会覆盖后来由编译器/LSP 创建的 quickfix 列表。
+自动展示跟随发起搜索的窗口所在标签；移动或重编号标签仍能正确识别，
+切到其他标签或关闭原窗口后只更新结果，不在当前位置打开面板。
 
 默认尊重 ignore 规则、搜索隐藏文件并排除版本库及 =node_modules/target= 目录；
 以 argv 传参，不执行搜索文本中的 shell 字符，也不加载用户的 ripgrep 配置文件。
@@ -718,9 +720,13 @@ SimpleCC 直接经 SimpleRemote agent 启动，=remote://= buffer 的补全、�
 =Ctrl-k= 仍保留 Vim 原生 digraph。Visual 模式的 =Space ca/la= 执行选区
 代码操作，=Space cf/fm/lf= 格式化选中行；Normal 模式仍格式化全文。
 这些键位只安装在当前代码 buffer，包含 SimpleRemote 的 =acwrite= 文件，
-尊重已有全局／局部绑定。只读 buffer 保留定义／引用导航；编辑动作只在可写文件
+尊重已有全局／局部绑定。只读 buffer 保留定义／引用导航和签名帮助；编辑动作只在可写文件
 中安装。大文件、无提供者和插件 buffer 不安装，重载或切换文件类型时只清理
 配置自己的映射。
+
+=]d= / =[d= 跳转诊断时会展开目的地的折叠，并可用 =Ctrl-O= 返回跳转前位置、
+=Ctrl-I= 再次前进。Visual 模式 =p= 使用 Vim 原生保留来源寄存器的粘贴，
+支持显式寄存器、行尾、行选区和块选区，仍可一次撤销。
 
 在支持文档卡片的四终端中，SimpleCC 的 hover、签名、诊断和补全文档使用原生
 圆角、阴影和细边框，并按 Vim 主题颜色绘制。长文档先在 popup buffer 中换行，

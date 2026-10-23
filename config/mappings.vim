@@ -34,7 +34,9 @@ nnoremap <silent> <leader>rh <Cmd>SimpleRemoteHealth<CR>
 # 保留 Vim 原生 s / ( / )；快速跳转统一放到 leader 下。
 xnoremap < <gv
 xnoremap > >gv
-xnoremap p "_dP
+# Native Visual P preserves the source register, including an explicitly
+# selected register, and keeps replacement geometry at line ends and in blocks.
+xnoremap p P
 nnoremap Y y$
 nnoremap n nzzzv
 nnoremap N Nzzzv
