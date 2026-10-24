@@ -336,7 +336,7 @@ buffer 缓存，不会为了显示数字改写 quickfix、请求 LSP 或启动 G
 | =simple_code_lens= / =simple_code_lens_run= | 刷新 CodeLens 行末提示 / 执行当前文件的 CodeLens 命令 |
 | =simple_inlay_hints= | =SimpleCCInlayHints=，切换 inline 类型／参数提示；支持的布局使用原生绘制 |
 | =simple_git_status= / =simple_git_diff= / =simple_git_hunk= | =SimpleGitStatus= / =SimpleGitDiff= / =SimpleGitHunkPreview= |
-| =simple_git_next_hunk= / =simple_git_previous_hunk= | =SimpleGitHunkNext= / =SimpleGitHunkPrev=，按当前文件的已缓存修改块导航 |
+| =simple_git_next_hunk= / =simple_git_previous_hunk= | =SimpleGitHunkNext= / =SimpleGitHunkPrev=，按当前 buffer 的已缓存修改块导航，支持未保存修改 |
 | =simple_git_stage_hunk= / =simple_git_undo_hunk= | 暂存／丢弃光标所在的已保存修改块；丢弃默认取消，确认后再次检查源窗口与内容 |
 | =simple_git_blame= / =simple_git_blame_line= / =simple_git_history= | =SimpleGitBlame= / =SimpleGitBlameLine= / =SimpleGitHistory= |
 | =simple_plugin_status= / =simple_plugin_check= | =PlugStatus= / =PlugCheck=，查看插件与检查更新 |
@@ -444,8 +444,9 @@ SimpleLine 是否启用，以及 SimplePlug 当前／上次操作的进度、安
 安装、更新、状态查询和更新检查不会因为面板打开或读取状态而自动执行。
 新版 SimplePlug 正在执行任务时，不提供冲突的第二个操作；只有实际运行时才出现
 Stop。进度通过事件更新，取消任务后退出运行状态，迟到回复不能把取消结果改成成功。
-Git 修改块入口要求已保存文件和该 buffer 的缓存；暂存／丢弃还要求可写且未进入
-大文件保护，不会把未保存内容当成 Git 文件中的变更。现有直接 SimpleGit 键位保持原样。
+Git 修改块导航使用当前 buffer 的缓存，支持尚未保存的修改；暂存／丢弃要求已保存
+且可写。以上入口均遵守大文件保护，不会把未保存内容用于已保存文件的暂存／丢弃操作。
+现有直接 SimpleGit 键位保持原样。
 
 没有插件时，报告仍然可用，其余动作等对应插件就绪后自动出现。报告只读、不触碰
 源 buffer、寄存器或 quickfix。连接状态使用桥认证后的 =g:jterm_vim9_connected=，

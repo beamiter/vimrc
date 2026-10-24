@@ -106,12 +106,18 @@ assert_false(result.status ==# 'success' && getbufvar(first, '&modified'),
 Setup()
 setline(1, 'first can save')
 setbufline(second, 1, 'readonly remains dirty')
+setbufline(third, 1, 'must remain unsaved after an earlier failure')
 setbufvar(second, '&readonly', 1)
 result = g:VimrcSaveAllWait(500)
 assert_equal('error', result.status)
+assert_false(empty(result.message), 'the first failed write retains its explanation')
+assert_notequal('A buffer changed while saving; build not started', result.message,
+  'the first failure must not be replaced by the final dirty scan')
 assert_true(getbufvar(second, '&modified'))
+assert_true(getbufvar(third, '&modified'), 'save-all stops at the first failed write')
 assert_equal(first, bufnr(), 'failed save-all restores the original buffer')
 assert_equal(['second'], readfile(BASE .. '/second.txt'), 'read-only files are never forced')
+assert_equal(['third'], readfile(BASE .. '/third.txt'), 'buffers after a failed write are not saved')
 
 Setup()
 setlocal buftype=acwrite

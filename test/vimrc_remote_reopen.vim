@@ -7,6 +7,7 @@ if !exists('*g:VimrcReopenBuffer')
 endif
 var behavior = 'success'
 var request = 0
+var completed = 0
 var source = -1
 
 def Finish(buffer: number, serial: number)
@@ -15,6 +16,7 @@ def Finish(buffer: number, serial: number)
   endif
   setbufvar(buffer, 'vimrc_remote_read', {})
   if behavior ==# 'failure'
+    completed = serial
     return
   endif
   setbufline(buffer, 1, ['one', 'two', 'three', 'four remote code'])
@@ -23,6 +25,20 @@ def Finish(buffer: number, serial: number)
   setbufvar(buffer, 'vimrc_remote', {path: '/fixture/code.rs', uri: 'remote:///fixture/code.rs', generation: 1})
   g:simpleremote_event = {type: 'buffer-read', bufnr: buffer, path: '/fixture/code.rs', workspace: {id: 1}}
   doautocmd <nomodeline> User SimpleRemoteBufferRead
+  completed = serial
+enddef
+
+# Wait for the fixture transport itself, not the behavior being asserted.
+# A fixed 60ms sleep could race its 30ms timer on a busy CI worker, especially
+# when a read finishes into an inactive split. Failure and dirty callbacks
+# still complete, so the following history/cursor assertions stay decisive.
+def WaitRead()
+  var serial = request
+  var started = reltime()
+  while completed != serial && reltimefloat(reltime(started)) < 2.0
+    sleep 10m
+  endwhile
+  assert_equal(serial, completed, 'fixture read callback did not finish within two seconds')
 enddef
 
 def Read()
@@ -49,7 +65,7 @@ def Setup()
   g:vimrc_closed_buffers = []
   g:simpleremote_workspace = {id: 1, kind: 'ssh', target: 'fixture', root: '/fixture'}
   edit remote:///fixture/code.rs
-  sleep 60m
+  WaitRead()
   source = bufnr()
   cursor(4, 6)
   g:VimrcCloseBuffer()
@@ -59,18 +75,18 @@ enddef
 Setup()
 g:VimrcReopenBuffer()
 assert_equal(1, len(g:vimrc_closed_buffers), 'pending read does not consume closed-file history')
-sleep 60m
+WaitRead()
 assert_equal([4, 6], [line('.'), col('.')], 'restore view after asynchronous content arrives')
 assert_equal([], g:vimrc_closed_buffers, 'successful read consumes precisely its history entry')
 
 Setup()
 behavior = 'failure'
 g:VimrcReopenBuffer()
-sleep 60m
+WaitRead()
 assert_equal(1, len(g:vimrc_closed_buffers), 'transport read failure retains retryable closed-file history')
 behavior = 'success'
 g:VimrcReopenBuffer()
-sleep 60m
+WaitRead()
 assert_equal('four remote code', getline(4), 'retry after a failed read fetches actual contents rather than accepting an empty cached placeholder')
 assert_equal([4, 6], [line('.'), col('.')])
 assert_equal([], g:vimrc_closed_buffers)
@@ -83,7 +99,7 @@ new
 var unrelated_window = win_getid()
 setline(1, 'user is working here')
 var user_view = winsaveview()
-sleep 60m
+WaitRead()
 assert_equal(unrelated_window, win_getid(), 'late read never steals focus')
 assert_equal('user is working here', getline(1))
 assert_equal(user_view, winsaveview())
@@ -94,7 +110,7 @@ setlocal nomodified
 Setup()
 behavior = 'dirty'
 g:VimrcReopenBuffer()
-sleep 60m
+WaitRead()
 assert_equal(1, len(g:vimrc_closed_buffers), 'a modified buffer does not accept a delayed restoration')
 assert_true(&modified)
 setlocal nomodified

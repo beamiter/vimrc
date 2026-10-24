@@ -206,11 +206,11 @@ def Available(entry: dict<string>): bool
   elseif entry.scope ==# 'tree'
     return TreeVisible()
   elseif entry.scope ==# 'hunk' || entry.scope ==# 'hunk-write'
-    # SimpleGit's hunks describe the saved file. Never offer an operation
-    # against an unsaved buffer or a cache from a different editor split.
-    return FileBuffer() && !empty(bufname()) && !&modified
+    # Navigation follows this buffer's cached live hunks, including unsaved
+    # edits. Saved-file mutations additionally require a clean writable buffer.
+    return FileBuffer() && !empty(bufname())
       && !get(b:, 'vimrc_large_file', 0) && CachedHunks()
-      && (entry.scope !=# 'hunk-write' || (&modifiable && !&readonly))
+      && (entry.scope !=# 'hunk-write' || (!&modified && &modifiable && !&readonly))
   elseif entry.scope ==# 'plugin-running'
     var manager = PluginState()
     return manager.known && manager.running
@@ -422,6 +422,7 @@ def g:VimrcWorkbenchReport()
   extend(lines, ['', 'Counts read plugin caches; Git/diagnostic zero may mean the provider has not reported yet.',
     'SimplePlug counts belong to the current/last operation, not the installed plugin inventory.',
     'Space P: s status / c check / i install / u update / x stop / d diff / p profile / h health.',
+    'Git navigation uses cached buffer hunks, including unsaved edits.',
     'Git stage/discard require a saved writable file and cached hunks; discard asks for confirmation.',
     'Existing Space leader bindings still call your simple* plugins directly.'])
 

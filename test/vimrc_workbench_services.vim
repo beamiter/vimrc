@@ -137,6 +137,7 @@ assert_false(Has('simple_tree_refresh'))
 # protected or readonly text. Missing cached hunks are not a clean assertion.
 assert_equal('', &filetype)
 assert_false(Has('simple_git_stage_hunk'))
+assert_false(Has('simple_git_next_hunk'), 'navigation requires cached hunks from this buffer')
 b:simplegit_status_dict = {added: 1, changed: 0, removed: 0}
 for action in ['simple_git_next_hunk', 'simple_git_previous_hunk', 'simple_git_stage_hunk',
     'simple_git_blame', 'simple_git_blame_line', 'simple_git_history']
@@ -149,13 +150,20 @@ assert_false(Has('simple_git_undo_hunk'))
 assert_true(Has('simple_git_next_hunk'))
 setlocal noreadonly
 setline(1, 'unsaved change')
-for action in ['simple_git_next_hunk', 'simple_git_previous_hunk', 'simple_git_stage_hunk', 'simple_git_undo_hunk']
+for action in ['simple_git_next_hunk', 'simple_git_previous_hunk']
+  assert_true(Has(action), 'unsaved live hunks must remain navigable')
+  assert_equal('', Act(action))
+  assert_equal(action, g:vimrc_service_called)
+endfor
+for action in ['simple_git_stage_hunk', 'simple_git_undo_hunk']
   assert_false(Has(action), 'unsaved buffer advertised ' .. action)
   assert_match('unavailable', Act(action))
 endfor
 setlocal nomodified
 b:vimrc_large_file = true
 assert_false(Has('simple_git_stage_hunk'))
+assert_false(Has('simple_git_next_hunk'))
+assert_false(Has('simple_git_previous_hunk'))
 b:vimrc_large_file = false
 setlocal nomodifiable
 assert_false(Has('simple_git_stage_hunk'))

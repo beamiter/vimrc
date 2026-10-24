@@ -120,6 +120,10 @@ def g:VimrcSaveAllWait(timeout_ms: number = 5000): dict<any>
   var view = winsaveview()
   var started = reltime()
   var last = original_buffer
+  # Vim 9.1 does not infer that returns inside try/catch cover every path;
+  # newer Vim rejects an extra fallback after them as unreachable. Keep one
+  # explicit return after cleanup, and preserve the first incomplete result.
+  var outcome: dict<any> = {status: 'success', message: ''}
   try
     for info in getbufinfo({buflisted: 1})
       var remote = getbufvar(info.bufnr, 'vimrc_remote_write_state', {})
@@ -130,27 +134,29 @@ def g:VimrcSaveAllWait(timeout_ms: number = 5000): dict<any>
       endif
       var remaining = timeout_ms - float2nr(reltimefloat(reltime(started)) * 1000)
       if remaining <= 0
-        return {status: 'pending', message: 'Save-all deadline reached; build not started'}
+        outcome = {status: 'pending', message: 'Save-all deadline reached; build not started'}
+        break
       endif
       execute 'keepalt keepjumps hide buffer ' .. info.bufnr
       last = info.bufnr
       var result = g:VimrcSaveWait(remaining)
       if result.status !=# 'success'
-        return result
+        outcome = result
+        break
       endif
     endfor
-    if !empty(filter(getbufinfo({buflisted: 1}), (_, info) =>
+    if outcome.status ==# 'success' && !empty(filter(getbufinfo({buflisted: 1}), (_, info) =>
       (info.changed || get(getbufvar(info.bufnr, 'vimrc_remote_write_state', {}), 'status', '') ==# 'pending')
       && index(['', 'acwrite'], getbufvar(info.bufnr, '&buftype')) >= 0))
-      return {status: 'error', message: 'A buffer changed while saving; build not started'}
+      outcome = {status: 'error', message: 'A buffer changed while saving; build not started'}
     endif
-    return {status: 'success', message: ''}
   catch
-    return {status: 'error', message: v:exception}
+    outcome = {status: 'error', message: v:exception}
   finally
     if win_getid() == origin && bufnr() == last && bufexists(original_buffer)
       execute 'keepalt keepjumps hide buffer ' .. original_buffer
       winrestview(view)
     endif
   endtry
+  return outcome
 enddef
