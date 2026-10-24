@@ -7,6 +7,7 @@ const ACTIONS = [
   {id: 'simple_recent', command: 'SimpleFinderRecent', title: 'Find recent files', scope: 'any'},
   {id: 'simple_tree_toggle', command: 'SimpleRemoteTree', fallback: 'SimpleTree', title: 'Toggle project tree', scope: 'any'},
   {id: 'simple_tree_reveal', command: 'SimpleRemoteTreeReveal', fallback: 'SimpleTreeReveal', title: 'Reveal current file in tree', scope: 'file'},
+  {id: 'simple_tree_refresh', command: 'SimpleTreeRefresh', title: 'Refresh the open project tree', scope: 'tree'},
   {id: 'simple_terminal_toggle', command: 'SimpleTerminalToggle', title: 'Toggle terminal', scope: 'any'},
   {id: 'simple_terminal_new', command: 'SimpleTerminalNew', title: 'New terminal', scope: 'any'},
   {id: 'simple_terminal_next', command: 'SimpleTerminalNext', title: 'Next terminal', scope: 'any'},
@@ -31,9 +32,29 @@ const ACTIONS = [
   {id: 'simple_inlay_hints', command: 'SimpleCCInlayHints', title: 'Toggle inline type and parameter hints', scope: 'code'},
   {id: 'simple_rename', command: 'SimpleCCRename', title: 'Rename symbol (Vim prompt)', scope: 'write'},
   {id: 'simple_code_action', command: 'SimpleCCAction', title: 'Choose code action', scope: 'write'},
+  {id: 'simple_lsp_status', command: 'SimpleCC', title: 'Inspect language server status', scope: 'any'},
+  {id: 'simple_lsp_restart', command: 'SimpleCCRestart', title: 'Restart language servers', scope: 'any'},
+  {id: 'simple_lsp_log', command: 'SimpleCCLog', title: 'Open language server log', scope: 'any'},
   {id: 'simple_git_status', command: 'SimpleGitStatus', title: 'Show Git status', scope: 'any'},
   {id: 'simple_git_diff', command: 'SimpleGitDiff', title: 'Compare file with Git HEAD', scope: 'file'},
   {id: 'simple_git_hunk', command: 'SimpleGitHunkPreview', title: 'Preview current Git hunk', scope: 'file'},
+  {id: 'simple_git_next_hunk', command: 'SimpleGitHunkNext', title: 'Go to next Git hunk', scope: 'hunk'},
+  {id: 'simple_git_previous_hunk', command: 'SimpleGitHunkPrev', title: 'Go to previous Git hunk', scope: 'hunk'},
+  {id: 'simple_git_stage_hunk', command: 'SimpleGitHunkStage', title: 'Stage current saved Git hunk', scope: 'hunk-write'},
+  {id: 'simple_git_undo_hunk', command: 'SimpleGitHunkUndo', title: 'Discard current saved Git hunk (confirmation)', scope: 'hunk-write'},
+  {id: 'simple_git_blame', command: 'SimpleGitBlame', title: 'Toggle Git blame sidebar', scope: 'file'},
+  {id: 'simple_git_blame_line', command: 'SimpleGitBlameLine', title: 'Show Git blame for this line', scope: 'file'},
+  {id: 'simple_git_history', command: 'SimpleGitHistory', title: 'Browse current file history', scope: 'file'},
+  {id: 'simple_plugin_status', command: 'PlugStatus', title: 'Inspect plugin status', scope: 'plugin-idle'},
+  {id: 'simple_plugin_check', command: 'PlugCheck', title: 'Check for plugin updates', scope: 'plugin-idle'},
+  {id: 'simple_plugin_install', command: 'PlugInstall', title: 'Install missing plugins', scope: 'plugin-idle'},
+  {id: 'simple_plugin_update', command: 'PlugUpdate', title: 'Update plugins', scope: 'plugin-idle'},
+  {id: 'simple_plugin_stop', command: 'PlugStop', title: 'Stop the running plugin operation', scope: 'plugin-running'},
+  {id: 'simple_plugin_diff', command: 'PlugDiff', title: 'Review plugin update changes', scope: 'plugin-idle'},
+  {id: 'simple_plugin_profile', command: 'PlugProfile', title: 'Inspect plugin startup timings', scope: 'any'},
+  {id: 'simple_plugin_health', command: 'PlugHealth', title: 'Inspect plugin manager health', scope: 'any'},
+  {id: 'simple_statusline_toggle', command: 'SimpleLineToggle', title: 'Toggle SimpleLine status and buffer bars', scope: 'any'},
+  {id: 'simple_statusline_health', command: 'SimpleLineHealth', title: 'Inspect SimpleLine statusbar health', scope: 'any'},
   {id: 'simple_markdown_preview', command: 'SimpleMarkdown', title: 'Toggle Markdown preview', scope: 'markdown'},
   {id: 'simple_keys', command: 'SimpleWhichKey', title: 'Explore your key bindings', scope: 'keys'},
   {id: 'simple_workbench', command: 'VimrcWorkbench', title: 'Inspect workbench integration', scope: 'any'},
@@ -68,6 +89,55 @@ enddef
 
 def Dictionary(value: any): dict<any>
   return type(value) == v:t_dict ? value : {}
+enddef
+
+def Boolean(value: any): bool
+  return type(value) == v:t_bool ? value : type(value) == v:t_number && value != 0
+enddef
+
+# Optional providers expose cached data; checking for an already defined
+# function is essential here. Reading a GUI snapshot must never autoload a
+# plugin, start a daemon, inspect checkouts, or create a progress window.
+def CachedProvider(name: string, fallback: any): any
+  if !exists('*' .. name)
+    return fallback
+  endif
+  try
+    return call(name, [])
+  catch
+    return fallback
+  endtry
+enddef
+
+def PluginState(): dict<any>
+  var cached = Dictionary(CachedProvider('simpleplug#WorkbenchState', {}))
+  var known = Boolean(get(cached, 'known', false))
+  return {
+    available: exists(':PlugStatus') == 2,
+    known: known,
+    running: known && Boolean(get(cached, 'running', false)),
+    operation: known ? BoundedString(get(cached, 'operation', ''), 32) : '',
+    total: known ? Count(get(cached, 'total', 0)) : 0,
+    completed: known ? Count(get(cached, 'completed', 0)) : 0,
+    installed: known ? Count(get(cached, 'installed', 0)) : 0,
+    updated: known ? Count(get(cached, 'updated', 0)) : 0,
+    errors: known ? Count(get(cached, 'errors', 0)) : 0,
+  }
+enddef
+
+def TreeVisible(): bool
+  for info in getwininfo()
+    if info.tabnr == tabpagenr() && getbufvar(info.bufnr, '&filetype') ==# 'simpletree'
+      return true
+    endif
+  endfor
+  return false
+enddef
+
+def CachedHunks(): bool
+  var git = Dictionary(get(b:, 'simplegit_status_dict', {}))
+  return Count(get(git, 'added', 0)) + Count(get(git, 'changed', 0))
+    + Count(get(git, 'removed', 0)) > 0
 enddef
 
 def FileBuffer(): bool
@@ -133,6 +203,22 @@ def Available(entry: dict<string>): bool
     return Flag('simplewhichkey_enable')
   elseif entry.scope ==# 'file'
     return FileBuffer() && !empty(bufname())
+  elseif entry.scope ==# 'tree'
+    return TreeVisible()
+  elseif entry.scope ==# 'hunk' || entry.scope ==# 'hunk-write'
+    # SimpleGit's hunks describe the saved file. Never offer an operation
+    # against an unsaved buffer or a cache from a different editor split.
+    return FileBuffer() && !empty(bufname()) && !&modified
+      && !get(b:, 'vimrc_large_file', 0) && CachedHunks()
+      && (entry.scope !=# 'hunk-write' || (&modifiable && !&readonly))
+  elseif entry.scope ==# 'plugin-running'
+    var manager = PluginState()
+    return manager.known && manager.running
+  elseif entry.scope ==# 'plugin-idle'
+    var manager = PluginState()
+    # Older managers still perform their own concurrency guard. Their state
+    # remains explicitly unknown instead of advertising an invented result.
+    return !manager.known || !manager.running
   elseif entry.scope ==# 'markdown'
     return MarkdownBuffer()
   elseif entry.scope ==# 'code' || entry.scope ==# 'write'
@@ -192,6 +278,20 @@ def CaptureState(): dict<any>
       label: connected ? kind .. ':' .. target : '',
       root: connected ? BoundedString(get(workspace, 'root', ''), 4096) : '',
     },
+    lsp: {
+      available: exists(':SimpleCC') == 2,
+      status: BoundedString(get(g:, 'simplecc_status', ''), 256),
+    },
+    plugins: PluginState(),
+    tree: {
+      available: exists(':SimpleTree') == 2 || exists(':SimpleRemoteTree') == 2,
+      visible: TreeVisible(),
+      root: BoundedString(CachedProvider('simpletree#GetRoot', ''), 4096),
+    },
+    statusline: {
+      available: exists(':SimpleLineToggle') == 2,
+      enabled: Boolean(CachedProvider('simpleline#IsEnabled', false)),
+    },
   }
 enddef
 
@@ -226,7 +326,22 @@ def g:VimrcWorkbenchAction(action: string)
       if !Available(entry)
         throw '[vimrc] Workbench action is unavailable in this buffer: ' .. action
       endif
+      if action ==# 'simple_git_undo_hunk'
+        var source = [bufnr(), win_getid(), b:changedtick, line('.'), col('.')]
+        if confirm('[SimpleGit] Discard the saved Git hunk at the cursor?', "&Cancel\n&Discard", 1) != 2
+          return
+        endif
+        if source !=# [bufnr(), win_getid(), b:changedtick, line('.'), col('.')]
+            || !Available(entry)
+          throw '[vimrc] The source changed during confirmation; reopen the action menu'
+        endif
+      endif
       execute ActionCommand(entry)
+      # In particular, a SimpleLine toggle has no provider event of its own.
+      # Tell native hosts to refresh once; do not add a polling timer.
+      if exists('#User#VimrcWorkbenchChanged')
+        silent doautocmd <nomodeline> User VimrcWorkbenchChanged
+      endif
       return
     endif
   endfor
@@ -277,6 +392,20 @@ def g:VimrcWorkbenchReport()
       state.diagnostics.error, state.diagnostics.warning,
       state.diagnostics.info, state.diagnostics.hint),
     'Remote: ' .. (state.remote.connected ? state.remote.label .. '  ' .. state.remote.root : 'disconnected'),
+    'SimpleCC: ' .. (!state.lsp.available ? 'unavailable'
+      : empty(state.lsp.status) ? 'no server status published' : state.lsp.status),
+    'SimplePlug: ' .. (!state.plugins.available ? 'unavailable'
+      : !state.plugins.known ? 'state unknown — update SimplePlug for live progress'
+      : empty(state.plugins.operation) ? 'ready; no operation in this session'
+      : printf('%s%s  %d/%d completed  %d installed / %d updated / %d errors',
+        state.plugins.operation, state.plugins.running ? ' running' : ' finished',
+        state.plugins.completed, state.plugins.total, state.plugins.installed,
+        state.plugins.updated, state.plugins.errors)),
+    'SimpleTree: ' .. (!state.tree.available ? 'unavailable'
+      : (state.tree.visible ? 'visible' : 'closed')
+        .. (empty(state.tree.root) ? '' : '  ' .. state.tree.root)),
+    'SimpleLine: ' .. (!state.statusline.available ? 'unavailable'
+      : state.statusline.enabled ? 'enabled' : 'disabled'),
     '',
     'Available actions for the source buffer:',
     'Use :VimrcAction {id}; the native palette also finds these by name.',
@@ -290,7 +419,10 @@ def g:VimrcWorkbenchReport()
   if empty(capabilities)
     add(lines, '  none — integration is disabled or no provider is available')
   endif
-  extend(lines, ['', 'Counts read plugin caches; zero is also shown before a provider has reported.',
+  extend(lines, ['', 'Counts read plugin caches; Git/diagnostic zero may mean the provider has not reported yet.',
+    'SimplePlug counts belong to the current/last operation, not the installed plugin inventory.',
+    'Space P: s status / c check / i install / u update / x stop / d diff / p profile / h health.',
+    'Git stage/discard require a saved writable file and cached hunks; discard asks for confirmation.',
     'Existing Space leader bindings still call your simple* plugins directly.'])
 
   var report = -1
@@ -339,6 +471,8 @@ augroup vimrc_workbench
   autocmd User SimpleRemoteConnected,SimpleRemoteWorkspaceChanged,SimpleRemoteTreeRootChanged,SimpleRemoteDisconnected
         \ call RefreshRoot()
   autocmd User JTermVim9Ready,JTermVim9Disconnected call RefreshRoot()
+  autocmd User SimplePlugStateChanged,SimplePlugComplete,SimpleTreeOpen,SimpleTreeClose,SimpleTreeRootChanged
+        \ silent doautocmd <nomodeline> User VimrcWorkbenchChanged
 augroup END
 
 RefreshRoot()

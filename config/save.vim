@@ -153,5 +153,4 @@ def g:VimrcSaveAllWait(timeout_ms: number = 5000): dict<any>
       winrestview(view)
     endif
   endtry
-  return {status: 'error', message: 'save-all did not complete'}
 enddef

@@ -19,6 +19,19 @@ nnoremap <silent> <leader>vp <Cmd>VimrcProfile<CR>
 nnoremap <silent> <leader>vH <Cmd>VimrcHealth!<CR>
 nnoremap <silent> <leader>vw <Cmd>VimrcWorkbench<CR>
 nnoremap <leader>va :VimrcAction<Space>
+nnoremap <silent> <leader>vL <Cmd>VimrcAction simple_statusline_toggle<CR>
+nnoremap <silent> <leader>vS <Cmd>VimrcAction simple_statusline_health<CR>
+# Uppercase P keeps preview's existing lowercase p prefix intact. These
+# actions recheck provider availability when invoked, including after a
+# bootstrap has installed SimplePlug in the running Vim session.
+nnoremap <silent> <leader>Ps <Cmd>VimrcAction simple_plugin_status<CR>
+nnoremap <silent> <leader>Pc <Cmd>VimrcAction simple_plugin_check<CR>
+nnoremap <silent> <leader>Pi <Cmd>VimrcAction simple_plugin_install<CR>
+nnoremap <silent> <leader>Pu <Cmd>VimrcAction simple_plugin_update<CR>
+nnoremap <silent> <leader>Px <Cmd>VimrcAction simple_plugin_stop<CR>
+nnoremap <silent> <leader>Pd <Cmd>VimrcAction simple_plugin_diff<CR>
+nnoremap <silent> <leader>Pp <Cmd>VimrcAction simple_plugin_profile<CR>
+nnoremap <silent> <leader>Ph <Cmd>VimrcAction simple_plugin_health<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
 nnoremap <silent> <leader>ro <Cmd>SimpleRemote<CR>
@@ -411,6 +424,17 @@ if get(C, 'plugins_ready', false)
       u: 'toggle-link-targets',
       z: 'toggle-table-zebra',
     },
+    P: {
+      name: '+plugins',
+      s: 'status',
+      c: 'check-updates',
+      i: 'install-missing',
+      u: 'update',
+      x: 'stop-operation',
+      d: 'review-update-changes',
+      p: 'startup-profile',
+      h: 'manager-health',
+    },
     q: {
       name: '+quickfix',
       l: 'toggle-location-list',
@@ -457,9 +481,11 @@ if get(C, 'plugins_ready', false)
       h: 'health',
       H: 'health-report',
       l: 'large-file-status',
+      L: 'toggle-simpleline',
       p: 'load-profile',
       r: 'reload-vimrc',
       s: 'stop-update',
+      S: 'simpleline-health',
       u: 'update-vimrc',
       w: 'workbench-context',
     },
