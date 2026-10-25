@@ -464,6 +464,28 @@ g:vimrc_workbench_disabled_actions = ['simple_git_diff', 'simple_grep']
 =g:VimrcWorkbenchState()=。动作名来自固定清单，不接受任意 Ex、按键序列或 shell
 文本；项目根目录仅在窗口/工作区事件中刷新，状态读取不会反复遍历目录。
 
+** 聚焦错误、符号引用与项目 REPL
+
+原生命令面板的 =>simplecc= 现在可搜索 =errors= / =下一条错误= / =上一条错误=，
+只列出或跳转当前文件的 Error，跳过 Warning、Info 和 Hint。使用 SimpleCC 的
+原始缓存与 UTF-16 到 Vim 字节列转换，不会将另一个文件的 quickfix 当作本文件
+错误。错误缓存为空时动作明确不可用。=刷新语言诊断= 请求当前服务重新发布诊断；
+=高亮符号引用= / =清除引用高亮= 复用 SimpleCC 的原生 text-property 高亮，不编辑
+源码。刷新和高亮要求更新后的 SimpleCC 正在运行且服务当前 filetype，明确不支持
+的能力不会被启用；旧 daemon 没有能力字段时保留 SimpleCC 既有兼容策略。
+
+=>simpleterminal= 是独立的终端动作分组，包含切换、新建、前后会话、列表、健康
+与 =发送当前行到项目终端=。发送必须由用户显式选择，只投递已有的当前会话，
+不创建、不选择替代终端。本地来源的缓存项目根必须与会话记录的启动目录一致；
+远端 buffer 的 URI、路径及读取 generation 必须对应当前连接，终端还须属于同一
+kind/target/root/连接代次。保留旧远端 buffer 后连接另一项目不会把源码误投新会话。
+
+每次投递重检来源窗口、buffer、changedtick、行列及会话 buffer 身份。会话已退出、
+另一项目、缺少来源证据或空行时拒绝。单行最多 4096 UTF-8 字节；保留 Tab 缩进，
+拒绝 Esc、Ctrl-C、退格等控制键。源码直接进入原有 PTY，不拼成 Ex 或 shell 字符串。
+该动作会向终端发送一次 Enter，因此适用于明确希望执行的 REPL 当前行；原有
+=Space tx= 及可视范围发送键位保持原插件行为。
+
 ** 编辑与配置边界
 
 为防止刚打开的项目执行未信任配置，默认启用 =nomodeline= 和 =noexrc=。

@@ -57,6 +57,15 @@ const ACTIONS = [
   {id: 'simple_statusline_health', command: 'SimpleLineHealth', title: 'Inspect SimpleLine statusbar health', scope: 'any'},
   {id: 'simple_markdown_preview', command: 'SimpleMarkdown', title: 'Toggle Markdown preview', scope: 'markdown'},
   {id: 'simple_keys', command: 'SimpleWhichKey', title: 'Explore your key bindings', scope: 'keys'},
+  {id: 'simple_diagnostics_errors', command: 'SimpleCCDiagnostics', title: 'Show errors in this buffer', scope: 'errors', argument: 'error'},
+  {id: 'simple_next_error', command: 'SimpleCCNextDiag', title: 'Go to next error', scope: 'errors', argument: 'error'},
+  {id: 'simple_previous_error', command: 'SimpleCCPrevDiag', title: 'Go to previous error', scope: 'errors', argument: 'error'},
+  {id: 'simple_refresh_diagnostics', command: 'SimpleCCPullDiag', title: 'Refresh language diagnostics', scope: 'live_code', feature: 'diagnostics'},
+  {id: 'simple_highlight_symbol', command: 'SimpleCCHighlight', title: 'Highlight symbol references', scope: 'live_code', feature: 'document_highlight'},
+  {id: 'simple_clear_highlights', command: 'SimpleCCHighlightClear', title: 'Clear symbol reference highlights', scope: 'live_code', feature: 'clear_highlights'},
+  {id: 'simple_terminal_send_line', command: 'SimpleTerminalSend', title: 'Send current line to this workspace terminal', scope: 'terminal_send'},
+  {id: 'simple_terminal_list', command: 'SimpleTerminalList', title: 'List terminal sessions', scope: 'any'},
+  {id: 'simple_terminal_health', command: 'SimpleTerminalHealth', title: 'Inspect terminal health', scope: 'any'},
   {id: 'simple_workbench', command: 'VimrcWorkbench', title: 'Inspect workbench integration', scope: 'any'},
   {id: 'definition', command: 'SimpleCCDefinition', title: 'Go to definition', scope: 'code'},
   {id: 'hover', command: 'SimpleCCHover', title: 'Show symbol documentation', scope: 'code'},
@@ -194,12 +203,74 @@ def ActionCommand(entry: dict<string>): string
     && type(path) == v:t_string && !empty(path) ? entry.command : ''
 enddef
 
+def Cached(name: string, args: list<any> = []): any
+  if exists('*' .. name)
+    try
+      return call(name, args)
+    catch
+      return {}
+    endtry
+  endif
+  return {}
+enddef
+
+def SourceWorkspace(): dict<any>
+  if bufname() =~# '^remote://'
+    var source = Dictionary(get(b:, 'vimrc_remote', {}))
+    var workspace = Dictionary(get(g:, 'simpleremote_workspace', {}))
+    var status = get(g:, 'simpleremote_status', '')
+    var generation = get(source, 'generation', -1)
+    var connection = get(workspace, 'id', -2)
+    var path = get(source, 'path', '')
+    var root = get(workspace, 'root', '')
+    var uri = get(source, 'uri', '')
+    if type(status) != v:t_string || empty(status) || status ==# 'disconnected'
+        || status =~# '^connecting ' || empty(workspace)
+        || type(generation) != v:t_number || generation < 0
+        || type(connection) != v:t_number || generation != connection
+        || type(path) != v:t_string || empty(path)
+        || type(root) != v:t_string || root !~# '^/'
+        || type(get(workspace, 'kind', 0)) != v:t_string || empty(workspace.kind)
+        || type(get(workspace, 'target', 0)) != v:t_string || empty(workspace.target)
+        || type(uri) != v:t_string || uri !=# bufname() || bufname() !=# 'remote://' .. path
+        || (path !=# root && stridx(path, root ==# '/' ? '/' : substitute(root, '/\+$', '', '') .. '/') != 0)
+      return {invalid: true}
+    endif
+    return workspace
+  endif
+  # An unproven acwrite/provider buffer is not local source evidence.
+  return &buftype ==# '' ? {} : {invalid: true}
+enddef
+
+def TerminalTarget(): dict<any>
+  return Dictionary(Cached('simpleterminal#WorkbenchTarget',
+    [get(roots, string(win_getid()), ''), SourceWorkspace()]))
+enddef
+
+def LiveCode(entry: dict<string>): bool
+  var supported = Cached('simplecc#WorkbenchSupports', [entry.feature])
+  return index([v:t_bool, v:t_number], type(supported)) >= 0 && !!supported
+enddef
+
 def Available(entry: dict<string>): bool
   if !Flag('vimrc_workbench_enable') || Disabled(entry.id)
         || empty(ActionCommand(entry))
     return false
   endif
-  if entry.scope ==# 'keys'
+  if entry.scope ==# 'errors'
+    var diagnostics = Dictionary(get(b:, 'simplecc_diag_counts', {}))
+    return FileBuffer() && !empty(&filetype) && !get(b:, 'vimrc_large_file', 0)
+      && Count(get(diagnostics, 'error', 0)) > 0
+  elseif entry.scope ==# 'live_code'
+    return FileBuffer() && !empty(&filetype) && !get(b:, 'vimrc_large_file', 0)
+      && LiveCode(entry)
+  elseif entry.scope ==# 'terminal_send'
+    var text = getline('.')
+    return FileBuffer() && !get(b:, 'vimrc_large_file', 0)
+      && strlen(text) <= 4096 && !empty(trim(text))
+      && substitute(text, "\t", '', 'g') !~# '[[:cntrl:]]'
+      && !empty(TerminalTarget())
+  elseif entry.scope ==# 'keys'
     return Flag('simplewhichkey_enable')
   elseif entry.scope ==# 'file'
     return FileBuffer() && !empty(bufname())
@@ -210,7 +281,7 @@ def Available(entry: dict<string>): bool
     # edits. Saved-file mutations additionally require a clean writable buffer.
     return FileBuffer() && !empty(bufname())
       && !get(b:, 'vimrc_large_file', 0) && CachedHunks()
-      && (entry.scope !=# 'hunk-write' || (!&modified && &modifiable && !&readonly))
+      && (entry.scope !=# 'hunk-write' || (!&modified && &modifiable && !&readonly && &buftype ==# ''))
   elseif entry.scope ==# 'plugin-running'
     var manager = PluginState()
     return manager.known && manager.running
@@ -336,7 +407,12 @@ def g:VimrcWorkbenchAction(action: string)
           throw '[vimrc] The source changed during confirmation; reopen the action menu'
         endif
       endif
-      execute ActionCommand(entry)
+      if action ==# 'simple_terminal_send_line'
+        call('simpleterminal#SendWorkbenchLine',
+          [get(roots, string(win_getid()), ''), SourceWorkspace(), getline('.')])
+      else
+        execute ActionCommand(entry) .. (has_key(entry, 'argument') ? ' ' .. entry.argument : '')
+      endif
       # In particular, a SimpleLine toggle has no provider event of its own.
       # Tell native hosts to refresh once; do not add a polling timer.
       if exists('#User#VimrcWorkbenchChanged')

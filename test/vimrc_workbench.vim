@@ -34,6 +34,8 @@ assert_equal(2, exists(':VimrcWorkbench'))
 assert_equal(2, exists(':VimrcAction'))
 assert_equal('<Cmd>VimrcWorkbench<CR>', maparg(g:mapleader .. 'vw', 'n'))
 assert_equal(':VimrcAction ', maparg(g:mapleader .. 'va', 'n'))
+assert_equal('<Cmd>VimrcAction simple_plugin_status<CR>', maparg(g:mapleader .. 'Ps', 'n'))
+assert_equal('<Cmd>VimrcAction simple_plugin_stop<CR>', maparg(g:mapleader .. 'Px', 'n'))
 assert_equal(['simple_workbench'], g:VimrcWorkbenchCapabilities())
 assert_match('unavailable', Act('simple_files'))
 
@@ -137,7 +139,7 @@ command! SimpleMarkdown call Called('markdown')
 command! SimpleWhichKey call Called('keys')
 
 var capabilities = g:VimrcWorkbenchCapabilities()
-assert_equal(36, len(capabilities), 'Markdown preview is hidden outside Markdown')
+assert_equal(39, len(capabilities), 'Markdown stays hidden; cached errors add three focused actions')
 assert_equal(-1, index(capabilities, 'rename'), 'typed rename must not become a prompt')
 assert_true(index(capabilities, 'simple_rename') >= 0)
 
@@ -407,6 +409,31 @@ assert_match('Virtual text: Vim compatibility view', join(getline(1, '$'), "\n")
 assert_match('Inline hints: Vim compatibility view', join(getline(1, '$'), "\n"))
 close
 unlet g:jterm_vim9_render_protocol g:jterm_vim9_virtual_text_after g:jterm_vim9_virtual_text_inline
+
+# Saved-hunk operations and service controls use the same live guards in
+# ordinary Vim as in the native palette, including late provider installation.
+command! SimpleGitHunkNext call Called('hunk-next')
+command! SimpleGitHunkStage call Called('hunk-stage')
+command! SimpleGitHunkUndo call Called('hunk-undo')
+command! SimpleCC call Called('lsp-status')
+command! PlugStatus call Called('plugin-status')
+command! PlugUpdate call Called('plugin-update')
+command! PlugStop call Called('plugin-stop')
+assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_plugin_update') >= 0)
+assert_false(g:VimrcWorkbenchState().plugins.known, 'old plugin must not invent idle progress')
+assert_true(index(g:VimrcWorkbenchCapabilities(), 'simple_plugin_stop') < 0)
+b:simplegit_status_dict = {changed: 1}
+setlocal modifiable noreadonly nomodified
+assert_equal('', Act('simple_git_next_hunk'))
+assert_equal('hunk-next', g:vimrc_workbench_called)
+assert_equal('', Act('simple_git_stage_hunk'))
+setlocal modified
+assert_match('unavailable', Act('simple_git_stage_hunk'))
+assert_equal('', Act('simple_git_next_hunk'))
+setlocal nomodified readonly
+assert_match('unavailable', Act('simple_git_undo_hunk'))
+assert_equal('', Act('simple_lsp_status'))
+setlocal noreadonly
 
 delete(PROJECT, 'rf')
 if !empty(v:errors)

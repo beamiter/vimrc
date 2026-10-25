@@ -24,14 +24,15 @@ nnoremap <silent> <leader>vS <Cmd>VimrcAction simple_statusline_health<CR>
 # Uppercase P keeps preview's existing lowercase p prefix intact. These
 # actions recheck provider availability when invoked, including after a
 # bootstrap has installed SimplePlug in the running Vim session.
-nnoremap <silent> <leader>Ps <Cmd>VimrcAction simple_plugin_status<CR>
-nnoremap <silent> <leader>Pc <Cmd>VimrcAction simple_plugin_check<CR>
-nnoremap <silent> <leader>Pi <Cmd>VimrcAction simple_plugin_install<CR>
-nnoremap <silent> <leader>Pu <Cmd>VimrcAction simple_plugin_update<CR>
-nnoremap <silent> <leader>Px <Cmd>VimrcAction simple_plugin_stop<CR>
-nnoremap <silent> <leader>Pd <Cmd>VimrcAction simple_plugin_diff<CR>
-nnoremap <silent> <leader>Pp <Cmd>VimrcAction simple_plugin_profile<CR>
-nnoremap <silent> <leader>Ph <Cmd>VimrcAction simple_plugin_health<CR>
+# Management shortcuts share the same live action guards as the native picker.
+# Leave existing personal mappings intact, including across configuration reloads.
+for [key, action] in items({s: 'status', c: 'check', i: 'install', u: 'update',
+    x: 'stop', d: 'diff', p: 'profile', h: 'health'})
+  if empty(maparg(g:mapleader .. 'P' .. key, 'n'))
+    execute 'nnoremap <silent> <leader>P' .. key
+      .. ' <Cmd>VimrcAction simple_plugin_' .. action .. '<CR>'
+  endif
+endfor
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
 nnoremap <silent> <leader>fd <Cmd>VimrcRoot<CR>
 nnoremap <silent> <leader>ro <Cmd>SimpleRemote<CR>
