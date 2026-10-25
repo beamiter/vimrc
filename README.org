@@ -287,8 +287,13 @@ g:vimrc_whitespace_highlight = 0  # 关闭尾随空白提示
 #+end_src
 
 在 Anvil、Ember、Forge、Frost 的 Vim9 IDE 中，普通文件窗口自动使用
-=nowrap nospell nolist conceallevel=0 foldcolumn=0 nofoldenable= 和单列
-=signcolumn=yes=，让长行、诊断标记和滚动保持原生绘制。FileType、分屏、窗口切换
+=nowrap nospell nolist conceallevel=0 foldcolumn=0= 和单列
+=signcolumn=yes=，让长行、诊断标记和滚动保持原生绘制。折叠保持开启：协商到
+render protocol 8 的终端把关闭的折叠直接画成原生行（=Folded= 配色、
+=fillchars= 的 =fold:·= 填充），触摸板与滚轮把一个折叠当作一行平滑滚过；
+连接到旧版终端时会在握手后自动设为 =nofoldenable=，避免回退到兼容视图。
+折叠行使用 =g:VimrcFoldText()=：保留首行缩进与代码，再附上 =⋯ N lines=；
+在 =.vimrc.before= 中设 =g:vimrc_foldtext = false= 可恢复 Vim 默认样式。FileType、分屏、窗口切换
 和 =:VimrcReload= 后会重新应用；普通终端 Vim 的换行、提交信息拼写检查和双列
 signcolumn 偏好不变。已连接的 SimpleRemote 虚拟文件也使用相同视图，缓冲区的
 URI、连接 generation 必须与当前工作区一致；断线、过期连接及其他 acwrite

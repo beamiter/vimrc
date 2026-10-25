@@ -109,6 +109,24 @@ set undolevels=5000
 set nrformats-=octal
 set shortmess+=Ic
 &fillchars = "vert:│,fold:·,eob: "
+
+# 折叠行读起来像它隐藏的代码：首行保留原缩进，后面附上折叠行数。原生 GUI
+# 终端用同一字体与 Folded 配色直接绘制这一行（render protocol 8）。
+# 在 .vimrc.before 里设 g:vimrc_foldtext = false 可保留 Vim 默认样式。
+def g:VimrcFoldText(): string
+  var text = trim(getline(v:foldstart), " \t", 1)
+  var markers = split(&foldmarker, ',')
+  if &foldmethod ==# 'marker' && !empty(markers) && !empty(markers[0])
+    text = substitute(text, '\V' .. escape(markers[0], '\') .. '\d\*', '', 'g')
+  endif
+  text = substitute(trim(text, " \t", 2), '\t', ' ', 'g')
+  var count = v:foldend - v:foldstart + 1
+  return repeat(' ', indent(v:foldstart)) .. text
+    .. (empty(text) ? '' : ' ') .. '⋯ ' .. count .. (count == 1 ? ' line ' : ' lines ')
+enddef
+if get(g:, 'vimrc_foldtext', true)
+  set foldtext=g:VimrcFoldText()
+endif
 set listchars=tab:»·,trail:·,extends:»,precedes:«,nbsp:␣
 silent! packadd matchit
 

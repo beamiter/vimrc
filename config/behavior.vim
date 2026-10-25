@@ -144,6 +144,15 @@ def NativeRemoteBuffer(): bool
     && bufname() ==# 'remote://' .. path
 enddef
 
+# Render protocol 8 hosts paint closed folds natively, so folding stays on.
+# Before the bridge connects the protocol is unknown: keep the user's folds
+# and let JTermVim9Ready reapply this policy for an older host.
+def NativeFoldsPainted(): bool
+  var protocol: any = get(g:, 'jterm_vim9_render_protocol', 0)
+  return !get(g:, 'jterm_vim9_connected', false)
+    || (type(protocol) == v:t_number && protocol >= 8)
+enddef
+
 def ApplyNativeIdeView()
   # Diff and plugin windows own their display and folds. Other unsupported
   # views, including right-to-left text, keep Vim's compatibility rendering.
@@ -151,8 +160,18 @@ def ApplyNativeIdeView()
       || !EditingBuffer() || &diff
     return
   endif
-  setlocal nowrap nospell nolist conceallevel=0 foldcolumn=0 nofoldenable
+  setlocal nowrap nospell nolist conceallevel=0 foldcolumn=0
+  if !NativeFoldsPainted()
+    setlocal nofoldenable
+  endif
   setlocal signcolumn=yes
+enddef
+
+# The negotiated paint protocol is only known after authentication.
+def ReapplyNativeIdeViews()
+  for window in getwininfo()
+    win_execute(window.winid, 'call ' .. expand('<SID>') .. 'ApplyNativeIdeView()')
+  endfor
 enddef
 
 # An asynchronous read may finish with FileType already set, or in an
@@ -435,6 +454,7 @@ augroup vimrc_core
   autocmd InsertEnter * call ClearWhitespaceMatch()
   autocmd InsertLeave,BufWinEnter,WinEnter * call ShowWhitespaceMatch()
   autocmd BufWinEnter,WinEnter * call ApplyNativeIdeView()
+  autocmd User JTermVim9Ready call ReapplyNativeIdeViews()
   autocmd User SimpleRemoteBufferRead call RemoteBufferReadView()
   autocmd BufWinLeave * call ClearWhitespaceMatch()
   autocmd User VimrcLargeFileChanged call RefreshLargeFileEditing()
@@ -455,7 +475,5 @@ endif
 # A reload can happen with a sidebar focused or with ordinary files open in
 # other tabs. Reassert only the native file windows without changing focus.
 if g:VimrcNativeIde()
-  for window in getwininfo()
-    win_execute(window.winid, 'call ' .. expand('<SID>') .. 'ApplyNativeIdeView()')
-  endfor
+  ReapplyNativeIdeViews()
 endif

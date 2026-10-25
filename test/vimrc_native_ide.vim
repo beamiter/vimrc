@@ -14,9 +14,13 @@ def View(): dict<any>
     foldenable: &l:foldenable, signcolumn: &l:signcolumn}
 enddef
 
+# Render protocol 8 paints closed folds natively. Until a bridge reports an
+# older protocol, the native view keeps the window's folding enabled.
+var nativeFolds = true
+
 def AssertNative(label: string)
   assert_equal({wrap: false, spell: false, list: false,
-    conceallevel: 0, foldcolumn: 0, foldenable: false, signcolumn: 'yes'},
+    conceallevel: 0, foldcolumn: 0, foldenable: nativeFolds, signcolumn: 'yes'},
     View(), label)
 enddef
 
@@ -180,6 +184,44 @@ endfor
 unlet g:vimrc_native_remote_view g:simpleremote_workspace g:simpleremote_status
 unlet b:vimrc_remote
 
+
+# An older host (render protocol 7) cannot paint folds: its ready event turns
+# folding off in every native file window. Protocol 8 keeps it on.
+enew!
+setlocal filetype=rust foldenable
+var older = win_getid()
+split
+setlocal foldenable
+g:jterm_vim9_connected = true
+g:jterm_vim9_render_protocol = 7
+doautocmd <nomodeline> User JTermVim9Ready
+nativeFolds = false
+AssertNative('older host, focused split')
+win_gotoid(older)
+AssertNative('older host, other split')
+close
+g:jterm_vim9_render_protocol = 8
+nativeFolds = true
+setlocal foldenable
+doautocmd <nomodeline> User JTermVim9Ready
+doautocmd BufWinEnter
+AssertNative('protocol 8 keeps folds')
+g:jterm_vim9_connected = false
+g:jterm_vim9_render_protocol = 0
+
+# Closed folds read like the code they hide, natively painted or not.
+enew!
+setlocal tabstop=4 shiftwidth=4 foldmethod=manual
+setline(1, ["\tfn main() {  ", "\t\tbody\tvalue", "\t}", '', '" section {{{1', 'text'])
+:1,3fold
+assert_equal('    fn main() { ⋯ 3 lines ', foldtextresult(1))
+setlocal foldminlines=0
+:4,4fold
+assert_equal('⋯ 1 line ', foldtextresult(4))
+normal! zE
+setlocal foldmethod=marker foldminlines<
+assert_equal('" section ⋯ 2 lines ', foldtextresult(5))
+setlocal foldmethod=manual
 
 # Explicit plugin preferences are authoritative, including on reload. Manual
 # hover/docs/minimap UI remains available with compatibility rendering.
