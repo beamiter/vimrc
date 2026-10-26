@@ -443,6 +443,7 @@ def g:VimrcWorkbenchReport()
   # support popups but still fall back for every virtual text property.
   var native_after = state.native && Flag('jterm_vim9_virtual_text_after', false)
   var native_inline = state.native && Flag('jterm_vim9_virtual_text_inline', false)
+  var native_wrap = state.native && type(render_protocol) == v:t_number && render_protocol >= 9
   var capabilities = g:VimrcWorkbenchCapabilities()
   var origin = win_getid()
   var lines = [
@@ -458,6 +459,8 @@ def g:VimrcWorkbenchReport()
       : 'Vim compatibility view'),
     'Inline hints: ' .. (native_inline ? 'native single-line hints in nowrap views; complex layouts use Vim compatibility'
       : 'Vim compatibility view'),
+    'Soft wrap: ' .. (native_wrap ? 'native wrapped rows with smoothscroll; virtual text on long lines uses Vim compatibility'
+      : state.native ? 'nowrap native view; this host predates native wrapped rows' : 'Vim view'),
     'Workspace: ' .. state.root,
     'Buffer: ' .. BoundedString(bufname(), 4096),
     'Large file: ' .. (state.large_file ? 'protected' : 'no'),

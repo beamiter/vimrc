@@ -287,8 +287,11 @@ g:vimrc_whitespace_highlight = 0  # 关闭尾随空白提示
 #+end_src
 
 在 Anvil、Ember、Forge、Frost 的 Vim9 IDE 中，普通文件窗口自动使用
-=nowrap nospell nolist conceallevel=0 foldcolumn=0= 和单列
-=signcolumn=yes=，让长行、诊断标记和滚动保持原生绘制。折叠保持开启：协商到
+=nospell nolist conceallevel=0 foldcolumn=0= 和单列 =signcolumn=yes=，
+让诊断标记和滚动保持原生绘制。自动换行保持开启：协商到 render protocol 9
+的终端把续行（含 =showbreak=、=breakindent=、=linebreak= 与 =smoothscroll=
+的半行）按 Vim 的精确排版直接原生绘制，触摸板与滚轮逐个屏幕行平滑滚动；
+连接到旧版终端时会在握手后自动设为 =nowrap=。折叠保持开启：协商到
 render protocol 8 的终端把关闭的折叠直接画成原生行（=Folded= 配色、
 =fillchars= 的 =fold:·= 填充），触摸板与滚轮把一个折叠当作一行平滑滚过；
 连接到旧版终端时会在握手后自动设为 =nofoldenable=，避免回退到兼容视图。

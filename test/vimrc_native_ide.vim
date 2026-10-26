@@ -14,12 +14,14 @@ def View(): dict<any>
     foldenable: &l:foldenable, signcolumn: &l:signcolumn}
 enddef
 
-# Render protocol 8 paints closed folds natively. Until a bridge reports an
-# older protocol, the native view keeps the window's folding enabled.
+# Render protocol 8 paints closed folds and protocol 9 soft-wrapped lines
+# natively. Until a bridge reports an older protocol, the native view keeps
+# the window's folding and wrapping (the FileType baseline wraps).
 var nativeFolds = true
+var nativeWrap = true
 
 def AssertNative(label: string)
-  assert_equal({wrap: false, spell: false, list: false,
+  assert_equal({wrap: nativeWrap, spell: false, list: false,
     conceallevel: 0, foldcolumn: 0, foldenable: nativeFolds, signcolumn: 'yes'},
     View(), label)
 enddef
@@ -111,6 +113,9 @@ Reload()
 assert_equal(diff_view, View(), 'diff display must survive native reload')
 assert_true(&l:diff)
 diffoff
+# :diffoff restores the wrap that :diffthis saved; this fixture set diff
+# directly, and soft wrap stays the user's choice in a native view.
+setlocal wrap
 doautocmd BufWinEnter
 AssertNative('leaving diff')
 setlocal rightleft
@@ -155,7 +160,7 @@ assert_equal(focused_buffer, bufnr())
 assert_equal(focused_cursor, getcurpos())
 assert_equal(focused_view, View(), 'unrelated focused plugin view survives')
 for id in [remote_first, remote_second]
-  assert_false(getwinvar(id, '&wrap'), 'async read updates every displayed target')
+  assert_false(getwinvar(id, '&spell'), 'async read updates every displayed target')
   assert_equal('yes', getwinvar(id, '&signcolumn'))
 endfor
 unlet g:simpleremote_event
@@ -185,27 +190,40 @@ unlet g:vimrc_native_remote_view g:simpleremote_workspace g:simpleremote_status
 unlet b:vimrc_remote
 
 
-# An older host (render protocol 7) cannot paint folds: its ready event turns
-# folding off in every native file window. Protocol 8 keeps it on.
+# An older host (render protocol 7) cannot paint folds or wrapped rows: its
+# ready event turns both off in every native file window. Protocol 8 keeps
+# folds on and protocol 9 also keeps soft wrap.
 enew!
 setlocal filetype=rust foldenable
+assert_true(&l:wrap, 'native file windows wrap before the host is known')
 var older = win_getid()
 split
-setlocal foldenable
+setlocal foldenable wrap
 g:jterm_vim9_connected = true
 g:jterm_vim9_render_protocol = 7
 doautocmd <nomodeline> User JTermVim9Ready
 nativeFolds = false
+nativeWrap = false
 AssertNative('older host, focused split')
 win_gotoid(older)
 AssertNative('older host, other split')
 close
 g:jterm_vim9_render_protocol = 8
 nativeFolds = true
-setlocal foldenable
+setlocal foldenable wrap
 doautocmd <nomodeline> User JTermVim9Ready
 doautocmd BufWinEnter
-AssertNative('protocol 8 keeps folds')
+AssertNative('protocol 8 keeps folds but not wrap')
+g:jterm_vim9_render_protocol = 9
+nativeWrap = true
+setlocal wrap
+doautocmd <nomodeline> User JTermVim9Ready
+doautocmd BufWinEnter
+AssertNative('protocol 9 keeps soft wrap')
+setlocal nowrap
+doautocmd BufWinEnter
+assert_false(&l:wrap, 'a user nowrap choice survives window reentry')
+setlocal wrap
 g:jterm_vim9_connected = false
 g:jterm_vim9_render_protocol = 0
 

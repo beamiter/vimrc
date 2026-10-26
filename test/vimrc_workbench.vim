@@ -398,6 +398,15 @@ assert_match('Inline hints: native single-line hints in nowrap views; complex la
   join(getline(1, '$'), "\n"))
 assert_match('Toggle inline type and parameter hints', join(getline(1, '$'), "\n"))
 close
+assert_equal('', Run('VimrcWorkbench'))
+assert_match('Soft wrap: nowrap native view; this host predates native wrapped rows',
+  join(getline(1, '$'), "\n"))
+close
+g:jterm_vim9_render_protocol = 9
+assert_equal('', Run('VimrcWorkbench'))
+assert_match('Soft wrap: native wrapped rows with smoothscroll', join(getline(1, '$'), "\n"))
+close
+g:jterm_vim9_render_protocol = 6
 g:jterm_vim9_virtual_text_inline = 'untrusted value'
 assert_equal('', Run('VimrcWorkbench'))
 assert_match('Inline hints: Vim compatibility view', join(getline(1, '$'), "\n"))
@@ -407,6 +416,7 @@ g:jterm_vim9_connected = false
 assert_equal('', Run('VimrcWorkbench'))
 assert_match('Virtual text: Vim compatibility view', join(getline(1, '$'), "\n"))
 assert_match('Inline hints: Vim compatibility view', join(getline(1, '$'), "\n"))
+assert_match('Soft wrap: Vim view', join(getline(1, '$'), "\n"))
 close
 unlet g:jterm_vim9_render_protocol g:jterm_vim9_virtual_text_after g:jterm_vim9_virtual_text_inline
 
