@@ -13,6 +13,7 @@
     ├── lib.vim        跨模块共享辅助（消息输出、statusline 段位注册）
     ├── core.vim       核心选项、undo/swap/state
     ├── bootstrap.vim  首次启动自动安装 SimplePlug 并接续 PlugUpdate
+    ├── plughelp.vim   修复管理器生成的帮助索引导致的 dirty 状态
     ├── plugins.vim    插件配置与 SimplePlug 清单
     ├── behavior.vim   FileType、缩进规则、尾随空白与核心自动命令
     ├── compat.vim     插件兼容层（侧栏 statusline、补全 Enter）
@@ -156,6 +157,12 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/simplecc/simplecc.json
 :PlugStatus
 :PlugUpdate
 #+end_example
+
+SimplePlug 自身跟踪的 =doc/tags= 可能落后于帮助正文，更新后自动生成索引会让
+下一次 =:PlugUpdate= 报 dirty。配置在启动和 =SimplePlugComplete= 后，仅当
+整个仓库唯一改动是与重新生成结果完全一致的 =doc/tags= 时恢复该文件；最新帮助
+正文与索引保存在 XDG state 下的 =vim/simpleplug-help/doc/= 并加入运行时路径。
+手工修改、暂存内容和其他文件改动仍保留，由 SimplePlug 的 dirty 保护处理。
 
 * 配置自身的更新检查
 

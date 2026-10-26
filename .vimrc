@@ -104,6 +104,7 @@ for module in [
   'lib.vim',
   'core.vim',
   'bootstrap.vim',
+  'plughelp.vim',
   'plugins.vim',
   'behavior.vim',
   'compat.vim',
