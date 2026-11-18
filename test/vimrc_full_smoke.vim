@@ -37,11 +37,23 @@ for command_name in [
       'SimpleMultiHealth',
       'SimpleEditorConfigHealth',
       'SimpleTerminalHealth',
+      'SimplePreviewStart',
+      'SimplePreviewOpen',
+      'SimplePreviewStatus',
+      'SimplePreviewStop',
       'TsHlStatus',
       'SimpleCC',
     ]
   assert_equal(2, exists(':' .. command_name), command_name)
 endfor
+
+# Web 预览保持显式启动，pv 子组不覆盖原有 Markdown 键位。
+assert_equal('idle', simplepreview#Status().state)
+for [key, cmd] in items({s: 'Start', o: 'Open', i: 'Status', x: 'Stop'})
+  assert_equal('<Cmd>SimplePreview' .. cmd .. '<CR>', maparg('<Space>pv' .. key, 'n'))
+endfor
+assert_equal('<Plug>(simplemarkdown-toggle)', maparg('<Space>pp', 'n'))
+assert_equal('<Plug>(simplemarkdown-external)', maparg('<Space>pb', 'n'))
 
 # 健康命令不能只存在，还必须端到端跑通：任何一个抛异常都说明套件装配有问题。
 for health_command in [

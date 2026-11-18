@@ -252,6 +252,15 @@ if get(C, 'plugins_ready', false)
   nnoremap <silent> <leader>ms <Cmd>SimpleMinimapStyle<CR>
   nnoremap <silent> <leader>mh <Cmd>SimpleMinimapHealth<CR>
 
+  # 已有本地 Web/TSX 项目：仅显式启动 dev server，不自动安装依赖或打开浏览器。
+  # pv 子组不占用 Markdown 原有快捷键，也不覆盖用户已定义的映射。
+  for [key, cmd] in items({s: 'Start', o: 'Open', i: 'Status', x: 'Stop'})
+    if empty(maparg(g:mapleader .. 'pv' .. key, 'n'))
+      execute 'nnoremap <silent> <leader>pv' .. key
+        .. ' <Cmd>SimplePreview' .. cmd .. '<CR>'
+    endif
+  endfor
+
   # Markdown 预览（终端内）
   nmap <silent> <leader>pp <Plug>(simplemarkdown-toggle)
   nmap <silent> <leader>pf <Plug>(simplemarkdown-focus)
@@ -424,6 +433,13 @@ if get(C, 'plugins_ready', false)
       s: 'style',
       u: 'toggle-link-targets',
       z: 'toggle-table-zebra',
+      v: {
+        name: '+web-preview',
+        s: 'start-dev-server',
+        o: 'open-browser',
+        i: 'status',
+        x: 'stop-dev-server',
+      },
     },
     P: {
       name: '+plugins',

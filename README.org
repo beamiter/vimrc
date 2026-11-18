@@ -829,6 +829,7 @@ SimpleCC 直接经 SimpleRemote agent 启动，=remote://= buffer 的补全、�
 | =<leader>pr/ps/ph= | 预览重绘 / 切换装饰字符 / 健康检查 |
 | =<leader>pb/pB/pq= | 浏览器预览开关 / 静态渲染一次 / 停掉全部（插件自带服务） |
 | =<leader>pn/pz/pu= | 预览开关：代码行号 / 表格斑马纹 / 链接目标 |
+| =<leader>pvs/pvo/pvi/pvx= | Web/TSX 项目：启动 dev server / 打开浏览器 / 状态 / 停止 |
 | =<leader>tt/tn/tp/tN= | 终端开关 / 新建 / 上一个 / 下一个 |
 | =<leader>tk/tl= | 关闭当前终端 / 列出全部终端会话 |
 | =<leader>tx= | 把当前行 / 可视行发进当前终端会话（REPL 用法） |
@@ -875,6 +876,24 @@ Julia 配置。自动安装关闭；缺失的服务器按需执行：
 修改 =settings= 后可使用 =:SimpleCCReloadConfig=；修改 command、args、
 filetypes、rootPatterns、priority 或 initializationOptions 后使用
 =:SimpleCCRestart=。
+
+* Web/TSX 项目预览
+
+SimplePreview 独立于 Markdown 预览。进入已有本地项目中的文件后，按
+=Space p v s= 显式运行 =npm run dev=，等 =Space p v i= 显示本机 URL，
+再按 =Space p v o= 打开浏览器；=Space p v x= 停止服务。
+
+需要 Python 3、已安装依赖的 Web 项目及可用的 dev 脚本。配置不自动安装
+项目依赖，不自动运行脚本或打开页面；仅接受带端口的 loopback URL。
+保存后的热更新由项目 dev server 提供，不支持未保存 buffer、单文件 TSX
+运行环境或 SSH 端口转发。请只启动可信项目。
+
+可显式运行 =:SimplePreviewStart pnpm run dev=。个人默认命令可写在
+=~/.vimrc.before= 或 =~/.vimrc.local= 中，例如 Vim9 配置：
+
+#+begin_src vim
+g:simplepreview_command = ['pnpm', 'run', 'dev']
+#+end_src
 
 * 检查与排障
 

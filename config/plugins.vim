@@ -219,6 +219,7 @@ if plugins_enabled && g:VimrcSimplePlugReady()
     simpleplug#Plug('beamiter/simpletreesitter', {do: './install.sh'})
     simpleplug#Plug('beamiter/simplecc', {do: './install.sh'})
     simpleplug#Plug('beamiter/simplemarkdown', {do: './install.sh'})
+    simpleplug#Plug('beamiter/simplepreview')
 
     simpleplug#End()
     plugins_ready = true
