@@ -885,8 +885,10 @@ SimplePreview 独立于 Markdown 预览。进入已有本地项目中的文件�
 
 需要 Python 3、已安装依赖的 Web 项目及可用的 dev 脚本。配置不自动安装
 项目依赖，不自动运行脚本或打开页面；仅接受带端口的 loopback URL。
-保存后的热更新由项目 dev server 提供，不支持未保存 buffer、单文件 TSX
-运行环境或 SSH 端口转发。请只启动可信项目。
+普通 TSX 的热更新由项目 dev server 提供。对于 Cursor 管理目录中的
+=*.canvas.tsx=，保存后直接按 =Space p v o= 即可启动并打开浏览器预览。
+预览使用本机 Cursor 的 Canvas 运行时和 SimpleCC 安装的 TypeScript。
+修改后保存文件，再刷新浏览器。
 
 可显式运行 =:SimplePreviewStart pnpm run dev=。个人默认命令可写在
 =~/.vimrc.before= 或 =~/.vimrc.local= 中，例如 Vim9 配置：
