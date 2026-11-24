@@ -8,8 +8,13 @@ run_full=0
 case "${1:-}" in
   "") ;;
   --full) run_full=1 ;;
+  --pinned-preflight)
+    shift
+    exec python3 "$repo_root/utils/pinned-preflight.py" "$@"
+    ;;
   -h|--help)
     printf 'Usage: utils/check.sh [--full]\n'
+    printf '       utils/check.sh --pinned-preflight SNAPSHOT PRIVATE_HOME\n'
     printf '  --full  also test the locally installed plugin stack\n'
     exit 0
     ;;

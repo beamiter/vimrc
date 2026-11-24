@@ -911,6 +911,19 @@ g:simplepreview_command = ['pnpm', 'run', 'dev']
 ./utils/check.sh --full
 #+end_src
 
+在准备组合测试时，可以先校验一份已有的 SimplePlug v1 =:PlugSnapshot=：
+
+#+begin_src shell
+./utils/check.sh --pinned-preflight /path/to/snapshot.json /path/to/private-test-home
+#+end_src
+
+快照放在测试 HOME 之外。准备自己创建、权限为 =0700= 的独立 HOME，
+其中只保留 =.vim/plugged/= 下的普通 Git 检出。命令要求当前 vimrc 的全部
+插件声明都有匹配的来源和精确提交；分支检出、脏文件（含 ignore 的构建产物）、
+缺失或额外目录、符号链接和自定义运行时目录都会拒绝。先做预检，再单独准备
+后端构建。预检不会下载、加载或运行任何插件，也不代表 =--full= 或
+SimpleRemote 联合测试已通过；默认检查和已有 =--full= 用法不变。
+
 检查内容包括：
 
 - 安装器 Bash 语法、dry-run、备份、幂等和失败事务回滚；
