@@ -26,5 +26,7 @@ jobs:
           sudo apt-get install --no-install-recommends -y vim-nox shellcheck jq ripgrep
       - name: Check required Vim features
         run: ./utils/deps.sh
+      - name: Test pinned suite validation and isolation
+        run: python3 -B test/pinned_preflight.py
       - name: Run offline smoke tests
         run: ./utils/check.sh
