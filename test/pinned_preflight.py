@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Run the opt-in suite preflight against owned local checkout fixtures."""
+from contextlib import redirect_stdout
 import importlib.util
+from io import StringIO
 import json
 import os
+import shlex
 from pathlib import Path
 import subprocess
 import tempfile
@@ -182,6 +185,65 @@ class PinnedPreflight(unittest.TestCase):
                 )
                 with self.assertRaisesRegex(ValueError, "unsupported .* declaration"):
                     PREFLIGHT.declared_plugins()
+
+    def test_full_rejects_dirty_inputs_before_cargo(self):
+        self.vim_entry.write_text("vim9script\n", encoding="utf-8")
+        bin_dir = self.base / "bin"
+        bin_dir.mkdir()
+        marker = self.base / "cargo-was-started"
+        cargo = bin_dir / "cargo"
+        cargo.write_text(f'#!/bin/sh\n: > {shlex.quote(str(marker))}\n', encoding="utf-8")
+        cargo.chmod(0o700)
+        result = subprocess.run(
+            [str(ROOT / "utils/check.sh"), "--pinned-full", str(self.snapshot), str(self.home)],
+            env={**self.env, "PATH": f"{bin_dir}:{self.env['PATH']}"},
+            text=True, capture_output=True, timeout=20,
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("dirty checkout", result.stderr)
+        self.assertEqual("", result.stdout)
+        self.assertFalse(marker.exists())
+
+    def test_full_cleans_clone_on_failed_smoke(self):
+        verified = PREFLIGHT.preflight(self.snapshot, self.home)
+        real_run = subprocess.run
+        copied_home = None
+        original_lib = self.root / "simpleplug/lib"
+
+        def controlled(argv, **kwargs):
+            nonlocal copied_home
+            if argv[0] == "cargo":
+                self.assertEqual(
+                    argv[1:], ["build", "--release", "--locked", "--offline",
+                               "--bin", "simpleplug-daemon"],
+                )
+                copied_home = Path(kwargs["env"]["HOME"])
+                self.assertNotEqual(self.home, copied_home)
+                self.assertEqual(copied_home / ".vim/plugged/simpleplug", kwargs["cwd"])
+                target = Path(kwargs["env"]["CARGO_TARGET_DIR"])
+                artifact = target / "release/simpleplug-daemon"
+                artifact.parent.mkdir(parents=True)
+                artifact.write_bytes(b"owned wrapper fixture; never executed")
+                artifact.chmod(0o700)
+                return subprocess.CompletedProcess(argv, 0)
+            if Path(argv[0]).name == "check.sh":
+                self.assertEqual(argv[1:], ["--full"])
+                self.assertFalse(original_lib.exists())
+                self.assertEqual("1", kwargs["env"]["VIMRC_SKIP_UPDATE_CHECK"])
+                clone_lib = copied_home / ".vim/plugged/simpleplug/lib"
+                self.assertTrue((clone_lib / "simpleplug-daemon").exists())
+                raise subprocess.CalledProcessError(19, argv)
+            return real_run(argv, **kwargs)
+
+        output = StringIO()
+        with patch.object(PREFLIGHT.subprocess, "run", side_effect=controlled):
+            with redirect_stdout(output), self.assertRaises(subprocess.CalledProcessError):
+                PREFLIGHT.run_full(self.snapshot, self.home, verified)
+        self.assertNotIn("exact checkouts passed", output.getvalue())
+        self.assertIsNotNone(copied_home)
+        self.assertFalse(copied_home.exists())
+        self.assertFalse(original_lib.exists())
+        self.assertEqual(verified, PREFLIGHT.preflight(self.snapshot, self.home))
 
     @unittest.skipUnless(REAL_PLUG, "set VIMRC_TEST_REAL_SIMPLEPLUG to an owned SimplePlug checkout")
     def test_real_vim_plugsnapshot_v1_roundtrip(self):

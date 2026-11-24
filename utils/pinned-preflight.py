@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Verify a disposable Vim9 suite checkout set; never load plugins."""
+"""Verify exact Vim9 suite checkouts, optionally run the full smoke gate."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
 import re
+import shutil
 import stat
 import subprocess
 import tempfile
@@ -175,15 +177,96 @@ def preflight(snapshot, home):
         return {name: verify_checkout(root / name, pins[name], env) for name in sorted(names)}
 
 
+def run_full(snapshot, home, verified):
+    """Build the exact SimplePlug daemon offline and leave the inputs clean."""
+    if "simpleplug" not in verified:
+        raise ValueError("SimplePlug must be included in the exact suite")
+    input_home = home.resolve()
+    with tempfile.TemporaryDirectory(prefix="vimrc-pinned-full-") as temporary:
+        private = Path(temporary)
+        home = private / "home"
+        shutil.copytree(input_home, home, symlinks=True)
+        if preflight(snapshot, home) != verified:
+            raise ValueError("copied checkout set does not match the pinned input")
+        plug = home / ".vim/plugged/simpleplug"
+        bindir = plug / "lib"
+        common = {
+            "HOME": str(home),
+            "PATH": os.environ.get("PATH", os.defpath),
+            "TERM": os.environ.get("TERM", "xterm"),
+            "LANG": os.environ.get("LANG", "C.UTF-8"),
+            "XDG_STATE_HOME": str(private / "state"),
+            "XDG_CONFIG_HOME": str(private / "config"),
+            "XDG_CACHE_HOME": str(private / "cache"),
+            "GIT_CONFIG_NOSYSTEM": "1",
+            "GIT_CONFIG_GLOBAL": os.devnull,
+            "GIT_NO_REPLACE_OBJECTS": "1",
+            "GIT_NO_LAZY_FETCH": "1",
+            "GIT_TERMINAL_PROMPT": "0",
+            "VIMRC_SKIP_UPDATE_CHECK": "1",
+        }
+        runtime = os.environ.get("VIMRUNTIME")
+        if runtime:
+            common["VIMRUNTIME"] = runtime
+        build = {**common, "CARGO_TARGET_DIR": str(private / "target")}
+        # Do not modify PRIVATE_HOME by initializing Cargo's cache there.
+        # The caller chooses a trusted, already populated registry/toolchain.
+        for key in ("CARGO_HOME", "RUSTUP_HOME"):
+            path = os.environ.get(key)
+            if path:
+                build[key] = str(Path(path).resolve())
+        if "CARGO_HOME" not in build:
+            build["CARGO_HOME"] = str(Path.home() / ".cargo")
+        subprocess.run(
+            ["cargo", "build", "--release", "--locked", "--offline",
+             "--bin", "simpleplug-daemon"],
+            cwd=plug, env=build, check=True,
+        )
+        artifact = private / "target/release/simpleplug-daemon"
+        if not artifact.is_file() or artifact.is_symlink() or not os.access(artifact, os.X_OK):
+            raise ValueError("locked build did not create a regular executable")
+        if preflight(snapshot, home) != verified:
+            raise ValueError("pinned snapshot or checkout set changed after the build")
+
+        # Preflight rejects ignored files, so stale binaries cannot pass as a
+        # successful build. Make only our own temporary installation; never
+        # overwrite anything even if a concurrent process created lib.
+        bindir.mkdir(mode=0o700)
+        installed = bindir / "simpleplug-daemon"
+        try:
+            shutil.copyfile(artifact, installed)
+            installed.chmod(0o700)
+            vcs = hashlib.sha256(artifact.read_bytes()).hexdigest()
+            print(f"pinned full: SimplePlug {verified['simpleplug']} daemon sha256={vcs}",
+                  flush=True)
+            subprocess.run(
+                [str(Path(__file__).with_name("check.sh")), "--full"],
+                env=common, check=True,
+            )
+        finally:
+            installed.unlink(missing_ok=True)
+            bindir.rmdir()
+        if preflight(snapshot, home) != verified:
+            raise ValueError("pinned snapshot or checkout set changed during the smoke gate")
+    if preflight(snapshot, input_home) != verified:
+        raise ValueError("pinned inputs changed during the smoke gate")
+    print(f"pinned full: {len(verified)} exact checkouts passed vimrc --full; "
+          "SimpleRemote cross-plugin daemon/host checks not covered")
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--run-full", action="store_true", help="run the pinned Vim smoke gate")
     parser.add_argument("snapshot", type=Path, help="trusted SimplePlug v1 snapshot")
     parser.add_argument("private_home", type=Path, help="owned mode-0700 test HOME")
     args = parser.parse_args()
     try:
         verified = preflight(args.snapshot, args.private_home)
-    except (OSError, ValueError) as exc:
-        parser.exit(1, f"pinned preflight: {exc}\n")
+        if args.run_full:
+            run_full(args.snapshot, args.private_home, verified)
+            return
+    except (OSError, ValueError, subprocess.CalledProcessError) as exc:
+        label = "pinned full" if args.run_full else "pinned preflight"
+        parser.exit(1, f"{label}: {exc}\n")
     # No partial success receipt, and never confuse commit validation with runtime proof.
     for name, oid in verified.items():
         print(f"{name} {oid}")

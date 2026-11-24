@@ -924,6 +924,19 @@ g:simplepreview_command = ['pnpm', 'run', 'dev']
 后端构建。预检不会下载、加载或运行任何插件，也不代表 =--full= 或
 SimpleRemote 联合测试已通过；默认检查和已有 =--full= 用法不变。
 
+要实际运行固定组合的 Vim 启动与插件烟测，先在可信 Cargo 缓存中准备好
+该 SimplePlug 锁文件的依赖，再用支持这些插件的完整 Vim 构建执行：
+
+#+begin_src sh
+./utils/check.sh --pinned-full /path/to/snapshot.json /path/to/private-test-home
+#+end_src
+
+此入口先严格预检，再从已验证的 SimplePlug 源码用 =cargo build --locked
+--offline= 构建临时 daemon。预检通过后复制到一次性 HOME，构建和测试只使用副本，
+并隔离 XDG 状态。结束时重新核对 ref 和工作树，删除测试副本。Cargo 从
+=PATH= 取得，使用可信的 =CARGO_HOME=（默认调用者的 =~/.cargo=）。
+这个入口不安装其他插件后端，不替代 =simpleremote= 的真正联合测试或原生验收。
+
 检查内容包括：
 
 - 安装器 Bash 语法、dry-run、备份、幂等和失败事务回滚；

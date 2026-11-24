@@ -12,9 +12,14 @@ case "${1:-}" in
     shift
     exec python3 "$repo_root/utils/pinned-preflight.py" "$@"
     ;;
+  --pinned-full)
+    shift
+    exec python3 "$repo_root/utils/pinned-preflight.py" --run-full "$@"
+    ;;
   -h|--help)
     printf 'Usage: utils/check.sh [--full]\n'
     printf '       utils/check.sh --pinned-preflight SNAPSHOT PRIVATE_HOME\n'
+    printf '       utils/check.sh --pinned-full SNAPSHOT PRIVATE_HOME\n'
     printf '  --full  also test the locally installed plugin stack\n'
     exit 0
     ;;
