@@ -21,6 +21,15 @@ SPEC.loader.exec_module(PREFLIGHT)
 REAL_PLUG = os.environ.get("VIMRC_TEST_REAL_SIMPLEPLUG")
 
 
+class PublishedSnapshot(unittest.TestCase):
+    def test_local_snapshot_matches_the_declared_plugin_set(self):
+        # This checks the published lock's syntax and coverage, not that CI
+        # downloaded the refs or built the whole plugin stack.
+        names = PREFLIGHT.declared_plugins()
+        pins = PREFLIGHT.read_pins(ROOT / "test/snapshots/vim9-local-v1.json", names)
+        self.assertEqual(set(names), set(pins))
+
+
 class PinnedPreflight(unittest.TestCase):
     def setUp(self):
         directory = tempfile.TemporaryDirectory(prefix="vimrc-preflight-fixture-")

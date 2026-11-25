@@ -937,6 +937,19 @@ SimpleRemote 联合测试已通过；默认检查和已有 =--full= 用法不变
 =PATH= 取得，使用可信的 =CARGO_HOME=（默认调用者的 =~/.cargo=）。
 这个入口不安装其他插件后端，不替代 =simpleremote= 的真正联合测试或原生验收。
 
+回归用固定组合见 [[file:test/snapshots/vim9-local-v1.json][Vim9 本地烟测快照]]。
+它列出 21 个精确提交，供在隔离 HOME 重跑上述烟测，不会改变日常安装或自动更新的版本。
+可以从快照的 =plugins= 字段逐个克隆 =url=，并以 detached HEAD 检出 =commit=；
+不要用已有的日常 HOME。
+
+#+begin_src sh
+./utils/check.sh --pinned-full test/snapshots/vim9-local-v1.json /path/to/private-test-home
+#+end_src
+
+此快照通过过 Vim 9.2 的本地启动与集成烟测。默认 CI 只校验快照格式和插件清单，
+不下载该组合。快照不是完整联合发布：未覆盖 SimpleRemote 的强制联合回归、
+真实 SSH 或原生终端验收。
+
 检查内容包括：
 
 - 安装器 Bash 语法、dry-run、备份、幂等和失败事务回滚；

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "plugins": {
+    "simplecc": {"commit": "00d79a2f188c989380b24606546788cccecc6efa", "url": "https://github.com/beamiter/simplecc.git"},
+    "simpleclipboard": {"commit": "0f6d119e0b74a5db02899e04e0c90a8e087851cb", "url": "https://github.com/beamiter/simpleclipboard.git"},
+    "simplecomment": {"commit": "6a72f229fe2b53b0dd83a901bef90a9a4c152fd2", "url": "https://github.com/beamiter/simplecomment.git"},
+    "simpleedit": {"commit": "0e56c3158f4921eceea03ec3fe445cef65b3ace8", "url": "https://github.com/beamiter/simpleedit.git"},
+    "simpleeditorconfig": {"commit": "60c13b9eef7768591e9bab3f98917de47a18df4e", "url": "https://github.com/beamiter/simpleeditorconfig.git"},
+    "simplefinder": {"commit": "c03b692ab228a23d51aa32082836e927ed6e82cc", "url": "https://github.com/beamiter/simplefinder.git"},
+    "simplegit": {"commit": "f4645080c7d77f92b68a7eb8da508fc7dfa3a7ee", "url": "https://github.com/beamiter/simplegit.git"},
+    "simpleline": {"commit": "e7ab08e8bb71a2f48e815278a436f850e459ad16", "url": "https://github.com/beamiter/simpleline.git"},
+    "simplemarkdown": {"commit": "ba89d6c57b6d0f0d00263d4938f44a2957b2dcd3", "url": "https://github.com/beamiter/simplemarkdown.git"},
+    "simpleminimap": {"commit": "26ea448d1fa6542d9c85b68b5ac69da81a37f14c", "url": "https://github.com/beamiter/simpleminimap.git"},
+    "simplemotion": {"commit": "0a4e12404c10586ab268f53adcb73f9a5aaa2efe", "url": "https://github.com/beamiter/simplemotion.git"},
+    "simplemulti": {"commit": "c2b92697ac6e7e1cf583194dabac58bf4653e003", "url": "https://github.com/beamiter/simplemulti.git"},
+    "simplepairs": {"commit": "3dbce1c4f7770af64639a8a4092689b7bde42233", "url": "https://github.com/beamiter/simplepairs.git"},
+    "simpleplug": {"commit": "2466b52ed373e3f3f8615fc8d374a057646c44a4", "url": "https://github.com/beamiter/simpleplug.git"},
+    "simplepreview": {"commit": "049cd6ab1f405099de16da3d541fbacd94eb2b16", "url": "https://github.com/beamiter/simplepreview.git"},
+    "simpleremote": {"commit": "2a95af93147cd5084f63919cce9dfb583fca6552", "url": "https://github.com/beamiter/simpleremote.git"},
+    "simplestartify": {"commit": "ab62edefc06d836d2e2f08eca59e33ce99a7d0c8", "url": "https://github.com/beamiter/simplestartify.git"},
+    "simpleterminal": {"commit": "eb3dd71bcf56430232710d6ce3c4ff7f9787221a", "url": "https://github.com/beamiter/simpleterminal.git"},
+    "simpletree": {"commit": "1eeffca2324012f611f3ffd48869bfc435fc151a", "url": "https://github.com/beamiter/simpletree.git"},
+    "simpletreesitter": {"commit": "f2e00cac8ebb2f5ebd85ffdf2d220c622ee9f039", "url": "https://github.com/beamiter/simpletreesitter.git"},
+    "simplewhichkey": {"commit": "f372876526627e8affbff0e80904a07876b590f4", "url": "https://github.com/beamiter/simplewhichkey.git"}
+  }
+}
